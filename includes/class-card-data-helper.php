@@ -25,10 +25,6 @@ class KCPF_Card_Data_Helper
         $bedroomsKey = KCPF_Field_Config::getMetaKey('bedrooms', $purpose);
         $value = get_post_meta($property_id, $bedroomsKey, true);
         
-        // Debug: log what we're getting
-        error_log("KCPF Bedrooms Debug - Property ID: $property_id, Key: $bedroomsKey, Value: " . print_r($value, true));
-        
-        // Just return the value as-is with simple formatting
         return self::formatSimpleValue($value);
     }
     
@@ -44,10 +40,6 @@ class KCPF_Card_Data_Helper
         $bathroomsKey = KCPF_Field_Config::getMetaKey('bathrooms', $purpose);
         $value = get_post_meta($property_id, $bathroomsKey, true);
         
-        // Debug: log what we're getting
-        error_log("KCPF Bathrooms Debug - Property ID: $property_id, Key: $bathroomsKey, Value: " . print_r($value, true));
-        
-        // Just return the value as-is with simple formatting
         return self::formatSimpleValue($value);
     }
     
@@ -60,7 +52,7 @@ class KCPF_Card_Data_Helper
     private static function formatSimpleValue($value)
     {
         // Handle empty values
-        if (empty($value)) {
+        if (empty($value) && $value !== '0' && $value !== 0) {
             return '';
         }
         
@@ -70,18 +62,16 @@ class KCPF_Card_Data_Helper
         }
         
         // If value is still empty after array handling
-        if (empty($value)) {
+        if (empty($value) && $value !== '0' && $value !== 0) {
             return '';
         }
+        
+        // Convert to string for consistency
+        $value = (string) $value;
         
         // Convert "9_plus" to "9+" for display
         if (preg_match('/^\d+(_plus)?$/', $value)) {
             return str_replace('_plus', '+', $value);
-        }
-        
-        // If value is "true" or "1" (boolean stored as string), ignore it
-        if (in_array(strtolower($value), ['true', 'false', '1', '0'], true)) {
-            return '';
         }
         
         // Return the value as-is (could be numeric string like "3" or label like "3 Bedrooms")
