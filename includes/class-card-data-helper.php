@@ -133,40 +133,67 @@ class KCPF_Card_Data_Helper
      */
     public static function isMultiUnit($property_id)
     {
-        $multiUnit = get_post_meta($property_id, 'multi-unit', true);
+        $repeaterValue = get_post_meta($property_id, 'multi-unit_table', true);
         
-        // Debug: check what we're getting
-        $result = $multiUnit === '1' || $multiUnit === 1 || $multiUnit === true;
+        // If it's a serialized array, check if it has items
+        if (is_serialized($repeaterValue)) {
+            $repeaterValue = maybe_unserialize($repeaterValue);
+        }
         
-        return $result;
+        // If it's an array with items, it's multi-unit
+        if (is_array($repeaterValue) && !empty($repeaterValue)) {
+            return true;
+        }
+        
+        return false;
     }
     
     /**
-     * Get multi-unit price range for display
+     * Get multi-unit repeater count
      * 
      * @param int $property_id Property ID
-     * @return string|null Formatted price range or null
+     * @return int|null Number of units or null
      */
-    public static function getMultiUnitPriceRange($property_id)
+    public static function getMultiUnitCount($property_id)
+    {
+        if (!self::isMultiUnit($property_id)) {
+            return null;
+        }
+        
+        $repeaterValue = get_post_meta($property_id, 'multi-unit_table', true);
+        
+        // If it's a serialized array, unserialize it
+        if (is_serialized($repeaterValue)) {
+            $repeaterValue = maybe_unserialize($repeaterValue);
+        }
+        
+        if (is_array($repeaterValue)) {
+            return count($repeaterValue);
+        }
+        
+        return null;
+    }
+    
+    /**
+     * Get multi-unit price for display
+     * 
+     * @param int $property_id Property ID
+     * @param string $purpose Property purpose (sale/rent)
+     * @return string|null Formatted price or null
+     */
+    public static function getMultiUnitPrice($property_id, $purpose = 'sale')
     {
         if (!self::isMultiUnit($property_id)) {
             return null;
         }
         
         $minPrice = get_post_meta($property_id, 'minimum_buy_price', true);
-        $maxPrice = get_post_meta($property_id, 'maximum_buy_price', true);
         
-        if (empty($minPrice) && empty($maxPrice)) {
+        if (empty($minPrice) || !is_numeric($minPrice)) {
             return null;
         }
         
-        if (!empty($minPrice) && !empty($maxPrice)) {
-            return '€' . number_format($minPrice) . ' - €' . number_format($maxPrice);
-        } elseif (!empty($minPrice)) {
-            return 'From €' . number_format($minPrice);
-        } else {
-            return 'Up to €' . number_format($maxPrice);
-        }
+        return 'From €' . number_format($minPrice);
     }
 }
 

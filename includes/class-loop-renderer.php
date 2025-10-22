@@ -77,8 +77,10 @@ class KCPF_Loop_Renderer
         $bathrooms = KCPF_Card_Data_Helper::getBathrooms($property_id, $purposeSlug);
         $price = KCPF_Card_Data_Helper::getPrice($property_id, $purposeSlug);
         
-        // Check if multi-unit and get price range if applicable
-        $multiUnitPriceRange = KCPF_Card_Data_Helper::getMultiUnitPriceRange($property_id);
+        // Check if multi-unit and get price if applicable
+        $isMultiUnit = KCPF_Card_Data_Helper::isMultiUnit($property_id);
+        $multiUnitPrice = $isMultiUnit ? KCPF_Card_Data_Helper::getMultiUnitPrice($property_id, $purposeSlug) : null;
+        $multiUnitCount = $isMultiUnit ? KCPF_Card_Data_Helper::getMultiUnitCount($property_id) : null;
         
         ?>
         <article class="kcpf-property-card">
@@ -97,9 +99,9 @@ class KCPF_Loop_Renderer
                     </a>
                 </h2>
                 
-                <?php if ($multiUnitPriceRange) : ?>
+                <?php if ($multiUnitPrice) : ?>
                     <div class="kcpf-property-price kcpf-property-price-range">
-                        <?php echo esc_html($multiUnitPriceRange); ?>
+                        <?php echo esc_html($multiUnitPrice); ?>
                     </div>
                 <?php elseif ($price) : ?>
                     <div class="kcpf-property-price">
@@ -115,49 +117,10 @@ class KCPF_Loop_Renderer
                         </span>
                     <?php endif; ?>
                     
-                    <?php 
-                    // Check if multi-unit: either by meta field or by multiple selections in bedrooms/bathrooms
-                    $isMultiUnit = KCPF_Card_Data_Helper::isMultiUnit($property_id);
-                    
-                    if (!$isMultiUnit) {
-                        // Check bedrooms array
-                        $bedroomsKey = KCPF_Field_Config::getMetaKey('bedrooms', $purposeSlug);
-                        $bedroomsValue = get_post_meta($property_id, $bedroomsKey, true);
-                        if (is_array($bedroomsValue)) {
-                            $trueCount = 0;
-                            foreach ($bedroomsValue as $val) {
-                                if ($val === true) {
-                                    $trueCount++;
-                                }
-                            }
-                            if ($trueCount > 1) {
-                                $isMultiUnit = true;
-                            }
-                        }
-                    }
-                    
-                    if (!$isMultiUnit) {
-                        // Check bathrooms array
-                        $bathroomsKey = KCPF_Field_Config::getMetaKey('bathrooms', $purposeSlug);
-                        $bathroomsValue = get_post_meta($property_id, $bathroomsKey, true);
-                        if (is_array($bathroomsValue)) {
-                            $trueCount = 0;
-                            foreach ($bathroomsValue as $val) {
-                                if ($val === true) {
-                                    $trueCount++;
-                                }
-                            }
-                            if ($trueCount > 1) {
-                                $isMultiUnit = true;
-                            }
-                        }
-                    }
-                    ?>
-                    
-                    <?php if ($isMultiUnit) : ?>
+                    <?php if ($isMultiUnit && $multiUnitCount) : ?>
                         <span class="kcpf-multiunit-badge">
                             <i class="dashicons dashicons-admin-multisite"></i>
-                            Multi-unit
+                            <?php echo esc_html($multiUnitCount); ?> Units
                         </span>
                     <?php else : ?>
                         <?php if ($bedrooms) : ?>
