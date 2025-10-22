@@ -586,7 +586,6 @@
   flex: 0 0 40%;
   position: relative;
   overflow: hidden;
-  height: 100% !important;
 }
 
 .kcpf-property-image-sale img {
@@ -866,6 +865,7 @@
   transition: box-shadow 0.3s ease;
   display: flex;
   flex-direction: column;
+  height: fit-content;
 }
 
 .kcpf-property-card-rent:hover {
@@ -905,12 +905,14 @@
   font-family: "Jost", Helvetica, sans-serif !important;
   color: #000 !important;
   font-weight: 400 !important;
+  letter-spacing: 0 !important;
 }
 
 .kcpf-property-title-rent a {
   color: #000 !important;
   text-decoration: none;
   transition: color 0.3s ease;
+  letter-spacing: 0 !important;
 }
 
 .kcpf-property-title-rent a:hover {
@@ -927,10 +929,13 @@
 
 .kcpf-property-meta-row-rent .kcpf-separator-rent {
   margin-left: 0;
-  margin-right: 0.5rem;
+  margin-right: 0.2rem;
 }
 
-.kcpf-property-meta-row-rent .kcpf-city-area-rent,
+.kcpf-property-meta-row-rent .kcpf-city-area-rent {
+  margin-right: 0.25rem;
+}
+
 .kcpf-property-meta-row-rent .kcpf-property-type-rent {
   margin-right: 0.5rem;
 }
