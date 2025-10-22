@@ -600,11 +600,6 @@
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  transition: transform 0.3s ease;
-}
-
-.kcpf-property-card-sale:hover .kcpf-property-image-sale {
-  transform: scale(1.05);
 }
 
 .kcpf-property-content-sale {
@@ -879,11 +874,6 @@
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  transition: transform 0.3s ease;
-}
-
-.kcpf-property-card-rent:hover .kcpf-property-image-rent {
-  transform: scale(1.05);
 }
 
 .kcpf-property-content-rent {
