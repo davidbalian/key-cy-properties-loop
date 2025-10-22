@@ -44,8 +44,11 @@ Modified the following filter methods in `class-filter-renderer.php`:
 
 1. When a filter is rendered, it calls `KCPF_Listing_Values::getMinMax($field, $purpose)`
 2. The method queries the database for min/max values from published properties
-3. Results are cached to avoid repeated queries
-4. If no data exists, sensible defaults are returned
+3. **Important**: Results are filtered by purpose taxonomy (sale or rent)
+   - Sale filters only use values from sale properties
+   - Rent filters only use values from rent properties
+4. Results are cached to avoid repeated queries
+5. If no data exists, sensible defaults are returned
 
 ### Purpose-Aware
 
@@ -83,15 +86,21 @@ If no listings exist or query fails:
 
 ### Database Query
 
-Uses efficient SQL query with CAST to handle numeric values:
+Uses efficient SQL query with CAST to handle numeric values and filters by purpose:
 
 ```sql
-SELECT MIN(CAST(meta_value AS UNSIGNED)) as min_value,
-       MAX(CAST(meta_value AS UNSIGNED)) as max_value
-FROM postmeta
-WHERE meta_key = '{field_key}'
-AND post_type = 'properties'
-AND post_status = 'publish'
+SELECT MIN(CAST(pm.meta_value AS UNSIGNED)) as min_value,
+       MAX(CAST(pm.meta_value AS UNSIGNED)) as max_value
+FROM postmeta pm
+INNER JOIN posts p ON pm.post_id = p.ID
+LEFT JOIN term_relationships tr ON p.ID = tr.object_id
+LEFT JOIN term_taxonomy tt ON tr.term_taxonomy_id = tt.term_taxonomy_id
+LEFT JOIN terms t ON tt.term_id = t.term_id
+WHERE pm.meta_key = '{field_key}'
+AND p.post_type = 'properties'
+AND p.post_status = 'publish'
+AND tt.taxonomy = 'purpose'
+AND t.slug = '{purpose}'
 ```
 
 ## Usage Example

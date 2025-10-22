@@ -42,21 +42,26 @@ class KCPF_Listing_Values
         // Query to get min and max values
         global $wpdb;
         
-        $query = $wpdb->prepare(
-            "SELECT 
+        // Build query with purpose taxonomy filter
+        $query = "SELECT 
                 MIN(CAST(pm.meta_value AS UNSIGNED)) as min_value,
                 MAX(CAST(pm.meta_value AS UNSIGNED)) as max_value
             FROM {$wpdb->postmeta} pm
             INNER JOIN {$wpdb->posts} p ON pm.post_id = p.ID
+            LEFT JOIN {$wpdb->term_relationships} tr ON p.ID = tr.object_id
+            LEFT JOIN {$wpdb->term_taxonomy} tt ON tr.term_taxonomy_id = tt.term_taxonomy_id
+            LEFT JOIN {$wpdb->terms} t ON tt.term_id = t.term_id
             WHERE pm.meta_key = %s
             AND p.post_type = 'properties'
             AND p.post_status = 'publish'
             AND pm.meta_value != ''
             AND pm.meta_value IS NOT NULL
             AND pm.meta_value REGEXP '^[0-9]+$'
-            AND CAST(pm.meta_value AS UNSIGNED) > 0",
-            $meta_key
-        );
+            AND CAST(pm.meta_value AS UNSIGNED) > 0
+            AND tt.taxonomy = 'purpose'
+            AND t.slug = %s";
+        
+        $query = $wpdb->prepare($query, $meta_key, $purpose);
         
         $result = $wpdb->get_row($query, ARRAY_A);
         
