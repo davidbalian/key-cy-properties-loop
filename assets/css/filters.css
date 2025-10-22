@@ -12,7 +12,11 @@
   margin-bottom: 1.5rem;
 }
 
-.kcpf-filter label {
+/* Only style labels for range sliders and toggle buttons that still have labels */
+.kcpf-filter-price label,
+.kcpf-filter-covered-area label,
+.kcpf-filter-plot-area label,
+.kcpf-filter-purpose label {
   display: block;
   margin-bottom: 0.5rem;
   font-weight: 600;
@@ -22,11 +26,11 @@
 /* Select Filters */
 .kcpf-filter-select {
   width: 100%;
-  padding: 0.75rem 1rem;
+  padding: 0.5rem;
   border: 1px solid #ddd;
   border-radius: 4px;
   font-size: 1rem;
-  background-color: #fff;
+  background-color: #ededed;
   transition: border-color 0.3s ease;
 }
 
@@ -79,10 +83,10 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0.75rem 1rem;
+  padding: 0.5rem;
   border: 1px solid #ddd;
   border-radius: 4px;
-  background-color: #fff;
+  background-color: #ededed;
   cursor: pointer;
   transition: border-color 0.3s ease;
   min-height: 48px;
@@ -106,12 +110,6 @@
   align-items: center;
 }
 
-/* Ensure chips are displayed in a row */
-.kcpf-chip {
-  display: inline-flex;
-  flex-shrink: 0;
-}
-
 .kcpf-placeholder {
   color: #999;
 }
@@ -126,6 +124,7 @@
   border-radius: 20px;
   font-size: 0.875rem;
   line-height: 1;
+  width: fit-content;
 }
 
 .kcpf-chip-remove {
@@ -138,7 +137,7 @@
   padding: 0;
   width: 18px;
   height: 18px;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
   transition: opacity 0.2s ease;
@@ -165,7 +164,7 @@
   top: 100%;
   left: 0;
   right: 0;
-  background-color: #fff;
+  background-color: #ededed;
   border: 1px solid #ddd;
   border-top: none;
   border-radius: 0 0 4px 4px;
@@ -236,10 +235,11 @@
 /* Property ID Search */
 .kcpf-property-id-input {
   width: 100%;
-  padding: 0.75rem 1rem;
+  padding: 0.5rem;
   border: 1px solid #ddd;
   border-radius: 4px;
   font-size: 1rem;
+  background-color: #ededed;
   transition: border-color 0.3s ease;
 }
 
@@ -277,10 +277,10 @@
 .kcpf-radio-label span,
 .kcpf-button-label span {
   display: inline-block;
-  padding: 0.5rem 1rem;
+  padding: 0.5rem;
   border: 1px solid #ddd;
   border-radius: 4px;
-  background-color: #fff;
+  background-color: #ededed;
   transition: all 0.3s ease;
 }
 
@@ -339,10 +339,11 @@
 
 .kcpf-input {
   flex: 1;
-  padding: 0.75rem 1rem;
+  padding: 0.5rem;
   border: 1px solid #ddd;
   border-radius: 4px;
   font-size: 1rem;
+  background-color: #ededed;
   transition: border-color 0.3s ease;
 }
 
@@ -373,7 +374,7 @@
   display: inline-block;
   padding: 0.75rem 2rem;
   border: none;
-  border-radius: 4px;
+  border-radius: 100px;
   font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
@@ -391,12 +392,12 @@
 }
 
 .kcpf-reset-button {
-  background-color: #f0f0f0;
+  background-color: #ededed;
   color: #333;
 }
 
 .kcpf-reset-button:hover {
-  background-color: #e0e0e0;
+  background-color: #d8d8d8;
 }
 
 /* Properties Loop */

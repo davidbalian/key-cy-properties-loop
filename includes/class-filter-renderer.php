@@ -46,11 +46,9 @@ class KCPF_Filter_Renderer
         ob_start();
         ?>
         <div class="kcpf-filter kcpf-filter-location">
-            <label for="kcpf-location"><?php esc_html_e('Location', 'key-cy-properties-filter'); ?></label>
-            
             <?php if ($attrs['type'] === 'select') : ?>
                 <select id="kcpf-location" name="location" class="kcpf-filter-select">
-                    <option value=""><?php echo esc_html($attrs['placeholder']); ?></option>
+                    <option value=""><?php echo esc_html($attrs['placeholder'] ?: __('Location', 'key-cy-properties-filter')); ?></option>
                     <?php foreach ($locations as $location) : ?>
                         <option value="<?php echo esc_attr($location->slug); ?>" <?php selected($current_value, $location->slug); ?>>
                             <?php echo esc_html($location->name); ?>
@@ -67,7 +65,7 @@ class KCPF_Filter_Renderer
                             <?php 
                             $current_values = is_array($current_value) ? $current_value : ($current_value ? [$current_value] : []);
                             if (empty($current_values)) : ?>
-                                <span class="kcpf-placeholder">Select Location</span>
+                                <span class="kcpf-placeholder"><?php echo esc_html(__('Location', 'key-cy-properties-filter')); ?></span>
                             <?php else: ?>
                                 <?php foreach ($current_values as $val) : 
                                     $location_obj = array_filter($locations, function($loc) use ($val) { return $loc->slug === $val; });
@@ -75,7 +73,7 @@ class KCPF_Filter_Renderer
                                 ?>
                                     <span class="kcpf-chip">
                                         <?php echo esc_html($location_obj ? $location_obj->name : $val); ?>
-                                        <button type="button" class="kcpf-chip-remove" data-value="<?php echo esc_attr($val); ?>">&times;</button>
+                                        <span class="kcpf-chip-remove" data-value="<?php echo esc_attr($val); ?>">&times;</span>
                                     </span>
                                 <?php endforeach; ?>
                             <?php endif; ?>
@@ -285,11 +283,9 @@ class KCPF_Filter_Renderer
         ob_start();
         ?>
         <div class="kcpf-filter kcpf-filter-bedrooms">
-            <label><?php esc_html_e('Bedrooms', 'key-cy-properties-filter'); ?></label>
-            
             <?php if ($attrs['type'] === 'select') : ?>
                 <select name="bedrooms" class="kcpf-filter-select">
-                    <option value="">Any</option>
+                    <option value=""><?php echo esc_html(__('Bedrooms', 'key-cy-properties-filter')); ?></option>
                     <?php foreach ($glossaryOptions as $option) : ?>
                         <option value="<?php echo esc_attr($option['value']); ?>" <?php selected($current_value, $option['value']); ?>>
                             <?php echo esc_html($option['label']); ?>
@@ -303,7 +299,7 @@ class KCPF_Filter_Renderer
                             <?php 
                             $current_values = is_array($current_value) ? $current_value : ($current_value ? [$current_value] : []);
                             if (empty($current_values)) : ?>
-                                <span class="kcpf-placeholder">Select Bedrooms</span>
+                                <span class="kcpf-placeholder"><?php echo esc_html(__('Bedrooms', 'key-cy-properties-filter')); ?></span>
                             <?php else: ?>
                                 <?php foreach ($current_values as $val) : 
                                     $option = array_filter($glossaryOptions, function($opt) use ($val) { return $opt['value'] === $val; });
@@ -311,7 +307,7 @@ class KCPF_Filter_Renderer
                                 ?>
                                     <span class="kcpf-chip">
                                         <?php echo esc_html($option['label']); ?>
-                                        <button type="button" class="kcpf-chip-remove" data-value="<?php echo esc_attr($val); ?>">&times;</button>
+                                        <span class="kcpf-chip-remove" data-value="<?php echo esc_attr($val); ?>">&times;</span>
                                     </span>
                                 <?php endforeach; ?>
                             <?php endif; ?>
@@ -383,11 +379,9 @@ class KCPF_Filter_Renderer
         ob_start();
         ?>
         <div class="kcpf-filter kcpf-filter-bathrooms">
-            <label><?php esc_html_e('Bathrooms', 'key-cy-properties-filter'); ?></label>
-            
             <?php if ($attrs['type'] === 'select') : ?>
                 <select name="bathrooms" class="kcpf-filter-select">
-                    <option value="">Any</option>
+                    <option value=""><?php echo esc_html(__('Bathrooms', 'key-cy-properties-filter')); ?></option>
                     <?php foreach ($glossaryOptions as $option) : ?>
                         <option value="<?php echo esc_attr($option['value']); ?>" <?php selected($current_value, $option['value']); ?>>
                             <?php echo esc_html($option['label']); ?>
@@ -401,7 +395,7 @@ class KCPF_Filter_Renderer
                             <?php 
                             $current_values = is_array($current_value) ? $current_value : ($current_value ? [$current_value] : []);
                             if (empty($current_values)) : ?>
-                                <span class="kcpf-placeholder">Select Bathrooms</span>
+                                <span class="kcpf-placeholder"><?php echo esc_html(__('Bathrooms', 'key-cy-properties-filter')); ?></span>
                             <?php else: ?>
                                 <?php foreach ($current_values as $val) : 
                                     $option = array_filter($glossaryOptions, function($opt) use ($val) { return $opt['value'] === $val; });
@@ -409,7 +403,7 @@ class KCPF_Filter_Renderer
                                 ?>
                                     <span class="kcpf-chip">
                                         <?php echo esc_html($option['label']); ?>
-                                        <button type="button" class="kcpf-chip-remove" data-value="<?php echo esc_attr($val); ?>">&times;</button>
+                                        <span class="kcpf-chip-remove" data-value="<?php echo esc_attr($val); ?>">&times;</span>
                                     </span>
                                 <?php endforeach; ?>
                             <?php endif; ?>
@@ -472,11 +466,9 @@ class KCPF_Filter_Renderer
         ob_start();
         ?>
         <div class="kcpf-filter kcpf-filter-type">
-            <label><?php esc_html_e('Property Type', 'key-cy-properties-filter'); ?></label>
-            
             <?php if ($attrs['type'] === 'select') : ?>
                 <select name="property_type" class="kcpf-filter-select">
-                    <option value="">All Types</option>
+                    <option value=""><?php echo esc_html(__('Property Type', 'key-cy-properties-filter')); ?></option>
                     <?php foreach ($types as $type) : ?>
                         <option value="<?php echo esc_attr($type->slug); ?>" <?php selected($current_value, $type->slug); ?>>
                             <?php echo esc_html($type->name); ?>
@@ -490,7 +482,7 @@ class KCPF_Filter_Renderer
                             <?php 
                             $current_values = is_array($current_value) ? $current_value : ($current_value ? [$current_value] : []);
                             if (empty($current_values)) : ?>
-                                <span class="kcpf-placeholder">Select Property Type</span>
+                                <span class="kcpf-placeholder"><?php echo esc_html(__('Property Type', 'key-cy-properties-filter')); ?></span>
                             <?php else: ?>
                                 <?php foreach ($current_values as $val) : 
                                     $type_obj = array_filter($types, function($t) use ($val) { return $t->slug === $val; });
@@ -498,7 +490,7 @@ class KCPF_Filter_Renderer
                                 ?>
                                     <span class="kcpf-chip">
                                         <?php echo esc_html($type_obj ? $type_obj->name : $val); ?>
-                                        <button type="button" class="kcpf-chip-remove" data-value="<?php echo esc_attr($val); ?>">&times;</button>
+                                        <span class="kcpf-chip-remove" data-value="<?php echo esc_attr($val); ?>">&times;</span>
                                     </span>
                                 <?php endforeach; ?>
                             <?php endif; ?>
@@ -622,13 +614,11 @@ class KCPF_Filter_Renderer
         ob_start();
         ?>
         <div class="kcpf-filter kcpf-filter-amenities">
-            <label><?php esc_html_e('Amenities', 'key-cy-properties-filter'); ?></label>
-            
             <div class="kcpf-multiselect-dropdown" data-filter-name="amenities">
                 <div class="kcpf-multiselect-trigger">
                     <div class="kcpf-multiselect-selected">
                         <?php if (empty($current_values)) : ?>
-                            <span class="kcpf-placeholder">Select Amenities</span>
+                            <span class="kcpf-placeholder"><?php echo esc_html(__('Amenities', 'key-cy-properties-filter')); ?></span>
                         <?php else: ?>
                             <?php foreach ($current_values as $val) : 
                                 $option = array_filter($amenitiesOptions, function($opt) use ($val) { return $opt['value'] === $val; });
@@ -636,7 +626,7 @@ class KCPF_Filter_Renderer
                             ?>
                                 <span class="kcpf-chip">
                                     <?php echo esc_html($option['label']); ?>
-                                    <button type="button" class="kcpf-chip-remove" data-value="<?php echo esc_attr($val); ?>">&times;</button>
+                                    <span class="kcpf-chip-remove" data-value="<?php echo esc_attr($val); ?>">&times;</span>
                                 </span>
                             <?php endforeach; ?>
                         <?php endif; ?>
@@ -831,11 +821,10 @@ class KCPF_Filter_Renderer
         ob_start();
         ?>
         <div class="kcpf-filter kcpf-filter-property-id">
-            <label for="kcpf-property-id"><?php esc_html_e('Property ID', 'key-cy-properties-filter'); ?></label>
             <input type="text" 
                    id="kcpf-property-id"
                    name="property_id" 
-                   placeholder="<?php echo esc_attr($attrs['placeholder']); ?>"
+                   placeholder="<?php echo esc_attr($attrs['placeholder'] ?: __('Property ID', 'key-cy-properties-filter')); ?>"
                    value="<?php echo esc_attr($property_id); ?>"
                    class="kcpf-input kcpf-property-id-input">
         </div>

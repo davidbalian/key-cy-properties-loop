@@ -29,9 +29,8 @@ class KCPF_Style_Preview
             <div class="kcpf-preview-section">
                 <h4>Select Dropdown</h4>
                 <div class="kcpf-filter kcpf-filter-location">
-                    <label>Location</label>
                     <select class="kcpf-filter-select">
-                        <option value="">Select Location</option>
+                        <option value="">Location</option>
                         <option value="limassol">Limassol</option>
                         <option value="nicosia">Nicosia</option>
                         <option value="paphos">Paphos</option>
@@ -42,17 +41,16 @@ class KCPF_Style_Preview
             <div class="kcpf-preview-section">
                 <h4>Multi-Select Dropdown</h4>
                 <div class="kcpf-filter kcpf-filter-bedrooms">
-                    <label>Bedrooms</label>
                     <div class="kcpf-multiselect-dropdown">
                         <div class="kcpf-multiselect-trigger">
                             <div class="kcpf-multiselect-selected">
                                 <span class="kcpf-chip">
                                     2 Bedrooms
-                                    <button type="button" class="kcpf-chip-remove">&times;</button>
+                                    <span class="kcpf-chip-remove">&times;</span>
                                 </span>
                                 <span class="kcpf-chip">
                                     3 Bedrooms
-                                    <button type="button" class="kcpf-chip-remove">&times;</button>
+                                    <span class="kcpf-chip-remove">&times;</span>
                                 </span>
                             </div>
                             <span class="kcpf-multiselect-arrow">▼</span>
@@ -86,11 +84,10 @@ class KCPF_Style_Preview
             <div class="kcpf-preview-section">
                 <h4>Multi-Select Dropdown (Empty)</h4>
                 <div class="kcpf-filter kcpf-filter-bathrooms">
-                    <label>Bathrooms</label>
                     <div class="kcpf-multiselect-dropdown">
                         <div class="kcpf-multiselect-trigger">
                             <div class="kcpf-multiselect-selected">
-                                <span class="kcpf-placeholder">Select Bathrooms</span>
+                                <span class="kcpf-placeholder">Bathrooms</span>
                             </div>
                             <span class="kcpf-multiselect-arrow">▼</span>
                         </div>
@@ -119,8 +116,7 @@ class KCPF_Style_Preview
             <div class="kcpf-preview-section">
                 <h4>Text Input</h4>
                 <div class="kcpf-filter kcpf-filter-property-id">
-                    <label>Property ID</label>
-                    <input type="text" class="kcpf-input" placeholder="Search by Property ID" value="">
+                    <input type="text" class="kcpf-input" placeholder="Property ID" value="">
                 </div>
             </div>
             

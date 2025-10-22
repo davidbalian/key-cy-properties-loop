@@ -460,9 +460,9 @@
               chipsHtml +=
                 '<span class="kcpf-chip">' +
                 label +
-                '<button type="button" class="kcpf-chip-remove" data-value="' +
+                '<span class="kcpf-chip-remove" data-value="' +
                 value +
-                '">&times;</button></span>';
+                '">&times;</span></span>';
             }
           });
           $selected.html(chipsHtml);
