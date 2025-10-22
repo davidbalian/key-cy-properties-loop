@@ -25,7 +25,11 @@ class KCPF_Card_Data_Helper
         $bedroomsKey = KCPF_Field_Config::getMetaKey('bedrooms', $purpose);
         $value = get_post_meta($property_id, $bedroomsKey, true);
         
-        return self::formatValue($value, '7');
+        // Debug: log what we're getting
+        error_log("KCPF Bedrooms Debug - Property ID: $property_id, Key: $bedroomsKey, Value: " . print_r($value, true));
+        
+        // Just return the value as-is with simple formatting
+        return self::formatSimpleValue($value);
     }
     
     /**
@@ -40,17 +44,20 @@ class KCPF_Card_Data_Helper
         $bathroomsKey = KCPF_Field_Config::getMetaKey('bathrooms', $purpose);
         $value = get_post_meta($property_id, $bathroomsKey, true);
         
-        return self::formatValue($value, '8');
+        // Debug: log what we're getting
+        error_log("KCPF Bathrooms Debug - Property ID: $property_id, Key: $bathroomsKey, Value: " . print_r($value, true));
+        
+        // Just return the value as-is with simple formatting
+        return self::formatSimpleValue($value);
     }
     
     /**
-     * Format value for display with glossary lookup
+     * Format value for display - simple version
      * 
      * @param mixed $value Raw value from post meta
-     * @param string|int $glossaryId Glossary ID
      * @return string Formatted value
      */
-    private static function formatValue($value, $glossaryId = null)
+    private static function formatSimpleValue($value)
     {
         // Handle empty values
         if (empty($value)) {
@@ -67,20 +74,8 @@ class KCPF_Card_Data_Helper
             return '';
         }
         
-        // Try to get glossary label if glossary ID provided
-        if ($glossaryId) {
-            $glossaryOptions = KCPF_Glossary_Handler::getGlossaryOptions($glossaryId);
-            
-            // If glossary has the value, return the label
-            if (!empty($glossaryOptions) && isset($glossaryOptions[$value])) {
-                return $glossaryOptions[$value];
-            }
-        }
-        
-        // Fallback: format the value directly
-        // If value is numeric or looks like a valid number, return it
-        if (is_numeric($value) || preg_match('/^\d+(_plus)?$/', $value)) {
-            // Convert "9_plus" to "9+" for display
+        // Convert "9_plus" to "9+" for display
+        if (preg_match('/^\d+(_plus)?$/', $value)) {
             return str_replace('_plus', '+', $value);
         }
         
@@ -89,7 +84,7 @@ class KCPF_Card_Data_Helper
             return '';
         }
         
-        // Return the value as-is
+        // Return the value as-is (could be numeric string like "3" or label like "3 Bedrooms")
         return $value;
     }
     
