@@ -78,6 +78,14 @@ class KCPF_Style_Settings_Manager
     public static function getDefaultSettings()
     {
         return [
+            'filter_grid' => [
+                'grid_template_columns' => 'repeat(5, 1fr)',
+                'gap' => '1.5rem',
+                'grid_template_columns_tablet' => 'repeat(3, 1fr)',
+                'gap_tablet' => '1.5rem',
+                'grid_template_columns_mobile' => '1fr',
+                'gap_mobile' => '1rem',
+            ],
             'filter_container' => [
                 'margin_bottom' => '1.5rem',
                 'padding' => '0',

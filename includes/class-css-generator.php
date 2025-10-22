@@ -34,6 +34,11 @@ class KCPF_CSS_Generator
         
         $css = '';
         
+        // Filter Grid Layout
+        if (isset($settings['filter_grid'])) {
+            $css .= self::generateGridCSS($settings['filter_grid']);
+        }
+        
         // Filter Container
         if (isset($settings['filter_container'])) {
             $css .= self::generateSectionCSS('.kcpf-filter', $settings['filter_container']);
@@ -261,6 +266,69 @@ class KCPF_CSS_Generator
         }
         
         return $css . "\n";
+    }
+    
+    /**
+     * Generate grid CSS
+     * 
+     * @param array $settings
+     * @return string
+     */
+    private static function generateGridCSS($settings)
+    {
+        $css = '';
+        
+        // Base grid styles for desktop
+        if (isset($settings['grid_template_columns']) || isset($settings['gap'])) {
+            $css .= '.kcpf-filters-form {';
+            
+            if (isset($settings['grid_template_columns'])) {
+                $css .= "\n    display: grid !important;";
+                $css .= "\n    grid-template-columns: " . $settings['grid_template_columns'] . " !important;";
+            }
+            
+            if (isset($settings['gap'])) {
+                $css .= "\n    gap: " . $settings['gap'] . " !important;";
+            }
+            
+            $css .= "\n}\n\n";
+        }
+        
+        // Tablet responsive styles
+        if (isset($settings['grid_template_columns_tablet']) || isset($settings['gap_tablet'])) {
+            $css .= '@media (max-width: 1200px) {';
+            $css .= "\n    .kcpf-filters-form {";
+            
+            if (isset($settings['grid_template_columns_tablet'])) {
+                $css .= "\n        grid-template-columns: " . $settings['grid_template_columns_tablet'] . " !important;";
+            }
+            
+            if (isset($settings['gap_tablet'])) {
+                $css .= "\n        gap: " . $settings['gap_tablet'] . " !important;";
+            }
+            
+            $css .= "\n    }";
+            $css .= "\n}\n\n";
+        }
+        
+        // Mobile responsive styles
+        if (isset($settings['grid_template_columns_mobile']) || isset($settings['gap_mobile'])) {
+            $css .= '@media (max-width: 768px) {';
+            $css .= "\n    .kcpf-filters-form {";
+            
+            if (isset($settings['grid_template_columns_mobile'])) {
+                $css .= "\n        grid-template-columns: " . $settings['grid_template_columns_mobile'] . " !important;";
+            }
+            
+            if (isset($settings['gap_mobile'])) {
+                $css .= "\n        gap: " . $settings['gap_mobile'] . " !important;";
+            }
+            
+            $css .= "\n    }";
+            $css .= "\n}\n\n";
+        }
+        
+        return $css;
     }
     
     /**

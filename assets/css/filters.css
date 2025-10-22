@@ -5,15 +5,11 @@
  */
 
 /* Filter Form Container */
-.kcpf-filters-form {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 1.5rem;
-}
+/* Grid styles are now generated dynamically via the Style Editor */
 
 /* Filter Container */
 .kcpf-filter {
-  margin-bottom: 0;
+  margin-bottom: 1.5rem;
 }
 
 .kcpf-filter label {
@@ -578,17 +574,7 @@
 }
 
 /* Responsive */
-@media (max-width: 1200px) {
-  .kcpf-filters-form {
-    grid-template-columns: repeat(3, 1fr);
-  }
-}
-
 @media (max-width: 768px) {
-  .kcpf-filters-form {
-    grid-template-columns: 1fr;
-  }
-
   .kcpf-properties-grid {
     grid-template-columns: 1fr;
   }

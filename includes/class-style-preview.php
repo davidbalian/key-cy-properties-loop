@@ -25,6 +25,7 @@ class KCPF_Style_Preview
         <div class="kcpf-style-preview">
             <h3>Filter Previews</h3>
             
+            <form class="kcpf-filters-form">
             <div class="kcpf-preview-section">
                 <h4>Select Dropdown</h4>
                 <div class="kcpf-filter kcpf-filter-location">
@@ -164,6 +165,7 @@ class KCPF_Style_Preview
                     <a href="#" class="kcpf-reset-button">Reset Filters</a>
                 </div>
             </div>
+            </form>
         </div>
         <?php
         return ob_get_clean();

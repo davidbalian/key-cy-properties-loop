@@ -144,6 +144,11 @@ class KCPF_Style_Editor
                 <div class="kcpf-editor-layout">
                     <div class="kcpf-editor-left">
                         <div class="kcpf-editor-section">
+                            <h2>Filter Grid Layout</h2>
+                            <?php self::renderSection('filter_grid', isset($settings['filter_grid']) ? $settings['filter_grid'] : []); ?>
+                        </div>
+                        
+                        <div class="kcpf-editor-section">
                             <h2>Filter Container</h2>
                             <?php self::renderSection('filter_container', isset($settings['filter_container']) ? $settings['filter_container'] : []); ?>
                         </div>
