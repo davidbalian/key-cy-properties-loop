@@ -590,7 +590,7 @@
 
 .kcpf-property-image-sale img {
   width: 100%;
-  height: 100%;
+  height: 250px;
   object-fit: cover;
   display: block;
   transition: transform 0.3s ease;
@@ -606,6 +606,10 @@
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
+}
+
+.kcpf-property-content-sale .kcpf-property-title {
+  font-size: 20px;
 }
 
 .kcpf-property-meta-row {
@@ -736,6 +740,24 @@
 .kcpf-property-specs span {
   display: flex;
   align-items: center;
+  gap: 0.5rem;
+}
+
+.kcpf-property-specs-icon,
+.kcpf-property-specs-rent-icon {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.kcpf-property-specs-icon svg,
+.kcpf-property-specs-rent-icon svg {
+  width: 100%;
+  height: 100%;
+  fill: currentColor;
 }
 
 .kcpf-property-image {
@@ -760,7 +782,7 @@
 
 .kcpf-property-title {
   margin: 0 0 0.5rem 0;
-  font-size: 1.25rem;
+  font-size: 20px;
 }
 
 .kcpf-property-title a {
@@ -826,7 +848,8 @@
 
 .kcpf-property-image-rent img {
   width: 100%;
-  height: auto;
+  height: 250px;
+  object-fit: cover;
   display: block;
   transition: transform 0.3s ease;
 }
@@ -844,7 +867,7 @@
 
 .kcpf-property-title-rent {
   margin: 0;
-  font-size: 1.25rem;
+  font-size: 20px;
 }
 
 .kcpf-property-title-rent a {
@@ -888,6 +911,7 @@
 .kcpf-property-specs-rent span {
   display: flex;
   align-items: center;
+  gap: 0.5rem;
 }
 
 .kcpf-property-price-rent {
