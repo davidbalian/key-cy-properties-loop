@@ -642,7 +642,8 @@
 .kcpf-multiunit-header {
   font-weight: 600;
   margin-bottom: 0.5rem;
-  color: #333;
+  color: #999 !important;
+  font-size: 16px !important;
 }
 
 /* Multi-unit table wrapper */
