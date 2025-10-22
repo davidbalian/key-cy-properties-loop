@@ -51,9 +51,12 @@ class KCPF_Card_Data_Helper
      */
     private static function formatSimpleValue($value)
     {
+        // Debug: Return raw value to see what's stored
+        $rawValue = $value;
+        
         // Handle empty values
         if (empty($value) && $value !== '0' && $value !== 0) {
-            return '';
+            return '[empty]';
         }
         
         // Handle array values (with "Save as array" enabled)
@@ -72,24 +75,14 @@ class KCPF_Card_Data_Helper
         
         // If value is still empty after handling
         if (empty($value) && $value !== '0' && $value !== 0) {
-            return '';
+            return '[empty]';
         }
         
         // Convert to string for consistency
         $value = (string) $value;
         
-        // If value is "true" or "false" (boolean stored as string), ignore it
-        if (in_array(strtolower($value), ['true', 'false'], true)) {
-            return '';
-        }
-        
-        // Convert "9_plus" to "9+" for display
-        if (preg_match('/^\d+(_plus)?$/', $value)) {
-            return str_replace('_plus', '+', $value);
-        }
-        
-        // Return the value as-is (could be numeric string like "3" or label like "3 Bedrooms")
-        return $value;
+        // Return RAW value for debugging
+        return "[RAW: " . print_r($rawValue, true) . "] -> [DISPLAY: $value]";
     }
     
     /**
