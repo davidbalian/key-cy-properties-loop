@@ -25,18 +25,18 @@
 
 /* Select Filters */
 .kcpf-filter-select {
-  width: 100%;
-  padding: 0.5rem;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  font-size: 1rem;
-  background-color: #ededed;
+  width: 100% !important;
+  padding: 0.5rem !important;
+  border: 1px solid #ddd !important;
+  border-radius: 4px !important;
+  font-size: 1rem !important;
+  background-color: #ededed !important;
   transition: border-color 0.3s ease;
 }
 
 .kcpf-filter-select:focus {
-  outline: none;
-  border-color: #0073aa;
+  outline: none !important;
+  border-color: #0073aa !important;
 }
 
 /* Checkbox Filters */
@@ -80,26 +80,26 @@
 }
 
 .kcpf-multiselect-trigger {
-  display: flex;
+  display: flex !important;
   align-items: center;
   justify-content: space-between;
-  padding: 0.5rem;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  background-color: #ededed;
+  padding: 0.5rem !important;
+  border: 1px solid #ddd !important;
+  border-radius: 4px !important;
+  background-color: #ededed !important;
   cursor: pointer;
   transition: border-color 0.3s ease;
   min-height: 48px;
 }
 
 .kcpf-multiselect-trigger:hover {
-  border-color: #0073aa;
+  border-color: #0073aa !important;
 }
 
 .kcpf-multiselect-trigger.active {
-  border-color: #0073aa;
-  box-shadow: 0 0 0 3px rgba(0, 115, 170, 0.1);
-  border-radius: 4px 4px 0 0;
+  border-color: #0073aa !important;
+  box-shadow: 0 0 0 3px rgba(0, 115, 170, 0.1) !important;
+  border-radius: 4px 4px 0 0 !important;
 }
 
 .kcpf-multiselect-selected {
@@ -115,16 +115,16 @@
 }
 
 .kcpf-chip {
-  display: inline-flex;
+  display: inline-flex !important;
   align-items: center;
   gap: 0.5rem;
-  padding: 0.375rem 0.75rem;
-  background-color: #0073aa;
-  color: #fff;
-  border-radius: 20px;
-  font-size: 0.875rem;
+  padding: 0.375rem 0.75rem !important;
+  background-color: #0073aa !important;
+  color: #fff !important;
+  border-radius: 20px !important;
+  font-size: 0.875rem !important;
   line-height: 1;
-  width: fit-content;
+  width: fit-content !important;
 }
 
 .kcpf-chip-remove {
@@ -164,10 +164,10 @@
   top: 100%;
   left: 0;
   right: 0;
-  background-color: #ededed;
-  border: 1px solid #ddd;
+  background-color: #ededed !important;
+  border: 1px solid #ddd !important;
   border-top: none;
-  border-radius: 0 0 4px 4px;
+  border-radius: 0 0 4px 4px !important;
   max-height: 300px;
   overflow-y: auto;
   z-index: 1000;
@@ -194,7 +194,7 @@
 }
 
 .kcpf-multiselect-option:hover {
-  background-color: #f8f8f8;
+  background-color: #f8f8f8 !important;
 }
 
 .kcpf-multiselect-option input[type="checkbox"] {
@@ -234,19 +234,19 @@
 
 /* Property ID Search */
 .kcpf-property-id-input {
-  width: 100%;
-  padding: 0.5rem;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  font-size: 1rem;
-  background-color: #ededed;
+  width: 100% !important;
+  padding: 0.5rem !important;
+  border: 1px solid #ddd !important;
+  border-radius: 4px !important;
+  font-size: 1rem !important;
+  background-color: #ededed !important;
   transition: border-color 0.3s ease;
 }
 
 .kcpf-property-id-input:focus {
-  outline: none;
-  border-color: #0073aa;
-  box-shadow: 0 0 0 3px rgba(0, 115, 170, 0.1);
+  outline: none !important;
+  border-color: #0073aa !important;
+  box-shadow: 0 0 0 3px rgba(0, 115, 170, 0.1) !important;
 }
 
 /* Radio & Toggle Buttons */
@@ -276,11 +276,11 @@
 .kcpf-toggle-label span,
 .kcpf-radio-label span,
 .kcpf-button-label span {
-  display: inline-block;
-  padding: 0.5rem;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  background-color: #ededed;
+  display: inline-block !important;
+  padding: 0.5rem !important;
+  border: 1px solid #ddd !important;
+  border-radius: 4px !important;
+  background-color: #ededed !important;
   transition: all 0.3s ease;
 }
 
@@ -288,9 +288,9 @@
 .kcpf-radio-label input:checked + span,
 .kcpf-button-label.active span,
 .kcpf-button-label input:checked + span {
-  background-color: #0073aa;
-  color: #fff;
-  border-color: #0073aa;
+  background-color: #0073aa !important;
+  color: #fff !important;
+  border-color: #0073aa !important;
 }
 
 /* Range Slider Container */
@@ -339,17 +339,17 @@
 
 .kcpf-input {
   flex: 1;
-  padding: 0.5rem;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  font-size: 1rem;
-  background-color: #ededed;
+  padding: 0.5rem !important;
+  border: 1px solid #ddd !important;
+  border-radius: 4px !important;
+  font-size: 1rem !important;
+  background-color: #ededed !important;
   transition: border-color 0.3s ease;
 }
 
 .kcpf-input:focus {
-  outline: none;
-  border-color: #0073aa;
+  outline: none !important;
+  border-color: #0073aa !important;
 }
 
 .kcpf-range-separator {
@@ -371,33 +371,33 @@
 /* Apply & Reset Buttons */
 .kcpf-apply-button,
 .kcpf-reset-button {
-  display: inline-block;
-  padding: 0.75rem 2rem;
-  border: none;
-  border-radius: 100px;
-  font-size: 1rem;
-  font-weight: 600;
+  display: inline-block !important;
+  padding: 0.75rem 2rem !important;
+  border: none !important;
+  border-radius: 100px !important;
+  font-size: 1rem !important;
+  font-weight: 600 !important;
   cursor: pointer;
   transition: all 0.3s ease;
-  text-decoration: none;
+  text-decoration: none !important;
 }
 
 .kcpf-apply-button {
-  background-color: #0073aa;
-  color: #fff;
+  background-color: #0073aa !important;
+  color: #fff !important;
 }
 
 .kcpf-apply-button:hover {
-  background-color: #005a87;
+  background-color: #005a87 !important;
 }
 
 .kcpf-reset-button {
-  background-color: #ededed;
-  color: #333;
+  background-color: #ededed !important;
+  color: #333 !important;
 }
 
 .kcpf-reset-button:hover {
-  background-color: #d8d8d8;
+  background-color: #d8d8d8 !important;
 }
 
 /* Properties Loop */
