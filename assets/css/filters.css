@@ -97,7 +97,7 @@
 }
 
 .kcpf-multiselect-trigger:hover {
-  border-color: #0073aa !important;
+  border-color: #000 !important;
 }
 
 /* Force background color override */
@@ -106,7 +106,7 @@
 }
 
 .kcpf-multiselect-trigger.active {
-  border-color: #0073aa !important;
+  border-color: #000 !important;
   box-shadow: 0 0 0 3px rgba(0, 115, 170, 0.1) !important;
   border-radius: 20px 20px 0 0 !important;
 }
@@ -261,7 +261,7 @@
 
 .kcpf-property-id-input:focus {
   outline: none !important;
-  border-color: #0073aa !important;
+  border-color: #000 !important;
   box-shadow: 0 0 0 3px rgba(0, 115, 170, 0.1) !important;
 }
 
@@ -328,11 +328,11 @@
 }
 
 .kcpf-range-trigger:hover {
-  border-color: #0073aa !important;
+  border-color: #000 !important;
 }
 
 .kcpf-range-trigger.active {
-  border-color: #0073aa !important;
+  border-color: #000 !important;
   box-shadow: 0 0 0 3px rgba(0, 115, 170, 0.1) !important;
   border-radius: 20px 20px 0 0 !important;
 }
@@ -389,7 +389,7 @@
 
 /* Customize noUiSlider colors */
 .kcpf-range-slider .noUi-connect {
-  background: #0073aa;
+  background: #000;
 }
 
 .kcpf-range-slider .noUi-handle {
@@ -438,7 +438,7 @@
 
 .kcpf-input:focus {
   outline: none !important;
-  border-color: #0073aa !important;
+  border-color: #000 !important;
 }
 
 .kcpf-range-separator {
@@ -472,12 +472,12 @@
 }
 
 .kcpf-apply-button {
-  background-color: #0073aa !important;
+  background-color: #000 !important;
   color: #fff !important;
 }
 
 .kcpf-apply-button:hover {
-  background-color: #005a87 !important;
+  background-color: #000 !important;
 }
 
 .kcpf-reset-button {
@@ -510,7 +510,7 @@
   width: 50px;
   height: 50px;
   border: 4px solid #f3f3f3;
-  border-top: 4px solid #0073aa;
+  border-top: 4px solid #000;
   border-radius: 50%;
   animation: kcpf-spin 1s linear infinite;
 }
