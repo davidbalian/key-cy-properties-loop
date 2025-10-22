@@ -35,20 +35,17 @@ class KCPF_Rent_Card_View
         
         ?>
         <article class="kcpf-property-card kcpf-property-card-rent">
-            <?php if (has_post_thumbnail()) : ?>
-                <div class="kcpf-property-image-rent">
-                    <a href="<?php the_permalink(); ?>">
+            <a href="<?php the_permalink(); ?>" class="kcpf-property-card-link">
+                <?php if (has_post_thumbnail()) : ?>
+                    <div class="kcpf-property-image-rent">
                         <?php the_post_thumbnail('medium'); ?>
-                    </a>
-                </div>
-            <?php endif; ?>
-            
-            <div class="kcpf-property-content-rent">
-                <h2 class="kcpf-property-title-rent">
-                    <a href="<?php the_permalink(); ?>">
+                    </div>
+                <?php endif; ?>
+                
+                <div class="kcpf-property-content-rent">
+                    <h2 class="kcpf-property-title-rent">
                         <?php the_title(); ?>
-                    </a>
-                </h2>
+                    </h2>
                 
                 <div class="kcpf-property-meta-row-rent">
                     <?php if ($location && !is_wp_error($location)) : ?>
@@ -101,6 +98,7 @@ class KCPF_Rent_Card_View
                     </div>
                 <?php endif; ?>
             </div>
+            </a>
         </article>
         <?php
     }

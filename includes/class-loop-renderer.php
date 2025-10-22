@@ -127,21 +127,18 @@ class KCPF_Loop_Renderer
     {
         ?>
         <article class="kcpf-property-card kcpf-property-card-sale">
-            <div class="kcpf-property-card-sale-wrapper">
-                <?php if (has_post_thumbnail()) : ?>
-                    <div class="kcpf-property-image-sale">
-                        <a href="<?php the_permalink(); ?>">
+            <a href="<?php the_permalink(); ?>" class="kcpf-property-card-link">
+                <div class="kcpf-property-card-sale-wrapper">
+                    <?php if (has_post_thumbnail()) : ?>
+                        <div class="kcpf-property-image-sale">
                             <?php the_post_thumbnail('medium'); ?>
-                        </a>
-                    </div>
-                <?php endif; ?>
-                
-                <div class="kcpf-property-content-sale">
-                    <h2 class="kcpf-property-title">
-                        <a href="<?php the_permalink(); ?>">
+                        </div>
+                    <?php endif; ?>
+                    
+                    <div class="kcpf-property-content-sale">
+                        <h2 class="kcpf-property-title">
                             <?php the_title(); ?>
-                        </a>
-                    </h2>
+                        </h2>
                     
                     <div class="kcpf-property-meta-row">
                         <?php if ($cityArea) : ?>
@@ -208,6 +205,7 @@ class KCPF_Loop_Renderer
                     </div>
                 </div>
             </div>
+            </a>
         </article>
         <?php
     }
