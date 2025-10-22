@@ -32,7 +32,9 @@ class KCPF_Loop_Renderer
         
         ob_start();
         
-        echo '<div class="kcpf-properties-loop" id="kcpf-properties-loop">';
+        // Add purpose data attribute for identification
+        $purpose_attr = isset($attrs['purpose']) ? $attrs['purpose'] : 'sale';
+        echo '<div class="kcpf-properties-loop" id="kcpf-properties-loop" data-purpose="' . esc_attr($purpose_attr) . '">';
         
         if ($query->have_posts()) {
             // Add sale class if purpose is sale to force single column layout

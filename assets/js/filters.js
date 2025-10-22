@@ -92,6 +92,16 @@
     window.addEventListener("popstate", function (e) {
       if (e.state && e.state.kcpfFilters) {
         const params = new URLSearchParams(window.location.search);
+        // Detect purpose from URL params or current page
+        if (!params.get("purpose")) {
+          const $loop = $(".kcpf-properties-loop").first();
+          if ($loop.length > 0) {
+            const purpose = $loop.data("purpose");
+            if (purpose) {
+              params.set("purpose", purpose);
+            }
+          }
+        }
         loadPropertiesAjax(params, false);
       }
     });
@@ -146,6 +156,28 @@
       }
     });
 
+    // Get purpose from form or find closest loop
+    let purpose = params.get("purpose");
+    if (!purpose) {
+      // Try to find the purpose from the closest loop
+      const $closestLoop = form.closest(".kcpf-properties-loop");
+      if ($closestLoop.length > 0) {
+        purpose = $closestLoop.data("purpose");
+      } else {
+        // Fallback: find first loop on page
+        const $firstLoop = $(".kcpf-properties-loop").first();
+        if ($firstLoop.length > 0) {
+          purpose = $firstLoop.data("purpose");
+        }
+      }
+    }
+
+    // Add purpose to params if found
+    if (purpose) {
+      params.set("purpose", purpose);
+      console.log("[KCPF] Detected purpose:", purpose);
+    }
+
     console.log("[KCPF] URL params:", params.toString());
 
     loadPropertiesAjax(params);
@@ -187,16 +219,42 @@
       timeout: 60000, // 60 second timeout
       beforeSend: function () {
         console.log("[KCPF] Sending AJAX request...");
-        $(".kcpf-properties-loop").addClass("kcpf-loading");
+        // Get purpose from params to target correct loop
+        const purpose = params.get("purpose");
+        if (purpose) {
+          $('.kcpf-properties-loop[data-purpose="' + purpose + '"]').addClass(
+            "kcpf-loading"
+          );
+        } else {
+          $(".kcpf-properties-loop").addClass("kcpf-loading");
+        }
       },
       success: function (response) {
         console.log("[KCPF] AJAX response received:", response);
         console.log("[KCPF] Response timestamp:", new Date().toISOString());
 
         if (response.success && response.data.html) {
-          // Replace the properties loop content
+          // Get purpose from params to find matching loop
+          const purpose = params.get("purpose");
+
+          // Find the matching loop by purpose
+          let $targetLoop = null;
+          if (purpose) {
+            $targetLoop = $(
+              '.kcpf-properties-loop[data-purpose="' + purpose + '"]'
+            );
+            console.log("[KCPF] Found matching loop for purpose:", purpose);
+          }
+
+          // Fallback to first loop if no purpose match found
+          if (!$targetLoop || $targetLoop.length === 0) {
+            $targetLoop = $(".kcpf-properties-loop").first();
+            console.log("[KCPF] Using first loop as fallback");
+          }
+
+          // Replace the matching properties loop content
           const $newContent = $(response.data.html);
-          $(".kcpf-properties-loop").replaceWith($newContent);
+          $targetLoop.replaceWith($newContent);
 
           // Reset infinite scroll state
           window.kcpfLoadingNextPage = false;
@@ -221,14 +279,25 @@
           console.log("[KCPF] Results updated successfully");
         } else {
           console.error("[KCPF] Invalid response format:", response);
-          $(".kcpf-properties-loop").html(
-            '<div class="kcpf-error"><p>Invalid response from server</p></div>'
-          );
+          const $loop = $(".kcpf-properties-loop").first();
+          if ($loop.length > 0) {
+            $loop.html(
+              '<div class="kcpf-error"><p>Invalid response from server</p></div>'
+            );
+          }
         }
       },
       complete: function () {
         console.log("[KCPF] AJAX request complete");
-        $(".kcpf-properties-loop").removeClass("kcpf-loading");
+        // Get purpose from params to target correct loop
+        const purpose = params.get("purpose");
+        if (purpose) {
+          $(
+            '.kcpf-properties-loop[data-purpose="' + purpose + '"]'
+          ).removeClass("kcpf-loading");
+        } else {
+          $(".kcpf-properties-loop").removeClass("kcpf-loading");
+        }
       },
       error: function (xhr, status, error) {
         console.error("[KCPF] ============ AJAX ERROR ============");
@@ -504,7 +573,29 @@
         return;
       }
 
-      const $grid = $(".kcpf-properties-grid");
+      // Find the loop that's currently visible (most likely in viewport)
+      const $visibleLoops = $(".kcpf-properties-loop").filter(function () {
+        const $loop = $(this);
+        const offset = $loop.offset();
+        if (!offset) return false;
+
+        const windowTop = $(window).scrollTop();
+        const windowBottom = windowTop + $(window).height();
+        const loopTop = offset.top;
+        const loopBottom = loopTop + $loop.outerHeight();
+
+        // Check if loop is in viewport
+        return loopTop < windowBottom && loopBottom > windowTop;
+      });
+
+      if ($visibleLoops.length === 0) {
+        return;
+      }
+
+      // Use the first visible loop
+      const $loop = $visibleLoops.first();
+      const $grid = $loop.find(".kcpf-properties-grid");
+
       if ($grid.length === 0) {
         return;
       }
@@ -525,7 +616,7 @@
 
       // Trigger load when within 300px of bottom
       if (distanceFromBottom < 300) {
-        loadNextPage();
+        loadNextPage($loop);
       }
     });
   }
@@ -533,14 +624,19 @@
   /**
    * Load next page of properties
    */
-  function loadNextPage() {
+  function loadNextPage($loop) {
     // Prevent multiple simultaneous requests
     if (window.kcpfLoadingNextPage) {
       return;
     }
     window.kcpfLoadingNextPage = true;
 
-    const $grid = $(".kcpf-properties-grid");
+    // Use provided loop or find the first one
+    if (!$loop || $loop.length === 0) {
+      $loop = $(".kcpf-properties-loop").first();
+    }
+
+    const $grid = $loop.find(".kcpf-properties-grid");
     if ($grid.length === 0) {
       window.kcpfLoadingNextPage = false;
       return;
@@ -556,15 +652,28 @@
     }
 
     const nextPage = currentPage + 1;
+    const purpose = $loop.data("purpose") || "";
 
-    console.log("[KCPF] Loading page " + nextPage + " of " + maxPages);
+    console.log(
+      "[KCPF] Loading page " +
+        nextPage +
+        " of " +
+        maxPages +
+        " for purpose: " +
+        purpose
+    );
 
-    // Show loader
-    $(".kcpf-infinite-loader").show();
+    // Show loader in the specific loop
+    $loop.find(".kcpf-infinite-loader").show();
 
     // Get current URL parameters
     const params = new URLSearchParams(window.location.search);
     params.set("paged", nextPage);
+
+    // Add purpose if available
+    if (purpose) {
+      params.set("purpose", purpose);
+    }
 
     // Build AJAX URL
     const ajaxUrl =
@@ -600,9 +709,9 @@
 
             // Update loader or remove if no more pages
             if (newCurrentPage >= newMaxPages) {
-              $(".kcpf-infinite-loader").remove();
+              $loop.find(".kcpf-infinite-loader").remove();
             } else {
-              $(".kcpf-infinite-loader").hide();
+              $loop.find(".kcpf-infinite-loader").hide();
             }
 
             console.log(
@@ -611,12 +720,12 @@
           }
         } else {
           console.error("[KCPF] Invalid response format:", response);
-          $(".kcpf-infinite-loader").hide();
+          $loop.find(".kcpf-infinite-loader").hide();
         }
       },
       error: function (xhr, status, error) {
         console.error("[KCPF] Infinite scroll error:", status, error);
-        $(".kcpf-infinite-loader").hide();
+        $loop.find(".kcpf-infinite-loader").hide();
       },
       complete: function () {
         window.kcpfLoadingNextPage = false;
