@@ -88,13 +88,12 @@
   display: flex !important;
   align-items: center;
   justify-content: space-between;
-  padding: 0.5rem !important;
+  padding: 0.25rem 0.75rem !important;
   border: 1px solid #ddd !important;
   border-radius: 100px !important;
   background-color: #fff !important;
   cursor: pointer;
   transition: border-color 0.3s ease;
-  min-height: 48px;
 }
 
 .kcpf-multiselect-trigger:hover {
@@ -121,7 +120,8 @@
 }
 
 .kcpf-placeholder {
-  color: #666 !important;
+  color: #000 !important;
+  font-size: 1rem !important;
 }
 
 .kcpf-chip {
@@ -251,7 +251,7 @@
 /* Property ID Search */
 .kcpf-property-id-input {
   width: 100% !important;
-  padding: 0.5rem !important;
+  padding: 0.25rem 0.75rem !important;
   border: 1px solid #ddd !important;
   border-radius: 100px !important;
   font-size: 1rem !important;
@@ -293,7 +293,7 @@
 .kcpf-radio-label span,
 .kcpf-button-label span {
   display: inline-block !important;
-  padding: 0.5rem !important;
+  padding: 0.25rem 0.75rem !important;
   border: 1px solid #ddd !important;
   border-radius: 100px !important;
   background-color: #fff !important;
@@ -319,13 +319,12 @@
   display: flex !important;
   align-items: center;
   justify-content: space-between;
-  padding: 0.5rem !important;
+  padding: 0.25rem 0.75rem !important;
   border: 1px solid #ddd !important;
   border-radius: 100px !important;
   background-color: #fff !important;
   cursor: pointer;
   transition: border-color 0.3s ease;
-  min-height: 48px;
 }
 
 .kcpf-range-trigger:hover {
@@ -345,11 +344,13 @@
 }
 
 .kcpf-range-display .kcpf-placeholder {
-  color: #666 !important;
+  color: #000 !important;
+  font-size: 1rem !important;
 }
 
 .kcpf-range-display span:not(.kcpf-placeholder) {
   color: #000 !important;
+  font-size: 1rem !important;
 }
 
 .kcpf-range-dropdown-menu {
@@ -427,7 +428,7 @@
 
 .kcpf-input {
   flex: 1;
-  padding: 0.5rem !important;
+  padding: 0.25rem 0.75rem !important;
   border: 1px solid #ddd !important;
   border-radius: 100px !important;
   font-size: 1rem !important;
