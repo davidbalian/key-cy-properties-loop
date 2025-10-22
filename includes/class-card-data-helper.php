@@ -195,5 +195,84 @@ class KCPF_Card_Data_Helper
         
         return 'From €' . number_format($minPrice);
     }
+    
+    /**
+     * Get multi-unit table data
+     * 
+     * @param int $property_id Property ID
+     * @return array|null Array of unit data or null
+     */
+    public static function getMultiUnitTable($property_id)
+    {
+        if (!self::isMultiUnit($property_id)) {
+            return null;
+        }
+        
+        $repeaterValue = get_post_meta($property_id, 'multi-unit_table', true);
+        
+        // If it's a serialized array, unserialize it
+        if (is_serialized($repeaterValue)) {
+            $repeaterValue = maybe_unserialize($repeaterValue);
+        }
+        
+        if (is_array($repeaterValue)) {
+            return $repeaterValue;
+        }
+        
+        return null;
+    }
+    
+    /**
+     * Get city_area meta field
+     * 
+     * @param int $property_id Property ID
+     * @return string|null City area or null
+     */
+    public static function getCityArea($property_id)
+    {
+        $cityArea = get_post_meta($property_id, 'city_area', true);
+        
+        if (empty($cityArea)) {
+            return null;
+        }
+        
+        return $cityArea;
+    }
+    
+    /**
+     * Get property type taxonomy
+     * 
+     * @param int $property_id Property ID
+     * @return string|null Property type or null
+     */
+    public static function getPropertyType($property_id)
+    {
+        $propertyType = get_the_terms($property_id, 'property-type');
+        
+        if ($propertyType && !is_wp_error($propertyType) && !empty($propertyType)) {
+            return $propertyType[0]->name;
+        }
+        
+        return null;
+    }
+    
+    /**
+     * Get total covered area
+     * 
+     * @param int $property_id Property ID
+     * @param string $purpose Property purpose (sale/rent)
+     * @return string|null Total covered area or null
+     */
+    public static function getTotalCoveredArea($property_id, $purpose = 'sale')
+    {
+        $coveredAreaKey = KCPF_Field_Config::getMetaKey('covered_area', $purpose);
+        $value = get_post_meta($property_id, $coveredAreaKey, true);
+        
+        if (empty($value) || !is_numeric($value)) {
+            return null;
+        }
+        
+        return number_format($value);
+    }
 }
 

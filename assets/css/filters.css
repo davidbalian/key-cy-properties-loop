@@ -530,6 +530,11 @@
   margin-bottom: 2rem;
 }
 
+/* Ensure single column for sale properties grid */
+.kcpf-properties-grid.kcpf-grid-sale {
+  grid-template-columns: 1fr;
+}
+
 /* Property Card */
 .kcpf-property-card {
   border: 1px solid #e0e0e0;
@@ -540,6 +545,117 @@
 
 .kcpf-property-card:hover {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Sale Property Card - Two Column Layout */
+.kcpf-property-card-sale {
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  overflow: hidden;
+  transition: box-shadow 0.3s ease;
+}
+
+.kcpf-property-card-sale:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.kcpf-property-card-sale-wrapper {
+  display: flex;
+  flex-direction: row;
+  min-height: 200px;
+}
+
+.kcpf-property-image-sale {
+  flex: 0 0 40%;
+  position: relative;
+  overflow: hidden;
+}
+
+.kcpf-property-image-sale img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.3s ease;
+}
+
+.kcpf-property-card-sale:hover .kcpf-property-image-sale img {
+  transform: scale(1.05);
+}
+
+.kcpf-property-content-sale {
+  flex: 1;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.kcpf-property-meta-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  color: #666;
+  flex-wrap: wrap;
+}
+
+.kcpf-separator {
+  color: #999;
+}
+
+.kcpf-city-area,
+.kcpf-location,
+.kcpf-property-type {
+  color: #666;
+}
+
+.kcpf-multiunit-section {
+  margin-top: 0.5rem;
+}
+
+.kcpf-multiunit-header {
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: #333;
+}
+
+.kcpf-multiunit-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+}
+
+.kcpf-multiunit-table th,
+.kcpf-multiunit-table td {
+  padding: 0.5rem;
+  text-align: left;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.kcpf-multiunit-table th {
+  background-color: #f8f8f8;
+  font-weight: 600;
+  color: #333;
+}
+
+.kcpf-multiunit-table tbody tr:hover {
+  background-color: #f8f8f8;
+}
+
+.kcpf-property-specs {
+  display: flex;
+  gap: 1rem;
+  font-size: 0.9rem;
+  color: #666;
+  margin-top: auto;
+  padding-top: 0.5rem;
+  border-top: 1px solid #e0e0e0;
+}
+
+.kcpf-property-specs span {
+  display: flex;
+  align-items: center;
 }
 
 .kcpf-property-image {
@@ -668,6 +784,20 @@
     grid-template-columns: 1fr;
   }
 
+  /* Stack sale card layout on mobile */
+  .kcpf-property-card-sale-wrapper {
+    flex-direction: column;
+  }
+
+  .kcpf-property-image-sale {
+    flex: 0 0 auto;
+    max-height: 300px;
+  }
+
+  .kcpf-property-image-sale img {
+    height: auto;
+  }
+
   .kcpf-price-inputs,
   .kcpf-range-inputs {
     flex-direction: column;
@@ -695,5 +825,15 @@
 
   .kcpf-range-dropdown-menu {
     min-width: 100%;
+  }
+
+  /* Make multi-unit table scrollable on mobile */
+  .kcpf-multiunit-table {
+    font-size: 0.75rem;
+  }
+
+  .kcpf-multiunit-table th,
+  .kcpf-multiunit-table td {
+    padding: 0.25rem;
   }
 }
