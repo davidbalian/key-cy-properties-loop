@@ -30,16 +30,19 @@ Created a dedicated **Card Data Helper** class to properly retrieve, format, and
 This class provides methods to:
 
 1. **Get Formatted Bedrooms** - `getBedrooms($property_id, $purpose)`
+
    - Retrieves the bedroom value based on property purpose (sale/rent)
    - Looks up the glossary label for proper display
    - Handles arrays, empty values, and boolean strings
 
 2. **Get Formatted Bathrooms** - `getBathrooms($property_id, $purpose)`
+
    - Retrieves the bathroom value based on property purpose (sale/rent)
    - Looks up the glossary label for proper display
    - Handles arrays, empty values, and boolean strings
 
 3. **Format Glossary Values** - `formatGlossaryValue($value, $glossaryId)`
+
    - Handles empty values and arrays
    - Looks up glossary options to get display labels
    - Converts values like "9_plus" to "9+" for display
@@ -47,6 +50,7 @@ This class provides methods to:
    - Provides intelligent fallbacks
 
 4. **Get Formatted Price** - `getPrice($property_id, $purpose)`
+
    - Returns formatted price with proper number formatting
 
 5. **Multi-Unit Support**:
@@ -68,6 +72,7 @@ The `formatGlossaryValue` method:
 ## Results
 
 Property cards now display:
+
 - ✅ **Correct Numbers**: "3 Bed", "2 Bath" instead of "true Bed", "true Bath"
 - ✅ **Glossary Labels**: Proper display names from JetEngine glossaries
 - ✅ **Multi-Unit Prices**: Price ranges for multi-unit properties (e.g., "€200,000 - €500,000")
@@ -76,18 +81,21 @@ Property cards now display:
 ## Example Display
 
 ### Before
+
 ```
 true Bed
 true Bath
 ```
 
 ### After
+
 ```
 3 Bed
 2 Bath
 ```
 
 ### Multi-Unit Property
+
 ```
 Price: €200,000 - €500,000
 3 Bed
@@ -97,6 +105,7 @@ Price: €200,000 - €500,000
 ## Code Quality
 
 All code follows the project's architectural principles:
+
 - ✅ Files under 500 lines
 - ✅ Single responsibility principle (dedicated helper for card data)
 - ✅ Object-oriented design with static methods for utility functions
@@ -107,9 +116,9 @@ All code follows the project's architectural principles:
 ## Backwards Compatibility
 
 The fix is **fully backwards compatible**:
+
 - Works with both sale and rent properties
 - Handles all glossary value formats
 - Provides intelligent fallbacks when glossaries are unavailable
 - No changes to shortcodes or frontend code
 - No database migrations required
-
