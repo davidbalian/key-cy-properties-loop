@@ -115,7 +115,26 @@ class KCPF_Loop_Renderer
                         </span>
                     <?php endif; ?>
                     
-                    <?php if (KCPF_Card_Data_Helper::isMultiUnit($property_id)) : ?>
+                    <?php 
+                    // Check if multi-unit: either by meta field or by multiple bedroom selections
+                    $isMultiUnit = KCPF_Card_Data_Helper::isMultiUnit($property_id);
+                    if (!$isMultiUnit) {
+                        // Check bedrooms array
+                        $bedroomsKey = KCPF_Field_Config::getMetaKey('bedrooms', $purposeSlug);
+                        $bedroomsValue = get_post_meta($property_id, $bedroomsKey, true);
+                        if (is_array($bedroomsValue)) {
+                            $trueCount = 0;
+                            foreach ($bedroomsValue as $val) {
+                                if ($val === true) {
+                                    $trueCount++;
+                                }
+                            }
+                            $isMultiUnit = $trueCount > 1;
+                        }
+                    }
+                    ?>
+                    
+                    <?php if ($isMultiUnit) : ?>
                         <span class="kcpf-multiunit-badge">
                             <i class="dashicons dashicons-admin-multisite"></i>
                             Multi-unit

@@ -22,13 +22,27 @@ class KCPF_Card_Data_Helper
      */
     public static function getBedrooms($property_id, $purpose = 'sale')
     {
-        // Check if multi-unit property first
+        $bedroomsKey = KCPF_Field_Config::getMetaKey('bedrooms', $purpose);
+        $value = get_post_meta($property_id, $bedroomsKey, true);
+        
+        // Check if multi-unit based on multiple selections in array
+        if (is_array($value)) {
+            $trueCount = 0;
+            foreach ($value as $val) {
+                if ($val === true) {
+                    $trueCount++;
+                }
+            }
+            // If more than 1 true value, it's multi-unit
+            if ($trueCount > 1) {
+                return '';
+            }
+        }
+        
+        // Check if multi-unit property (meta field)
         if (self::isMultiUnit($property_id)) {
             return '';
         }
-        
-        $bedroomsKey = KCPF_Field_Config::getMetaKey('bedrooms', $purpose);
-        $value = get_post_meta($property_id, $bedroomsKey, true);
         
         return self::formatSimpleValue($value);
     }
@@ -42,13 +56,27 @@ class KCPF_Card_Data_Helper
      */
     public static function getBathrooms($property_id, $purpose = 'sale')
     {
-        // Check if multi-unit property first
+        $bathroomsKey = KCPF_Field_Config::getMetaKey('bathrooms', $purpose);
+        $value = get_post_meta($property_id, $bathroomsKey, true);
+        
+        // Check if multi-unit based on multiple selections in array
+        if (is_array($value)) {
+            $trueCount = 0;
+            foreach ($value as $val) {
+                if ($val === true) {
+                    $trueCount++;
+                }
+            }
+            // If more than 1 true value, it's multi-unit
+            if ($trueCount > 1) {
+                return '';
+            }
+        }
+        
+        // Check if multi-unit property (meta field)
         if (self::isMultiUnit($property_id)) {
             return '';
         }
-        
-        $bathroomsKey = KCPF_Field_Config::getMetaKey('bathrooms', $purpose);
-        $value = get_post_meta($property_id, $bathroomsKey, true);
         
         return self::formatSimpleValue($value);
     }
@@ -157,7 +185,11 @@ class KCPF_Card_Data_Helper
     public static function isMultiUnit($property_id)
     {
         $multiUnit = get_post_meta($property_id, 'multi-unit', true);
-        return $multiUnit === '1' || $multiUnit === 1 || $multiUnit === true;
+        
+        // Debug: check what we're getting
+        $result = $multiUnit === '1' || $multiUnit === 1 || $multiUnit === true;
+        
+        return $result;
     }
     
     /**
