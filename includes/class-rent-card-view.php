@@ -56,7 +56,7 @@ class KCPF_Rent_Card_View
                     <?php endif; ?>
                     
                     <?php if ($cityArea) : ?>
-                        <span class="kcpf-separator-rent">|</span>
+                        <span class="kcpf-separator-rent">,</span>
                         <span class="kcpf-city-area-rent"><?php echo esc_html($cityArea); ?></span>
                     <?php endif; ?>
                     

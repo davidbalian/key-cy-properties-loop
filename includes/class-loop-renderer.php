@@ -149,7 +149,7 @@ class KCPF_Loop_Renderer
                         <?php endif; ?>
                         
                         <?php if ($location && !is_wp_error($location)) : ?>
-                            <span class="kcpf-separator">|</span>
+                            <span class="kcpf-separator">,</span>
                             <span class="kcpf-location"><?php echo esc_html($location[0]->name); ?></span>
                         <?php endif; ?>
                         

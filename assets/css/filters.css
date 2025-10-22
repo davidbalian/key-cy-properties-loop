@@ -798,9 +798,9 @@
 }
 
 .kcpf-property-price {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: #0073aa;
+  font-size: 18px !important;
+  font-weight: normal !important;
+  color: #000 !important;
   margin-bottom: 1rem;
 }
 
@@ -919,9 +919,9 @@
 }
 
 .kcpf-property-price-rent {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: #0073aa;
+  font-size: 18px !important;
+  font-weight: normal !important;
+  color: #000 !important;
   margin-top: auto;
 }
 
