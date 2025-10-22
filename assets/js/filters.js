@@ -1,0 +1,336 @@
+/**
+ * Key CY Properties Filter JavaScript
+ *
+ * @package Key_CY_Properties_Filter
+ */
+
+(function ($) {
+  "use strict";
+
+  /**
+   * Initialize filters
+   */
+  function initFilters() {
+    // Wrap all filters in a form
+    wrapFiltersInForm();
+
+    // Handle form submission
+    handleFormSubmission();
+
+    // Handle toggle/button interactions
+    handleToggleButtons();
+
+    // Initialize range sliders
+    initRangeSliders();
+  }
+
+  /**
+   * Wrap all filter shortcodes in a form
+   */
+  function wrapFiltersInForm() {
+    const filters = $(".kcpf-filter");
+
+    console.log("[KCPF] Found " + filters.length + " filter elements");
+
+    if (filters.length === 0) {
+      console.warn("[KCPF] No filter elements found");
+      return;
+    }
+
+    // Check if already wrapped
+    if (filters.first().closest("form").length > 0) {
+      console.log("[KCPF] Filters already wrapped in form");
+      return;
+    }
+
+    // Wrap all filters together in a form
+    console.log("[KCPF] Wrapping " + filters.length + " filters in form");
+
+    if (filters.length > 0) {
+      filters.wrapAll('<form class="kcpf-filters-form" method="get"></form>');
+      console.log("[KCPF] Filters wrapped successfully");
+    }
+  }
+
+  /**
+   * Handle form submission
+   */
+  function handleFormSubmission() {
+    // Always use AJAX for form submission
+    $(document).on("submit", ".kcpf-filters-form", function (e) {
+      e.preventDefault();
+      console.log("[KCPF] Form submit event triggered");
+      handleAjaxSubmission($(this));
+    });
+
+    // Handle apply button clicks
+    $(document).on("click", ".kcpf-apply-button", function (e) {
+      e.preventDefault();
+      console.log("[KCPF] Apply button clicked");
+
+      const form = $(this).closest("form");
+      console.log("[KCPF] Form found:", form.length);
+
+      if (form.length > 0) {
+        form.submit();
+      } else {
+        // Fallback: find form on page
+        const $form = $(".kcpf-filters-form").first();
+        console.log("[KCPF] Fallback form found:", $form.length);
+        if ($form.length > 0) {
+          $form.submit();
+        } else {
+          console.error("[KCPF] No form found - cannot submit filters");
+        }
+      }
+    });
+
+    // Handle pagination clicks
+    $(document).on("click", ".kcpf-pagination a", function (e) {
+      e.preventDefault();
+      const url = new URL($(this).attr("href"));
+      const params = new URLSearchParams(url.search);
+      loadPropertiesAjax(params);
+    });
+
+    // Handle browser back/forward buttons
+    window.addEventListener("popstate", function (e) {
+      if (e.state && e.state.kcpfFilters) {
+        const params = new URLSearchParams(window.location.search);
+        loadPropertiesAjax(params, false);
+      }
+    });
+  }
+
+  /**
+   * Handle AJAX form submission
+   */
+  function handleAjaxSubmission(form) {
+    console.log("[KCPF] Form submitted, processing...");
+
+    // Clean up empty values
+    const formData = {};
+    form.serializeArray().forEach(function (item) {
+      if (item.value !== "" && item.value !== null) {
+        // Check if this field name already exists (means multiple values)
+        if (formData.hasOwnProperty(item.name)) {
+          // Convert to array if not already
+          if (!Array.isArray(formData[item.name])) {
+            formData[item.name] = [formData[item.name]];
+          }
+          formData[item.name].push(item.value);
+        } else {
+          // First occurrence - store as single value
+          formData[item.name] = item.value;
+        }
+      }
+    });
+
+    console.log("[KCPF] Form data:", formData);
+
+    const params = new URLSearchParams();
+    Object.keys(formData).forEach(function (key) {
+      const value = formData[key];
+
+      if (Array.isArray(value)) {
+        // Remove [] from key name if present
+        const cleanKey = key.replace(/\[\]$/, "");
+
+        if (value.length === 1) {
+          // Single value - use simple parameter
+          params.set(cleanKey, value[0]);
+        } else {
+          // Multiple values - use array syntax
+          value.forEach(function (v) {
+            params.append(cleanKey + "[]", v);
+          });
+        }
+      } else {
+        // Single value
+        params.set(key, value);
+      }
+    });
+
+    console.log("[KCPF] URL params:", params.toString());
+
+    loadPropertiesAjax(params);
+  }
+
+  /**
+   * Load properties via AJAX
+   */
+  function loadPropertiesAjax(params, updateHistory) {
+    if (updateHistory === undefined) {
+      updateHistory = true;
+    }
+
+    console.log("[KCPF] Loading filtered results...");
+
+    // Check if kcpfData is available
+    if (typeof kcpfData === "undefined" || !kcpfData.ajaxUrl) {
+      console.error("[KCPF] kcpfData not found - AJAX URL not available");
+      return;
+    }
+
+    const ajaxUrl =
+      kcpfData.ajaxUrl + "?action=kcpf_load_properties&" + params.toString();
+    const newUrl =
+      window.location.pathname +
+      (params.toString() ? "?" + params.toString() : "");
+
+    console.log("[KCPF] AJAX URL:", ajaxUrl);
+    console.log("[KCPF] New URL:", newUrl);
+
+    $.ajax({
+      url: ajaxUrl,
+      type: "GET",
+      dataType: "json",
+      beforeSend: function () {
+        console.log("[KCPF] Sending AJAX request...");
+        $(".kcpf-properties-loop").addClass("kcpf-loading");
+      },
+      success: function (response) {
+        console.log("[KCPF] AJAX response received:", response);
+
+        if (response.success && response.data.html) {
+          // Replace the properties loop content
+          const $newContent = $(response.data.html);
+          $(".kcpf-properties-loop").replaceWith($newContent);
+
+          // Update URL without reload
+          if (updateHistory) {
+            history.pushState({ kcpfFilters: true }, "", newUrl);
+          }
+
+          // Scroll to results if exists
+          const $loop = $(".kcpf-properties-loop");
+          if ($loop.length > 0) {
+            $("html, body").animate(
+              {
+                scrollTop: $loop.offset().top - 100,
+              },
+              400
+            );
+          }
+
+          console.log("[KCPF] Results updated successfully");
+        } else {
+          console.error("[KCPF] Invalid response format:", response);
+        }
+      },
+      complete: function () {
+        $(".kcpf-properties-loop").removeClass("kcpf-loading");
+      },
+      error: function (xhr, status, error) {
+        console.error("[KCPF] AJAX error:");
+        console.error("Status:", status);
+        console.error("Error:", error);
+        console.error("Response:", xhr.responseText);
+      },
+    });
+  }
+
+  /**
+   * Handle toggle/button group interactions
+   */
+  function handleToggleButtons() {
+    // Toggle button styling
+    $(document).on(
+      "change",
+      ".kcpf-toggle-buttons input, .kcpf-button-group input",
+      function () {
+        const $label = $(this).closest("label");
+        const $group = $label.closest(
+          ".kcpf-toggle-buttons, .kcpf-button-group"
+        );
+
+        // Remove active class from all in group
+        $group.find("label").removeClass("active");
+
+        // Add active class to selected
+        if ($(this).is(":checked")) {
+          $label.addClass("active");
+        }
+      }
+    );
+
+    // Initialize active states
+    $(
+      ".kcpf-toggle-buttons input:checked, .kcpf-button-group input:checked"
+    ).each(function () {
+      $(this).closest("label").addClass("active");
+    });
+  }
+
+  /**
+   * Initialize range sliders
+   */
+  function initRangeSliders() {
+    if (typeof noUiSlider === "undefined") {
+      console.warn("[KCPF] noUiSlider library not loaded");
+      return;
+    }
+
+    $(".kcpf-range-slider").each(function () {
+      const $slider = $(this);
+      const $container = $slider.closest(".kcpf-range-slider-container");
+      const $minInput = $container.find(".kcpf-range-min");
+      const $maxInput = $container.find(".kcpf-range-max");
+
+      const min = parseFloat($slider.data("min"));
+      const max = parseFloat($slider.data("max"));
+      const step = parseFloat($slider.data("step")) || 1;
+      const valueMin = parseFloat($slider.data("value-min")) || min;
+      const valueMax = parseFloat($slider.data("value-max")) || max;
+      const format = $slider.data("format");
+
+      // Create slider
+      const slider = this;
+      noUiSlider.create(slider, {
+        start: [valueMin, valueMax],
+        connect: true,
+        range: {
+          min: min,
+          max: max,
+        },
+        step: step,
+        format: {
+          to: function (value) {
+            return Math.round(value);
+          },
+          from: function (value) {
+            return Number(value);
+          },
+        },
+      });
+
+      // Update inputs when slider changes
+      slider.noUiSlider.on("update", function (values, handle) {
+        if (handle === 0) {
+          $minInput.val(values[0]);
+        } else {
+          $maxInput.val(values[1]);
+        }
+      });
+
+      // Update slider when inputs change
+      $minInput.on("change", function () {
+        const value = parseFloat($(this).val()) || min;
+        slider.noUiSlider.set([value, null]);
+      });
+
+      $maxInput.on("change", function () {
+        const value = parseFloat($(this).val()) || max;
+        slider.noUiSlider.set([null, value]);
+      });
+    });
+  }
+
+  /**
+   * Initialize on document ready
+   */
+  $(document).ready(function () {
+    initFilters();
+    console.log("[KCPF] Filters initialized");
+  });
+})(jQuery);

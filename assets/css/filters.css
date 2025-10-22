@@ -1,0 +1,441 @@
+/**
+ * Key CY Properties Filter Styles
+ * 
+ * @package Key_CY_Properties_Filter
+ */
+
+/* Filter Container */
+.kcpf-filter {
+  margin-bottom: 1.5rem;
+}
+
+.kcpf-filter label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  color: #333;
+}
+
+/* Select Filters */
+.kcpf-filter-select {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 1rem;
+  background-color: #fff;
+  transition: border-color 0.3s ease;
+}
+
+.kcpf-filter-select:focus {
+  outline: none;
+  border-color: #0073aa;
+}
+
+/* Checkbox Filters */
+.kcpf-filter-checkboxes {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  max-height: 200px;
+  overflow-y: auto;
+  padding: 0.5rem;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+}
+
+.kcpf-checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  padding: 0.25rem 0;
+  transition: background-color 0.2s ease;
+}
+
+.kcpf-checkbox-label:hover {
+  background-color: #f8f8f8;
+}
+
+.kcpf-checkbox-label input[type="checkbox"] {
+  margin: 0;
+  cursor: pointer;
+}
+
+.kcpf-checkbox-label span {
+  user-select: none;
+}
+
+/* Amenities Filter - Multi-column for large screens */
+.kcpf-filter-amenities .kcpf-filter-checkboxes {
+  max-height: 300px;
+}
+
+@media (min-width: 768px) {
+  .kcpf-filter-amenities .kcpf-filter-checkboxes {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.5rem;
+  }
+}
+
+/* Property ID Search */
+.kcpf-property-id-input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 1rem;
+  transition: border-color 0.3s ease;
+}
+
+.kcpf-property-id-input:focus {
+  outline: none;
+  border-color: #0073aa;
+  box-shadow: 0 0 0 3px rgba(0, 115, 170, 0.1);
+}
+
+/* Radio & Toggle Buttons */
+.kcpf-toggle-buttons,
+.kcpf-radio-buttons,
+.kcpf-button-group {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.kcpf-toggle-label,
+.kcpf-radio-label,
+.kcpf-button-label {
+  position: relative;
+  cursor: pointer;
+}
+
+.kcpf-toggle-label input,
+.kcpf-radio-label input,
+.kcpf-button-label input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.kcpf-toggle-label span,
+.kcpf-radio-label span,
+.kcpf-button-label span {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background-color: #fff;
+  transition: all 0.3s ease;
+}
+
+.kcpf-toggle-label.active span,
+.kcpf-radio-label input:checked + span,
+.kcpf-button-label.active span,
+.kcpf-button-label input:checked + span {
+  background-color: #0073aa;
+  color: #fff;
+  border-color: #0073aa;
+}
+
+/* Range Slider Container */
+.kcpf-range-slider-container {
+  margin-top: 0.5rem;
+}
+
+.kcpf-range-slider {
+  margin-bottom: 1.5rem;
+  height: 8px;
+}
+
+/* Customize noUiSlider colors */
+.kcpf-range-slider .noUi-connect {
+  background: #0073aa;
+}
+
+.kcpf-range-slider .noUi-handle {
+  border: 2px solid #0073aa;
+  background: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+  cursor: pointer;
+}
+
+.kcpf-range-slider .noUi-handle:before,
+.kcpf-range-slider .noUi-handle:after {
+  display: none;
+}
+
+.kcpf-range-slider .noUi-handle:hover {
+  border-color: #005a87;
+}
+
+/* Range Inputs */
+.kcpf-range-inputs {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.kcpf-input {
+  flex: 1;
+  padding: 0.75rem 1rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 1rem;
+  transition: border-color 0.3s ease;
+}
+
+.kcpf-input:focus {
+  outline: none;
+  border-color: #0073aa;
+}
+
+.kcpf-range-separator {
+  color: #666;
+  font-weight: 600;
+}
+
+/* Price Inputs (legacy support) */
+.kcpf-price-inputs {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.kcpf-price-separator {
+  color: #666;
+}
+
+/* Apply & Reset Buttons */
+.kcpf-apply-button,
+.kcpf-reset-button {
+  display: inline-block;
+  padding: 0.75rem 2rem;
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-decoration: none;
+}
+
+.kcpf-apply-button {
+  background-color: #0073aa;
+  color: #fff;
+}
+
+.kcpf-apply-button:hover {
+  background-color: #005a87;
+}
+
+.kcpf-reset-button {
+  background-color: #f0f0f0;
+  color: #333;
+}
+
+.kcpf-reset-button:hover {
+  background-color: #e0e0e0;
+}
+
+/* Properties Loop */
+.kcpf-properties-loop {
+  margin: 2rem 0;
+  position: relative;
+  min-height: 200px;
+}
+
+.kcpf-properties-loop.kcpf-loading {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.kcpf-properties-loop.kcpf-loading::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 50px;
+  height: 50px;
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #0073aa;
+  border-radius: 50%;
+  animation: kcpf-spin 1s linear infinite;
+}
+
+@keyframes kcpf-spin {
+  0% {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  100% {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+.kcpf-properties-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+/* Property Card */
+.kcpf-property-card {
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  overflow: hidden;
+  transition: box-shadow 0.3s ease;
+}
+
+.kcpf-property-card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.kcpf-property-image {
+  position: relative;
+  overflow: hidden;
+}
+
+.kcpf-property-image img {
+  width: 100%;
+  height: auto;
+  display: block;
+  transition: transform 0.3s ease;
+}
+
+.kcpf-property-card:hover .kcpf-property-image img {
+  transform: scale(1.05);
+}
+
+.kcpf-property-content {
+  padding: 1.5rem;
+}
+
+.kcpf-property-title {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.25rem;
+}
+
+.kcpf-property-title a {
+  color: #333;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.kcpf-property-title a:hover {
+  color: #0073aa;
+}
+
+.kcpf-property-price {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #0073aa;
+  margin-bottom: 1rem;
+}
+
+.kcpf-property-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.kcpf-property-meta span {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.kcpf-property-purpose {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  background-color: #f0f0f0;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+}
+
+/* Pagination */
+.kcpf-pagination {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 2rem;
+}
+
+.kcpf-page-link {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  color: #333;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.kcpf-page-link:hover {
+  background-color: #f0f0f0;
+}
+
+.kcpf-page-link.current {
+  background-color: #0073aa;
+  color: #fff;
+  border-color: #0073aa;
+}
+
+/* No Results */
+.kcpf-no-results {
+  text-align: center;
+  padding: 3rem 1rem;
+}
+
+.kcpf-no-results p {
+  font-size: 1.25rem;
+  color: #666;
+  margin-bottom: 1rem;
+}
+
+.kcpf-reset-link {
+  display: inline-block;
+  padding: 0.75rem 2rem;
+  background-color: #0073aa;
+  color: #fff;
+  border-radius: 4px;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+}
+
+.kcpf-reset-link:hover {
+  background-color: #005a87;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .kcpf-properties-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .kcpf-price-inputs,
+  .kcpf-range-inputs {
+    flex-direction: column;
+  }
+
+  .kcpf-price-separator,
+  .kcpf-range-separator {
+    display: none;
+  }
+
+  .kcpf-toggle-buttons,
+  .kcpf-radio-buttons,
+  .kcpf-button-group {
+    flex-direction: column;
+  }
+
+  .kcpf-filter-amenities .kcpf-filter-checkboxes {
+    grid-template-columns: 1fr;
+  }
+}
