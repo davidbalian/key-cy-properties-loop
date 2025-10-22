@@ -14,6 +14,9 @@
     // Initialize range slider in preview
     initializePreviewSlider();
 
+    // Initialize multi-select dropdowns
+    initializeMultiSelectDropdowns();
+
     // Live preview updates
     $inputs.on("input", function () {
       updatePreview();
@@ -40,6 +43,11 @@
       return;
     }
 
+    // Destroy existing slider if any
+    if (sliderElement.noUiSlider) {
+      sliderElement.noUiSlider.destroy();
+    }
+
     noUiSlider.create(sliderElement, {
       start: [100000, 500000],
       connect: true,
@@ -57,6 +65,52 @@
         },
       },
     });
+  }
+
+  /**
+   * Initialize multi-select dropdowns for preview
+   */
+  function initializeMultiSelectDropdowns() {
+    // Handle dropdown trigger clicks
+    $(document).on(
+      "click",
+      ".kcpf-style-preview .kcpf-multiselect-trigger",
+      function (e) {
+        e.stopPropagation();
+        const $dropdown = $(this).closest(".kcpf-multiselect-dropdown");
+        const $menu = $dropdown.find(".kcpf-multiselect-dropdown-menu");
+
+        // Toggle active state
+        $dropdown.toggleClass("active");
+
+        // Close other dropdowns
+        $(".kcpf-style-preview .kcpf-multiselect-dropdown")
+          .not($dropdown)
+          .removeClass("active");
+      }
+    );
+
+    // Close dropdowns when clicking outside
+    $(document).on("click", function (e) {
+      if (!$(e.target).closest(".kcpf-multiselect-dropdown").length) {
+        $(".kcpf-style-preview .kcpf-multiselect-dropdown").removeClass(
+          "active"
+        );
+      }
+    });
+
+    // Handle checkbox changes
+    $(document).on(
+      "change",
+      ".kcpf-style-preview .kcpf-multiselect-option input[type='checkbox']",
+      function () {
+        // Simulate chip behavior for preview
+        const $option = $(this).closest(".kcpf-multiselect-option");
+        const text = $option.find("span").text();
+
+        // This is just for preview - don't need to actually manage chips
+      }
+    );
   }
 
   /**
@@ -97,6 +151,9 @@
    */
   function generateCSS(settings) {
     let css = "";
+
+    // Add high specificity wrapper
+    css += ".kcpf-style-preview {\n}\n\n";
 
     // Filter Container
     css += generateSectionCSS(
@@ -378,5 +435,11 @@
     }
 
     $style.text(css);
+
+    // Force browser to recalculate styles
+    const $preview = $(".kcpf-style-preview");
+    if ($preview.length) {
+      $preview[0].offsetHeight; // Force reflow
+    }
   }
 })(jQuery);

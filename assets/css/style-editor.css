@@ -118,16 +118,43 @@
   letter-spacing: 0.5px;
 }
 
-/* Preview styles */
+/* Preview styles - ensure they override everything */
 .kcpf-style-preview .kcpf-filter {
   margin-bottom: 0;
 }
 
-.kcpf-style-preview .kcpf-filter-label {
+.kcpf-style-preview .kcpf-filter label {
   display: block;
   margin-bottom: 0.5rem;
   font-weight: 600;
   color: #333;
+}
+
+/* Ensure preview styles are visible */
+.kcpf-style-preview {
+  position: relative;
+}
+
+/* Initially hide dropdown menu */
+.kcpf-style-preview .kcpf-multiselect-dropdown-menu {
+  position: relative !important;
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+}
+
+/* Show when active */
+.kcpf-style-preview
+  .kcpf-multiselect-dropdown.active
+  .kcpf-multiselect-dropdown-menu {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+/* Force preview styles to apply */
+#kcpf-preview-style {
+  display: block !important;
 }
 
 /* Responsive */

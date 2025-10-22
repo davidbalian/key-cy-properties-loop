@@ -56,6 +56,28 @@ class KCPF_Style_Preview
                             </div>
                             <span class="kcpf-multiselect-arrow">▼</span>
                         </div>
+                        <div class="kcpf-multiselect-dropdown-menu">
+                            <label class="kcpf-multiselect-option">
+                                <input type="checkbox" checked>
+                                <span>1 Bedroom</span>
+                            </label>
+                            <label class="kcpf-multiselect-option">
+                                <input type="checkbox" checked>
+                                <span>2 Bedrooms</span>
+                            </label>
+                            <label class="kcpf-multiselect-option">
+                                <input type="checkbox" checked>
+                                <span>3 Bedrooms</span>
+                            </label>
+                            <label class="kcpf-multiselect-option">
+                                <input type="checkbox">
+                                <span>4 Bedrooms</span>
+                            </label>
+                            <label class="kcpf-multiselect-option">
+                                <input type="checkbox">
+                                <span>5+ Bedrooms</span>
+                            </label>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -70,6 +92,24 @@ class KCPF_Style_Preview
                                 <span class="kcpf-placeholder">Select Bathrooms</span>
                             </div>
                             <span class="kcpf-multiselect-arrow">▼</span>
+                        </div>
+                        <div class="kcpf-multiselect-dropdown-menu">
+                            <label class="kcpf-multiselect-option">
+                                <input type="checkbox">
+                                <span>1 Bathroom</span>
+                            </label>
+                            <label class="kcpf-multiselect-option">
+                                <input type="checkbox">
+                                <span>2 Bathrooms</span>
+                            </label>
+                            <label class="kcpf-multiselect-option">
+                                <input type="checkbox">
+                                <span>3 Bathrooms</span>
+                            </label>
+                            <label class="kcpf-multiselect-option">
+                                <input type="checkbox">
+                                <span>4+ Bathrooms</span>
+                            </label>
                         </div>
                     </div>
                 </div>
