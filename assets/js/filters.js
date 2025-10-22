@@ -185,8 +185,10 @@
       url: ajaxUrl,
       type: "GET",
       dataType: "json",
+      timeout: 30000, // 30 second timeout
       beforeSend: function () {
         console.log("[KCPF] Sending AJAX request...");
+        console.log("[KCPF] Request timestamp:", new Date().toISOString());
         $(".kcpf-properties-loop").addClass("kcpf-loading");
       },
       success: function (response) {
@@ -216,6 +218,9 @@
           console.log("[KCPF] Results updated successfully");
         } else {
           console.error("[KCPF] Invalid response format:", response);
+          $(".kcpf-properties-loop").html(
+            '<div class="kcpf-error"><p>Invalid response from server</p></div>'
+          );
         }
       },
       complete: function () {
@@ -226,6 +231,17 @@
         console.error("Status:", status);
         console.error("Error:", error);
         console.error("Response:", xhr.responseText);
+
+        // Show error message to user
+        if (status === "timeout") {
+          $(".kcpf-properties-loop").html(
+            '<div class="kcpf-error"><p>Request timed out. Please try again.</p></div>'
+          );
+        } else {
+          $(".kcpf-properties-loop").html(
+            '<div class="kcpf-error"><p>An error occurred while loading properties. Please try again.</p></div>'
+          );
+        }
       },
     });
   }

@@ -3,7 +3,7 @@
  * Plugin Name: Key CY Properties Filters and Loops
  * Plugin URI: https://balian.cy
  * Description: Custom property filtering system with individual shortcodes for filters and properties loop
- * Version: 2.3.1
+ * Version: 2.3.2
  * Author: balian.cy
  * Author URI: https://balian.cy
  * License: GPL v2 or later
@@ -18,7 +18,7 @@ if (!defined('ABSPATH')) {
 }
 
 // Define plugin constants
-define('KCPF_VERSION', '2.3.1');
+define('KCPF_VERSION', '2.3.2');
 define('KCPF_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('KCPF_PLUGIN_URL', plugin_dir_url(__FILE__));
 define('KCPF_INCLUDES_DIR', KCPF_PLUGIN_DIR . 'includes/');
@@ -104,33 +104,39 @@ class Key_CY_Properties_Filter
      */
     public function ajaxLoadProperties()
     {
-        // Start output buffering to catch any accidental output
-        ob_start();
+        // Ensure we have a clean output buffer
+        @ob_clean();
         
         try {
+            // Log the start of the request
+            error_log('[KCPF] AJAX request started with params: ' . print_r($_GET, true));
+            
             // Get attributes from AJAX request
             $attrs = [
                 'purpose' => isset($_GET['purpose']) ? sanitize_text_field($_GET['purpose']) : 'sale',
                 'posts_per_page' => isset($_GET['posts_per_page']) ? intval($_GET['posts_per_page']) : 10,
             ];
             
+            error_log('[KCPF] Calling render with attrs: ' . print_r($attrs, true));
+            
             // Render properties loop
             $html = KCPF_Loop_Renderer::render($attrs);
             
-            // Discard any accidental output
-            ob_end_clean();
+            error_log('[KCPF] Render completed, HTML length: ' . strlen($html));
             
             // Return JSON response
             wp_send_json_success([
                 'html' => $html,
             ]);
+            
+            // Exit is not needed as wp_send_json_success already exits
         } catch (Exception $e) {
             // Log error with full details
-            error_log('KCPF AJAX Error: ' . $e->getMessage());
-            error_log('KCPF AJAX Trace: ' . $e->getTraceAsString());
+            error_log('[KCPF] AJAX Exception: ' . $e->getMessage());
+            error_log('[KCPF] AJAX Trace: ' . $e->getTraceAsString());
             
-            // Discard any accidental output
-            ob_end_clean();
+            // Ensure clean output buffer before sending error
+            @ob_clean();
             
             // Return error response
             wp_send_json_error([
@@ -140,11 +146,11 @@ class Key_CY_Properties_Filter
             ]);
         } catch (Error $e) {
             // Catch fatal errors too
-            error_log('KCPF AJAX Fatal Error: ' . $e->getMessage());
-            error_log('KCPF AJAX Trace: ' . $e->getTraceAsString());
+            error_log('[KCPF] AJAX Fatal Error: ' . $e->getMessage());
+            error_log('[KCPF] AJAX Trace: ' . $e->getTraceAsString());
             
-            // Discard any accidental output
-            ob_end_clean();
+            // Ensure clean output buffer before sending error
+            @ob_clean();
             
             wp_send_json_error([
                 'message' => 'Fatal error loading properties',
