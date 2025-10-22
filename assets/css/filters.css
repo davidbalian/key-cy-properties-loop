@@ -612,6 +612,8 @@
 
 .kcpf-property-content-sale .kcpf-property-title {
   font-size: 20px !important;
+  font-family: "Jost", Helvetica, sans-serif !important;
+  color: #000 !important;
 }
 
 .kcpf-property-meta-row {
@@ -785,10 +787,12 @@
 .kcpf-property-title {
   margin: 0 0 0.5rem 0;
   font-size: 20px !important;
+  font-family: "Jost", Helvetica, sans-serif !important;
+  color: #000 !important;
 }
 
 .kcpf-property-title a {
-  color: #333;
+  color: #000 !important;
   text-decoration: none;
   transition: color 0.3s ease;
 }
@@ -872,10 +876,12 @@
 .kcpf-property-title-rent {
   margin: 0;
   font-size: 20px !important;
+  font-family: "Jost", Helvetica, sans-serif !important;
+  color: #000 !important;
 }
 
 .kcpf-property-title-rent a {
-  color: #333;
+  color: #000 !important;
   text-decoration: none;
   transition: color 0.3s ease;
 }
