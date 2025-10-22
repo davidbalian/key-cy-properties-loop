@@ -26,14 +26,32 @@ class KCPF_MultiUnit_Query_Builder
         $minValue = isset($filters['price_min']) && $filters['price_min'] !== '' ? intval($filters['price_min']) : null;
         $maxValue = isset($filters['price_max']) && $filters['price_max'] !== '' ? intval($filters['price_max']) : null;
         
-        // Build query for both regular and multi-unit properties
-        $price_query = ['relation' => 'OR'];
+        // Simplified: Just query the regular price field for now
+        // Multi-unit properties also have a price field, so this will work for both
+        $price_query = [];
         
-        // Add regular property query
-        $price_query[] = self::buildRegularPropertyQuery($priceKey, $minValue, $maxValue);
-        
-        // Add multi-unit property query
-        $price_query[] = self::buildMultiUnitPropertyQuery('minimum_buy_price', 'maximum_buy_price', $minValue, $maxValue);
+        if ($minValue !== null && $maxValue !== null) {
+            $price_query[] = [
+                'key' => $priceKey,
+                'value' => [$minValue, $maxValue],
+                'type' => 'NUMERIC',
+                'compare' => 'BETWEEN',
+            ];
+        } elseif ($minValue !== null) {
+            $price_query[] = [
+                'key' => $priceKey,
+                'value' => $minValue,
+                'type' => 'NUMERIC',
+                'compare' => '>=',
+            ];
+        } elseif ($maxValue !== null) {
+            $price_query[] = [
+                'key' => $priceKey,
+                'value' => $maxValue,
+                'type' => 'NUMERIC',
+                'compare' => '<=',
+            ];
+        }
         
         return $price_query;
     }
@@ -51,14 +69,31 @@ class KCPF_MultiUnit_Query_Builder
         $minValue = isset($filters['covered_area_min']) && $filters['covered_area_min'] !== '' ? intval($filters['covered_area_min']) : null;
         $maxValue = isset($filters['covered_area_max']) && $filters['covered_area_max'] !== '' ? intval($filters['covered_area_max']) : null;
         
-        // Build query for both regular and multi-unit properties
-        $area_query = ['relation' => 'OR'];
+        // Simplified: Just query the regular covered area field
+        $area_query = [];
         
-        // Add regular property query
-        $area_query[] = self::buildRegularPropertyQuery($coveredAreaKey, $minValue, $maxValue);
-        
-        // Add multi-unit property query
-        $area_query[] = self::buildMultiUnitPropertyQuery('minimum_covered_area', 'maximum_covered_area', $minValue, $maxValue);
+        if ($minValue !== null && $maxValue !== null) {
+            $area_query[] = [
+                'key' => $coveredAreaKey,
+                'value' => [$minValue, $maxValue],
+                'type' => 'NUMERIC',
+                'compare' => 'BETWEEN',
+            ];
+        } elseif ($minValue !== null) {
+            $area_query[] = [
+                'key' => $coveredAreaKey,
+                'value' => $minValue,
+                'type' => 'NUMERIC',
+                'compare' => '>=',
+            ];
+        } elseif ($maxValue !== null) {
+            $area_query[] = [
+                'key' => $coveredAreaKey,
+                'value' => $maxValue,
+                'type' => 'NUMERIC',
+                'compare' => '<=',
+            ];
+        }
         
         return $area_query;
     }
@@ -74,14 +109,31 @@ class KCPF_MultiUnit_Query_Builder
         $minValue = isset($filters['plot_area_min']) && $filters['plot_area_min'] !== '' ? intval($filters['plot_area_min']) : null;
         $maxValue = isset($filters['plot_area_max']) && $filters['plot_area_max'] !== '' ? intval($filters['plot_area_max']) : null;
         
-        // Build query for both regular and multi-unit properties
-        $plot_query = ['relation' => 'OR'];
+        // Simplified: Just query the regular plot area field
+        $plot_query = [];
         
-        // Add regular property query
-        $plot_query[] = self::buildRegularPropertyQuery('plot_area_land_only', $minValue, $maxValue);
-        
-        // Add multi-unit property query
-        $plot_query[] = self::buildMultiUnitPropertyQuery('minimum_plot_area', 'maximum_plot_area', $minValue, $maxValue);
+        if ($minValue !== null && $maxValue !== null) {
+            $plot_query[] = [
+                'key' => 'plot_area_land_only',
+                'value' => [$minValue, $maxValue],
+                'type' => 'NUMERIC',
+                'compare' => 'BETWEEN',
+            ];
+        } elseif ($minValue !== null) {
+            $plot_query[] = [
+                'key' => 'plot_area_land_only',
+                'value' => $minValue,
+                'type' => 'NUMERIC',
+                'compare' => '>=',
+            ];
+        } elseif ($maxValue !== null) {
+            $plot_query[] = [
+                'key' => 'plot_area_land_only',
+                'value' => $maxValue,
+                'type' => 'NUMERIC',
+                'compare' => '<=',
+            ];
+        }
         
         return $plot_query;
     }
@@ -96,6 +148,7 @@ class KCPF_MultiUnit_Query_Builder
      */
     private static function buildRegularPropertyQuery($metaKey, $minValue, $maxValue)
     {
+        // Create nested meta_query for regular properties
         $regular_query = ['relation' => 'AND'];
         
         // Check that multi-unit is not set or is false
@@ -155,6 +208,7 @@ class KCPF_MultiUnit_Query_Builder
      */
     private static function buildMultiUnitPropertyQuery($minMetaKey, $maxMetaKey, $minValue, $maxValue)
     {
+        // Create nested meta_query for multi-unit properties
         $multiunit_query = ['relation' => 'AND'];
         
         // Check that multi-unit is true
