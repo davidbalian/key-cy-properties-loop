@@ -72,23 +72,13 @@ class KCPF_Loop_Renderer
             $purposeSlug = $purpose[0]->slug;
         }
         
-        // Get dynamic meta field keys based on purpose
-        $priceKey = KCPF_Field_Config::getMetaKey('price', $purposeSlug);
-        $bedroomsKey = KCPF_Field_Config::getMetaKey('bedrooms', $purposeSlug);
-        $bathroomsKey = KCPF_Field_Config::getMetaKey('bathrooms', $purposeSlug);
+        // Get formatted values using helper
+        $bedrooms = KCPF_Card_Data_Helper::getBedrooms($property_id, $purposeSlug);
+        $bathrooms = KCPF_Card_Data_Helper::getBathrooms($property_id, $purposeSlug);
+        $price = KCPF_Card_Data_Helper::getPrice($property_id, $purposeSlug);
         
-        // Get meta values
-        $price = get_post_meta($property_id, $priceKey, true);
-        $bedrooms = get_post_meta($property_id, $bedroomsKey, true);
-        $bathrooms = get_post_meta($property_id, $bathroomsKey, true);
-        
-        // Handle array values (JetEngine might return arrays)
-        if (is_array($bedrooms)) {
-            $bedrooms = !empty($bedrooms) ? reset($bedrooms) : '';
-        }
-        if (is_array($bathrooms)) {
-            $bathrooms = !empty($bathrooms) ? reset($bathrooms) : '';
-        }
+        // Check if multi-unit and get price range if applicable
+        $multiUnitPriceRange = KCPF_Card_Data_Helper::getMultiUnitPriceRange($property_id);
         
         ?>
         <article class="kcpf-property-card">
@@ -107,9 +97,13 @@ class KCPF_Loop_Renderer
                     </a>
                 </h2>
                 
-                <?php if ($price) : ?>
+                <?php if ($multiUnitPriceRange) : ?>
+                    <div class="kcpf-property-price kcpf-property-price-range">
+                        <?php echo esc_html($multiUnitPriceRange); ?>
+                    </div>
+                <?php elseif ($price) : ?>
                     <div class="kcpf-property-price">
-                        €<?php echo number_format($price); ?>
+                        €<?php echo esc_html($price); ?>
                     </div>
                 <?php endif; ?>
                 
