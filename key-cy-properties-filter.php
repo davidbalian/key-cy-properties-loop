@@ -59,6 +59,7 @@ class Key_CY_Properties_Filter
         require_once KCPF_INCLUDES_DIR . 'class-field-config.php';
         require_once KCPF_INCLUDES_DIR . 'class-glossary-handler.php';
         require_once KCPF_INCLUDES_DIR . 'class-url-manager.php';
+        require_once KCPF_INCLUDES_DIR . 'class-multiunit-query-builder.php';
         require_once KCPF_INCLUDES_DIR . 'class-query-handler.php';
         require_once KCPF_INCLUDES_DIR . 'class-loop-renderer.php';
         require_once KCPF_INCLUDES_DIR . 'class-filter-renderer.php';

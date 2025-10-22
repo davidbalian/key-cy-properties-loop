@@ -109,26 +109,9 @@ class KCPF_Query_Handler
     {
         $meta_query = ['relation' => 'AND'];
         
-        // Price range filter - use dynamic field based on purpose
+        // Price range filter - handle both regular and multi-unit properties
         if (!empty($filters['price_min']) || !empty($filters['price_max'])) {
-            $priceKey = KCPF_Field_Config::getMetaKey('price', $purpose);
-            $price_query = [
-                'key' => $priceKey,
-                'type' => 'NUMERIC',
-            ];
-            
-            if (!empty($filters['price_min']) && !empty($filters['price_max'])) {
-                $price_query['value'] = [intval($filters['price_min']), intval($filters['price_max'])];
-                $price_query['compare'] = 'BETWEEN';
-            } elseif (!empty($filters['price_min'])) {
-                $price_query['value'] = intval($filters['price_min']);
-                $price_query['compare'] = '>=';
-            } else {
-                $price_query['value'] = intval($filters['price_max']);
-                $price_query['compare'] = '<=';
-            }
-            
-            $meta_query[] = $price_query;
+            $meta_query[] = KCPF_MultiUnit_Query_Builder::buildPriceQuery($filters, $purpose);
         }
         
         // Bedrooms filter - treat like amenities (glossary values)
@@ -183,47 +166,14 @@ class KCPF_Query_Handler
             }
         }
         
-        // Covered area filter - use dynamic field based on purpose
+        // Covered area filter - handle both regular and multi-unit properties
         if (!empty($filters['covered_area_min']) || !empty($filters['covered_area_max'])) {
-            $coveredAreaKey = KCPF_Field_Config::getMetaKey('covered_area', $purpose);
-            $area_query = [
-                'key' => $coveredAreaKey,
-                'type' => 'NUMERIC',
-            ];
-            
-            if (!empty($filters['covered_area_min']) && !empty($filters['covered_area_max'])) {
-                $area_query['value'] = [intval($filters['covered_area_min']), intval($filters['covered_area_max'])];
-                $area_query['compare'] = 'BETWEEN';
-            } elseif (!empty($filters['covered_area_min'])) {
-                $area_query['value'] = intval($filters['covered_area_min']);
-                $area_query['compare'] = '>=';
-            } else {
-                $area_query['value'] = intval($filters['covered_area_max']);
-                $area_query['compare'] = '<=';
-            }
-            
-            $meta_query[] = $area_query;
+            $meta_query[] = KCPF_MultiUnit_Query_Builder::buildCoveredAreaQuery($filters, $purpose);
         }
         
-        // Plot area filter
+        // Plot area filter - handle both regular and multi-unit properties
         if (!empty($filters['plot_area_min']) || !empty($filters['plot_area_max'])) {
-            $plot_query = [
-                'key' => 'plot_area_land_only',
-                'type' => 'NUMERIC',
-            ];
-            
-            if (!empty($filters['plot_area_min']) && !empty($filters['plot_area_max'])) {
-                $plot_query['value'] = [intval($filters['plot_area_min']), intval($filters['plot_area_max'])];
-                $plot_query['compare'] = 'BETWEEN';
-            } elseif (!empty($filters['plot_area_min'])) {
-                $plot_query['value'] = intval($filters['plot_area_min']);
-                $plot_query['compare'] = '>=';
-            } else {
-                $plot_query['value'] = intval($filters['plot_area_max']);
-                $plot_query['compare'] = '<=';
-            }
-            
-            $meta_query[] = $plot_query;
+            $meta_query[] = KCPF_MultiUnit_Query_Builder::buildPlotAreaQuery($filters);
         }
         
         // Amenities filter
