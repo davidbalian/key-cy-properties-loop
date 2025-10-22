@@ -185,7 +185,7 @@
     console.log("[KCPF] New URL:", newUrl);
     console.log("[KCPF] Request timestamp:", new Date().toISOString());
 
-    const xhr = $.ajax({
+    $.ajax({
       url: ajaxUrl,
       type: "GET",
       dataType: "json",
@@ -263,27 +263,6 @@
           );
         }
       },
-    });
-
-    // Track upload/download progress
-    if (xhr.upload) {
-      xhr.upload.addEventListener("progress", function (e) {
-        if (e.lengthComputable) {
-          console.log(
-            "[KCPF] Upload progress:",
-            Math.round((e.loaded / e.total) * 100) + "%"
-          );
-        }
-      });
-    }
-
-    xhr.addEventListener("progress", function (e) {
-      if (e.lengthComputable) {
-        console.log(
-          "[KCPF] Download progress:",
-          Math.round((e.loaded / e.total) * 100) + "%"
-        );
-      }
     });
   }
 
