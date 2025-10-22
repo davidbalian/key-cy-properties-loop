@@ -68,11 +68,11 @@ class Key_CY_Properties_Filter
         require_once KCPF_INCLUDES_DIR . 'class-filter-renderer.php';
         require_once KCPF_INCLUDES_DIR . 'class-debug-viewer.php';
         
-        // Style Editor classes
-        require_once KCPF_INCLUDES_DIR . 'class-style-settings-manager.php';
-        require_once KCPF_INCLUDES_DIR . 'class-css-generator.php';
-        require_once KCPF_INCLUDES_DIR . 'class-style-preview.php';
-        require_once KCPF_INCLUDES_DIR . 'class-style-editor.php';
+        // Style Editor classes - Disabled
+        // require_once KCPF_INCLUDES_DIR . 'class-style-settings-manager.php';
+        // require_once KCPF_INCLUDES_DIR . 'class-css-generator.php';
+        // require_once KCPF_INCLUDES_DIR . 'class-style-preview.php';
+        // require_once KCPF_INCLUDES_DIR . 'class-style-editor.php';
     }
     
     /**
@@ -95,7 +95,8 @@ class Key_CY_Properties_Filter
         // Initialize admin features
         if (is_admin()) {
             KCPF_Debug_Viewer::init();
-            KCPF_Style_Editor::init();
+            // Style Editor disabled
+            // KCPF_Style_Editor::init();
         }
     }
     
@@ -305,17 +306,17 @@ class Key_CY_Properties_Filter
             KCPF_VERSION
         );
         
-        // Enqueue dynamic CSS from style editor
-        if (class_exists('KCPF_CSS_Generator')) {
-            try {
-                $custom_css = KCPF_CSS_Generator::generate();
-                if (!empty($custom_css)) {
-                    wp_add_inline_style('kcpf-filters', $custom_css);
-                }
-            } catch (Exception $e) {
-                error_log('KCPF Style Editor Error: ' . $e->getMessage());
-            }
-        }
+        // Dynamic CSS generation disabled
+        // if (class_exists('KCPF_CSS_Generator')) {
+        //     try {
+        //         $custom_css = KCPF_CSS_Generator::generate();
+        //         if (!empty($custom_css)) {
+        //             wp_add_inline_style('kcpf-filters', $custom_css);
+        //         }
+        //     } catch (Exception $e) {
+        //         error_log('KCPF Style Editor Error: ' . $e->getMessage());
+        //     }
+        // }
         
         // Enqueue noUiSlider JavaScript
         wp_enqueue_script(
