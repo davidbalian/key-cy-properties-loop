@@ -198,6 +198,12 @@
   user-select: none;
 }
 
+.kcpf-multiselect-option .kcpf-count {
+  margin-left: auto;
+  color: #999;
+  font-size: 0.875rem;
+}
+
 /* Amenities Filter - Multi-column for large screens */
 .kcpf-filter-amenities .kcpf-multiselect-dropdown-menu {
   max-height: 300px;

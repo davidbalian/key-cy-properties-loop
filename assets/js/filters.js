@@ -453,7 +453,8 @@
           $dropdown.find(".kcpf-multiselect-option").each(function () {
             const $checkbox = $(this).find('input[type="checkbox"]');
             const value = $checkbox.val();
-            const label = $(this).find("span").text();
+            // Get label without the count span
+            const label = $(this).find("span").not(".kcpf-count").text();
 
             if ($checkbox.is(":checked")) {
               chipsHtml +=

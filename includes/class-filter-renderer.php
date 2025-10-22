@@ -61,19 +61,41 @@ class KCPF_Filter_Renderer
                     <?php endforeach; ?>
                 </select>
             <?php else : ?>
-                <div class="kcpf-filter-checkboxes">
-                    <?php foreach ($locations as $location) : ?>
-                        <label class="kcpf-checkbox-label">
-                            <input type="checkbox" 
-                                   name="location[]" 
-                                   value="<?php echo esc_attr($location->slug); ?>"
-                                   <?php checked($current_value, $location->slug); ?>>
-                            <span><?php echo esc_html($location->name); ?></span>
-                            <?php if ($attrs['show_count']) : ?>
-                                <span class="kcpf-count">(<?php echo $location->count; ?>)</span>
+                <div class="kcpf-multiselect-dropdown" data-filter-name="location">
+                    <div class="kcpf-multiselect-trigger">
+                        <div class="kcpf-multiselect-selected">
+                            <?php 
+                            $current_values = is_array($current_value) ? $current_value : ($current_value ? [$current_value] : []);
+                            if (empty($current_values)) : ?>
+                                <span class="kcpf-placeholder">Select Location</span>
+                            <?php else: ?>
+                                <?php foreach ($current_values as $val) : 
+                                    $location_obj = array_filter($locations, function($loc) use ($val) { return $loc->slug === $val; });
+                                    $location_obj = !empty($location_obj) ? reset($location_obj) : null;
+                                ?>
+                                    <span class="kcpf-chip">
+                                        <?php echo esc_html($location_obj ? $location_obj->name : $val); ?>
+                                        <button type="button" class="kcpf-chip-remove" data-value="<?php echo esc_attr($val); ?>">&times;</button>
+                                    </span>
+                                <?php endforeach; ?>
                             <?php endif; ?>
-                        </label>
-                    <?php endforeach; ?>
+                        </div>
+                        <span class="kcpf-multiselect-arrow">▼</span>
+                    </div>
+                    <div class="kcpf-multiselect-dropdown-menu">
+                        <?php foreach ($locations as $location) : ?>
+                            <label class="kcpf-multiselect-option">
+                                <input type="checkbox" 
+                                       name="location[]" 
+                                       value="<?php echo esc_attr($location->slug); ?>"
+                                       <?php checked(in_array($location->slug, $current_values)); ?>>
+                                <span><?php echo esc_html($location->name); ?></span>
+                                <?php if ($attrs['show_count']) : ?>
+                                    <span class="kcpf-count">(<?php echo $location->count; ?>)</span>
+                                <?php endif; ?>
+                            </label>
+                        <?php endforeach; ?>
+                    </div>
                 </div>
             <?php endif; ?>
         </div>
@@ -462,16 +484,38 @@ class KCPF_Filter_Renderer
                     <?php endforeach; ?>
                 </select>
             <?php else : ?>
-                <div class="kcpf-filter-checkboxes">
-                    <?php foreach ($types as $type) : ?>
-                        <label class="kcpf-checkbox-label">
-                            <input type="checkbox" 
-                                   name="property_type[]" 
-                                   value="<?php echo esc_attr($type->slug); ?>"
-                                   <?php checked($current_value, $type->slug); ?>>
-                            <span><?php echo esc_html($type->name); ?></span>
-                        </label>
-                    <?php endforeach; ?>
+                <div class="kcpf-multiselect-dropdown" data-filter-name="property_type">
+                    <div class="kcpf-multiselect-trigger">
+                        <div class="kcpf-multiselect-selected">
+                            <?php 
+                            $current_values = is_array($current_value) ? $current_value : ($current_value ? [$current_value] : []);
+                            if (empty($current_values)) : ?>
+                                <span class="kcpf-placeholder">Select Property Type</span>
+                            <?php else: ?>
+                                <?php foreach ($current_values as $val) : 
+                                    $type_obj = array_filter($types, function($t) use ($val) { return $t->slug === $val; });
+                                    $type_obj = !empty($type_obj) ? reset($type_obj) : null;
+                                ?>
+                                    <span class="kcpf-chip">
+                                        <?php echo esc_html($type_obj ? $type_obj->name : $val); ?>
+                                        <button type="button" class="kcpf-chip-remove" data-value="<?php echo esc_attr($val); ?>">&times;</button>
+                                    </span>
+                                <?php endforeach; ?>
+                            <?php endif; ?>
+                        </div>
+                        <span class="kcpf-multiselect-arrow">▼</span>
+                    </div>
+                    <div class="kcpf-multiselect-dropdown-menu">
+                        <?php foreach ($types as $type) : ?>
+                            <label class="kcpf-multiselect-option">
+                                <input type="checkbox" 
+                                       name="property_type[]" 
+                                       value="<?php echo esc_attr($type->slug); ?>"
+                                       <?php checked(in_array($type->slug, $current_values)); ?>>
+                                <span><?php echo esc_html($type->name); ?></span>
+                            </label>
+                        <?php endforeach; ?>
+                    </div>
                 </div>
             <?php endif; ?>
         </div>
