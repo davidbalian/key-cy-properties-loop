@@ -377,6 +377,7 @@
 
       // Close all dropdowns
       $(".kcpf-multiselect-dropdown").removeClass("active");
+      $(".kcpf-range-dropdown").removeClass("active");
 
       // Toggle current dropdown
       if (!isActive) {
@@ -387,10 +388,33 @@
       }
     });
 
+    // Handle range dropdown toggle
+    $(document).on("click", ".kcpf-range-trigger", function (e) {
+      e.stopPropagation();
+      console.log("[KCPF] Range dropdown trigger clicked");
+      const $dropdown = $(this).closest(".kcpf-range-dropdown");
+      const isActive = $dropdown.hasClass("active");
+
+      // Close all dropdowns
+      $(".kcpf-multiselect-dropdown").removeClass("active");
+      $(".kcpf-range-dropdown").removeClass("active");
+
+      // Toggle current dropdown
+      if (!isActive) {
+        $dropdown.addClass("active");
+        console.log("[KCPF] Range dropdown opened");
+      } else {
+        console.log("[KCPF] Range dropdown closed");
+      }
+    });
+
     // Close dropdown when clicking outside
     $(document).on("click", function (e) {
       if (!$(e.target).closest(".kcpf-multiselect-dropdown").length) {
         $(".kcpf-multiselect-dropdown").removeClass("active");
+      }
+      if (!$(e.target).closest(".kcpf-range-dropdown").length) {
+        $(".kcpf-range-dropdown").removeClass("active");
       }
     });
 

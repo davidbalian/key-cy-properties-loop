@@ -235,25 +235,25 @@ class Key_CY_Properties_Filter
             .kcpf-multiselect-trigger,
             .kcpf-filter .kcpf-multiselect-trigger,
             .kcpf-multiselect-dropdown .kcpf-multiselect-trigger {
-                background-color: #ededed !important;
+                background-color: #fff !important;
             }
             .kcpf-filter-select {
-                background-color: #ededed !important;
+                background-color: #fff !important;
             }
             .kcpf-input,
             .kcpf-property-id-input {
-                background-color: #ededed !important;
+                background-color: #fff !important;
             }
             .kcpf-toggle-label span,
             .kcpf-radio-label span,
             .kcpf-button-label span {
-                background-color: #ededed !important;
+                background-color: #fff !important;
             }
             .kcpf-reset-button {
-                background-color: #ededed !important;
+                background-color: #f0f0f0 !important;
             }
             .kcpf-chip {
-                background-color: #ededed !important;
+                background-color: #f0f0f0 !important;
                 color: #000 !important;
             }
             .kcpf-chip-remove {
@@ -269,7 +269,13 @@ class Key_CY_Properties_Filter
                 margin-bottom: 0 !important;
             }
             .kcpf-placeholder {
-                color: #000 !important;
+                color: #666 !important;
+            }
+            .kcpf-range-trigger {
+                background-color: #fff !important;
+            }
+            .kcpf-range-dropdown-menu {
+                background-color: #fff !important;
             }
         </style>
         <?php
