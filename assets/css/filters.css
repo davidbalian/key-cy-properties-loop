@@ -186,7 +186,7 @@
   border-radius: 0 0 20px 20px !important;
   max-height: 300px;
   overflow-y: auto;
-  z-index: 1000 !important;
+  z-index: 9999 !important;
   display: none !important;
   visibility: hidden;
   opacity: 0;
@@ -370,7 +370,7 @@
   border-top: none;
   border-radius: 0 0 20px 20px !important;
   padding: 1rem;
-  z-index: 1000;
+  z-index: 9999 !important;
   display: none !important;
   visibility: hidden;
   opacity: 0;
