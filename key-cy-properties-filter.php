@@ -62,6 +62,7 @@ class Key_CY_Properties_Filter
         require_once KCPF_INCLUDES_DIR . 'class-multiunit-query-builder.php';
         require_once KCPF_INCLUDES_DIR . 'class-query-handler.php';
         require_once KCPF_INCLUDES_DIR . 'class-card-data-helper.php';
+        require_once KCPF_INCLUDES_DIR . 'class-rent-card-view.php';
         require_once KCPF_INCLUDES_DIR . 'class-loop-renderer.php';
         require_once KCPF_INCLUDES_DIR . 'class-listing-values.php';
         require_once KCPF_INCLUDES_DIR . 'class-filter-renderer.php';

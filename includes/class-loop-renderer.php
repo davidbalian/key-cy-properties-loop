@@ -37,9 +37,15 @@ class KCPF_Loop_Renderer
         echo '<div class="kcpf-properties-loop" id="kcpf-properties-loop" data-purpose="' . esc_attr($purpose_attr) . '">';
         
         if ($query->have_posts()) {
-            // Add sale class if purpose is sale to force single column layout
+            // Determine grid class based on purpose
             $purpose = isset($attrs['purpose']) ? $attrs['purpose'] : 'sale';
-            $gridClass = ($purpose === 'sale') ? 'kcpf-properties-grid kcpf-grid-sale' : 'kcpf-properties-grid';
+            if ($purpose === 'sale') {
+                $gridClass = 'kcpf-properties-grid kcpf-grid-sale';
+            } elseif ($purpose === 'rent') {
+                $gridClass = 'kcpf-properties-grid kcpf-grid-rent';
+            } else {
+                $gridClass = 'kcpf-properties-grid';
+            }
             
             // Get current page info for infinite scroll
             $current_page = !empty($query->query_vars['paged']) ? intval($query->query_vars['paged']) : 1;
@@ -110,7 +116,7 @@ class KCPF_Loop_Renderer
         if ($isSale) {
             self::renderSaleCard($property_id, $location, $price, $multiUnitPrice, $cityArea, $propertyType, $isMultiUnit, $multiUnitTable, $bedrooms, $bathrooms, $totalCoveredArea);
         } else {
-            self::renderRentCard($property_id, $location, $purpose, $price, $isMultiUnit, $multiUnitCount, $bedrooms, $bathrooms);
+            KCPF_Rent_Card_View::render($property_id, $location, $purpose, $price, $isMultiUnit, $multiUnitCount, $bedrooms, $bathrooms, $purposeSlug);
         }
     }
     
@@ -192,74 +198,6 @@ class KCPF_Loop_Renderer
                         <?php endif; ?>
                     </div>
                 </div>
-            </div>
-        </article>
-        <?php
-    }
-    
-    /**
-     * Render card for rent properties (original layout)
-     */
-    private static function renderRentCard($property_id, $location, $purpose, $price, $isMultiUnit, $multiUnitCount, $bedrooms, $bathrooms)
-    {
-        ?>
-        <article class="kcpf-property-card">
-            <?php if (has_post_thumbnail()) : ?>
-                <div class="kcpf-property-image">
-                    <a href="<?php the_permalink(); ?>">
-                        <?php the_post_thumbnail('medium'); ?>
-                    </a>
-                </div>
-            <?php endif; ?>
-            
-            <div class="kcpf-property-content">
-                <h2 class="kcpf-property-title">
-                    <a href="<?php the_permalink(); ?>">
-                        <?php the_title(); ?>
-                    </a>
-                </h2>
-                
-                <?php if ($price) : ?>
-                    <div class="kcpf-property-price">
-                        €<?php echo esc_html($price); ?>
-                    </div>
-                <?php endif; ?>
-                
-                <div class="kcpf-property-meta">
-                    <?php if ($location && !is_wp_error($location)) : ?>
-                        <span class="kcpf-location">
-                            <i class="dashicons dashicons-location"></i>
-                            <?php echo esc_html($location[0]->name); ?>
-                        </span>
-                    <?php endif; ?>
-                    
-                    <?php if ($isMultiUnit && $multiUnitCount) : ?>
-                        <span class="kcpf-multiunit-badge">
-                            <i class="dashicons dashicons-admin-multisite"></i>
-                            <?php echo esc_html($multiUnitCount); ?> Units
-                        </span>
-                    <?php else : ?>
-                        <?php if ($bedrooms) : ?>
-                            <span class="kcpf-bedrooms">
-                                <i class="dashicons dashicons-admin-home"></i>
-                                <?php echo esc_html($bedrooms); ?> Bed
-                            </span>
-                        <?php endif; ?>
-                        
-                        <?php if ($bathrooms) : ?>
-                            <span class="kcpf-bathrooms">
-                                <i class="dashicons dashicons-admin-home"></i>
-                                <?php echo esc_html($bathrooms); ?> Bath
-                            </span>
-                        <?php endif; ?>
-                    <?php endif; ?>
-                </div>
-                
-                <?php if ($purpose && !is_wp_error($purpose)) : ?>
-                    <div class="kcpf-property-purpose">
-                        <?php echo esc_html($purpose[0]->name); ?>
-                    </div>
-                <?php endif; ?>
             </div>
         </article>
         <?php

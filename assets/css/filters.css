@@ -535,6 +535,23 @@
   grid-template-columns: 1fr;
 }
 
+/* Rent properties grid - responsive */
+.kcpf-properties-grid.kcpf-grid-rent {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+@media (max-width: 1024px) {
+  .kcpf-properties-grid.kcpf-grid-rent {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .kcpf-properties-grid.kcpf-grid-rent {
+    grid-template-columns: 1fr;
+  }
+}
+
 /* Property Card */
 .kcpf-property-card {
   border: 1px solid #e0e0e0;
@@ -785,6 +802,99 @@
   border-radius: 4px;
   font-size: 0.85rem;
   text-transform: uppercase;
+}
+
+/* Rent Property Card - Single Column Layout */
+.kcpf-property-card-rent {
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  overflow: hidden;
+  transition: box-shadow 0.3s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.kcpf-property-card-rent:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.kcpf-property-image-rent {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+}
+
+.kcpf-property-image-rent img {
+  width: 100%;
+  height: auto;
+  display: block;
+  transition: transform 0.3s ease;
+}
+
+.kcpf-property-card-rent:hover .kcpf-property-image-rent img {
+  transform: scale(1.05);
+}
+
+.kcpf-property-content-rent {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.kcpf-property-title-rent {
+  margin: 0;
+  font-size: 1.25rem;
+}
+
+.kcpf-property-title-rent a {
+  color: #333;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.kcpf-property-title-rent a:hover {
+  color: #0073aa;
+}
+
+.kcpf-property-meta-row-rent {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  color: #666;
+  flex-wrap: wrap;
+}
+
+.kcpf-separator-rent {
+  color: #999;
+}
+
+.kcpf-location-rent,
+.kcpf-city-area-rent,
+.kcpf-property-type-rent {
+  color: #666;
+}
+
+.kcpf-property-specs-rent {
+  display: flex;
+  gap: 1rem;
+  font-size: 0.9rem;
+  color: #666;
+  padding-top: 0.5rem;
+  border-top: 1px solid #e0e0e0;
+}
+
+.kcpf-property-specs-rent span {
+  display: flex;
+  align-items: center;
+}
+
+.kcpf-property-price-rent {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #0073aa;
+  margin-top: auto;
 }
 
 /* Infinite Scroll Loader */
