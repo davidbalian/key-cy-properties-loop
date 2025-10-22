@@ -178,21 +178,23 @@
       window.location.pathname +
       (params.toString() ? "?" + params.toString() : "");
 
+    console.log("[KCPF] === Starting AJAX Request ===");
     console.log("[KCPF] AJAX URL:", ajaxUrl);
     console.log("[KCPF] New URL:", newUrl);
+    console.log("[KCPF] Request timestamp:", new Date().toISOString());
 
     $.ajax({
       url: ajaxUrl,
       type: "GET",
       dataType: "json",
-      timeout: 30000, // 30 second timeout
+      timeout: 60000, // 60 second timeout
       beforeSend: function () {
         console.log("[KCPF] Sending AJAX request...");
-        console.log("[KCPF] Request timestamp:", new Date().toISOString());
         $(".kcpf-properties-loop").addClass("kcpf-loading");
       },
       success: function (response) {
         console.log("[KCPF] AJAX response received:", response);
+        console.log("[KCPF] Response timestamp:", new Date().toISOString());
 
         if (response.success && response.data.html) {
           // Replace the properties loop content
@@ -201,6 +203,7 @@
 
           // Update URL without reload
           if (updateHistory) {
+            console.log("[KCPF] Updating URL to:", newUrl);
             history.pushState({ kcpfFilters: true }, "", newUrl);
           }
 
@@ -224,13 +227,16 @@
         }
       },
       complete: function () {
+        console.log("[KCPF] AJAX request complete");
         $(".kcpf-properties-loop").removeClass("kcpf-loading");
       },
       error: function (xhr, status, error) {
         console.error("[KCPF] AJAX error:");
         console.error("Status:", status);
         console.error("Error:", error);
+        console.error("XHR Status:", xhr.status);
         console.error("Response:", xhr.responseText);
+        console.error("Error timestamp:", new Date().toISOString());
 
         // Show error message to user
         if (status === "timeout") {

@@ -3,7 +3,7 @@
  * Plugin Name: Key CY Properties Filters and Loops
  * Plugin URI: https://balian.cy
  * Description: Custom property filtering system with individual shortcodes for filters and properties loop
- * Version: 2.3.2
+ * Version: 2.3.3
  * Author: balian.cy
  * Author URI: https://balian.cy
  * License: GPL v2 or later
@@ -18,7 +18,7 @@ if (!defined('ABSPATH')) {
 }
 
 // Define plugin constants
-define('KCPF_VERSION', '2.3.2');
+define('KCPF_VERSION', '2.3.3');
 define('KCPF_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('KCPF_PLUGIN_URL', plugin_dir_url(__FILE__));
 define('KCPF_INCLUDES_DIR', KCPF_PLUGIN_DIR . 'includes/');
@@ -104,6 +104,9 @@ class Key_CY_Properties_Filter
      */
     public function ajaxLoadProperties()
     {
+        // Set a time limit to prevent hanging
+        set_time_limit(60);
+        
         // Ensure we have a clean output buffer
         @ob_clean();
         
@@ -111,11 +114,14 @@ class Key_CY_Properties_Filter
             // Log the start of the request
             error_log('[KCPF] AJAX request started with params: ' . print_r($_GET, true));
             
-            // Get attributes from AJAX request
+            // Get attributes from AJAX request - pass all filter parameters
             $attrs = [
                 'purpose' => isset($_GET['purpose']) ? sanitize_text_field($_GET['purpose']) : 'sale',
                 'posts_per_page' => isset($_GET['posts_per_page']) ? intval($_GET['posts_per_page']) : 10,
             ];
+            
+            // Note: All other filter parameters are read from $_GET by URL_Manager
+            // No need to explicitly pass them here as they're accessed via getCurrentFilters()
             
             error_log('[KCPF] Calling render with attrs: ' . print_r($attrs, true));
             
