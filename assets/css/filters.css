@@ -846,13 +846,13 @@
   position: relative;
   overflow: hidden;
   width: 100%;
-  height: 250px !important;
+  height: 100% !important;
+  min-height: 250px !important;
 }
 
 .kcpf-property-image-rent img {
   width: 100% !important;
-  height: 250px !important;
-  max-height: 250px !important;
+  height: 100% !important;
   object-fit: cover !important;
   display: block;
   transition: transform 0.3s ease;
