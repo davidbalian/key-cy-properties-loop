@@ -51,12 +51,9 @@ class KCPF_Card_Data_Helper
      */
     private static function formatSimpleValue($value)
     {
-        // DEBUG: Return raw data
-        $rawValue = $value;
-        
         // Handle empty values
         if (empty($value) && $value !== '0' && $value !== 0) {
-            return '[empty]';
+            return '';
         }
         
         // Handle array values (with "Save as array" enabled)
@@ -64,9 +61,15 @@ class KCPF_Card_Data_Helper
             // Get all keys with true values
             $selectedValues = [];
             foreach ($value as $key => $val) {
-                if ($val === true) {
+                // Check if value is boolean true
+                if ($val === true || $val === 'true' || $val === 1) {
                     $selectedValues[] = $key;
                 }
+            }
+            
+            // If no true values, return empty
+            if (empty($selectedValues)) {
+                return '';
             }
             
             // Convert "9_plus" to "9+" for display
@@ -74,8 +77,8 @@ class KCPF_Card_Data_Helper
                 return str_replace('_plus', '+', $val);
             }, $selectedValues);
             
-            // Return RAW debug output
-            return "[RAW: " . print_r($rawValue, true) . "] SELECTED: " . print_r($selectedValues, true) . " FIRST: " . reset($formatted);
+            // Return first value only
+            return reset($formatted);
         }
         
         // Handle serialized strings (when "Save as array" is NOT enabled)
@@ -88,7 +91,7 @@ class KCPF_Card_Data_Helper
         
         // If value is still empty after handling
         if (empty($value) && $value !== '0' && $value !== 0) {
-            return '[empty]';
+            return '';
         }
         
         // Convert to string for consistency
@@ -99,8 +102,8 @@ class KCPF_Card_Data_Helper
             return str_replace('_plus', '+', $value);
         }
         
-        // Return RAW debug output
-        return "[RAW: " . print_r($rawValue, true) . "] DISPLAY: " . $value;
+        // Return the value as-is
+        return $value;
     }
     
     /**
