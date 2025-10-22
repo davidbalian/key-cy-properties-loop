@@ -268,6 +268,9 @@ class Key_CY_Properties_Filter
                 padding: 0.5rem 0.75rem !important;
                 margin-bottom: 0 !important;
             }
+            .kcpf-placeholder {
+                color: #000 !important;
+            }
         </style>
         <?php
     }

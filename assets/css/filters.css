@@ -117,7 +117,7 @@
 }
 
 .kcpf-placeholder {
-  color: #999;
+  color: #000 !important;
 }
 
 .kcpf-chip {
