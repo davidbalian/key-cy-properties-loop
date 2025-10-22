@@ -217,16 +217,47 @@ class KCPF_CSS_Generator
             $css .= '.kcpf-range-slider .noUi-connect { background: ' . $settings['connect_color'] . " !important; }\n";
         }
         
+        // Handle properties
+        $handleProps = [];
         if (isset($settings['handle_border'])) {
-            $css .= '.kcpf-range-slider .noUi-handle { border: ' . $settings['handle_border'] . " !important; }\n";
+            $handleProps[] = 'border: ' . $settings['handle_border'] . ' !important';
         }
-        
         if (isset($settings['handle_background'])) {
-            $css .= '.kcpf-range-slider .noUi-handle { background: ' . $settings['handle_background'] . " !important; }\n";
+            $handleProps[] = 'background: ' . $settings['handle_background'] . ' !important';
+        }
+        if (isset($settings['handle_box_shadow'])) {
+            $handleProps[] = 'box-shadow: ' . $settings['handle_box_shadow'] . ' !important';
+        }
+        if (isset($settings['handle_border_radius'])) {
+            $handleProps[] = 'border-radius: ' . $settings['handle_border_radius'] . ' !important';
+        }
+        if (isset($settings['handle_width'])) {
+            $handleProps[] = 'width: ' . $settings['handle_width'] . ' !important';
+        }
+        if (isset($settings['handle_height'])) {
+            $handleProps[] = 'height: ' . $settings['handle_height'] . ' !important';
         }
         
-        if (isset($settings['handle_box_shadow'])) {
-            $css .= '.kcpf-range-slider .noUi-handle { box-shadow: ' . $settings['handle_box_shadow'] . " !important; }\n";
+        if (!empty($handleProps)) {
+            $css .= '.kcpf-range-slider .noUi-handle { ' . implode('; ', $handleProps) . "; }\n";
+        }
+        
+        // Handle hover effects
+        if (isset($settings['handle_hover_scale']) || isset($settings['handle_hover_border_width']) || isset($settings['handle_hover_box_shadow'])) {
+            $hoverProps = [];
+            if (isset($settings['handle_hover_scale'])) {
+                $hoverProps[] = 'transform: scale(' . $settings['handle_hover_scale'] . ') !important';
+            }
+            if (isset($settings['handle_hover_border_width'])) {
+                $hoverProps[] = 'border-width: ' . $settings['handle_hover_border_width'] . ' !important';
+            }
+            if (isset($settings['handle_hover_box_shadow'])) {
+                $hoverProps[] = 'box-shadow: ' . $settings['handle_hover_box_shadow'] . ' !important';
+            }
+            
+            if (!empty($hoverProps)) {
+                $css .= '.kcpf-range-slider .noUi-handle:hover { ' . implode('; ', $hoverProps) . "; }\n";
+            }
         }
         
         return $css . "\n";
@@ -254,6 +285,7 @@ class KCPF_CSS_Generator
             'max_height' => 'max-height',
             'box_shadow' => 'box-shadow',
             'cursor' => 'cursor',
+            'height' => 'height',
         ];
         
         return $mapping[$key] ?? null;

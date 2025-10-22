@@ -103,6 +103,12 @@
   align-items: center;
 }
 
+/* Ensure chips are displayed in a row */
+.kcpf-chip {
+  display: inline-flex;
+  flex-shrink: 0;
+}
+
 .kcpf-placeholder {
   color: #999;
 }
@@ -300,10 +306,14 @@
 }
 
 .kcpf-range-slider .noUi-handle {
-  border: 2px solid #0073aa;
+  border: 2px solid #000;
   background: #fff;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
   cursor: pointer;
+  border-radius: 50%;
+  width: 18px;
+  height: 18px;
+  transition: all 0.15s ease;
 }
 
 .kcpf-range-slider .noUi-handle:before,
@@ -312,7 +322,9 @@
 }
 
 .kcpf-range-slider .noUi-handle:hover {
-  border-color: #005a87;
+  transform: scale(1.2);
+  border-width: 3px;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
 }
 
 /* Range Inputs */
