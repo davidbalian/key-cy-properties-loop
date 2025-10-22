@@ -85,13 +85,8 @@
       }
     });
 
-    // Handle pagination clicks
-    $(document).on("click", ".kcpf-pagination a", function (e) {
-      e.preventDefault();
-      const url = new URL($(this).attr("href"));
-      const params = new URLSearchParams(url.search);
-      loadPropertiesAjax(params);
-    });
+    // Initialize infinite scroll
+    initInfiniteScroll();
 
     // Handle browser back/forward buttons
     window.addEventListener("popstate", function (e) {
@@ -202,6 +197,9 @@
           // Replace the properties loop content
           const $newContent = $(response.data.html);
           $(".kcpf-properties-loop").replaceWith($newContent);
+
+          // Reset infinite scroll state
+          window.kcpfLoadingNextPage = false;
 
           // Update URL without reload
           if (updateHistory) {
@@ -493,6 +491,137 @@
         }
       }
     );
+  }
+
+  /**
+   * Initialize infinite scroll
+   */
+  function initInfiniteScroll() {
+    // Check if user is near bottom of page
+    $(window).on("scroll", function () {
+      // Don't trigger if already loading
+      if (window.kcpfLoadingNextPage) {
+        return;
+      }
+
+      const $grid = $(".kcpf-properties-grid");
+      if ($grid.length === 0) {
+        return;
+      }
+
+      const currentPage = parseInt($grid.data("current-page")) || 1;
+      const maxPages = parseInt($grid.data("max-pages")) || 1;
+
+      // Check if we've reached the last page
+      if (currentPage >= maxPages) {
+        return;
+      }
+
+      // Calculate scroll position
+      const scrollTop = $(window).scrollTop();
+      const windowHeight = $(window).height();
+      const documentHeight = $(document).height();
+      const distanceFromBottom = documentHeight - (scrollTop + windowHeight);
+
+      // Trigger load when within 300px of bottom
+      if (distanceFromBottom < 300) {
+        loadNextPage();
+      }
+    });
+  }
+
+  /**
+   * Load next page of properties
+   */
+  function loadNextPage() {
+    // Prevent multiple simultaneous requests
+    if (window.kcpfLoadingNextPage) {
+      return;
+    }
+    window.kcpfLoadingNextPage = true;
+
+    const $grid = $(".kcpf-properties-grid");
+    if ($grid.length === 0) {
+      window.kcpfLoadingNextPage = false;
+      return;
+    }
+
+    const currentPage = parseInt($grid.data("current-page")) || 1;
+    const maxPages = parseInt($grid.data("max-pages")) || 1;
+
+    // Check if there are more pages
+    if (currentPage >= maxPages) {
+      window.kcpfLoadingNextPage = false;
+      return;
+    }
+
+    const nextPage = currentPage + 1;
+
+    console.log("[KCPF] Loading page " + nextPage + " of " + maxPages);
+
+    // Show loader
+    $(".kcpf-infinite-loader").show();
+
+    // Get current URL parameters
+    const params = new URLSearchParams(window.location.search);
+    params.set("paged", nextPage);
+
+    // Build AJAX URL
+    const ajaxUrl =
+      kcpfData.ajaxUrl + "?action=kcpf_load_properties&" + params.toString();
+
+    console.log("[KCPF] Infinite scroll AJAX URL:", ajaxUrl);
+
+    $.ajax({
+      url: ajaxUrl,
+      type: "GET",
+      dataType: "json",
+      timeout: 60000,
+      success: function (response) {
+        console.log("[KCPF] Page " + nextPage + " loaded successfully");
+
+        if (response.success && response.data.html) {
+          const $newContent = $(response.data.html);
+          const $newGrid = $newContent.find(".kcpf-properties-grid");
+
+          if ($newGrid.length > 0) {
+            // Append new property cards to existing grid
+            $newGrid.find(".kcpf-property-card").each(function () {
+              $grid.append($(this));
+            });
+
+            // Update current page number
+            const newCurrentPage =
+              parseInt($newGrid.data("current-page")) || nextPage;
+            const newMaxPages =
+              parseInt($newGrid.data("max-pages")) || maxPages;
+            $grid.attr("data-current-page", newCurrentPage);
+            $grid.attr("data-max-pages", newMaxPages);
+
+            // Update loader or remove if no more pages
+            if (newCurrentPage >= newMaxPages) {
+              $(".kcpf-infinite-loader").remove();
+            } else {
+              $(".kcpf-infinite-loader").hide();
+            }
+
+            console.log(
+              "[KCPF] Updated to page " + newCurrentPage + " of " + newMaxPages
+            );
+          }
+        } else {
+          console.error("[KCPF] Invalid response format:", response);
+          $(".kcpf-infinite-loader").hide();
+        }
+      },
+      error: function (xhr, status, error) {
+        console.error("[KCPF] Infinite scroll error:", status, error);
+        $(".kcpf-infinite-loader").hide();
+      },
+      complete: function () {
+        window.kcpfLoadingNextPage = false;
+      },
+    });
   }
 
   /**

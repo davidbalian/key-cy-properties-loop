@@ -38,7 +38,12 @@ class KCPF_Loop_Renderer
             // Add sale class if purpose is sale to force single column layout
             $purpose = isset($attrs['purpose']) ? $attrs['purpose'] : 'sale';
             $gridClass = ($purpose === 'sale') ? 'kcpf-properties-grid kcpf-grid-sale' : 'kcpf-properties-grid';
-            echo '<div class="' . esc_attr($gridClass) . '">';
+            
+            // Get current page info for infinite scroll
+            $current_page = !empty($query->query_vars['paged']) ? intval($query->query_vars['paged']) : 1;
+            $max_pages = $query->max_num_pages;
+            
+            echo '<div class="' . esc_attr($gridClass) . '" data-current-page="' . esc_attr($current_page) . '" data-max-pages="' . esc_attr($max_pages) . '">';
             
             while ($query->have_posts()) {
                 $query->the_post();
@@ -47,8 +52,13 @@ class KCPF_Loop_Renderer
             
             echo '</div>';
             
-            // Pagination
-            self::renderPagination($query);
+            // Infinite scroll loader (hidden by default)
+            if ($current_page < $max_pages) {
+                echo '<div class="kcpf-infinite-loader" style="display: none;">';
+                echo '<div class="kcpf-loading-spinner"></div>';
+                echo '<p class="kcpf-loading-text">Loading more properties...</p>';
+                echo '</div>';
+            }
         } else {
             self::renderNoResults();
         }
@@ -307,38 +317,6 @@ class KCPF_Loop_Renderer
         <?php
     }
     
-    /**
-     * Render pagination
-     * 
-     * @param WP_Query $query Query object
-     */
-    private static function renderPagination($query)
-    {
-        if ($query->max_num_pages <= 1) {
-            return;
-        }
-        
-        // Get current page from URL filters (works with AJAX)
-        $filters = KCPF_URL_Manager::getCurrentFilters();
-        $current_page = !empty($filters['paged']) ? intval($filters['paged']) : 1;
-        
-        echo '<nav class="kcpf-pagination">';
-        
-        for ($i = 1; $i <= $query->max_num_pages; $i++) {
-            $filters['paged'] = $i;
-            $url = KCPF_URL_Manager::buildFilterUrl($filters, false);
-            $class = ($i === $current_page) ? 'current' : '';
-            
-            printf(
-                '<a href="%s" class="kcpf-page-link %s">%d</a>',
-                esc_url($url),
-                esc_attr($class),
-                $i
-            );
-        }
-        
-        echo '</nav>';
-    }
     
     /**
      * Render no results message

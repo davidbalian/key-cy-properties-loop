@@ -29,7 +29,7 @@ class KCPF_Query_Handler
             'post_type' => 'properties',
             'post_status' => 'publish',
             'posts_per_page' => isset($attrs['posts_per_page']) ? intval($attrs['posts_per_page']) : 10,
-            'paged' => intval($filters['paged']),
+            'paged' => !empty($filters['paged']) ? intval($filters['paged']) : 1,
         ];
         
         // Property ID search

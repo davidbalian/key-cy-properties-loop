@@ -787,32 +787,39 @@
   text-transform: uppercase;
 }
 
-/* Pagination */
-.kcpf-pagination {
+/* Infinite Scroll Loader */
+.kcpf-infinite-loader {
   display: flex;
+  flex-direction: column;
+  align-items: center;
   justify-content: center;
-  gap: 0.5rem;
+  padding: 3rem 1rem;
   margin-top: 2rem;
 }
 
-.kcpf-page-link {
-  display: inline-block;
-  padding: 0.5rem 1rem;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  color: #333;
-  text-decoration: none;
-  transition: all 0.3s ease;
+.kcpf-loading-spinner {
+  width: 50px;
+  height: 50px;
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #0073aa;
+  border-radius: 50%;
+  animation: kcpf-spin 1s linear infinite;
+  margin-bottom: 1rem;
 }
 
-.kcpf-page-link:hover {
-  background-color: #f0f0f0;
+.kcpf-loading-text {
+  color: #666;
+  font-size: 1rem;
+  margin: 0;
 }
 
-.kcpf-page-link.current {
-  background-color: #0073aa;
-  color: #fff;
-  border-color: #0073aa;
+@keyframes kcpf-spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 /* No Results */
