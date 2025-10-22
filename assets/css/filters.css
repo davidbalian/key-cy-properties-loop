@@ -662,15 +662,18 @@
 /* Multi-unit table header */
 .kcpf-multiunit-table-header {
   display: grid;
-  background-color: #f8f8f8;
+  background-color: #ededed !important;
   font-weight: 600;
-  color: #333;
-  border-bottom: 1px solid #e0e0e0;
+  color: #706f6f !important;
+  border-bottom: none !important;
 }
 
 .kcpf-multiunit-header-cell {
-  padding: 0.5rem;
+  padding: 0.1rem !important;
   text-align: left;
+  color: #706f6f !important;
+  font-size: 14px !important;
+  line-height: 1 !important;
 }
 
 /* Multi-unit table rows */
@@ -681,7 +684,7 @@
 
 .kcpf-multiunit-table-row {
   display: grid;
-  border-bottom: 1px solid #e0e0e0;
+  border-bottom: none !important;
 }
 
 .kcpf-multiunit-table-row:hover {
@@ -689,9 +692,11 @@
 }
 
 .kcpf-multiunit-cell {
-  padding: 0.5rem;
+  padding: 0.1rem !important;
   text-align: left;
-  font-size: 0.85rem;
+  font-size: 14px !important;
+  color: #706f6f !important;
+  line-height: 1 !important;
 }
 
 /* Listing units table (non-land properties) */
@@ -1100,7 +1105,9 @@
 
   .kcpf-multiunit-header-cell,
   .kcpf-multiunit-cell {
-    padding: 0.25rem;
-    font-size: 0.75rem;
+    padding: 0.1rem !important;
+    font-size: 14px !important;
+    color: #706f6f !important;
+    line-height: 1 !important;
   }
 }
