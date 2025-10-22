@@ -327,10 +327,108 @@
   }
 
   /**
+   * Initialize multiselect dropdowns
+   */
+  function initMultiselectDropdowns() {
+    // Handle dropdown toggle
+    $(document).on("click", ".kcpf-multiselect-trigger", function (e) {
+      e.stopPropagation();
+      const $dropdown = $(this).closest(".kcpf-multiselect-dropdown");
+      const isActive = $dropdown.hasClass("active");
+
+      // Close all dropdowns
+      $(".kcpf-multiselect-dropdown").removeClass("active");
+
+      // Toggle current dropdown
+      if (!isActive) {
+        $dropdown.addClass("active");
+      }
+    });
+
+    // Close dropdown when clicking outside
+    $(document).on("click", function (e) {
+      if (!$(e.target).closest(".kcpf-multiselect-dropdown").length) {
+        $(".kcpf-multiselect-dropdown").removeClass("active");
+      }
+    });
+
+    // Handle chip removal
+    $(document).on("click", ".kcpf-chip-remove", function (e) {
+      e.stopPropagation();
+      const $chip = $(this).closest(".kcpf-chip");
+      const value = $(this).data("value");
+      const $dropdown = $(this).closest(".kcpf-multiselect-dropdown");
+      const filterName = $dropdown.data("filter-name");
+
+      // Uncheck the checkbox
+      $dropdown
+        .find('input[type="checkbox"][value="' + value + '"]')
+        .prop("checked", false);
+
+      // Remove the chip
+      $chip.remove();
+
+      // Show placeholder if no chips remain
+      const $selected = $dropdown.find(".kcpf-multiselect-selected");
+      if ($selected.find(".kcpf-chip").length === 0) {
+        const placeholder =
+          $dropdown.data("placeholder") || "Select " + filterName;
+        $selected.html(
+          '<span class="kcpf-placeholder">' + placeholder + "</span>"
+        );
+      }
+    });
+
+    // Handle checkbox changes
+    $(document).on(
+      "change",
+      ".kcpf-multiselect-option input[type='checkbox']",
+      function () {
+        const $dropdown = $(this).closest(".kcpf-multiselect-dropdown");
+        const filterName = $dropdown.data("filter-name");
+        const $selected = $dropdown.find(".kcpf-multiselect-selected");
+        const checkedValues = [];
+
+        // Get all checked values
+        $dropdown.find('input[type="checkbox"]:checked').each(function () {
+          checkedValues.push($(this).val());
+        });
+
+        // Update selected chips
+        if (checkedValues.length === 0) {
+          const placeholder =
+            $dropdown.data("placeholder") || "Select " + filterName;
+          $selected.html(
+            '<span class="kcpf-placeholder">' + placeholder + "</span>"
+          );
+        } else {
+          let chipsHtml = "";
+          $dropdown.find(".kcpf-multiselect-option").each(function () {
+            const $checkbox = $(this).find('input[type="checkbox"]');
+            const value = $checkbox.val();
+            const label = $(this).find("span").text();
+
+            if ($checkbox.is(":checked")) {
+              chipsHtml +=
+                '<span class="kcpf-chip">' +
+                label +
+                '<button type="button" class="kcpf-chip-remove" data-value="' +
+                value +
+                '">&times;</button></span>';
+            }
+          });
+          $selected.html(chipsHtml);
+        }
+      }
+    );
+  }
+
+  /**
    * Initialize on document ready
    */
   $(document).ready(function () {
     initFilters();
+    initMultiselectDropdowns();
     console.log("[KCPF] Filters initialized");
   });
 })(jQuery);

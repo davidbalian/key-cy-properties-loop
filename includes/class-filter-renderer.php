@@ -275,19 +275,38 @@ class KCPF_Filter_Renderer
                     <?php endforeach; ?>
                 </select>
             <?php elseif ($attrs['type'] === 'checkbox') : ?>
-                <div class="kcpf-filter-checkboxes">
-                    <?php 
-                    $current_values = is_array($current_value) ? $current_value : [$current_value];
-                    foreach ($glossaryOptions as $option) : 
-                    ?>
-                        <label class="kcpf-checkbox-label">
-                            <input type="checkbox" 
-                                   name="bedrooms[]" 
-                                   value="<?php echo esc_attr($option['value']); ?>"
-                                   <?php checked(in_array($option['value'], $current_values)); ?>>
-                            <span><?php echo esc_html($option['label']); ?></span>
-                        </label>
-                    <?php endforeach; ?>
+                <div class="kcpf-multiselect-dropdown" data-filter-name="bedrooms">
+                    <div class="kcpf-multiselect-trigger">
+                        <div class="kcpf-multiselect-selected">
+                            <?php 
+                            $current_values = is_array($current_value) ? $current_value : ($current_value ? [$current_value] : []);
+                            if (empty($current_values)) : ?>
+                                <span class="kcpf-placeholder">Select Bedrooms</span>
+                            <?php else: ?>
+                                <?php foreach ($current_values as $val) : 
+                                    $option = array_filter($glossaryOptions, function($opt) use ($val) { return $opt['value'] === $val; });
+                                    $option = !empty($option) ? reset($option) : ['label' => $val];
+                                ?>
+                                    <span class="kcpf-chip">
+                                        <?php echo esc_html($option['label']); ?>
+                                        <button type="button" class="kcpf-chip-remove" data-value="<?php echo esc_attr($val); ?>">&times;</button>
+                                    </span>
+                                <?php endforeach; ?>
+                            <?php endif; ?>
+                        </div>
+                        <span class="kcpf-multiselect-arrow">▼</span>
+                    </div>
+                    <div class="kcpf-multiselect-dropdown-menu">
+                        <?php foreach ($glossaryOptions as $option) : ?>
+                            <label class="kcpf-multiselect-option">
+                                <input type="checkbox" 
+                                       name="bedrooms[]" 
+                                       value="<?php echo esc_attr($option['value']); ?>"
+                                       <?php checked(in_array($option['value'], $current_values)); ?>>
+                                <span><?php echo esc_html($option['label']); ?></span>
+                            </label>
+                        <?php endforeach; ?>
+                    </div>
                 </div>
             <?php else : ?>
                 <div class="kcpf-button-group">
@@ -354,19 +373,38 @@ class KCPF_Filter_Renderer
                     <?php endforeach; ?>
                 </select>
             <?php elseif ($attrs['type'] === 'checkbox') : ?>
-                <div class="kcpf-filter-checkboxes">
-                    <?php 
-                    $current_values = is_array($current_value) ? $current_value : [$current_value];
-                    foreach ($glossaryOptions as $option) : 
-                    ?>
-                        <label class="kcpf-checkbox-label">
-                            <input type="checkbox" 
-                                   name="bathrooms[]" 
-                                   value="<?php echo esc_attr($option['value']); ?>"
-                                   <?php checked(in_array($option['value'], $current_values)); ?>>
-                            <span><?php echo esc_html($option['label']); ?></span>
-                        </label>
-                    <?php endforeach; ?>
+                <div class="kcpf-multiselect-dropdown" data-filter-name="bathrooms">
+                    <div class="kcpf-multiselect-trigger">
+                        <div class="kcpf-multiselect-selected">
+                            <?php 
+                            $current_values = is_array($current_value) ? $current_value : ($current_value ? [$current_value] : []);
+                            if (empty($current_values)) : ?>
+                                <span class="kcpf-placeholder">Select Bathrooms</span>
+                            <?php else: ?>
+                                <?php foreach ($current_values as $val) : 
+                                    $option = array_filter($glossaryOptions, function($opt) use ($val) { return $opt['value'] === $val; });
+                                    $option = !empty($option) ? reset($option) : ['label' => $val];
+                                ?>
+                                    <span class="kcpf-chip">
+                                        <?php echo esc_html($option['label']); ?>
+                                        <button type="button" class="kcpf-chip-remove" data-value="<?php echo esc_attr($val); ?>">&times;</button>
+                                    </span>
+                                <?php endforeach; ?>
+                            <?php endif; ?>
+                        </div>
+                        <span class="kcpf-multiselect-arrow">▼</span>
+                    </div>
+                    <div class="kcpf-multiselect-dropdown-menu">
+                        <?php foreach ($glossaryOptions as $option) : ?>
+                            <label class="kcpf-multiselect-option">
+                                <input type="checkbox" 
+                                       name="bathrooms[]" 
+                                       value="<?php echo esc_attr($option['value']); ?>"
+                                       <?php checked(in_array($option['value'], $current_values)); ?>>
+                                <span><?php echo esc_html($option['label']); ?></span>
+                            </label>
+                        <?php endforeach; ?>
+                    </div>
                 </div>
             <?php else : ?>
                 <div class="kcpf-button-group">
@@ -542,16 +580,36 @@ class KCPF_Filter_Renderer
         <div class="kcpf-filter kcpf-filter-amenities">
             <label><?php esc_html_e('Amenities', 'key-cy-properties-filter'); ?></label>
             
-            <div class="kcpf-filter-checkboxes">
-                <?php foreach ($amenitiesOptions as $option) : ?>
-                    <label class="kcpf-checkbox-label">
-                        <input type="checkbox" 
-                               name="amenities[]" 
-                               value="<?php echo esc_attr($option['value']); ?>"
-                               <?php checked(in_array($option['value'], $current_values)); ?>>
-                        <span><?php echo esc_html($option['label']); ?></span>
-                    </label>
-                <?php endforeach; ?>
+            <div class="kcpf-multiselect-dropdown" data-filter-name="amenities">
+                <div class="kcpf-multiselect-trigger">
+                    <div class="kcpf-multiselect-selected">
+                        <?php if (empty($current_values)) : ?>
+                            <span class="kcpf-placeholder">Select Amenities</span>
+                        <?php else: ?>
+                            <?php foreach ($current_values as $val) : 
+                                $option = array_filter($amenitiesOptions, function($opt) use ($val) { return $opt['value'] === $val; });
+                                $option = !empty($option) ? reset($option) : ['label' => $val];
+                            ?>
+                                <span class="kcpf-chip">
+                                    <?php echo esc_html($option['label']); ?>
+                                    <button type="button" class="kcpf-chip-remove" data-value="<?php echo esc_attr($val); ?>">&times;</button>
+                                </span>
+                            <?php endforeach; ?>
+                        <?php endif; ?>
+                    </div>
+                    <span class="kcpf-multiselect-arrow">▼</span>
+                </div>
+                <div class="kcpf-multiselect-dropdown-menu">
+                    <?php foreach ($amenitiesOptions as $option) : ?>
+                        <label class="kcpf-multiselect-option">
+                            <input type="checkbox" 
+                                   name="amenities[]" 
+                                   value="<?php echo esc_attr($option['value']); ?>"
+                                   <?php checked(in_array($option['value'], $current_values)); ?>>
+                            <span><?php echo esc_html($option['label']); ?></span>
+                        </label>
+                    <?php endforeach; ?>
+                </div>
             </div>
         </div>
         <?php
