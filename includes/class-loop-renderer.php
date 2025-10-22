@@ -115,18 +115,25 @@ class KCPF_Loop_Renderer
                         </span>
                     <?php endif; ?>
                     
-                    <?php if ($bedrooms) : ?>
-                        <span class="kcpf-bedrooms">
-                            <i class="dashicons dashicons-admin-home"></i>
-                            <?php echo esc_html($bedrooms); ?> Bed
+                    <?php if (KCPF_Card_Data_Helper::isMultiUnit($property_id)) : ?>
+                        <span class="kcpf-multiunit-badge">
+                            <i class="dashicons dashicons-admin-multisite"></i>
+                            Multi-unit
                         </span>
-                    <?php endif; ?>
-                    
-                    <?php if ($bathrooms) : ?>
-                        <span class="kcpf-bathrooms">
-                            <i class="dashicons dashicons-admin-home"></i>
-                            <?php echo esc_html($bathrooms); ?> Bath
-                        </span>
+                    <?php else : ?>
+                        <?php if ($bedrooms) : ?>
+                            <span class="kcpf-bedrooms">
+                                <i class="dashicons dashicons-admin-home"></i>
+                                <?php echo esc_html($bedrooms); ?> Bed
+                            </span>
+                        <?php endif; ?>
+                        
+                        <?php if ($bathrooms) : ?>
+                            <span class="kcpf-bathrooms">
+                                <i class="dashicons dashicons-admin-home"></i>
+                                <?php echo esc_html($bathrooms); ?> Bath
+                            </span>
+                        <?php endif; ?>
                     <?php endif; ?>
                 </div>
                 

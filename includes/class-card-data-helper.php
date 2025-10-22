@@ -22,6 +22,11 @@ class KCPF_Card_Data_Helper
      */
     public static function getBedrooms($property_id, $purpose = 'sale')
     {
+        // Check if multi-unit property first
+        if (self::isMultiUnit($property_id)) {
+            return '';
+        }
+        
         $bedroomsKey = KCPF_Field_Config::getMetaKey('bedrooms', $purpose);
         $value = get_post_meta($property_id, $bedroomsKey, true);
         
@@ -37,6 +42,11 @@ class KCPF_Card_Data_Helper
      */
     public static function getBathrooms($property_id, $purpose = 'sale')
     {
+        // Check if multi-unit property first
+        if (self::isMultiUnit($property_id)) {
+            return '';
+        }
+        
         $bathroomsKey = KCPF_Field_Config::getMetaKey('bathrooms', $purpose);
         $value = get_post_meta($property_id, $bathroomsKey, true);
         
@@ -51,18 +61,42 @@ class KCPF_Card_Data_Helper
      */
     private static function formatSimpleValue($value)
     {
-        // Debug: Return raw value to see what's stored
-        $rawValue = $value;
-        
         // Handle empty values
         if (empty($value) && $value !== '0' && $value !== 0) {
-            return '[empty]';
+            return '';
         }
         
         // Handle array values (with "Save as array" enabled)
         if (is_array($value)) {
-            // Get the first value from the array
-            $value = !empty($value) ? reset($value) : '';
+            // Check if this is a boolean array structure like [1 => true, 2 => false]
+            $hasBooleans = false;
+            foreach ($value as $key => $val) {
+                if (is_bool($val)) {
+                    $hasBooleans = true;
+                    break;
+                }
+            }
+            
+            if ($hasBooleans) {
+                // This is a boolean array structure - get all keys with true values
+                $selectedValues = [];
+                foreach ($value as $key => $val) {
+                    if ($val === true) {
+                        $selectedValues[] = $key;
+                    }
+                }
+                
+                // Convert "9_plus" to "9+" for display
+                $formatted = array_map(function($val) {
+                    return str_replace('_plus', '+', $val);
+                }, $selectedValues);
+                
+                // Return first value, or join if multiple (e.g., "1, 2")
+                return !empty($formatted) ? reset($formatted) : '';
+            } else {
+                // Regular array - get first value
+                $value = !empty($value) ? reset($value) : '';
+            }
         }
         
         // Handle serialized strings (when "Save as array" is NOT enabled)
@@ -75,14 +109,24 @@ class KCPF_Card_Data_Helper
         
         // If value is still empty after handling
         if (empty($value) && $value !== '0' && $value !== 0) {
-            return '[empty]';
+            return '';
         }
         
         // Convert to string for consistency
         $value = (string) $value;
         
-        // Return RAW value for debugging
-        return "[RAW: " . print_r($rawValue, true) . "] -> [DISPLAY: $value]";
+        // If value is "true" or "false" (boolean stored as string), ignore it
+        if (in_array(strtolower($value), ['true', 'false'], true)) {
+            return '';
+        }
+        
+        // Convert "9_plus" to "9+" for display
+        if (preg_match('/^\d+(_plus)?$/', $value)) {
+            return str_replace('_plus', '+', $value);
+        }
+        
+        // Return the value as-is
+        return $value;
     }
     
     /**
