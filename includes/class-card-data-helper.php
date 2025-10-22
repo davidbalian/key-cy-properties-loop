@@ -56,18 +56,32 @@ class KCPF_Card_Data_Helper
             return '';
         }
         
-        // Handle array values (JetEngine might store as array)
+        // Handle array values (with "Save as array" enabled)
         if (is_array($value)) {
+            // Get the first value from the array
             $value = !empty($value) ? reset($value) : '';
         }
         
-        // If value is still empty after array handling
+        // Handle serialized strings (when "Save as array" is NOT enabled)
+        if (is_string($value) && is_serialized($value)) {
+            $value = maybe_unserialize($value);
+            if (is_array($value)) {
+                $value = !empty($value) ? reset($value) : '';
+            }
+        }
+        
+        // If value is still empty after handling
         if (empty($value) && $value !== '0' && $value !== 0) {
             return '';
         }
         
         // Convert to string for consistency
         $value = (string) $value;
+        
+        // If value is "true" or "false" (boolean stored as string), ignore it
+        if (in_array(strtolower($value), ['true', 'false'], true)) {
+            return '';
+        }
         
         // Convert "9_plus" to "9+" for display
         if (preg_match('/^\d+(_plus)?$/', $value)) {
