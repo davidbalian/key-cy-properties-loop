@@ -614,6 +614,7 @@
   font-size: 20px !important;
   font-family: "Jost", Helvetica, sans-serif !important;
   color: #000 !important;
+  font-weight: bold !important;
 }
 
 .kcpf-property-meta-row {
@@ -637,6 +638,13 @@
 
 .kcpf-multiunit-section {
   margin-top: 0.5rem;
+}
+
+.kcpf-more-units-text {
+  color: #999 !important;
+  font-size: 14px !important;
+  margin-top: 0.5rem;
+  font-style: italic;
 }
 
 .kcpf-multiunit-header {
@@ -669,7 +677,7 @@
 }
 
 .kcpf-multiunit-header-cell {
-  padding: 0.1rem !important;
+  padding: 0.1rem 0.25rem !important;
   text-align: left;
   color: #706f6f !important;
   font-size: 14px !important;
@@ -692,7 +700,7 @@
 }
 
 .kcpf-multiunit-cell {
-  padding: 0.1rem !important;
+  padding: 0.1rem 0.25rem !important;
   text-align: left;
   font-size: 14px !important;
   color: #706f6f !important;
@@ -791,10 +799,11 @@
 }
 
 .kcpf-property-title {
-  margin: 0 0 0.5rem 0;
   font-size: 20px !important;
   font-family: "Jost", Helvetica, sans-serif !important;
   color: #000 !important;
+  font-weight: 400 !important;
+  letter-spacing: 0 !important;
 }
 
 .kcpf-property-title a {
@@ -884,6 +893,7 @@
   font-size: 20px !important;
   font-family: "Jost", Helvetica, sans-serif !important;
   color: #000 !important;
+  font-weight: bold !important;
 }
 
 .kcpf-property-title-rent a {
@@ -1105,7 +1115,7 @@
 
   .kcpf-multiunit-header-cell,
   .kcpf-multiunit-cell {
-    padding: 0.1rem !important;
+    padding: 0.1rem 0.25rem !important;
     font-size: 14px !important;
     color: #706f6f !important;
     line-height: 1 !important;

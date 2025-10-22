@@ -263,6 +263,11 @@ class KCPF_Loop_Renderer
                 </div>
             </div>
         </div>
+        <?php if (count($units) > 3) : ?>
+            <div class="kcpf-more-units-text">
+                More units available.
+            </div>
+        <?php endif; ?>
         <?php
     }
     
