@@ -24,6 +24,7 @@
 /* Select Filters */
 .kcpf-filter-select {
   width: 100% !important;
+  height: 40px !important;
   padding: 0.5rem 2.5rem 0.5rem 0.5rem !important;
   border: 1px solid #ddd !important;
   border-radius: 100px !important;
@@ -92,6 +93,7 @@
   display: flex !important;
   align-items: center;
   justify-content: space-between;
+  height: 40px !important;
   padding: 0.25rem 0.75rem !important;
   border: 1px solid #ddd !important;
   border-radius: 100px !important;
@@ -255,6 +257,7 @@
 /* Property ID Search */
 .kcpf-property-id-input {
   width: 100% !important;
+  height: 40px !important;
   padding: 0.25rem 0.75rem !important;
   border: 1px solid #ddd !important;
   border-radius: 100px !important;
@@ -323,6 +326,7 @@
   display: flex !important;
   align-items: center;
   justify-content: space-between;
+  height: 40px !important;
   padding: 0.25rem 0.75rem !important;
   border: 1px solid #ddd !important;
   border-radius: 100px !important;
@@ -432,6 +436,7 @@
 
 .kcpf-input {
   flex: 1;
+  height: 40px !important;
   padding: 0.25rem 0.75rem !important;
   border: 1px solid #ddd !important;
   border-radius: 100px !important;
@@ -466,6 +471,7 @@
 .kcpf-reset-button {
   display: block !important;
   width: 100% !important;
+  height: 40px !important;
   padding: 0.5rem 0.75rem !important;
   border: none !important;
   border-radius: 100px !important;
