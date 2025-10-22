@@ -85,7 +85,6 @@
 .kcpf-multiselect-dropdown {
   position: relative !important;
   width: 100%;
-  z-index: 10;
 }
 
 .kcpf-multiselect-trigger,
