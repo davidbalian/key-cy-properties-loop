@@ -83,17 +83,18 @@ Examples:
 - ✅ Price range displays
 - ✅ Covered area range displays
 - ✅ Plot area range displays
-- ✅ Slider values (with currency format)
-- ✅ Input field values (with thousands separators)
+- ✅ Slider tooltips (with currency format)
+- ✅ Dropdown displays (with thousands separators)
 
 ## JavaScript Changes
 
 The JavaScript slider now:
 
-1. Formats currency values with commas when displaying
+1. Formats currency values with commas in the slider tooltip/display
 2. Removes commas when parsing values
-3. Updates input fields with formatted values
+3. Keeps input fields as raw numbers (no commas)
 4. Only applies currency formatting to price sliders
+5. **Important**: Input fields remain unformatted to avoid browser conflicts with `type="number"` inputs
 
 ## Backward Compatibility
 
@@ -110,11 +111,24 @@ Test the following scenarios:
 
 1. ✅ Property cards display prices with commas
 2. ✅ Multi-unit tables show formatted prices and areas
-3. ✅ Price filters show formatted ranges
-4. ✅ Area filters show formatted ranges
-5. ✅ Slider inputs format values with commas
-6. ✅ Users can input values with or without commas
-7. ✅ AJAX updates preserve formatting
+3. ✅ Price filters show formatted ranges in dropdown display
+4. ✅ Area filters show formatted ranges in dropdown display
+5. ✅ Slider tooltips show formatted currency values
+6. ✅ Input fields accept raw numbers (no commas)
+7. ✅ Users can input values with or without commas (they get removed)
+8. ✅ AJAX updates preserve formatting
+9. ✅ Automatic min/max detection works correctly
+
+## Important Notes
+
+### Number Input Compatibility
+
+HTML5 `type="number"` inputs don't support comma separators. To maintain compatibility:
+
+- **Slider tooltips** display formatted values with commas
+- **Dropdown display** shows formatted ranges with commas
+- **Input fields** remain raw numbers without commas
+- This provides the best UX across all browsers and devices
 
 ## Code Examples
 

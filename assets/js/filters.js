@@ -416,17 +416,11 @@
 
       // Update inputs when slider changes
       slider.noUiSlider.on("update", function (values, handle) {
-        const formatValue = function (val) {
-          if (format === "currency") {
-            return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-          }
-          return val;
-        };
-
+        // Don't format - keep raw numbers for number inputs
         if (handle === 0) {
-          $minInput.val(formatValue(values[0]));
+          $minInput.val(values[0]);
         } else {
-          $maxInput.val(formatValue(values[1]));
+          $maxInput.val(values[1]);
         }
       });
 
@@ -435,22 +429,16 @@
         const rawValue = $(this).val().toString().replace(/,/g, "");
         const value = parseFloat(rawValue) || min;
         slider.noUiSlider.set([value, null]);
-
-        // Update display value
-        if (format === "currency") {
-          $(this).val(value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
-        }
+        // Keep as raw number in input
+        $(this).val(value);
       });
 
       $maxInput.on("change", function () {
         const rawValue = $(this).val().toString().replace(/,/g, "");
         const value = parseFloat(rawValue) || max;
         slider.noUiSlider.set([null, value]);
-
-        // Update display value
-        if (format === "currency") {
-          $(this).val(value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
-        }
+        // Keep as raw number in input
+        $(this).val(value);
       });
     });
   }

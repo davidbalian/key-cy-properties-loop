@@ -10,20 +10,23 @@ All notable changes to the Key CY Properties Filter plugin will be documented in
 - **Proper number formatting** - All prices, areas, and numeric values now display with commas and dots
 - **Multi-unit table formatting** - Unit prices and areas in tables are now properly formatted
 - **Currency slider formatting** - Price range sliders display values with thousands separators
+- **Debug logging** - Added logging to track automatic value detection for range filters
 
 ### Changed
 
 - **KCPF_Card_Data_Helper** - Now uses KCPF_Number_Formatter for all numeric formatting
 - **KCPF_Loop_Renderer** - Multi-unit table cells now use formatted numbers
 - **KCPF_Filter_Renderer** - All filter displays use consistent number formatting
-- **JavaScript slider formatting** - Price sliders now display currency with commas
-- **Input formatting** - Range filter inputs automatically format values with thousands separators
+- **JavaScript slider** - Slider tooltips display formatted currency, but inputs remain raw numbers
+- **Range filter inputs** - Removed automatic comma formatting from input fields to prevent conflicts
 
 ### Fixed
 
 - **Inconsistent number display** - All numbers now follow the same format (commas for thousands, dots for decimals)
 - **Multi-unit table readability** - Large numbers in property tables are now easier to read
 - **Slider display** - Currency values in price sliders are properly formatted
+- **Range filter detection** - Fixed issue where formatted numbers broke automatic value detection
+- **Number input compatibility** - Removed comma formatting from number inputs to prevent browser conflicts
 
 ### Technical Details
 
