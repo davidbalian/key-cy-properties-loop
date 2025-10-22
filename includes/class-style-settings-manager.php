@@ -26,10 +26,37 @@ class KCPF_Style_Settings_Manager
     public static function getSettings()
     {
         $defaults = self::getDefaultSettings();
-        $saved = get_option(self::OPTION_NAME, $defaults);
+        $saved = get_option(self::OPTION_NAME, false);
         
-        // Ensure all default keys exist
-        return array_merge($defaults, $saved);
+        // If no saved settings, return defaults
+        if ($saved === false) {
+            return $defaults;
+        }
+        
+        // Deep merge to ensure all default keys exist
+        return self::arrayMergeRecursive($defaults, $saved);
+    }
+    
+    /**
+     * Recursively merge arrays
+     * 
+     * @param array $defaults
+     * @param array $saved
+     * @return array
+     */
+    private static function arrayMergeRecursive($defaults, $saved)
+    {
+        $merged = $defaults;
+        
+        foreach ($saved as $key => $value) {
+            if (isset($merged[$key]) && is_array($merged[$key]) && is_array($value)) {
+                $merged[$key] = self::arrayMergeRecursive($merged[$key], $value);
+            } else {
+                $merged[$key] = $value;
+            }
+        }
+        
+        return $merged;
     }
     
     /**

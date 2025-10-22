@@ -115,8 +115,15 @@ class KCPF_Style_Editor
         if (isset($_POST['kcpf_reset_styles']) && check_admin_referer('kcpf_reset_styles')) {
             if (class_exists('KCPF_Style_Settings_Manager')) {
                 KCPF_Style_Settings_Manager::resetToDefaults();
-                echo '<div class="notice notice-success"><p>Styles reset to defaults successfully.</p></div>';
+                // Redirect to clear POST data and show success message
+                wp_redirect(add_query_arg('reset', 'success', admin_url('admin.php?page=kcpf-style-editor')));
+                exit;
             }
+        }
+        
+        // Show success message after redirect
+        if (isset($_GET['reset']) && $_GET['reset'] === 'success') {
+            echo '<div class="notice notice-success is-dismissible"><p>Styles reset to defaults successfully.</p></div>';
         }
         
         if (!class_exists('KCPF_Style_Settings_Manager')) {
