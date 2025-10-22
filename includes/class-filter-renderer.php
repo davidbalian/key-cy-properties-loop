@@ -175,10 +175,16 @@ class KCPF_Filter_Renderer
     public static function renderPrice($attrs)
     {
         try {
+            // Get purpose from URL or use default
+            $purpose = KCPF_URL_Manager::getFilterValue('purpose') ?: 'sale';
+            
+            // Get min/max values from actual listings
+            $range = KCPF_Listing_Values::getMinMax('price', $purpose);
+            
             $attrs = shortcode_atts([
                 'type' => 'slider',
-                'min' => 0,
-                'max' => 10000000,
+                'min' => $range['min'],
+                'max' => $range['max'],
                 'step' => 10000,
             ], $attrs);
             
@@ -684,9 +690,15 @@ class KCPF_Filter_Renderer
     public static function renderCoveredArea($attrs)
     {
         try {
+            // Get purpose from URL or use default
+            $purpose = KCPF_URL_Manager::getFilterValue('purpose') ?: 'sale';
+            
+            // Get min/max values from actual listings
+            $range = KCPF_Listing_Values::getMinMax('covered_area', $purpose);
+            
             $attrs = shortcode_atts([
-                'min' => 0,
-                'max' => 10000,
+                'min' => $range['min'],
+                'max' => $range['max'],
                 'step' => 10,
             ], $attrs);
             
@@ -788,9 +800,15 @@ class KCPF_Filter_Renderer
     public static function renderPlotArea($attrs)
     {
         try {
+            // Get purpose from URL or use default
+            $purpose = KCPF_URL_Manager::getFilterValue('purpose') ?: 'sale';
+            
+            // Get min/max values from actual listings
+            $range = KCPF_Listing_Values::getMinMax('plot_area', $purpose);
+            
             $attrs = shortcode_atts([
-                'min' => 0,
-                'max' => 50000,
+                'min' => $range['min'],
+                'max' => $range['max'],
                 'step' => 50,
             ], $attrs);
             
