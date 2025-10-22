@@ -140,9 +140,9 @@ class KCPF_Style_Settings_Manager
                 'border_color_focus' => '#000',
             ],
             'button' => [
-                'padding' => '0.75rem 2rem',
+                'padding' => '0.5rem 0.75rem',
                 'border' => 'none',
-                'border_radius' => '4px',
+                'border_radius' => '100px',
                 'font_size' => '1rem',
                 'font_weight' => '600',
                 'cursor' => 'pointer',
@@ -150,12 +150,12 @@ class KCPF_Style_Settings_Manager
             'apply_button' => [
                 'background_color' => '#000',
                 'color' => '#fff',
-                'background_color_hover' => '#333',
+                'background_color_hover' => '#000',
             ],
             'reset_button' => [
                 'background_color' => '#f0f0f0',
                 'color' => '#333',
-                'background_color_hover' => '#e0e0e0',
+                'background_color_hover' => '#d8d8d8',
             ],
             'toggle_button' => [
                 'padding' => '0.5rem 1rem',
