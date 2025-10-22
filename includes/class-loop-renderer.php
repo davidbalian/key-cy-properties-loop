@@ -116,8 +116,9 @@ class KCPF_Loop_Renderer
                     <?php endif; ?>
                     
                     <?php 
-                    // Check if multi-unit: either by meta field or by multiple bedroom selections
+                    // Check if multi-unit: either by meta field or by multiple selections in bedrooms/bathrooms
                     $isMultiUnit = KCPF_Card_Data_Helper::isMultiUnit($property_id);
+                    
                     if (!$isMultiUnit) {
                         // Check bedrooms array
                         $bedroomsKey = KCPF_Field_Config::getMetaKey('bedrooms', $purposeSlug);
@@ -129,7 +130,26 @@ class KCPF_Loop_Renderer
                                     $trueCount++;
                                 }
                             }
-                            $isMultiUnit = $trueCount > 1;
+                            if ($trueCount > 1) {
+                                $isMultiUnit = true;
+                            }
+                        }
+                    }
+                    
+                    if (!$isMultiUnit) {
+                        // Check bathrooms array
+                        $bathroomsKey = KCPF_Field_Config::getMetaKey('bathrooms', $purposeSlug);
+                        $bathroomsValue = get_post_meta($property_id, $bathroomsKey, true);
+                        if (is_array($bathroomsValue)) {
+                            $trueCount = 0;
+                            foreach ($bathroomsValue as $val) {
+                                if ($val === true) {
+                                    $trueCount++;
+                                }
+                            }
+                            if ($trueCount > 1) {
+                                $isMultiUnit = true;
+                            }
                         }
                     }
                     ?>
