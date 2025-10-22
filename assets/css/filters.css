@@ -5,11 +5,15 @@
  */
 
 /* Filter Form Container */
-/* Grid styles are now generated dynamically via the Style Editor */
+.kcpf-filters-form {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 1rem;
+}
 
 /* Filter Container */
 .kcpf-filter {
-  margin-bottom: 1.5rem;
+  margin-bottom: 0;
 }
 
 /* Hide all labels - they're now placeholders */
@@ -460,7 +464,8 @@
 /* Apply & Reset Buttons */
 .kcpf-apply-button,
 .kcpf-reset-button {
-  display: inline-block !important;
+  display: block !important;
+  width: 100% !important;
   padding: 0.5rem 0.75rem !important;
   border: none !important;
   border-radius: 100px !important;
@@ -1009,6 +1014,10 @@
 
 /* Responsive - Tablet */
 @media only screen and (max-width: 1024px) {
+  .kcpf-filters-form {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
   #listing-units-table-wrapper,
   #listing-plots-table-wrapper {
     overflow-x: auto;
@@ -1042,6 +1051,10 @@
 
 /* Responsive - Mobile */
 @media (max-width: 768px) {
+  .kcpf-filters-form {
+    grid-template-columns: 1fr;
+  }
+
   .kcpf-properties-grid {
     grid-template-columns: 1fr;
   }
