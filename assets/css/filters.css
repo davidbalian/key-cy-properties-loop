@@ -620,27 +620,85 @@
   color: #333;
 }
 
-.kcpf-multiunit-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 0.85rem;
+/* Multi-unit table wrapper */
+.kcpf-multiunit-table-wrapper {
+  overflow: hidden;
 }
 
-.kcpf-multiunit-table th,
-.kcpf-multiunit-table td {
-  padding: 0.5rem;
-  text-align: left;
-  border-bottom: 1px solid #e0e0e0;
+.kcpf-multiunit-table-container {
+  display: flex;
+  flex-direction: column;
 }
 
-.kcpf-multiunit-table th {
+/* Multi-unit table header */
+.kcpf-multiunit-table-header {
+  display: grid;
   background-color: #f8f8f8;
   font-weight: 600;
   color: #333;
+  border-bottom: 1px solid #e0e0e0;
 }
 
-.kcpf-multiunit-table tbody tr:hover {
+.kcpf-multiunit-header-cell {
+  padding: 0.5rem;
+  text-align: left;
+}
+
+/* Multi-unit table rows */
+.kcpf-multiunit-table-rows {
+  display: flex;
+  flex-direction: column;
+}
+
+.kcpf-multiunit-table-row {
+  display: grid;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.kcpf-multiunit-table-row:hover {
   background-color: #f8f8f8;
+}
+
+.kcpf-multiunit-cell {
+  padding: 0.5rem;
+  text-align: left;
+  font-size: 0.85rem;
+}
+
+/* Listing units table (non-land properties) */
+#listing-units-table-header {
+  grid-template-columns: 0.4fr repeat(5, 1fr) !important;
+  overflow: hidden !important;
+}
+
+#listing-units-table-rows {
+  overflow: hidden !important;
+  max-height: 85px !important;
+  overflow-y: hidden !important;
+  position: relative;
+}
+
+#listing-units-table-rows .kcpf-multiunit-table-row {
+  grid-template-columns: 0.4fr repeat(5, 1fr) !important;
+  overflow: hidden !important;
+}
+
+/* Listing plots table (land properties) */
+#listing-plots-table-header {
+  grid-template-columns: 0.4fr repeat(3, 1fr) !important;
+  overflow: hidden !important;
+}
+
+#listing-plots-table-rows {
+  overflow: hidden !important;
+  max-height: 85px !important;
+  overflow-y: hidden !important;
+  position: relative;
+}
+
+#listing-plots-table-rows .kcpf-multiunit-table-row {
+  grid-template-columns: 0.4fr repeat(3, 1fr) !important;
+  overflow: hidden !important;
 }
 
 .kcpf-property-specs {
@@ -778,7 +836,37 @@
   background-color: #005a87;
 }
 
-/* Responsive */
+/* Responsive - Tablet */
+@media only screen and (max-width: 1024px) {
+  #listing-units-table-wrapper,
+  #listing-plots-table-wrapper {
+    overflow-x: auto;
+  }
+
+  #listing-units-table-container,
+  #listing-plots-table-container {
+    min-width: fit-content !important;
+  }
+
+  #listing-units-table-header,
+  #listing-units-table-rows .kcpf-multiunit-table-row {
+    grid-template-columns: 40px repeat(5, 90px) !important;
+    justify-content: space-between !important;
+  }
+
+  #listing-plots-table-header,
+  #listing-plots-table-rows .kcpf-multiunit-table-row {
+    grid-template-columns: 40px repeat(3, 90px) !important;
+    justify-content: space-between !important;
+  }
+
+  #listing-units-table-rows .kcpf-multiunit-table-row,
+  #listing-plots-table-rows .kcpf-multiunit-table-row {
+    min-width: 100%;
+  }
+}
+
+/* Responsive - Mobile */
 @media (max-width: 768px) {
   .kcpf-properties-grid {
     grid-template-columns: 1fr;
@@ -827,13 +915,32 @@
     min-width: 100%;
   }
 
-  /* Make multi-unit table scrollable on mobile */
-  .kcpf-multiunit-table {
-    font-size: 0.75rem;
+  /* Multi-unit table responsive styles */
+  #listing-units-table-wrapper,
+  #listing-plots-table-wrapper {
+    overflow-x: auto;
   }
 
-  .kcpf-multiunit-table th,
-  .kcpf-multiunit-table td {
+  #listing-units-table-container,
+  #listing-plots-table-container {
+    min-width: fit-content !important;
+  }
+
+  #listing-units-table-header,
+  #listing-units-table-rows .kcpf-multiunit-table-row {
+    grid-template-columns: 40px repeat(5, 90px) !important;
+    justify-content: space-between !important;
+  }
+
+  #listing-plots-table-header,
+  #listing-plots-table-rows .kcpf-multiunit-table-row {
+    grid-template-columns: 40px repeat(3, 90px) !important;
+    justify-content: space-between !important;
+  }
+
+  .kcpf-multiunit-header-cell,
+  .kcpf-multiunit-cell {
     padding: 0.25rem;
+    font-size: 0.75rem;
   }
 }

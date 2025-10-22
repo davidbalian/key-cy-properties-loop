@@ -264,39 +264,46 @@ class KCPF_Loop_Renderer
         // Check if this is land property
         $isLand = strtolower($propertyType) === 'land';
         
+        // Set IDs based on property type
+        $tableId = $isLand ? 'listing-plots-table' : 'listing-units-table';
+        $wrapperId = $isLand ? 'listing-plots-table-wrapper' : 'listing-units-table-wrapper';
+        $containerId = $isLand ? 'listing-plots-table-container' : 'listing-units-table-container';
+        $headerId = $isLand ? 'listing-plots-table-header' : 'listing-units-table-header';
+        $rowsId = $isLand ? 'listing-plots-table-rows' : 'listing-units-table-rows';
+        
         ?>
-        <table class="kcpf-multiunit-table">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Title</th>
+        <div id="<?php echo esc_attr($wrapperId); ?>" class="kcpf-multiunit-table-wrapper">
+            <div id="<?php echo esc_attr($containerId); ?>" class="kcpf-multiunit-table-container">
+                <div id="<?php echo esc_attr($headerId); ?>" class="kcpf-multiunit-table-header">
+                    <div class="kcpf-multiunit-header-cell">ID</div>
+                    <div class="kcpf-multiunit-header-cell">Title</div>
                     <?php if ($isLand) : ?>
-                        <th>Land Area</th>
+                        <div class="kcpf-multiunit-header-cell">Land Area</div>
                     <?php else : ?>
-                        <th>Bedrooms</th>
-                        <th>Bathrooms</th>
-                        <th>Covered Area</th>
+                        <div class="kcpf-multiunit-header-cell">Bedrooms</div>
+                        <div class="kcpf-multiunit-header-cell">Bathrooms</div>
+                        <div class="kcpf-multiunit-header-cell">Covered Area</div>
                     <?php endif; ?>
-                    <th>Price</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php foreach ($displayUnits as $unit) : ?>
-                    <tr>
-                        <td><?php echo esc_html($unit['unit_id'] ?? ''); ?></td>
-                        <td><?php echo esc_html($unit['unit_title'] ?? ''); ?></td>
-                        <?php if ($isLand) : ?>
-                            <td><?php echo esc_html($unit['unit_plot_area_for_lands'] ?? ''); ?></td>
-                        <?php else : ?>
-                            <td><?php echo esc_html($unit['unit_bedrooms'] ?? ''); ?></td>
-                            <td><?php echo esc_html($unit['unit_bathrooms'] ?? ''); ?></td>
-                            <td><?php echo esc_html($unit['unit_covered_area'] ?? ''); ?></td>
-                        <?php endif; ?>
-                        <td><?php echo esc_html($unit['unit_price'] ?? ''); ?></td>
-                    </tr>
-                <?php endforeach; ?>
-            </tbody>
-        </table>
+                    <div class="kcpf-multiunit-header-cell">Price</div>
+                </div>
+                <div id="<?php echo esc_attr($rowsId); ?>" class="kcpf-multiunit-table-rows">
+                    <?php foreach ($displayUnits as $unit) : ?>
+                        <div class="kcpf-multiunit-table-row">
+                            <div class="kcpf-multiunit-cell"><?php echo esc_html($unit['unit_id'] ?? ''); ?></div>
+                            <div class="kcpf-multiunit-cell"><?php echo esc_html($unit['unit_title'] ?? ''); ?></div>
+                            <?php if ($isLand) : ?>
+                                <div class="kcpf-multiunit-cell"><?php echo esc_html($unit['unit_plot_area_for_lands'] ?? ''); ?></div>
+                            <?php else : ?>
+                                <div class="kcpf-multiunit-cell"><?php echo esc_html($unit['unit_bedrooms'] ?? ''); ?></div>
+                                <div class="kcpf-multiunit-cell"><?php echo esc_html($unit['unit_bathrooms'] ?? ''); ?></div>
+                                <div class="kcpf-multiunit-cell"><?php echo esc_html($unit['unit_covered_area'] ?? ''); ?></div>
+                            <?php endif; ?>
+                            <div class="kcpf-multiunit-cell"><?php echo esc_html($unit['unit_price'] ?? ''); ?></div>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+            </div>
+        </div>
         <?php
     }
     
