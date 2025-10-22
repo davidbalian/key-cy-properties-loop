@@ -304,13 +304,13 @@ class KCPF_Loop_Renderer
                             <div class="kcpf-multiunit-cell"><?php echo esc_html($unit['unit_id'] ?? ''); ?></div>
                             <div class="kcpf-multiunit-cell"><?php echo esc_html($unit['unit_title'] ?? ''); ?></div>
                             <?php if ($isLand) : ?>
-                                <div class="kcpf-multiunit-cell"><?php echo esc_html(KCPF_Number_Formatter::formatMultiUnitArea($unit['unit_plot_area_for_lands'] ?? '')); ?></div>
+                                <div class="kcpf-multiunit-cell"><?php echo esc_html($unit['unit_plot_area_for_lands'] ?? ''); ?></div>
                             <?php else : ?>
                                 <div class="kcpf-multiunit-cell"><?php echo esc_html($unit['unit_bedrooms'] ?? ''); ?></div>
                                 <div class="kcpf-multiunit-cell"><?php echo esc_html($unit['unit_bathrooms'] ?? ''); ?></div>
-                                <div class="kcpf-multiunit-cell"><?php echo esc_html(KCPF_Number_Formatter::formatMultiUnitArea($unit['unit_covered_area'] ?? '')); ?></div>
+                                <div class="kcpf-multiunit-cell"><?php echo esc_html($unit['unit_covered_area'] ?? ''); ?></div>
                             <?php endif; ?>
-                            <div class="kcpf-multiunit-cell"><?php echo esc_html(KCPF_Number_Formatter::formatMultiUnitPrice($unit['unit_price'] ?? '')); ?></div>
+                            <div class="kcpf-multiunit-cell"><?php echo esc_html($unit['unit_price'] ?? ''); ?></div>
                         </div>
                     <?php endforeach; ?>
                 </div>

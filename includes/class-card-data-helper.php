@@ -122,7 +122,7 @@ class KCPF_Card_Data_Helper
             return null;
         }
         
-        return KCPF_Number_Formatter::format($price);
+        return number_format($price);
     }
     
     /**
@@ -193,7 +193,7 @@ class KCPF_Card_Data_Helper
             return null;
         }
         
-        return 'From ' . KCPF_Number_Formatter::formatPrice($minPrice);
+        return 'From €' . number_format($minPrice);
     }
     
     /**
@@ -272,7 +272,7 @@ class KCPF_Card_Data_Helper
             return null;
         }
         
-        return KCPF_Number_Formatter::format($value);
+        return number_format($value);
     }
 }
 

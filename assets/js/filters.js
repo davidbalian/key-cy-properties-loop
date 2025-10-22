@@ -399,24 +399,16 @@
         step: step,
         format: {
           to: function (value) {
-            if (format === "currency") {
-              // Format with thousands separator
-              return Math.round(value)
-                .toString()
-                .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-            }
             return Math.round(value);
           },
           from: function (value) {
-            // Remove thousands separators when parsing
-            return Number(value.toString().replace(/,/g, ""));
+            return Number(value);
           },
         },
       });
 
       // Update inputs when slider changes
       slider.noUiSlider.on("update", function (values, handle) {
-        // Don't format - keep raw numbers for number inputs
         if (handle === 0) {
           $minInput.val(values[0]);
         } else {
@@ -426,19 +418,13 @@
 
       // Update slider when inputs change
       $minInput.on("change", function () {
-        const rawValue = $(this).val().toString().replace(/,/g, "");
-        const value = parseFloat(rawValue) || min;
+        const value = parseFloat($(this).val()) || min;
         slider.noUiSlider.set([value, null]);
-        // Keep as raw number in input
-        $(this).val(value);
       });
 
       $maxInput.on("change", function () {
-        const rawValue = $(this).val().toString().replace(/,/g, "");
-        const value = parseFloat(rawValue) || max;
+        const value = parseFloat($(this).val()) || max;
         slider.noUiSlider.set([null, value]);
-        // Keep as raw number in input
-        $(this).val(value);
       });
     });
   }

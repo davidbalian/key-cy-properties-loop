@@ -208,8 +208,8 @@ class KCPF_Filter_Renderer
             // Calculate display value
             $display_value = '';
             if ($price_min || $price_max) {
-                $min_display = $price_min ? KCPF_Number_Formatter::format($price_min) : '';
-                $max_display = $price_max ? KCPF_Number_Formatter::format($price_max) : '';
+                $min_display = $price_min ? number_format($price_min) : '';
+                $max_display = $price_max ? number_format($price_max) : '';
                 if ($min_display && $max_display) {
                     $display_value = $min_display . ' - ' . $max_display;
                 } elseif ($min_display) {
@@ -722,8 +722,8 @@ class KCPF_Filter_Renderer
             // Calculate display value
             $display_value = '';
             if ($area_min || $area_max) {
-                $min_display = $area_min ? KCPF_Number_Formatter::format($area_min) : '';
-                $max_display = $area_max ? KCPF_Number_Formatter::format($area_max) : '';
+                $min_display = $area_min ? number_format($area_min) : '';
+                $max_display = $area_max ? number_format($area_max) : '';
                 if ($min_display && $max_display) {
                     $display_value = $min_display . ' - ' . $max_display . ' m²';
                 } elseif ($min_display) {
@@ -832,8 +832,8 @@ class KCPF_Filter_Renderer
             // Calculate display value
             $display_value = '';
             if ($plot_min || $plot_max) {
-                $min_display = $plot_min ? KCPF_Number_Formatter::format($plot_min) : '';
-                $max_display = $plot_max ? KCPF_Number_Formatter::format($plot_max) : '';
+                $min_display = $plot_min ? number_format($plot_min) : '';
+                $max_display = $plot_max ? number_format($plot_max) : '';
                 if ($min_display && $max_display) {
                     $display_value = $min_display . ' - ' . $max_display . ' m²';
                 } elseif ($min_display) {

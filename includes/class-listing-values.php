@@ -39,9 +39,6 @@ class KCPF_Listing_Values
         // Get the correct meta key for this field and purpose
         $meta_key = self::getMetaKey($field, $purpose);
         
-        // Log the meta key being used
-        error_log("[KCPF] Querying {$field} ({$purpose}) with meta_key: {$meta_key}");
-        
         // Query to get min and max values
         global $wpdb;
         
@@ -70,7 +67,6 @@ class KCPF_Listing_Values
         
         // If no results, return reasonable defaults
         if (!$result || !isset($result['min_value']) || !isset($result['max_value'])) {
-            error_log("[KCPF] No results for {$field} ({$purpose}), using defaults");
             $defaults = self::getDefaults($field);
             self::$cache[$cache_key] = $defaults;
             return $defaults;
@@ -80,9 +76,6 @@ class KCPF_Listing_Values
             'min' => intval($result['min_value']),
             'max' => intval($result['max_value']),
         ];
-        
-        // Log the detected values
-        error_log("[KCPF] Detected range for {$field} ({$purpose}): {$values['min']} - {$values['max']}");
         
         // Cache the result
         self::$cache[$cache_key] = $values;
