@@ -185,11 +185,11 @@
   opacity: 0;
   transition: opacity 0.2s ease;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  min-width: 100%;
 }
 
 .kcpf-multiselect-dropdown.active .kcpf-multiselect-dropdown-menu {
-  display: flex !important;
-  flex-wrap: wrap !important;
+  display: block !important;
   visibility: visible;
   opacity: 1;
 }
@@ -199,7 +199,7 @@
   align-items: center;
   gap: 0.5rem;
   padding: 0.5rem 0.75rem !important;
-  margin-bottom: 0 !important;
+  margin-bottom: 0.5rem !important;
   cursor: pointer;
   transition: background-color 0.2s ease;
 }
@@ -229,16 +229,16 @@
 }
 
 @media (min-width: 768px) {
-  .kcpf-filter-amenities .kcpf-multiselect-dropdown-menu {
-    display: grid;
+  .kcpf-filter-amenities.active .kcpf-multiselect-dropdown-menu {
+    display: grid !important;
     grid-template-columns: repeat(2, 1fr);
   }
 
-  .kcpf-filter-amenities .kcpf-multiselect-option {
+  .kcpf-filter-amenities.active .kcpf-multiselect-option {
     border-bottom: 1px solid #f0f0f0;
   }
 
-  .kcpf-filter-amenities .kcpf-multiselect-option:nth-child(odd) {
+  .kcpf-filter-amenities.active .kcpf-multiselect-option:nth-child(odd) {
     border-right: 1px solid #f0f0f0;
   }
 }
@@ -351,7 +351,6 @@
   position: absolute;
   top: 100%;
   left: 0;
-  right: 0;
   background-color: #fff !important;
   border: 1px solid #ddd !important;
   border-top: none;
@@ -363,6 +362,7 @@
   opacity: 0;
   transition: opacity 0.2s ease;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  min-width: 400px;
 }
 
 .kcpf-range-dropdown.active .kcpf-range-dropdown-menu {
@@ -413,6 +413,11 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  width: 100%;
+}
+
+.kcpf-range-dropdown-menu .kcpf-range-inputs {
+  min-width: 100%;
 }
 
 .kcpf-input {
@@ -674,11 +679,16 @@
     flex-direction: column;
   }
 
-  .kcpf-filter-amenities .kcpf-multiselect-dropdown-menu {
-    grid-template-columns: 1fr;
+  .kcpf-filter-amenities.active .kcpf-multiselect-dropdown-menu {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
   }
 
-  .kcpf-filter-amenities .kcpf-multiselect-option:nth-child(odd) {
+  .kcpf-filter-amenities.active .kcpf-multiselect-option:nth-child(odd) {
     border-right: none;
+  }
+
+  .kcpf-range-dropdown-menu {
+    min-width: 100%;
   }
 }

@@ -261,12 +261,11 @@ class Key_CY_Properties_Filter
                 font-size: 1rem !important;
             }
             .kcpf-multiselect-dropdown.active .kcpf-multiselect-dropdown-menu {
-                display: flex !important;
-                flex-wrap: wrap !important;
+                display: block !important;
             }
             .kcpf-multiselect-option {
                 padding: 0.5rem 0.75rem !important;
-                margin-bottom: 0 !important;
+                margin-bottom: 0.5rem !important;
             }
             .kcpf-placeholder {
                 color: #666 !important;
