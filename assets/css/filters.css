@@ -622,12 +622,15 @@
 
 /* Multi-unit table wrapper */
 .kcpf-multiunit-table-wrapper {
-  overflow: hidden;
+  overflow-x: auto;
+  overflow-y: hidden;
+  width: 100%;
 }
 
 .kcpf-multiunit-table-container {
   display: flex;
   flex-direction: column;
+  min-width: 100%;
 }
 
 /* Multi-unit table header */
@@ -668,37 +671,39 @@
 /* Listing units table (non-land properties) */
 #listing-units-table-header {
   grid-template-columns: 0.4fr repeat(5, 1fr) !important;
-  overflow: hidden !important;
+  width: 100%;
 }
 
 #listing-units-table-rows {
-  overflow: hidden !important;
   max-height: 85px !important;
   overflow-y: hidden !important;
+  overflow-x: hidden !important;
   position: relative;
+  width: 100%;
 }
 
 #listing-units-table-rows .kcpf-multiunit-table-row {
   grid-template-columns: 0.4fr repeat(5, 1fr) !important;
-  overflow: hidden !important;
+  width: 100%;
 }
 
 /* Listing plots table (land properties) */
 #listing-plots-table-header {
   grid-template-columns: 0.4fr repeat(3, 1fr) !important;
-  overflow: hidden !important;
+  width: 100%;
 }
 
 #listing-plots-table-rows {
-  overflow: hidden !important;
   max-height: 85px !important;
   overflow-y: hidden !important;
+  overflow-x: hidden !important;
   position: relative;
+  width: 100%;
 }
 
 #listing-plots-table-rows .kcpf-multiunit-table-row {
   grid-template-columns: 0.4fr repeat(3, 1fr) !important;
-  overflow: hidden !important;
+  width: 100%;
 }
 
 .kcpf-property-specs {
@@ -848,21 +853,24 @@
     min-width: fit-content !important;
   }
 
-  #listing-units-table-header,
+  #listing-units-table-header {
+    grid-template-columns: 40px repeat(5, 90px) !important;
+    min-width: fit-content !important;
+  }
+
   #listing-units-table-rows .kcpf-multiunit-table-row {
     grid-template-columns: 40px repeat(5, 90px) !important;
-    justify-content: space-between !important;
+    min-width: fit-content !important;
   }
 
-  #listing-plots-table-header,
+  #listing-plots-table-header {
+    grid-template-columns: 40px repeat(3, 90px) !important;
+    min-width: fit-content !important;
+  }
+
   #listing-plots-table-rows .kcpf-multiunit-table-row {
     grid-template-columns: 40px repeat(3, 90px) !important;
-    justify-content: space-between !important;
-  }
-
-  #listing-units-table-rows .kcpf-multiunit-table-row,
-  #listing-plots-table-rows .kcpf-multiunit-table-row {
-    min-width: 100%;
+    min-width: fit-content !important;
   }
 }
 
