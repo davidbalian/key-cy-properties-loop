@@ -163,12 +163,17 @@
   max-height: 300px;
   overflow-y: auto;
   z-index: 1000;
-  display: none;
+  display: none !important;
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 0.2s ease;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .kcpf-multiselect-dropdown.active .kcpf-multiselect-dropdown-menu {
-  display: block;
+  display: block !important;
+  visibility: visible;
+  opacity: 1;
 }
 
 .kcpf-multiselect-option {

@@ -330,9 +330,12 @@
    * Initialize multiselect dropdowns
    */
   function initMultiselectDropdowns() {
+    console.log("[KCPF] Initializing multiselect dropdowns");
+
     // Handle dropdown toggle
     $(document).on("click", ".kcpf-multiselect-trigger", function (e) {
       e.stopPropagation();
+      console.log("[KCPF] Dropdown trigger clicked");
       const $dropdown = $(this).closest(".kcpf-multiselect-dropdown");
       const isActive = $dropdown.hasClass("active");
 
@@ -342,6 +345,9 @@
       // Toggle current dropdown
       if (!isActive) {
         $dropdown.addClass("active");
+        console.log("[KCPF] Dropdown opened");
+      } else {
+        console.log("[KCPF] Dropdown closed");
       }
     });
 
@@ -355,6 +361,8 @@
     // Handle chip removal
     $(document).on("click", ".kcpf-chip-remove", function (e) {
       e.stopPropagation();
+      e.preventDefault();
+      console.log("[KCPF] Chip remove clicked");
       const $chip = $(this).closest(".kcpf-chip");
       const value = $(this).data("value");
       const $dropdown = $(this).closest(".kcpf-multiselect-dropdown");
@@ -372,7 +380,7 @@
       const $selected = $dropdown.find(".kcpf-multiselect-selected");
       if ($selected.find(".kcpf-chip").length === 0) {
         const placeholder =
-          $dropdown.data("placeholder") || "Select " + filterName;
+          "Select " + filterName.charAt(0).toUpperCase() + filterName.slice(1);
         $selected.html(
           '<span class="kcpf-placeholder">' + placeholder + "</span>"
         );
@@ -384,6 +392,7 @@
       "change",
       ".kcpf-multiselect-option input[type='checkbox']",
       function () {
+        console.log("[KCPF] Checkbox changed");
         const $dropdown = $(this).closest(".kcpf-multiselect-dropdown");
         const filterName = $dropdown.data("filter-name");
         const $selected = $dropdown.find(".kcpf-multiselect-selected");
@@ -397,7 +406,9 @@
         // Update selected chips
         if (checkedValues.length === 0) {
           const placeholder =
-            $dropdown.data("placeholder") || "Select " + filterName;
+            "Select " +
+            filterName.charAt(0).toUpperCase() +
+            filterName.slice(1);
           $selected.html(
             '<span class="kcpf-placeholder">' + placeholder + "</span>"
           );
