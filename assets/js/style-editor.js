@@ -71,44 +71,43 @@
    * Initialize multi-select dropdowns for preview
    */
   function initializeMultiSelectDropdowns() {
-    // Handle dropdown trigger clicks
-    $(document).on(
+    // Use namespace to avoid conflicts with main filter JS
+    // Handle dropdown trigger clicks - scoped to preview only
+    $(".kcpf-style-preview").on(
       "click",
-      ".kcpf-style-preview .kcpf-multiselect-trigger",
+      ".kcpf-multiselect-trigger",
       function (e) {
+        e.preventDefault();
         e.stopPropagation();
+
         const $dropdown = $(this).closest(".kcpf-multiselect-dropdown");
-        const $menu = $dropdown.find(".kcpf-multiselect-dropdown-menu");
 
         // Toggle active state
         $dropdown.toggleClass("active");
 
-        // Close other dropdowns
+        // Close other dropdowns in preview
         $(".kcpf-style-preview .kcpf-multiselect-dropdown")
           .not($dropdown)
           .removeClass("active");
       }
     );
 
-    // Close dropdowns when clicking outside
+    // Close dropdowns when clicking outside preview
     $(document).on("click", function (e) {
-      if (!$(e.target).closest(".kcpf-multiselect-dropdown").length) {
+      if (!$(e.target).closest(".kcpf-style-preview").length) {
         $(".kcpf-style-preview .kcpf-multiselect-dropdown").removeClass(
           "active"
         );
       }
     });
 
-    // Handle checkbox changes
-    $(document).on(
+    // Handle checkbox changes in preview
+    $(".kcpf-style-preview").on(
       "change",
-      ".kcpf-style-preview .kcpf-multiselect-option input[type='checkbox']",
-      function () {
-        // Simulate chip behavior for preview
-        const $option = $(this).closest(".kcpf-multiselect-option");
-        const text = $option.find("span").text();
-
-        // This is just for preview - don't need to actually manage chips
+      ".kcpf-multiselect-option input[type='checkbox']",
+      function (e) {
+        e.stopPropagation();
+        // Just prevent form submission, checkbox works normally
       }
     );
   }
@@ -132,12 +131,14 @@
 
       $group.find(".kcpf-style-input").each(function () {
         const $input = $(this);
-        const key = $input.attr("name").match(/\[([^\]]+)\]$/)[1];
+        const nameMatch = $input.attr("name").match(/\[([^\]]+)\]$/);
+        if (!nameMatch) return;
+
+        const key = nameMatch[1];
         const value = $input.val();
 
-        if (value) {
-          settings[sectionName][key] = value;
-        }
+        // Include all values, even empty ones (to clear styles)
+        settings[sectionName][key] = value;
       });
     });
 
@@ -264,11 +265,13 @@
     let css = selector + " {";
 
     for (let key in settings) {
-      if (!settings[key]) continue;
+      // Include empty values too (to reset styles)
+      const value = settings[key];
+      if (value === undefined || value === null) continue;
 
       const property = convertKeyToProperty(key);
       if (property) {
-        css += "\n    " + property + ": " + settings[key] + " !important;";
+        css += "\n    " + property + ": " + value + " !important;";
       }
     }
 
@@ -430,16 +433,22 @@
     let $style = $("#kcpf-preview-style");
 
     if ($style.length === 0) {
-      $style = $('<style id="kcpf-preview-style"></style>');
+      $style = $('<style id="kcpf-preview-style" type="text/css"></style>');
       $("head").append($style);
     }
 
+    // Remove old style and add new one to force refresh
+    $style.remove();
+    $style = $('<style id="kcpf-preview-style" type="text/css"></style>');
     $style.text(css);
+    $("head").append($style);
 
     // Force browser to recalculate styles
-    const $preview = $(".kcpf-style-preview");
-    if ($preview.length) {
-      $preview[0].offsetHeight; // Force reflow
-    }
+    setTimeout(function () {
+      const $preview = $(".kcpf-style-preview");
+      if ($preview.length) {
+        $preview[0].offsetHeight; // Force reflow
+      }
+    }, 0);
   }
 })(jQuery);
