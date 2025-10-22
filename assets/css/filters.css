@@ -78,8 +78,9 @@
 
 /* Multi-Select Dropdown */
 .kcpf-multiselect-dropdown {
-  position: relative;
+  position: relative !important;
   width: 100%;
+  z-index: 10;
 }
 
 .kcpf-multiselect-trigger,
@@ -169,23 +170,24 @@
 }
 
 .kcpf-multiselect-dropdown-menu {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  right: 0;
+  position: absolute !important;
+  top: 100% !important;
+  left: 0 !important;
+  right: 0 !important;
   background-color: #fff !important;
   border: 1px solid #ddd !important;
   border-top: none;
   border-radius: 0 0 20px 20px !important;
   max-height: 300px;
   overflow-y: auto;
-  z-index: 1000;
+  z-index: 1000 !important;
   display: none !important;
   visibility: hidden;
   opacity: 0;
   transition: opacity 0.2s ease;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   min-width: 100%;
+  padding: 0.5rem;
 }
 
 .kcpf-multiselect-dropdown.active .kcpf-multiselect-dropdown-menu {
@@ -195,13 +197,14 @@
 }
 
 .kcpf-multiselect-option {
-  display: flex;
+  display: flex !important;
   align-items: center;
   gap: 0.5rem;
   padding: 0.5rem 0.75rem !important;
   margin-bottom: 0.5rem !important;
   cursor: pointer;
   transition: background-color 0.2s ease;
+  width: 100%;
 }
 
 .kcpf-multiselect-option:hover {
@@ -232,10 +235,12 @@
   .kcpf-filter-amenities.active .kcpf-multiselect-dropdown-menu {
     display: grid !important;
     grid-template-columns: repeat(2, 1fr);
+    gap: 0;
   }
 
   .kcpf-filter-amenities.active .kcpf-multiselect-option {
     border-bottom: 1px solid #f0f0f0;
+    width: auto;
   }
 
   .kcpf-filter-amenities.active .kcpf-multiselect-option:nth-child(odd) {

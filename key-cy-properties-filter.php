@@ -262,8 +262,10 @@ class Key_CY_Properties_Filter
             }
             .kcpf-multiselect-dropdown.active .kcpf-multiselect-dropdown-menu {
                 display: block !important;
+                padding: 0.5rem !important;
             }
             .kcpf-multiselect-option {
+                display: flex !important;
                 padding: 0.5rem 0.75rem !important;
                 margin-bottom: 0.5rem !important;
             }
