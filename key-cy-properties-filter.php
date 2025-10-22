@@ -3,7 +3,7 @@
  * Plugin Name: Key CY Properties Filters and Loops
  * Plugin URI: https://balian.cy
  * Description: Custom property filtering system with individual shortcodes for filters and properties loop
- * Version: 2.3.4
+ * Version: 2.3.5
  * Author: balian.cy
  * Author URI: https://balian.cy
  * License: GPL v2 or later
@@ -18,7 +18,7 @@ if (!defined('ABSPATH')) {
 }
 
 // Define plugin constants
-define('KCPF_VERSION', '2.3.4');
+define('KCPF_VERSION', '2.3.5');
 define('KCPF_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('KCPF_PLUGIN_URL', plugin_dir_url(__FILE__));
 define('KCPF_INCLUDES_DIR', KCPF_PLUGIN_DIR . 'includes/');
@@ -94,9 +94,23 @@ class Key_CY_Properties_Filter
     {
         // For logged-in users
         add_action('wp_ajax_kcpf_load_properties', [$this, 'ajaxLoadProperties']);
+        add_action('wp_ajax_kcpf_test', [$this, 'ajaxTest']);
         
         // For non-logged-in users
         add_action('wp_ajax_nopriv_kcpf_load_properties', [$this, 'ajaxLoadProperties']);
+        add_action('wp_ajax_nopriv_kcpf_test', [$this, 'ajaxTest']);
+    }
+    
+    /**
+     * Simple AJAX test endpoint
+     */
+    public function ajaxTest()
+    {
+        wp_send_json_success([
+            'message' => 'AJAX is working!',
+            'received_params' => $_GET,
+            'timestamp' => current_time('mysql'),
+        ]);
     }
     
     /**

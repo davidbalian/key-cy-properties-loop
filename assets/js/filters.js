@@ -185,7 +185,7 @@
     console.log("[KCPF] New URL:", newUrl);
     console.log("[KCPF] Request timestamp:", new Date().toISOString());
 
-    $.ajax({
+    const xhr = $.ajax({
       url: ajaxUrl,
       type: "GET",
       dataType: "json",
@@ -233,24 +233,57 @@
         $(".kcpf-properties-loop").removeClass("kcpf-loading");
       },
       error: function (xhr, status, error) {
-        console.error("[KCPF] AJAX error:");
-        console.error("Status:", status);
-        console.error("Error:", error);
-        console.error("XHR Status:", xhr.status);
-        console.error("Response:", xhr.responseText);
-        console.error("Error timestamp:", new Date().toISOString());
+        console.error("[KCPF] ============ AJAX ERROR ============");
+        console.error("[KCPF] Status:", status);
+        console.error("[KCPF] Error:", error);
+        console.error("[KCPF] XHR Status:", xhr.status);
+        console.error("[KCPF] Response Headers:", xhr.getAllResponseHeaders());
+        console.error("[KCPF] Response Text:", xhr.responseText);
+        console.error("[KCPF] Ready State:", xhr.readyState);
+        console.error("[KCPF] Error timestamp:", new Date().toISOString());
+        console.error("[KCPF] Full XHR object:", xhr);
 
         // Show error message to user
         if (status === "timeout") {
+          console.error("[KCPF] Request timed out after 60 seconds");
           $(".kcpf-properties-loop").html(
             '<div class="kcpf-error"><p>Request timed out. Please try again.</p></div>'
           );
-        } else {
+        } else if (status === "error" && xhr.status === 0) {
+          console.error("[KCPF] Network error - request may have been blocked");
           $(".kcpf-properties-loop").html(
-            '<div class="kcpf-error"><p>An error occurred while loading properties. Please try again.</p></div>'
+            '<div class="kcpf-error"><p>Network error. Please check your connection and try again.</p></div>'
+          );
+        } else {
+          console.error("[KCPF] Server error - HTTP Status:", xhr.status);
+          $(".kcpf-properties-loop").html(
+            '<div class="kcpf-error"><p>An error occurred while loading properties (HTTP ' +
+              xhr.status +
+              "). Please try again.</p></div>"
           );
         }
       },
+    });
+
+    // Track upload/download progress
+    if (xhr.upload) {
+      xhr.upload.addEventListener("progress", function (e) {
+        if (e.lengthComputable) {
+          console.log(
+            "[KCPF] Upload progress:",
+            Math.round((e.loaded / e.total) * 100) + "%"
+          );
+        }
+      });
+    }
+
+    xhr.addEventListener("progress", function (e) {
+      if (e.lengthComputable) {
+        console.log(
+          "[KCPF] Download progress:",
+          Math.round((e.loaded / e.total) * 100) + "%"
+        );
+      }
     });
   }
 
@@ -459,11 +492,39 @@
   }
 
   /**
+   * Test AJAX endpoint
+   */
+  function testAjax() {
+    console.log("[KCPF] Testing AJAX endpoint...");
+    const testUrl = kcpfData.ajaxUrl + "?action=kcpf_test";
+
+    $.ajax({
+      url: testUrl,
+      type: "GET",
+      dataType: "json",
+      timeout: 10000,
+      success: function (response) {
+        console.log("[KCPF] AJAX test SUCCESS:", response);
+      },
+      error: function (xhr, status, error) {
+        console.error("[KCPF] AJAX test FAILED:", status, error);
+        console.error("[KCPF] XHR Status:", xhr.status);
+        console.error("[KCPF] Response:", xhr.responseText);
+      },
+    });
+  }
+
+  /**
    * Initialize on document ready
    */
   $(document).ready(function () {
     initFilters();
     initMultiselectDropdowns();
     console.log("[KCPF] Filters initialized");
+
+    // Test AJAX after a short delay
+    setTimeout(function () {
+      testAjax();
+    }, 1000);
   });
 })(jQuery);
