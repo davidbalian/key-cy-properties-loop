@@ -104,6 +104,9 @@ class Key_CY_Properties_Filter
      */
     public function ajaxLoadProperties()
     {
+        // Start output buffering to catch any accidental output
+        ob_start();
+        
         try {
             // Get attributes from AJAX request
             $attrs = [
@@ -114,18 +117,39 @@ class Key_CY_Properties_Filter
             // Render properties loop
             $html = KCPF_Loop_Renderer::render($attrs);
             
+            // Discard any accidental output
+            ob_end_clean();
+            
             // Return JSON response
             wp_send_json_success([
                 'html' => $html,
             ]);
         } catch (Exception $e) {
-            // Log error
+            // Log error with full details
             error_log('KCPF AJAX Error: ' . $e->getMessage());
+            error_log('KCPF AJAX Trace: ' . $e->getTraceAsString());
+            
+            // Discard any accidental output
+            ob_end_clean();
             
             // Return error response
             wp_send_json_error([
                 'message' => 'Error loading properties',
                 'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
+            ]);
+        } catch (Error $e) {
+            // Catch fatal errors too
+            error_log('KCPF AJAX Fatal Error: ' . $e->getMessage());
+            error_log('KCPF AJAX Trace: ' . $e->getTraceAsString());
+            
+            // Discard any accidental output
+            ob_end_clean();
+            
+            wp_send_json_error([
+                'message' => 'Fatal error loading properties',
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString(),
             ]);
         }
     }

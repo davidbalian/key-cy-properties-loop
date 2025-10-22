@@ -114,56 +114,44 @@ class KCPF_Query_Handler
             $meta_query[] = KCPF_MultiUnit_Query_Builder::buildPriceQuery($filters, $purpose);
         }
         
-        // Bedrooms filter - treat like amenities (glossary values)
+        // Bedrooms filter - apply to both regular and multi-unit properties
         if (!empty($filters['bedrooms'])) {
             $bedroomsKey = KCPF_Field_Config::getMetaKey('bedrooms', $purpose);
             $bedroomsValues = is_array($filters['bedrooms']) ? $filters['bedrooms'] : [$filters['bedrooms']];
             
-            // Create OR relation for multiple bedroom selections
-            if (count($bedroomsValues) > 1) {
-                $bedrooms_sub_query = ['relation' => 'OR'];
-                foreach ($bedroomsValues as $bedroom) {
-                    $bedrooms_sub_query[] = [
-                        'key' => $bedroomsKey,
-                        'value' => $bedroom,
-                        'compare' => 'LIKE',
-                    ];
-                }
-                $meta_query[] = $bedrooms_sub_query;
-            } else {
-                // Single value
-                $meta_query[] = [
+            // Build OR query for bedrooms (works for all property types)
+            $bedrooms_query = ['relation' => 'OR'];
+            
+            // Add each bedroom value as an OR condition
+            foreach ($bedroomsValues as $bedroom) {
+                $bedrooms_query[] = [
                     'key' => $bedroomsKey,
-                    'value' => $bedroomsValues[0],
+                    'value' => $bedroom,
                     'compare' => 'LIKE',
                 ];
             }
+            
+            $meta_query[] = $bedrooms_query;
         }
         
-        // Bathrooms filter - treat like amenities (glossary values)
+        // Bathrooms filter - apply to both regular and multi-unit properties
         if (!empty($filters['bathrooms'])) {
             $bathroomsKey = KCPF_Field_Config::getMetaKey('bathrooms', $purpose);
             $bathroomsValues = is_array($filters['bathrooms']) ? $filters['bathrooms'] : [$filters['bathrooms']];
             
-            // Create OR relation for multiple bathroom selections
-            if (count($bathroomsValues) > 1) {
-                $bathrooms_sub_query = ['relation' => 'OR'];
-                foreach ($bathroomsValues as $bathroom) {
-                    $bathrooms_sub_query[] = [
-                        'key' => $bathroomsKey,
-                        'value' => $bathroom,
-                        'compare' => 'LIKE',
-                    ];
-                }
-                $meta_query[] = $bathrooms_sub_query;
-            } else {
-                // Single value
-                $meta_query[] = [
+            // Build OR query for bathrooms (works for all property types)
+            $bathrooms_query = ['relation' => 'OR'];
+            
+            // Add each bathroom value as an OR condition
+            foreach ($bathroomsValues as $bathroom) {
+                $bathrooms_query[] = [
                     'key' => $bathroomsKey,
-                    'value' => $bathroomsValues[0],
+                    'value' => $bathroom,
                     'compare' => 'LIKE',
                 ];
             }
+            
+            $meta_query[] = $bathrooms_query;
         }
         
         // Covered area filter - handle both regular and multi-unit properties
