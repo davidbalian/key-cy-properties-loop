@@ -597,17 +597,13 @@
   flex: 0 0 40%;
   position: relative;
   overflow: hidden;
-}
-
-.kcpf-property-image-sale img {
-  width: 100% !important;
-  height: 100% !important;
-  object-fit: cover !important;
-  display: block;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
   transition: transform 0.3s ease;
 }
 
-.kcpf-property-card-sale:hover .kcpf-property-image-sale img {
+.kcpf-property-card-sale:hover .kcpf-property-image-sale {
   transform: scale(1.05);
 }
 
@@ -697,11 +693,12 @@
 }
 
 .kcpf-multiunit-header-cell {
-  padding: 0.1rem 0.25rem !important;
+  padding: 0.25rem !important;
   text-align: left;
   color: #706f6f !important;
   font-size: 14px !important;
   line-height: 1 !important;
+  width: max-content !important;
 }
 
 /* Multi-unit table rows */
@@ -720,11 +717,12 @@
 }
 
 .kcpf-multiunit-cell {
-  padding: 0.1rem 0.25rem !important;
+  padding: 0.25rem !important;
   text-align: left;
   font-size: 14px !important;
   color: #706f6f !important;
   line-height: 1 !important;
+  width: max-content !important;
 }
 
 /* Listing units table (non-land properties) */
@@ -877,19 +875,14 @@
   position: relative;
   overflow: hidden;
   width: 100%;
-  height: 100% !important;
   height: 250px !important;
-}
-
-.kcpf-property-image-rent img {
-  width: 100% !important;
-  height: 100% !important;
-  object-fit: cover !important;
-  display: block;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
   transition: transform 0.3s ease;
 }
 
-.kcpf-property-card-rent:hover .kcpf-property-image-rent img {
+.kcpf-property-card-rent:hover .kcpf-property-image-rent {
   transform: scale(1.05);
 }
 
@@ -1072,11 +1065,6 @@
     height: 250px !important;
   }
 
-  .kcpf-property-image-sale img {
-    height: 250px !important;
-    object-fit: cover !important;
-  }
-
   .kcpf-price-inputs,
   .kcpf-range-inputs {
     flex-direction: column;
@@ -1131,7 +1119,7 @@
 
   .kcpf-multiunit-header-cell,
   .kcpf-multiunit-cell {
-    padding: 0.1rem 0.25rem !important;
+    padding: 0.25rem !important;
     font-size: 14px !important;
     color: #706f6f !important;
     line-height: 1 !important;
