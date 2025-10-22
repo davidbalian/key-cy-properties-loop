@@ -25,25 +25,6 @@ class KCPF_Card_Data_Helper
         $bedroomsKey = KCPF_Field_Config::getMetaKey('bedrooms', $purpose);
         $value = get_post_meta($property_id, $bedroomsKey, true);
         
-        // Check if multi-unit based on multiple selections in array
-        if (is_array($value)) {
-            $trueCount = 0;
-            foreach ($value as $val) {
-                if ($val === true) {
-                    $trueCount++;
-                }
-            }
-            // If more than 1 true value, it's multi-unit
-            if ($trueCount > 1) {
-                return '';
-            }
-        }
-        
-        // Check if multi-unit property (meta field)
-        if (self::isMultiUnit($property_id)) {
-            return '';
-        }
-        
         return self::formatSimpleValue($value);
     }
     
@@ -58,25 +39,6 @@ class KCPF_Card_Data_Helper
     {
         $bathroomsKey = KCPF_Field_Config::getMetaKey('bathrooms', $purpose);
         $value = get_post_meta($property_id, $bathroomsKey, true);
-        
-        // Check if multi-unit based on multiple selections in array
-        if (is_array($value)) {
-            $trueCount = 0;
-            foreach ($value as $val) {
-                if ($val === true) {
-                    $trueCount++;
-                }
-            }
-            // If more than 1 true value, it's multi-unit
-            if ($trueCount > 1) {
-                return '';
-            }
-        }
-        
-        // Check if multi-unit property (meta field)
-        if (self::isMultiUnit($property_id)) {
-            return '';
-        }
         
         return self::formatSimpleValue($value);
     }
@@ -96,35 +58,26 @@ class KCPF_Card_Data_Helper
         
         // Handle array values (with "Save as array" enabled)
         if (is_array($value)) {
-            // Check if this is a boolean array structure like [1 => true, 2 => false]
-            $hasBooleans = false;
+            // Get all keys with true values
+            $selectedValues = [];
             foreach ($value as $key => $val) {
-                if (is_bool($val)) {
-                    $hasBooleans = true;
-                    break;
+                if ($val === true) {
+                    $selectedValues[] = $key;
                 }
             }
             
-            if ($hasBooleans) {
-                // This is a boolean array structure - get all keys with true values
-                $selectedValues = [];
-                foreach ($value as $key => $val) {
-                    if ($val === true) {
-                        $selectedValues[] = $key;
-                    }
-                }
-                
-                // Convert "9_plus" to "9+" for display
-                $formatted = array_map(function($val) {
-                    return str_replace('_plus', '+', $val);
-                }, $selectedValues);
-                
-                // Return first value, or join if multiple (e.g., "1, 2")
-                return !empty($formatted) ? reset($formatted) : '';
-            } else {
-                // Regular array - get first value
-                $value = !empty($value) ? reset($value) : '';
+            // If no true values, return empty
+            if (empty($selectedValues)) {
+                return '';
             }
+            
+            // Convert "9_plus" to "9+" for display
+            $formatted = array_map(function($val) {
+                return str_replace('_plus', '+', $val);
+            }, $selectedValues);
+            
+            // Return first value only
+            return reset($formatted);
         }
         
         // Handle serialized strings (when "Save as array" is NOT enabled)
@@ -142,11 +95,6 @@ class KCPF_Card_Data_Helper
         
         // Convert to string for consistency
         $value = (string) $value;
-        
-        // If value is "true" or "false" (boolean stored as string), ignore it
-        if (in_array(strtolower($value), ['true', 'false'], true)) {
-            return '';
-        }
         
         // Convert "9_plus" to "9+" for display
         if (preg_match('/^\d+(_plus)?$/', $value)) {
