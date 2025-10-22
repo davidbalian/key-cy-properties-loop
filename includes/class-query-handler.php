@@ -23,6 +23,8 @@ class KCPF_Query_Handler
     {
         $filters = KCPF_URL_Manager::getCurrentFilters();
         
+        error_log('[KCPF] Query Handler - Filters from URL_Manager: ' . print_r($filters, true));
+        
         $args = [
             'post_type' => 'properties',
             'post_status' => 'publish',
@@ -47,6 +49,8 @@ class KCPF_Query_Handler
         if (!empty($meta_query)) {
             $args['meta_query'] = $meta_query;
         }
+        
+        error_log('[KCPF] Query Handler - Final query args: ' . print_r($args, true));
         
         return $args;
     }

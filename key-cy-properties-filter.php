@@ -3,7 +3,7 @@
  * Plugin Name: Key CY Properties Filters and Loops
  * Plugin URI: https://balian.cy
  * Description: Custom property filtering system with individual shortcodes for filters and properties loop
- * Version: 2.3.3
+ * Version: 2.3.4
  * Author: balian.cy
  * Author URI: https://balian.cy
  * License: GPL v2 or later
@@ -18,7 +18,7 @@ if (!defined('ABSPATH')) {
 }
 
 // Define plugin constants
-define('KCPF_VERSION', '2.3.3');
+define('KCPF_VERSION', '2.3.4');
 define('KCPF_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('KCPF_PLUGIN_URL', plugin_dir_url(__FILE__));
 define('KCPF_INCLUDES_DIR', KCPF_PLUGIN_DIR . 'includes/');
@@ -112,7 +112,19 @@ class Key_CY_Properties_Filter
         
         try {
             // Log the start of the request
-            error_log('[KCPF] AJAX request started with params: ' . print_r($_GET, true));
+            error_log('[KCPF] ============================================');
+            error_log('[KCPF] AJAX request started');
+            error_log('[KCPF] Total $_GET parameters: ' . count($_GET));
+            error_log('[KCPF] $_GET contents: ' . print_r($_GET, true));
+            
+            // Log all filter parameters being received
+            $receivedFilters = [];
+            foreach ($_GET as $key => $value) {
+                if ($key !== 'action') {
+                    $receivedFilters[$key] = $value;
+                }
+            }
+            error_log('[KCPF] Filter parameters received: ' . print_r($receivedFilters, true));
             
             // Get attributes from AJAX request - pass all filter parameters
             $attrs = [

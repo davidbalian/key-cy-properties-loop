@@ -180,6 +180,8 @@
 
     console.log("[KCPF] === Starting AJAX Request ===");
     console.log("[KCPF] AJAX URL:", ajaxUrl);
+    console.log("[KCPF] URL Parameters:", params.toString());
+    console.log("[KCPF] Parameter count:", params.toString().split("&").length);
     console.log("[KCPF] New URL:", newUrl);
     console.log("[KCPF] Request timestamp:", new Date().toISOString());
 
