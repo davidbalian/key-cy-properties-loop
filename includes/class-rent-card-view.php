@@ -37,7 +37,7 @@ class KCPF_Rent_Card_View
         <article class="kcpf-property-card kcpf-property-card-rent">
             <a href="<?php the_permalink(); ?>" class="kcpf-property-card-link">
                 <?php if (has_post_thumbnail()) : 
-                    $image_url = get_the_post_thumbnail_url(get_the_ID(), 'medium');
+                    $image_url = get_the_post_thumbnail_url(get_the_ID(), 'full');
                 ?>
                     <div class="kcpf-property-image-rent" style="background-image: url('<?php echo esc_url($image_url); ?>');">
                     </div>

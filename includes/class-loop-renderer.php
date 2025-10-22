@@ -130,7 +130,7 @@ class KCPF_Loop_Renderer
             <a href="<?php the_permalink(); ?>" class="kcpf-property-card-link">
                 <div class="kcpf-property-card-sale-wrapper">
                     <?php if (has_post_thumbnail()) : 
-                        $image_url = get_the_post_thumbnail_url(get_the_ID(), 'medium');
+                        $image_url = get_the_post_thumbnail_url(get_the_ID(), 'full');
                     ?>
                         <div class="kcpf-property-image-sale" style="background-image: url('<?php echo esc_url($image_url); ?>');">
                         </div>
