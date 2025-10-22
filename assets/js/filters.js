@@ -90,31 +90,23 @@
       e.preventDefault();
       console.log("[KCPF] Reset button clicked");
 
-      // Clear all form fields
-      const $form = $(".kcpf-filters-form").first();
-      if ($form.length > 0) {
-        // Reset all inputs
-        $form.find("input[type='text']").val("");
-        $form.find("select").val("");
-        $form.find("input[type='checkbox']").prop("checked", false);
-        $form.find("input[type='radio']").prop("checked", false);
+      // Clear URL and reload properties
+      const params = new URLSearchParams();
 
-        // Clear multiselect chips
-        $(".kcpf-chip").remove();
-
-        // Clear range sliders and inputs
-        $form.find(".kcpf-range-dropdown").removeClass("active");
-        $form.find(".kcpf-range-dropdown-menu").css({
-          display: "none",
-          visibility: "hidden",
-          opacity: "0",
-        });
-
-        // Submit form to reload with empty filters
-        $form.submit();
-      } else {
-        console.error("[KCPF] No form found - cannot reset filters");
+      // Keep purpose parameter if it exists
+      const currentPurpose = new URLSearchParams(window.location.search).get(
+        "purpose"
+      );
+      if (currentPurpose) {
+        params.set("purpose", currentPurpose);
       }
+
+      // Update URL and load properties
+      const newUrl =
+        window.location.pathname +
+        (params.toString() ? "?" + params.toString() : "");
+      window.history.pushState({ kcpfFilters: true }, "", newUrl);
+      loadPropertiesAjax(params, false);
     });
 
     // Initialize infinite scroll
