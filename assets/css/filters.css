@@ -586,13 +586,12 @@
   flex: 0 0 40%;
   position: relative;
   overflow: hidden;
-  height: 250px !important;
+  height: 100% !important;
 }
 
 .kcpf-property-image-sale img {
   width: 100% !important;
-  height: 250px !important;
-  max-height: 250px !important;
+  height: 100% !important;
   object-fit: cover !important;
   display: block;
   transition: transform 0.3s ease;
@@ -614,16 +613,26 @@
   font-size: 20px !important;
   font-family: "Jost", Helvetica, sans-serif !important;
   color: #000 !important;
-  font-weight: bold !important;
+  font-weight: 400 !important;
+  margin: 0 !important;
 }
 
 .kcpf-property-meta-row {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
   font-size: 0.9rem;
   color: #666;
   flex-wrap: wrap;
+}
+
+.kcpf-property-meta-row .kcpf-separator {
+  margin-left: 0;
+  margin-right: 0.5rem;
+}
+
+.kcpf-property-meta-row .kcpf-location,
+.kcpf-property-meta-row .kcpf-property-type {
+  margin-right: 0.5rem;
 }
 
 .kcpf-separator {
@@ -645,10 +654,11 @@
   font-size: 14px !important;
   margin-top: 0.5rem;
   font-style: italic;
+  text-align: center;
 }
 
 .kcpf-multiunit-header {
-  font-weight: 600;
+  font-weight: 300;
   margin-bottom: 0.5rem;
   color: #999 !important;
   font-size: 16px !important;
@@ -804,6 +814,7 @@
   color: #000 !important;
   font-weight: 400 !important;
   letter-spacing: 0 !important;
+  margin: 0 !important;
 }
 
 .kcpf-property-title a {
@@ -889,11 +900,11 @@
 }
 
 .kcpf-property-title-rent {
-  margin: 0;
+  margin: 0 !important;
   font-size: 20px !important;
   font-family: "Jost", Helvetica, sans-serif !important;
   color: #000 !important;
-  font-weight: bold !important;
+  font-weight: 400 !important;
 }
 
 .kcpf-property-title-rent a {
@@ -909,10 +920,19 @@
 .kcpf-property-meta-row-rent {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
   font-size: 0.9rem;
   color: #666;
   flex-wrap: wrap;
+}
+
+.kcpf-property-meta-row-rent .kcpf-separator-rent {
+  margin-left: 0;
+  margin-right: 0.5rem;
+}
+
+.kcpf-property-meta-row-rent .kcpf-city-area-rent,
+.kcpf-property-meta-row-rent .kcpf-property-type-rent {
+  margin-right: 0.5rem;
 }
 
 .kcpf-separator-rent {
@@ -1054,11 +1074,11 @@
 
   .kcpf-property-image-sale {
     flex: 0 0 auto;
-    height: 100% !important;
+    height: 250px !important;
   }
 
   .kcpf-property-image-sale img {
-    height: 100% !important;
+    height: 250px !important;
     object-fit: cover !important;
   }
 
