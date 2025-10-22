@@ -20,54 +20,89 @@ class KCPF_CSS_Generator
      */
     public static function generate()
     {
-        $settings = KCPF_Style_Settings_Manager::getSettings();
+        // Safety check
+        if (!class_exists('KCPF_Style_Settings_Manager')) {
+            return '';
+        }
+        
+        try {
+            $settings = KCPF_Style_Settings_Manager::getSettings();
+        } catch (Exception $e) {
+            error_log('KCPF CSS Generator Error: ' . $e->getMessage());
+            return '';
+        }
+        
         $css = '';
         
         // Filter Container
-        $css .= self::generateSectionCSS('.kcpf-filter', $settings['filter_container']);
+        if (isset($settings['filter_container'])) {
+            $css .= self::generateSectionCSS('.kcpf-filter', $settings['filter_container']);
+        }
         
         // Filter Label
-        $css .= self::generateSectionCSS('.kcpf-filter label', $settings['filter_label']);
+        if (isset($settings['filter_label'])) {
+            $css .= self::generateSectionCSS('.kcpf-filter label', $settings['filter_label']);
+        }
         
         // Select Filters
-        $css .= self::generateSectionCSS('.kcpf-filter-select', $settings['select']);
-        $css .= self::generateFocusCSS('.kcpf-filter-select', $settings['select']);
+        if (isset($settings['select'])) {
+            $css .= self::generateSectionCSS('.kcpf-filter-select', $settings['select']);
+            $css .= self::generateFocusCSS('.kcpf-filter-select', $settings['select']);
+        }
         
         // Multi-select Trigger
-        $css .= self::generateSectionCSS('.kcpf-multiselect-trigger', $settings['multiselect_trigger']);
-        $css .= self::generateHoverCSS('.kcpf-multiselect-trigger:hover', $settings['multiselect_trigger']);
-        $css .= self::generateActiveCSS('.kcpf-multiselect-trigger.active', $settings['multiselect_trigger']);
+        if (isset($settings['multiselect_trigger'])) {
+            $css .= self::generateSectionCSS('.kcpf-multiselect-trigger', $settings['multiselect_trigger']);
+            $css .= self::generateHoverCSS('.kcpf-multiselect-trigger:hover', $settings['multiselect_trigger']);
+            $css .= self::generateActiveCSS('.kcpf-multiselect-trigger.active', $settings['multiselect_trigger']);
+        }
         
         // Multi-select Chip
-        $css .= self::generateSectionCSS('.kcpf-chip', $settings['multiselect_chip']);
+        if (isset($settings['multiselect_chip'])) {
+            $css .= self::generateSectionCSS('.kcpf-chip', $settings['multiselect_chip']);
+        }
         
         // Multi-select Dropdown Menu
-        $css .= self::generateSectionCSS('.kcpf-multiselect-dropdown-menu', $settings['multiselect_dropdown']);
+        if (isset($settings['multiselect_dropdown'])) {
+            $css .= self::generateSectionCSS('.kcpf-multiselect-dropdown-menu', $settings['multiselect_dropdown']);
+        }
         
         // Multi-select Option
-        $css .= self::generateSectionCSS('.kcpf-multiselect-option', $settings['multiselect_option']);
-        $css .= self::generateHoverCSS('.kcpf-multiselect-option:hover', $settings['multiselect_option']);
+        if (isset($settings['multiselect_option'])) {
+            $css .= self::generateSectionCSS('.kcpf-multiselect-option', $settings['multiselect_option']);
+            $css .= self::generateHoverCSS('.kcpf-multiselect-option:hover', $settings['multiselect_option']);
+        }
         
         // Input Fields
-        $css .= self::generateSectionCSS('.kcpf-input', $settings['input']);
-        $css .= self::generateFocusCSS('.kcpf-input:focus', $settings['input']);
+        if (isset($settings['input'])) {
+            $css .= self::generateSectionCSS('.kcpf-input', $settings['input']);
+            $css .= self::generateFocusCSS('.kcpf-input:focus', $settings['input']);
+        }
         
         // Apply Button
-        $applyButtonSettings = array_merge($settings['button'], $settings['apply_button']);
-        $css .= self::generateSectionCSS('.kcpf-apply-button', $applyButtonSettings);
-        $css .= self::generateHoverCSS('.kcpf-apply-button:hover', $settings['apply_button']);
+        if (isset($settings['button']) && isset($settings['apply_button'])) {
+            $applyButtonSettings = array_merge($settings['button'], $settings['apply_button']);
+            $css .= self::generateSectionCSS('.kcpf-apply-button', $applyButtonSettings);
+            $css .= self::generateHoverCSS('.kcpf-apply-button:hover', $settings['apply_button']);
+        }
         
         // Reset Button
-        $resetButtonSettings = array_merge($settings['button'], $settings['reset_button']);
-        $css .= self::generateSectionCSS('.kcpf-reset-button', $resetButtonSettings);
-        $css .= self::generateHoverCSS('.kcpf-reset-button:hover', $settings['reset_button']);
+        if (isset($settings['button']) && isset($settings['reset_button'])) {
+            $resetButtonSettings = array_merge($settings['button'], $settings['reset_button']);
+            $css .= self::generateSectionCSS('.kcpf-reset-button', $resetButtonSettings);
+            $css .= self::generateHoverCSS('.kcpf-reset-button:hover', $settings['reset_button']);
+        }
         
         // Toggle Buttons
-        $css .= self::generateSectionCSS('.kcpf-toggle-label span, .kcpf-radio-label span, .kcpf-button-label span', $settings['toggle_button']);
-        $css .= self::generateActiveCSS('.kcpf-toggle-label.active span, .kcpf-radio-label input:checked + span, .kcpf-button-label.active span, .kcpf-button-label input:checked + span', $settings['toggle_button']);
+        if (isset($settings['toggle_button'])) {
+            $css .= self::generateSectionCSS('.kcpf-toggle-label span, .kcpf-radio-label span, .kcpf-button-label span', $settings['toggle_button']);
+            $css .= self::generateActiveCSS('.kcpf-toggle-label.active span, .kcpf-radio-label input:checked + span, .kcpf-button-label.active span, .kcpf-button-label input:checked + span', $settings['toggle_button']);
+        }
         
         // Range Slider
-        $css .= self::generateSliderCSS($settings['range_slider']);
+        if (isset($settings['range_slider'])) {
+            $css .= self::generateSliderCSS($settings['range_slider']);
+        }
         
         return $css;
     }

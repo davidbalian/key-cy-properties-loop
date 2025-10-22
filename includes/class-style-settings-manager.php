@@ -25,7 +25,11 @@ class KCPF_Style_Settings_Manager
      */
     public static function getSettings()
     {
-        return get_option(self::OPTION_NAME, self::getDefaultSettings());
+        $defaults = self::getDefaultSettings();
+        $saved = get_option(self::OPTION_NAME, $defaults);
+        
+        // Ensure all default keys exist
+        return array_merge($defaults, $saved);
     }
     
     /**

@@ -245,7 +245,14 @@ class Key_CY_Properties_Filter
         
         // Enqueue dynamic CSS from style editor
         if (class_exists('KCPF_CSS_Generator')) {
-            wp_add_inline_style('kcpf-filters', KCPF_CSS_Generator::generate());
+            try {
+                $custom_css = KCPF_CSS_Generator::generate();
+                if (!empty($custom_css)) {
+                    wp_add_inline_style('kcpf-filters', $custom_css);
+                }
+            } catch (Exception $e) {
+                error_log('KCPF Style Editor Error: ' . $e->getMessage());
+            }
         }
         
         // Enqueue noUiSlider JavaScript
