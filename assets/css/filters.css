@@ -586,12 +586,14 @@
   flex: 0 0 40%;
   position: relative;
   overflow: hidden;
+  height: 250px !important;
 }
 
 .kcpf-property-image-sale img {
-  width: 100%;
-  height: 250px;
-  object-fit: cover;
+  width: 100% !important;
+  height: 250px !important;
+  max-height: 250px !important;
+  object-fit: cover !important;
   display: block;
   transition: transform 0.3s ease;
 }
@@ -844,12 +846,14 @@
   position: relative;
   overflow: hidden;
   width: 100%;
+  height: 250px !important;
 }
 
 .kcpf-property-image-rent img {
-  width: 100%;
-  height: 250px;
-  object-fit: cover;
+  width: 100% !important;
+  height: 250px !important;
+  max-height: 250px !important;
+  object-fit: cover !important;
   display: block;
   transition: transform 0.3s ease;
 }
