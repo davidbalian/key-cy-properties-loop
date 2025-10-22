@@ -399,32 +399,58 @@
         step: step,
         format: {
           to: function (value) {
+            if (format === "currency") {
+              // Format with thousands separator
+              return Math.round(value)
+                .toString()
+                .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            }
             return Math.round(value);
           },
           from: function (value) {
-            return Number(value);
+            // Remove thousands separators when parsing
+            return Number(value.toString().replace(/,/g, ""));
           },
         },
       });
 
       // Update inputs when slider changes
       slider.noUiSlider.on("update", function (values, handle) {
+        const formatValue = function (val) {
+          if (format === "currency") {
+            return val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+          }
+          return val;
+        };
+
         if (handle === 0) {
-          $minInput.val(values[0]);
+          $minInput.val(formatValue(values[0]));
         } else {
-          $maxInput.val(values[1]);
+          $maxInput.val(formatValue(values[1]));
         }
       });
 
       // Update slider when inputs change
       $minInput.on("change", function () {
-        const value = parseFloat($(this).val()) || min;
+        const rawValue = $(this).val().toString().replace(/,/g, "");
+        const value = parseFloat(rawValue) || min;
         slider.noUiSlider.set([value, null]);
+
+        // Update display value
+        if (format === "currency") {
+          $(this).val(value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+        }
       });
 
       $maxInput.on("change", function () {
-        const value = parseFloat($(this).val()) || max;
+        const rawValue = $(this).val().toString().replace(/,/g, "");
+        const value = parseFloat(rawValue) || max;
         slider.noUiSlider.set([null, value]);
+
+        // Update display value
+        if (format === "currency") {
+          $(this).val(value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+        }
       });
     });
   }

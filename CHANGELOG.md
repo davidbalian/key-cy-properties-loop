@@ -2,6 +2,42 @@
 
 All notable changes to the Key CY Properties Filter plugin will be documented in this file.
 
+## [2.4.2] - 2025-01-03
+
+### Added
+
+- **Number Formatter Class** - Centralized number formatting utility for consistent display
+- **Proper number formatting** - All prices, areas, and numeric values now display with commas and dots
+- **Multi-unit table formatting** - Unit prices and areas in tables are now properly formatted
+- **Currency slider formatting** - Price range sliders display values with thousands separators
+
+### Changed
+
+- **KCPF_Card_Data_Helper** - Now uses KCPF_Number_Formatter for all numeric formatting
+- **KCPF_Loop_Renderer** - Multi-unit table cells now use formatted numbers
+- **KCPF_Filter_Renderer** - All filter displays use consistent number formatting
+- **JavaScript slider formatting** - Price sliders now display currency with commas
+- **Input formatting** - Range filter inputs automatically format values with thousands separators
+
+### Fixed
+
+- **Inconsistent number display** - All numbers now follow the same format (commas for thousands, dots for decimals)
+- **Multi-unit table readability** - Large numbers in property tables are now easier to read
+- **Slider display** - Currency values in price sliders are properly formatted
+
+### Technical Details
+
+```php
+// Number formatting methods available:
+KCPF_Number_Formatter::format($value, $decimals);
+KCPF_Number_Formatter::formatPrice($value, $currency);
+KCPF_Number_Formatter::formatArea($value, $unit);
+KCPF_Number_Formatter::formatMultiUnitPrice($value);
+KCPF_Number_Formatter::formatMultiUnitArea($value);
+```
+
+---
+
 ## [2.3.0] - 2025-10-22
 
 ### Added
