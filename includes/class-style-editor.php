@@ -113,8 +113,15 @@ class KCPF_Style_Editor
         
         // Handle reset
         if (isset($_POST['kcpf_reset_styles']) && check_admin_referer('kcpf_reset_styles')) {
-            KCPF_Style_Settings_Manager::resetToDefaults();
-            echo '<div class="notice notice-success"><p>Styles reset to defaults successfully.</p></div>';
+            if (class_exists('KCPF_Style_Settings_Manager')) {
+                KCPF_Style_Settings_Manager::resetToDefaults();
+                echo '<div class="notice notice-success"><p>Styles reset to defaults successfully.</p></div>';
+            }
+        }
+        
+        if (!class_exists('KCPF_Style_Settings_Manager')) {
+            echo '<div class="notice notice-error"><p>Style Settings Manager not found. Please check plugin installation.</p></div>';
+            return;
         }
         
         $settings = KCPF_Style_Settings_Manager::getSettings();
@@ -131,62 +138,62 @@ class KCPF_Style_Editor
                     <div class="kcpf-editor-left">
                         <div class="kcpf-editor-section">
                             <h2>Filter Container</h2>
-                            <?php self::renderSection('filter_container', $settings['filter_container']); ?>
+                            <?php self::renderSection('filter_container', isset($settings['filter_container']) ? $settings['filter_container'] : []); ?>
                         </div>
                         
                         <div class="kcpf-editor-section">
                             <h2>Filter Label</h2>
-                            <?php self::renderSection('filter_label', $settings['filter_label']); ?>
+                            <?php self::renderSection('filter_label', isset($settings['filter_label']) ? $settings['filter_label'] : []); ?>
                         </div>
                         
                         <div class="kcpf-editor-section">
                             <h2>Select Dropdown</h2>
-                            <?php self::renderSection('select', $settings['select']); ?>
+                            <?php self::renderSection('select', isset($settings['select']) ? $settings['select'] : []); ?>
                         </div>
                         
                         <div class="kcpf-editor-section">
                             <h2>Multi-Select Trigger</h2>
-                            <?php self::renderSection('multiselect_trigger', $settings['multiselect_trigger']); ?>
+                            <?php self::renderSection('multiselect_trigger', isset($settings['multiselect_trigger']) ? $settings['multiselect_trigger'] : []); ?>
                         </div>
                         
                         <div class="kcpf-editor-section">
                             <h2>Multi-Select Chip</h2>
-                            <?php self::renderSection('multiselect_chip', $settings['multiselect_chip']); ?>
+                            <?php self::renderSection('multiselect_chip', isset($settings['multiselect_chip']) ? $settings['multiselect_chip'] : []); ?>
                         </div>
                         
                         <div class="kcpf-editor-section">
                             <h2>Multi-Select Dropdown Menu</h2>
-                            <?php self::renderSection('multiselect_dropdown', $settings['multiselect_dropdown']); ?>
+                            <?php self::renderSection('multiselect_dropdown', isset($settings['multiselect_dropdown']) ? $settings['multiselect_dropdown'] : []); ?>
                         </div>
                         
                         <div class="kcpf-editor-section">
                             <h2>Multi-Select Option</h2>
-                            <?php self::renderSection('multiselect_option', $settings['multiselect_option']); ?>
+                            <?php self::renderSection('multiselect_option', isset($settings['multiselect_option']) ? $settings['multiselect_option'] : []); ?>
                         </div>
                         
                         <div class="kcpf-editor-section">
                             <h2>Input Fields</h2>
-                            <?php self::renderSection('input', $settings['input']); ?>
+                            <?php self::renderSection('input', isset($settings['input']) ? $settings['input'] : []); ?>
                         </div>
                         
                         <div class="kcpf-editor-section">
                             <h2>Apply Button</h2>
-                            <?php self::renderSection('apply_button', $settings['apply_button']); ?>
+                            <?php self::renderSection('apply_button', isset($settings['apply_button']) ? $settings['apply_button'] : []); ?>
                         </div>
                         
                         <div class="kcpf-editor-section">
                             <h2>Reset Button</h2>
-                            <?php self::renderSection('reset_button', $settings['reset_button']); ?>
+                            <?php self::renderSection('reset_button', isset($settings['reset_button']) ? $settings['reset_button'] : []); ?>
                         </div>
                         
                         <div class="kcpf-editor-section">
                             <h2>Toggle Buttons</h2>
-                            <?php self::renderSection('toggle_button', $settings['toggle_button']); ?>
+                            <?php self::renderSection('toggle_button', isset($settings['toggle_button']) ? $settings['toggle_button'] : []); ?>
                         </div>
                         
                         <div class="kcpf-editor-section">
                             <h2>Range Slider</h2>
-                            <?php self::renderSection('range_slider', $settings['range_slider']); ?>
+                            <?php self::renderSection('range_slider', isset($settings['range_slider']) ? $settings['range_slider'] : []); ?>
                         </div>
                         
                         <div class="kcpf-editor-actions">
@@ -216,6 +223,9 @@ class KCPF_Style_Editor
      */
     private static function renderSection($section_name, $settings)
     {
+        if (!is_array($settings) || empty($settings)) {
+            return;
+        }
         ?>
         <div class="kcpf-field-group">
             <?php foreach ($settings as $key => $value) : ?>
