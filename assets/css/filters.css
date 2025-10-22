@@ -4,9 +4,16 @@
  * @package Key_CY_Properties_Filter
  */
 
+/* Filter Form Container */
+.kcpf-filters-form {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 1.5rem;
+}
+
 /* Filter Container */
 .kcpf-filter {
-  margin-bottom: 1.5rem;
+  margin-bottom: 0;
 }
 
 .kcpf-filter label {
@@ -571,7 +578,17 @@
 }
 
 /* Responsive */
+@media (max-width: 1200px) {
+  .kcpf-filters-form {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
 @media (max-width: 768px) {
+  .kcpf-filters-form {
+    grid-template-columns: 1fr;
+  }
+
   .kcpf-properties-grid {
     grid-template-columns: 1fr;
   }
