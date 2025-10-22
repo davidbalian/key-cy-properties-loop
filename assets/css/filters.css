@@ -763,8 +763,8 @@
 
 .kcpf-property-specs-icon,
 .kcpf-property-specs-rent-icon {
-  width: 20px !important;
-  height: 20px !important;
+  width: 16px !important;
+  height: 16px !important;
   flex-shrink: 0;
   display: inline-flex;
   align-items: center;
@@ -773,8 +773,8 @@
 
 .kcpf-property-specs-icon svg,
 .kcpf-property-specs-rent-icon svg {
-  width: 20px !important;
-  height: 20px !important;
+  width: 16px !important;
+  height: 16px !important;
   fill: currentColor;
 }
 
@@ -866,7 +866,7 @@
   overflow: hidden;
   width: 100%;
   height: 100% !important;
-  min-height: 250px !important;
+  height: 250px !important;
 }
 
 .kcpf-property-image-rent img {
@@ -1054,11 +1054,12 @@
 
   .kcpf-property-image-sale {
     flex: 0 0 auto;
-    max-height: 300px;
+    height: 100% !important;
   }
 
   .kcpf-property-image-sale img {
-    height: auto;
+    height: 100% !important;
+    object-fit: cover !important;
   }
 
   .kcpf-price-inputs,
