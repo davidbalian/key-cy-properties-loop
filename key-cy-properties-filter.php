@@ -81,6 +81,9 @@ class Key_CY_Properties_Filter
         // Enqueue assets
         add_action('wp_enqueue_scripts', [$this, 'enqueueAssets']);
         
+        // Add critical CSS overrides
+        add_action('wp_head', [$this, 'addCriticalOverrides'], 100);
+        
         // Register shortcodes
         $this->registerShortcodes();
         
@@ -220,6 +223,53 @@ class Key_CY_Properties_Filter
         add_shortcode('property_filter_id', [KCPF_Filter_Renderer::class, 'renderPropertyId']);
         add_shortcode('property_filters_apply', [KCPF_Filter_Renderer::class, 'renderApplyButton']);
         add_shortcode('property_filters_reset', [KCPF_Filter_Renderer::class, 'renderResetButton']);
+    }
+    
+    /**
+     * Add critical CSS overrides
+     */
+    public function addCriticalOverrides()
+    {
+        ?>
+        <style type="text/css">
+            .kcpf-multiselect-trigger,
+            .kcpf-filter .kcpf-multiselect-trigger,
+            .kcpf-multiselect-dropdown .kcpf-multiselect-trigger {
+                background-color: #ededed !important;
+            }
+            .kcpf-filter-select {
+                background-color: #ededed !important;
+            }
+            .kcpf-input,
+            .kcpf-property-id-input {
+                background-color: #ededed !important;
+            }
+            .kcpf-toggle-label span,
+            .kcpf-radio-label span,
+            .kcpf-button-label span {
+                background-color: #ededed !important;
+            }
+            .kcpf-reset-button {
+                background-color: #ededed !important;
+            }
+            .kcpf-chip {
+                background-color: #ededed !important;
+                color: #000 !important;
+            }
+            .kcpf-chip-remove {
+                color: #000 !important;
+                font-size: 1rem !important;
+            }
+            .kcpf-multiselect-dropdown.active .kcpf-multiselect-dropdown-menu {
+                display: flex !important;
+                flex-wrap: wrap !important;
+            }
+            .kcpf-multiselect-option {
+                padding: 0.5rem 0.75rem !important;
+                margin-bottom: 0 !important;
+            }
+        </style>
+        <?php
     }
     
     /**
