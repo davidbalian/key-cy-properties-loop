@@ -51,9 +51,12 @@ class KCPF_Card_Data_Helper
      */
     private static function formatSimpleValue($value)
     {
+        // DEBUG: Return raw data
+        $rawValue = $value;
+        
         // Handle empty values
         if (empty($value) && $value !== '0' && $value !== 0) {
-            return '';
+            return '[empty]';
         }
         
         // Handle array values (with "Save as array" enabled)
@@ -66,18 +69,13 @@ class KCPF_Card_Data_Helper
                 }
             }
             
-            // If no true values, return empty
-            if (empty($selectedValues)) {
-                return '';
-            }
-            
             // Convert "9_plus" to "9+" for display
             $formatted = array_map(function($val) {
                 return str_replace('_plus', '+', $val);
             }, $selectedValues);
             
-            // Return first value only
-            return reset($formatted);
+            // Return RAW debug output
+            return "[RAW: " . print_r($rawValue, true) . "] SELECTED: " . print_r($selectedValues, true) . " FIRST: " . reset($formatted);
         }
         
         // Handle serialized strings (when "Save as array" is NOT enabled)
@@ -90,7 +88,7 @@ class KCPF_Card_Data_Helper
         
         // If value is still empty after handling
         if (empty($value) && $value !== '0' && $value !== 0) {
-            return '';
+            return '[empty]';
         }
         
         // Convert to string for consistency
@@ -101,8 +99,8 @@ class KCPF_Card_Data_Helper
             return str_replace('_plus', '+', $value);
         }
         
-        // Return the value as-is
-        return $value;
+        // Return RAW debug output
+        return "[RAW: " . print_r($rawValue, true) . "] DISPLAY: " . $value;
     }
     
     /**
