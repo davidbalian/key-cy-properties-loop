@@ -1,0 +1,263 @@
+# Filter Style Editor Guide
+
+## Overview
+
+The Filter Style Editor is a powerful dashboard tool that allows you to customize every aspect of your property filter styling. The styling applied through this editor will override all other CSS on your site, ensuring your custom styles take precedence.
+
+## Accessing the Style Editor
+
+1. Log in to your WordPress admin dashboard
+2. Navigate to **Filter Styles** in the left sidebar menu
+3. The Style Editor page will open with a split-panel view:
+   - **Left Panel**: Style configuration inputs
+   - **Right Panel**: Live preview of all filter types
+
+## Available Style Sections
+
+### 1. Filter Container
+
+Customize the container that wraps each filter element:
+
+- **Margin Bottom**: Space below each filter (e.g., `1.5rem`)
+- **Padding**: Internal spacing (e.g., `0`)
+
+### 2. Filter Label
+
+Style the label text above each filter:
+
+- **Font Size**: Text size (e.g., `1rem`)
+- **Font Weight**: Text thickness (e.g., `600` for semi-bold)
+- **Color**: Text color (e.g., `#333`)
+- **Margin Bottom**: Space below the label (e.g., `0.5rem`)
+
+### 3. Select Dropdown
+
+Style standard dropdown selects:
+
+- **Width**: Full width by default (`100%`)
+- **Padding**: Internal spacing (e.g., `0.75rem 1rem`)
+- **Border**: Border style (e.g., `1px solid #ddd`)
+- **Border Radius**: Corner rounding (e.g., `4px`)
+- **Font Size**: Text size (e.g., `1rem`)
+- **Background Color**: Background (e.g., `#fff`)
+- **Border Color Focus**: Border color when focused (e.g., `#0073aa`)
+
+### 4. Multi-Select Trigger
+
+Style the clickable trigger button for multi-select dropdowns:
+
+- **Padding**: Internal spacing
+- **Border**: Border style
+- **Border Radius**: Corner rounding
+- **Background Color**: Background color
+- **Border Color Hover**: Border on hover
+- **Border Color Active**: Border when active/open
+
+### 5. Multi-Select Chip
+
+Style the chips showing selected values:
+
+- **Padding**: Internal spacing
+- **Background Color**: Chip background
+- **Color**: Text color
+- **Border Radius**: Corner rounding (e.g., `20px` for pill shape)
+- **Font Size**: Text size
+
+### 6. Multi-Select Dropdown Menu
+
+Style the dropdown menu that appears:
+
+- **Border**: Border style
+- **Border Radius**: Corner rounding
+- **Background Color**: Menu background
+- **Max Height**: Maximum height before scrolling
+- **Box Shadow**: Shadow effect
+
+### 7. Multi-Select Option
+
+Style individual options in the dropdown:
+
+- **Padding**: Internal spacing
+- **Background Color Hover**: Background on hover
+
+### 8. Input Fields
+
+Style text input fields:
+
+- **Padding**: Internal spacing
+- **Border**: Border style
+- **Border Radius**: Corner rounding
+- **Font Size**: Text size
+- **Border Color Focus**: Border when focused
+
+### 9. Apply Button
+
+Style the "Apply Filters" button:
+
+- **Background Color**: Default background
+- **Color**: Text color
+- **Background Color Hover**: Background on hover
+
+### 10. Reset Button
+
+Style the "Reset Filters" button:
+
+- **Background Color**: Default background
+- **Color**: Text color
+- **Background Color Hover**: Background on hover
+
+### 11. Toggle Buttons
+
+Style radio/toggle button groups:
+
+- **Padding**: Internal spacing
+- **Border**: Border style
+- **Border Radius**: Corner rounding
+- **Background Color**: Default background
+- **Background Color Active**: Background when selected
+- **Color Active**: Text color when selected
+- **Border Color Active**: Border when selected
+
+### 12. Range Slider
+
+Style the price/area range sliders:
+
+- **Height**: Slider track height (e.g., `8px`)
+- **Connect Color**: Color of the selected range
+- **Handle Border**: Border around slider handle
+- **Handle Background**: Handle background color
+- **Handle Box Shadow**: Shadow on the handle
+
+## Using the Editor
+
+### Live Preview
+
+- As you type in any field, the preview panel updates automatically
+- You can see all filter types in the preview panel
+- All changes are visual-only until you click "Save Styles"
+
+### Saving Changes
+
+1. Configure your desired styles in any section
+2. Click **Save Styles** at the bottom of the form
+3. Your styles will be applied to all filters site-wide
+
+### Resetting to Defaults
+
+1. Click **Reset to Defaults** button
+2. Confirm the action
+3. All styles will revert to the plugin's default values
+
+## CSS Values Format
+
+### Colors
+
+- Hex: `#0073aa`
+- RGB: `rgb(0, 115, 170)`
+- RGBA: `rgba(0, 115, 170, 0.1)`
+
+### Spacing
+
+- Pixels: `16px`
+- Rem: `1rem` (relative to root font size)
+- Em: `1em` (relative to parent font size)
+
+### Borders
+
+- Format: `width style color`
+- Example: `1px solid #ddd`
+- Example: `2px dashed #0073aa`
+
+### Border Radius
+
+- Small: `4px`
+- Large: `20px` (for pill shapes)
+- Percentage: `50%` (for circles)
+
+### Box Shadow
+
+- Format: `x-offset y-offset blur color`
+- Example: `0 4px 12px rgba(0, 0, 0, 0.1)`
+
+## Important Notes
+
+### !important Flag
+
+All CSS generated by the Style Editor automatically includes the `!important` flag. This ensures your custom styles override:
+
+- Theme styles
+- Plugin styles
+- Any other CSS on your site
+
+### Preview vs. Live
+
+- Changes in the editor are **preview only** until saved
+- The preview shows how filters will look with current input values
+- After saving, styles apply to all filters across your site
+
+### Browser Support
+
+The editor preview works best in modern browsers:
+
+- Chrome
+- Firefox
+- Safari
+- Edge
+
+## Examples
+
+### Modern Minimal Design
+
+```
+Labels: color: #666, font-weight: 500
+Borders: 1px solid #e0e0e0
+Border Radius: 8px
+Background: #fff
+```
+
+### Bold Accent Design
+
+```
+Labels: color: #000, font-weight: 700
+Borders: 2px solid #0073aa
+Border Radius: 4px
+Background: #f8f9fa
+Chips: background-color: #0073aa
+```
+
+### Custom Brand Colors
+
+```
+Primary: #0073aa (blue)
+Success: #28a745 (green)
+Hover: #005a87 (darker blue)
+Border: #e0e0e0 (light gray)
+```
+
+## Troubleshooting
+
+### Styles Not Applying
+
+1. Check that you clicked "Save Styles"
+2. Clear your browser cache
+3. Check for theme CSS conflicts
+
+### Preview Not Updating
+
+1. Ensure JavaScript is enabled
+2. Check browser console for errors
+3. Refresh the page
+
+### Defaults Not Loading
+
+1. Click "Reset to Defaults"
+2. Refresh the page
+3. Verify WordPress is up to date
+
+## Support
+
+For additional help:
+
+- Check the main plugin documentation
+- Review the shortcode reference
+- Contact plugin support

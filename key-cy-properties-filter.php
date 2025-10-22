@@ -65,6 +65,12 @@ class Key_CY_Properties_Filter
         require_once KCPF_INCLUDES_DIR . 'class-loop-renderer.php';
         require_once KCPF_INCLUDES_DIR . 'class-filter-renderer.php';
         require_once KCPF_INCLUDES_DIR . 'class-debug-viewer.php';
+        
+        // Style Editor classes
+        require_once KCPF_INCLUDES_DIR . 'class-style-settings-manager.php';
+        require_once KCPF_INCLUDES_DIR . 'class-css-generator.php';
+        require_once KCPF_INCLUDES_DIR . 'class-style-preview.php';
+        require_once KCPF_INCLUDES_DIR . 'class-style-editor.php';
     }
     
     /**
@@ -81,9 +87,10 @@ class Key_CY_Properties_Filter
         // Register AJAX handlers
         $this->registerAjaxHandlers();
         
-        // Initialize debug viewer (admin only)
+        // Initialize admin features
         if (is_admin()) {
             KCPF_Debug_Viewer::init();
+            KCPF_Style_Editor::init();
         }
     }
     
@@ -235,6 +242,11 @@ class Key_CY_Properties_Filter
             ['nouislider'],
             KCPF_VERSION
         );
+        
+        // Enqueue dynamic CSS from style editor
+        if (class_exists('KCPF_CSS_Generator')) {
+            wp_add_inline_style('kcpf-filters', KCPF_CSS_Generator::generate());
+        }
         
         // Enqueue noUiSlider JavaScript
         wp_enqueue_script(
