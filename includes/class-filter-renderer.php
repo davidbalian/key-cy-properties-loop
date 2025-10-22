@@ -585,9 +585,9 @@ class KCPF_Filter_Renderer
         ob_start();
         ?>
         <div class="kcpf-filter kcpf-filter-reset">
-            <a href="<?php echo esc_url(KCPF_URL_Manager::getResetUrl()); ?>" class="kcpf-reset-button">
+            <button type="button" class="kcpf-reset-button">
                 <?php echo esc_html($attrs['text']); ?>
-            </a>
+            </button>
         </div>
         <?php
         return ob_get_clean();

@@ -85,6 +85,38 @@
       }
     });
 
+    // Handle reset button clicks
+    $(document).on("click", ".kcpf-reset-button", function (e) {
+      e.preventDefault();
+      console.log("[KCPF] Reset button clicked");
+
+      // Clear all form fields
+      const $form = $(".kcpf-filters-form").first();
+      if ($form.length > 0) {
+        // Reset all inputs
+        $form.find("input[type='text']").val("");
+        $form.find("select").val("");
+        $form.find("input[type='checkbox']").prop("checked", false);
+        $form.find("input[type='radio']").prop("checked", false);
+
+        // Clear multiselect chips
+        $(".kcpf-chip").remove();
+
+        // Clear range sliders and inputs
+        $form.find(".kcpf-range-dropdown").removeClass("active");
+        $form.find(".kcpf-range-dropdown-menu").css({
+          display: "none",
+          visibility: "hidden",
+          opacity: "0",
+        });
+
+        // Submit form to reload with empty filters
+        $form.submit();
+      } else {
+        console.error("[KCPF] No form found - cannot reset filters");
+      }
+    });
+
     // Initialize infinite scroll
     initInfiniteScroll();
 
