@@ -146,78 +146,11 @@ class KCPF_Loop_Renderer
             }
         }
         
-        // Get sample property data for debugging
-        $sample_query = new WP_Query([
-            'post_type' => 'properties',
-            'posts_per_page' => 5,
-            'tax_query' => [
-                [
-                    'taxonomy' => 'purpose',
-                    'field' => 'slug',
-                    'terms' => 'sale'
-                ]
-            ]
-        ]);
-
-        $sample_data = [];
-        if ($sample_query->have_posts()) {
-            while ($sample_query->have_posts()) {
-                $sample_query->the_post();
-                $property_id = get_the_ID();
-                $bedrooms_value = get_post_meta($property_id, $bedroomsKey, true);
-                if (!empty($bedrooms_value)) {
-                    $sample_data[] = [
-                        'id' => $property_id,
-                        'title' => get_the_title(),
-                        'bedrooms_raw' => $bedrooms_value,
-                        'bedrooms_type' => gettype($bedrooms_value),
-                        'has_5_bedrooms' => strpos($bedrooms_value, '"5":"true"') !== false
-                    ];
-                }
-            }
-            wp_reset_postdata();
-        }
-
-        // Add more debug info
-        $debug_info = [
-            'bedroomsKey' => $bedroomsKey,
-            'raw_meta_query' => $query_args['meta_query'] ?? [],
-            'found_bedroom_query' => !empty($bedroom_query),
-            'filters_from_url' => KCPF_URL_Manager::getCurrentFilters(),
-            'sample_properties' => $sample_data
-        ];
         
         ?>
         <div class="kcpf-no-results">
             <p><?php esc_html_e('No properties found matching your criteria.', 'key-cy-properties-filter'); ?></p>
             
-            <div style="background: #f5f5f5; padding: 15px; margin: 20px 0; border: 1px solid #ddd; font-family: monospace; font-size: 13px;">
-                <h3 style="margin-top: 0;">Debug Information:</h3>
-                <div style="margin-bottom: 15px;">
-                    <strong>Current Filters:</strong>
-                    <pre style="background: #fff; padding: 10px; margin: 5px 0; overflow: auto;"><?php echo esc_html(print_r($filters, true)); ?></pre>
-                </div>
-                <div style="margin-bottom: 15px;">
-                    <strong>Bedroom Values:</strong>
-                    <pre style="background: #fff; padding: 10px; margin: 5px 0; overflow: auto;"><?php echo esc_html(print_r($filters['bedrooms'] ?? 'Not Set', true)); ?></pre>
-                </div>
-                <div style="margin-bottom: 15px;">
-                    <strong>Meta Key Being Used:</strong>
-                    <pre style="background: #fff; padding: 10px; margin: 5px 0; overflow: auto;"><?php echo esc_html($bedroomsKey); ?></pre>
-                </div>
-                <div style="margin-bottom: 15px;">
-                    <strong>Bedroom Query:</strong>
-                    <pre style="background: #fff; padding: 10px; margin: 5px 0; overflow: auto;"><?php echo esc_html(print_r($bedroom_query, true)); ?></pre>
-                </div>
-                <div style="margin-bottom: 15px;">
-                    <strong>Full Meta Query:</strong>
-                    <pre style="background: #fff; padding: 10px; margin: 5px 0; overflow: auto;"><?php echo esc_html(print_r($query_args['meta_query'] ?? [], true)); ?></pre>
-                </div>
-                <div style="margin-bottom: 15px;">
-                    <strong>Extra Debug Info:</strong>
-                    <pre style="background: #fff; padding: 10px; margin: 5px 0; overflow: auto;"><?php echo esc_html(print_r($debug_info, true)); ?></pre>
-                </div>
-            </div>
 
             <?php if (KCPF_URL_Manager::hasActiveFilters()) : ?>
                 <a href="<?php echo esc_url(KCPF_URL_Manager::getResetUrl()); ?>" class="kcpf-reset-link">

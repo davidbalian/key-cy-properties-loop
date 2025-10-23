@@ -23,7 +23,6 @@ class KCPF_Query_Handler
     {
         $filters = KCPF_URL_Manager::getCurrentFilters();
         
-        error_log('[KCPF] Query Handler - Filters from URL_Manager: ' . print_r($filters, true));
         
         $args = [
             'post_type' => 'properties',
@@ -50,7 +49,6 @@ class KCPF_Query_Handler
             $args['meta_query'] = $meta_query;
         }
         
-        error_log('[KCPF] Query Handler - Final query args: ' . print_r($args, true));
         
         return $args;
     }
@@ -111,7 +109,6 @@ class KCPF_Query_Handler
      */
     private static function buildMetaQuery($filters, $purpose = 'sale')
     {
-        error_log('[KCPF] buildMetaQuery called with filters: ' . print_r($filters, true) . ', purpose: ' . $purpose);
         $meta_query = ['relation' => 'AND'];
         
         // Price range filter - handle both regular and multi-unit properties
@@ -121,35 +118,18 @@ class KCPF_Query_Handler
         
         // Bedrooms filter - apply to both regular and multi-unit properties
         if (!empty($filters['bedrooms'])) {
-            error_log('[KCPF] ========== BEDROOMS FILTER DEBUG ==========');
-            error_log('[KCPF] Purpose: ' . $purpose);
-            error_log('[KCPF] Bedrooms Values: ' . print_r($filters['bedrooms'], true));
-
             $bedrooms_query = KCPF_MultiUnit_Query_Builder::buildBedroomsQuery($filters, $purpose);
             if (!empty($bedrooms_query)) {
                 $meta_query[] = $bedrooms_query;
-                error_log('[KCPF] Bedrooms query added to meta_query. Total meta_query relations: ' . count($meta_query));
-                error_log('[KCPF] Bedrooms query structure: ' . print_r($bedrooms_query, true));
             }
-            error_log('[KCPF] ===========================================');
-        } else {
-            error_log('[KCPF] No bedrooms filter applied - filters[bedrooms] is empty');
         }
         
         // Bathrooms filter - apply to both regular and multi-unit properties
         if (!empty($filters['bathrooms'])) {
-            error_log('[KCPF] ========== BATHROOMS FILTER DEBUG ==========');
-            error_log('[KCPF] Purpose: ' . $purpose);
-            error_log('[KCPF] Bathrooms Values: ' . print_r($filters['bathrooms'], true));
-
             $bathrooms_query = KCPF_MultiUnit_Query_Builder::buildBathroomsQuery($filters, $purpose);
             if (!empty($bathrooms_query)) {
                 $meta_query[] = $bathrooms_query;
-                error_log('[KCPF] Final bathrooms query: ' . print_r($bathrooms_query, true));
             }
-            error_log('[KCPF] ===========================================');
-        } else {
-            error_log('[KCPF] No bathrooms filter applied - filters[bathrooms] is empty');
         }
         
         // Covered area filter - handle both regular and multi-unit properties

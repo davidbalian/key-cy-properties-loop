@@ -155,8 +155,6 @@ class KCPF_MultiUnit_Query_Builder
         $bedroomsKey = KCPF_Field_Config::getMetaKey('bedrooms', $purpose);
         // Bedrooms should already be an array from URL_Manager
         $bedroomsValues = $filters['bedrooms'];
-        error_log('[KCPF] Processing bedrooms values: ' . print_r($bedroomsValues, true));
-        error_log('[KCPF] Using meta key: ' . $bedroomsKey);
 
         // Use exact same query format as the working debug tool
         $bedrooms_query = [
@@ -206,8 +204,6 @@ class KCPF_MultiUnit_Query_Builder
         $bathroomsKey = KCPF_Field_Config::getMetaKey('bathrooms', $purpose);
         // Bathrooms should already be an array from URL_Manager
         $bathroomsValues = $filters['bathrooms'];
-        error_log('[KCPF] Processing bathrooms values: ' . print_r($bathroomsValues, true));
-        error_log('[KCPF] Using meta key: ' . $bathroomsKey);
 
         // Use exact same query format as the working debug tool
         $bathrooms_query = [
