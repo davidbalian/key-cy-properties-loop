@@ -11,6 +11,7 @@ if (!defined('ABSPATH')) {
     exit;
 }
 
+if (!class_exists('KCPF_MultiUnit_Query_Builder')) {
 class KCPF_MultiUnit_Query_Builder
 {
     /**
@@ -175,8 +176,8 @@ class KCPF_MultiUnit_Query_Builder
                 ],
                 [
                     'key' => $bedroomsKey,
-                    'value' => 's:\d+:"' . preg_quote($bedroom, '/') . '";b:1;',
-                    'compare' => 'REGEXP',
+                    'value' => 'i:' . $bedroom . ';s:4:"true"',
+                    'compare' => 'LIKE',
                 ],
             ];
 
@@ -228,8 +229,8 @@ class KCPF_MultiUnit_Query_Builder
                 ],
                 [
                     'key' => $bathroomsKey,
-                    'value' => 's:\d+:"' . preg_quote($bathroom, '/') . '";b:1;',
-                    'compare' => 'REGEXP',
+                    'value' => 'i:' . $bathroom . ';s:4:"true"',
+                    'compare' => 'LIKE',
                 ],
             ];
 
@@ -346,5 +347,6 @@ class KCPF_MultiUnit_Query_Builder
         
         return $multiunit_query;
     }
+}
 }
 
