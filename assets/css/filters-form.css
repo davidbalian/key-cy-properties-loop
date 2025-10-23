@@ -16,6 +16,7 @@
 /* Filter Container */
 .kcpf-filter {
   margin-bottom: 0;
+  position: relative;
 }
 
 /* Hide all labels - they're now placeholders */
@@ -85,7 +86,7 @@
 
 /* Multi-Select Dropdown */
 .kcpf-multiselect-dropdown {
-  position: relative !important;
+  position: relative;
   width: 100%;
 }
 
@@ -188,7 +189,7 @@
   max-height: 300px;
   overflow-y: auto;
   z-index: 9999 !important;
-  display: none !important;
+  display: none;
   visibility: hidden;
   opacity: 0;
   transition: opacity 0.2s ease;
@@ -372,7 +373,7 @@
   border-radius: 0 0 20px 20px !important;
   padding: 1rem;
   z-index: 9999 !important;
-  display: none !important;
+  display: none;
   visibility: hidden;
   opacity: 0;
   transition: opacity 0.2s ease;

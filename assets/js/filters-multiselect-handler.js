@@ -61,10 +61,10 @@
           // Force show the menu with inline styles
           const $menu = $dropdown.find(".kcpf-multiselect-dropdown-menu");
           $menu.css({
-            display: "block !important",
-            visibility: "visible !important",
-            opacity: "1 !important",
-            "z-index": "99999 !important",
+            display: "block",
+            visibility: "visible",
+            opacity: "1",
+            "z-index": "99999",
           });
           console.log("[KCPF] Forced menu display with inline styles");
         } else {
