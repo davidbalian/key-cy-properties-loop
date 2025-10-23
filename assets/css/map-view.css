@@ -136,7 +136,7 @@
 
 .kcpf-map-sidebar .kcpf-property-card-sale .kcpf-property-image-sale {
   width: 100%;
-  height: 200px;
+  min-height: 200px;
 }
 
 .kcpf-map-sidebar .kcpf-property-card-sale .kcpf-property-content-sale {
@@ -145,7 +145,7 @@
 
 /* Rent cards: ensure consistent image height in map view */
 .kcpf-map-sidebar .kcpf-property-card-rent .kcpf-property-image-rent {
-  height: 200px !important;
+  min-height: 200px !important;
 }
 
 /* No Results */
