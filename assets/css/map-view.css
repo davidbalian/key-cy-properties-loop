@@ -237,11 +237,10 @@
    Info Window Card Styling
    ========================================================================== */
 
-.kcpf-info-window-wrapper {
+.kcpf-info-window-card {
   position: relative;
-  max-width: 350px;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-    "Helvetica Neue", Arial, sans-serif;
+  max-width: 400px;
+  margin: 0;
 }
 
 .kcpf-info-window-close {
@@ -255,13 +254,10 @@
   border-radius: 50%;
   cursor: pointer;
   font-size: 24px;
-  line-height: 1;
+  line-height: 32px;
+  text-align: center;
   color: #333;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   z-index: 10;
-  padding: 0;
   transition: all 0.2s ease;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
@@ -272,15 +268,9 @@
   transform: scale(1.1);
 }
 
-/* Remove default info window styles to match sidebar cards */
-.kcpf-info-window-wrapper .kcpf-property-card {
-  margin: 0;
-  max-width: 100%;
-}
-
 /* Ensure images display properly in info window */
-.kcpf-info-window-wrapper .kcpf-property-image-sale,
-.kcpf-info-window-wrapper .kcpf-property-image-rent {
+.kcpf-info-window-card .kcpf-property-image-sale,
+.kcpf-info-window-card .kcpf-property-image-rent {
   min-height: 200px;
 }
 

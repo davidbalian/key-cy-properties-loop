@@ -241,14 +241,19 @@ class KCPF_Map_Shortcode
         // Use the same card renderer as the sidebar, but hide multi-unit tables
         $cardHtml = KCPF_Map_Card_Renderer::renderCard($property_id, $purpose, true);
         
-        ob_start();
-        ?>
-        <div class="kcpf-info-window-wrapper">
-            <button class="kcpf-info-window-close" type="button">×</button>
-            <?php echo $cardHtml; ?>
-        </div>
-        <?php
-        return ob_get_clean();
+        // Inject close button into the card
+        $cardHtml = str_replace(
+            '<article class="kcpf-property-card',
+            '<article class="kcpf-property-card kcpf-info-window-card',
+            $cardHtml
+        );
+        $cardHtml = str_replace(
+            '<article class="kcpf-property-card kcpf-info-window-card',
+            '<article class="kcpf-property-card kcpf-info-window-card"><span class="kcpf-info-window-close">×</span>',
+            $cardHtml
+        );
+        
+        return $cardHtml;
     }
     
     /**
