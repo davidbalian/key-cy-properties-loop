@@ -87,8 +87,8 @@
         {
           zoom: 10,
           center: defaultCenter,
-          mapTypeControl: true,
-          streetViewControl: true,
+          mapTypeControl: false,
+          streetViewControl: false,
           fullscreenControl: true,
           zoomControl: true,
         }
