@@ -182,7 +182,7 @@
           window.location.pathname +
           (params.toString() ? "?" + params.toString() : "");
         window.history.pushState({ kcpfFilters: true }, "", newUrl);
-        
+
         // Use AJAX handler to load properties
         if (window.KCPF_AjaxHandler) {
           KCPF_AjaxHandler.loadProperties(params, false);
@@ -253,9 +253,10 @@
             // Single value - use simple parameter
             params.set(cleanKey, value[0]);
           } else {
-            // Multiple values - use array syntax
+            // Multiple values - append each value without [] brackets
+            // PHP automatically converts these to an array
             value.forEach(function (v) {
-              params.append(cleanKey + "[]", v);
+              params.append(cleanKey, v);
             });
           }
         } else {

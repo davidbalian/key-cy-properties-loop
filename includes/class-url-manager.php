@@ -38,8 +38,11 @@ class KCPF_URL_Manager
         ];
         
         // Log bedroom and bathroom filters specifically
+        error_log('[KCPF] URL_Manager - Checking all $_GET keys: ' . print_r(array_keys($_GET), true));
         error_log('[KCPF] URL_Manager - Raw $_GET bedrooms: ' . print_r($_GET['bedrooms'] ?? 'NOT_SET', true));
         error_log('[KCPF] URL_Manager - Raw $_GET bathrooms: ' . print_r($_GET['bathrooms'] ?? 'NOT_SET', true));
+        error_log('[KCPF] URL_Manager - Raw $_GET bedrooms[]: ' . print_r($_GET['bedrooms[]'] ?? 'NOT_SET', true));
+        error_log('[KCPF] URL_Manager - Raw $_GET bathrooms[]: ' . print_r($_GET['bathrooms[]'] ?? 'NOT_SET', true));
         error_log('[KCPF] URL_Manager - Processed bedrooms: ' . print_r($filters['bedrooms'], true));
         error_log('[KCPF] URL_Manager - Processed bathrooms: ' . print_r($filters['bathrooms'], true));
         error_log('[KCPF] URL_Manager - Bedrooms empty check: ' . (empty($filters['bedrooms']) ? 'EMPTY' : 'NOT_EMPTY'));
@@ -57,6 +60,16 @@ class KCPF_URL_Manager
      */
     public static function getParam($key, $default = '')
     {
+        // Special handling for bedrooms and bathrooms to debug
+        if ($key === 'bedrooms' || $key === 'bathrooms') {
+            error_log("[KCPF] getParam called for: $key");
+            error_log("[KCPF] isset(\$_GET[$key]): " . (isset($_GET[$key]) ? 'true' : 'false'));
+            if (isset($_GET[$key])) {
+                error_log("[KCPF] \$_GET[$key] value: " . print_r($_GET[$key], true));
+                error_log("[KCPF] \$_GET[$key] type: " . gettype($_GET[$key]));
+            }
+        }
+        
         if (!isset($_GET[$key]) || $_GET[$key] === '') {
             return $default;
         }

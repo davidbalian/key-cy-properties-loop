@@ -1,34 +1,48 @@
 # Bedroom & Bathroom Filter Debug Guide
 
+## Issue Identified and Fixed
+
+**Problem**: Bedroom and bathroom filters were returning all properties because the JavaScript was sending parameters as `bedrooms[]` and `bathrooms[]` with brackets in the key name.
+
+**Root Cause**: In `filters-form-manager.js` line 258, when multiple values were selected, the code was appending `cleanKey + "[]"` to URLSearchParams, creating keys like `bedrooms[]` instead of `bedrooms`.
+
+**Solution**: Changed line 258 from `params.append(cleanKey + "[]", v)` to `params.append(cleanKey, v)`. PHP automatically converts multiple parameters with the same name into an array.
+
 ## What I've Added
 
 I've added comprehensive logging to help diagnose why bedroom and bathroom filters are returning all properties. The logging covers:
 
 ### 1. JavaScript Console Logging
+
 - **AJAX Handler**: Logs all parameters being sent to the server
 - **Multiselect Handler**: Logs when bedroom/bathroom checkboxes are changed
 - **Parameter Details**: Shows specific bedroom/bathroom parameter values
 
 ### 2. PHP Server-Side Logging
+
 - **AJAX Manager**: Logs received filter parameters
-- **URL Manager**: Logs how filters are processed from $_GET
+- **URL Manager**: Logs how filters are processed from $\_GET
 - **Query Handler**: Detailed logging of bedroom/bathroom query construction
 - **Field Config**: Debug information about meta key mapping
 
 ## How to Test
 
 ### Step 1: Open Browser Console
+
 1. Go to your property filter page
 2. Open browser developer tools (F12)
 3. Go to the Console tab
 
 ### Step 2: Apply a Bedroom Filter
+
 1. Click on the Bedrooms filter dropdown
 2. Check one or more bedroom options (e.g., "2", "3")
 3. Watch the console for logs starting with `[KCPF]`
 
 ### Step 3: Check Console Output
+
 Look for these specific logs:
+
 ```
 [KCPF] Bedrooms filter changed
 [KCPF] bedrooms checked values: ["2", "3"]
@@ -37,7 +51,9 @@ Look for these specific logs:
 ```
 
 ### Step 4: Check Server Logs
+
 The server will log detailed information about:
+
 - What parameters are received
 - How they're processed
 - What meta keys are used
@@ -46,43 +62,57 @@ The server will log detailed information about:
 ## Common Issues to Look For
 
 ### 1. Parameters Not Being Sent
+
 If you see:
+
 ```
 [KCPF] Bedrooms parameter: null
 [KCPF] All bedroom parameters: []
 ```
+
 The JavaScript isn't collecting the filter values properly.
 
 ### 2. Parameters Not Being Received
+
 If you see in server logs:
+
 ```
 [KCPF] URL_Manager - Raw $_GET bedrooms: NOT_SET
-[KCPF] URL_Manager - Processed bedrooms: 
+[KCPF] URL_Manager - Processed bedrooms:
 ```
+
 The AJAX request isn't sending the parameters correctly.
 
 ### 3. Wrong Meta Keys
+
 If you see:
+
 ```
 [KCPF] Field Config Debug: Array ( [metaKey] => wrong_key )
 ```
+
 The field configuration isn't mapping to the correct database fields.
 
 ### 4. Empty Filter Values
+
 If you see:
+
 ```
 [KCPF] No bedrooms filter applied - filters[bedrooms] is empty
 ```
+
 The filters are being received but processed as empty.
 
 ## Expected Behavior
 
 ### For Sale Properties
+
 - Meta key should be: `bedrooms` and `bathrooms`
 - Query should use LIKE comparison
 - Multiple values should create OR conditions
 
-### For Rent Properties  
+### For Rent Properties
+
 - Meta key should be: `rent_bedrooms` and `rent_bathrooms`
 - Same query logic as sale properties
 
@@ -105,3 +135,35 @@ var_dump($bedroomConfig, $bathroomConfig);
 4. If logs show wrong values, we'll know where the issue is
 
 The logging will help us identify exactly where the bedroom/bathroom filter data is getting lost or processed incorrectly.
+
+## Fix Applied
+
+### files:assets/js/filters-form-manager.js
+
+**Line 258 changed from:**
+
+```javascript
+params.append(cleanKey + "[]", v);
+```
+
+**To:**
+
+```javascript
+params.append(cleanKey, v);
+```
+
+### Explanation
+
+When multiple bedroom/bathroom values are selected:
+
+- **Before**: Parameters were sent as `bedrooms[]=3&bedrooms[]=4`
+- **After**: Parameters are sent as `bedrooms=3&bedrooms=4`
+- **PHP Behavior**: PHP automatically converts multiple parameters with the same name into an array in `$_GET`
+
+This matches the expected URL format shown in the documentation:
+
+```
+/properties/?purpose=rent&price_min=500&price_max=2000&bedrooms=2&amenities[]=pool&amenities[]=parking
+```
+
+Note: The `amenities[]` syntax in the example is correct because amenities use a different form submission method. The bedroom/bathroom filters now use the simpler syntax without brackets.

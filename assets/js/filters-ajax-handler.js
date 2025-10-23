@@ -55,8 +55,12 @@
       console.log("[KCPF] Request timestamp:", new Date().toISOString());
 
       // Log bedroom and bathroom parameters specifically
-      console.log("[KCPF] Bedrooms parameter:", params.get("bedrooms"));
-      console.log("[KCPF] Bathrooms parameter:", params.get("bathrooms"));
+      // Note: PHP automatically converts multiple parameters with same name to an array
+      console.log("[KCPF] Bedrooms parameter (first):", params.get("bedrooms"));
+      console.log(
+        "[KCPF] Bathrooms parameter (first):",
+        params.get("bathrooms")
+      );
       console.log("[KCPF] All bedroom parameters:", params.getAll("bedrooms"));
       console.log(
         "[KCPF] All bathroom parameters:",
