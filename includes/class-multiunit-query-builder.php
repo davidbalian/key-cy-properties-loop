@@ -158,32 +158,33 @@ class KCPF_MultiUnit_Query_Builder
         error_log('[KCPF] Processing bedrooms values: ' . print_r($bedroomsValues, true));
         error_log('[KCPF] Using meta key: ' . $bedroomsKey);
 
-        // Build query to match bedroom values in JSON array - using exact format from debug tool
-        $bedrooms_query = ['relation' => 'OR'];
+        // Use exact same query format as the working debug tool
+        $bedrooms_query = [
+            'key' => $bedroomsKey,
+            'value' => '"' . $bedroomsValues[0] . '":"true"',
+            'compare' => 'LIKE'
+        ];
 
-        foreach ($bedroomsValues as $bedroom) {
-            error_log("[KCPF] Building query for bedroom value: " . $bedroom);
-            
-            // Match if this bedroom number is set to true in JSON format
-            $bedrooms_query[] = [
-                'key' => $bedroomsKey,
-                'value' => '"' . $bedroom . '":"true"',
-                'compare' => 'LIKE',
-            ];
-
-            // Fallback: try different serialization lengths for 9_plus
-            if ($bedroom === '9_plus') {
-                $bedrooms_query[] = [
+        // Fallback: try different serialization lengths for 9_plus
+        if ($bedroomsValues[0] === '9_plus') {
+            $bedrooms_query = [
+                'relation' => 'OR',
+                [
+                    'key' => $bedroomsKey,
+                    'value' => '"9_plus":"true"',
+                    'compare' => 'LIKE',
+                ],
+                [
                     'key' => $bedroomsKey,
                     'value' => 's:6:"9_plus";s:4:"true"',
                     'compare' => 'LIKE',
-                ];
-                $bedrooms_query[] = [
+                ],
+                [
                     'key' => $bedroomsKey,
                     'value' => 's:6:"9_plus";b:1',
                     'compare' => 'LIKE',
-                ];
-            }
+                ]
+            ];
         }
 
         return $bedrooms_query;
@@ -208,32 +209,33 @@ class KCPF_MultiUnit_Query_Builder
         error_log('[KCPF] Processing bathrooms values: ' . print_r($bathroomsValues, true));
         error_log('[KCPF] Using meta key: ' . $bathroomsKey);
 
-        // Build query to match bathroom values in JSON array - using exact format from debug tool
-        $bathrooms_query = ['relation' => 'OR'];
+        // Use exact same query format as the working debug tool
+        $bathrooms_query = [
+            'key' => $bathroomsKey,
+            'value' => '"' . $bathroomsValues[0] . '":"true"',
+            'compare' => 'LIKE'
+        ];
 
-        foreach ($bathroomsValues as $bathroom) {
-            error_log("[KCPF] Building query for bathroom value: " . $bathroom);
-            
-            // Match if this bathroom number is set to true in JSON format
-            $bathrooms_query[] = [
-                'key' => $bathroomsKey,
-                'value' => '"' . $bathroom . '":"true"',
-                'compare' => 'LIKE',
-            ];
-
-            // Fallback: try different serialization lengths for 9_plus
-            if ($bathroom === '9_plus') {
-                $bathrooms_query[] = [
+        // Fallback: try different serialization lengths for 9_plus
+        if ($bathroomsValues[0] === '9_plus') {
+            $bathrooms_query = [
+                'relation' => 'OR',
+                [
+                    'key' => $bathroomsKey,
+                    'value' => '"9_plus":"true"',
+                    'compare' => 'LIKE',
+                ],
+                [
                     'key' => $bathroomsKey,
                     'value' => 's:6:"9_plus";s:4:"true"',
                     'compare' => 'LIKE',
-                ];
-                $bathrooms_query[] = [
+                ],
+                [
                     'key' => $bathroomsKey,
                     'value' => 's:6:"9_plus";b:1',
                     'compare' => 'LIKE',
-                ];
-            }
+                ]
+            ];
         }
 
         return $bathrooms_query;
