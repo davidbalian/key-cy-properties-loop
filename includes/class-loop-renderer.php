@@ -57,11 +57,20 @@ class KCPF_Loop_Renderer
             echo '<div class="' . esc_attr($gridClass) . '" data-current-page="' . esc_attr($current_page) . '" data-max-pages="' . esc_attr($max_pages) . '">';
 
             // Show debug info if requested, even when results are found
-            if (defined('WP_DEBUG') && WP_DEBUG || (isset($_GET['debug_filters']) && $_GET['debug_filters'] === '1')) {
+            if (defined('WP_DEBUG') && WP_DEBUG || (isset($_REQUEST['debug_filters']) && $_REQUEST['debug_filters'] === '1')) {
                 echo '<div style="background: #d4edda; padding: 15px; margin: 20px 0; border: 2px solid #28a745; font-family: monospace; font-size: 12px;">';
                 echo '<h4 style="margin-top: 0; color: #155724;">✅ PROPERTIES FOUND - DEBUG INFO</h4>';
                 echo '<p><strong>Found ' . $query->found_posts . ' properties matching filters</strong></p>';
                 echo '<p><strong>Current page:</strong> ' . $current_page . ' of ' . $max_pages . '</p>';
+                echo '<p><strong>$_GET:</strong> ' . print_r($_GET, true) . '</p>';
+                echo '<p><strong>$_REQUEST:</strong> ' . print_r($_REQUEST, true) . '</p>';
+                echo '</div>';
+            }
+
+            // Show debug link when results are found but no debug is active
+            if (!(defined('WP_DEBUG') && WP_DEBUG) && !(isset($_REQUEST['debug_filters']) && $_REQUEST['debug_filters'] === '1')) {
+                echo '<div style="background: #e3f2fd; padding: 8px; margin: 10px 0; border: 1px solid #2196f3; text-align: center; font-size: 12px;">';
+                echo '<p style="margin: 0;">🔍 <a href="' . esc_url(add_query_arg('debug_filters', '1')) . '" style="color: #1976d2;">Enable Debug Mode</a> to see detailed filter analysis</p>';
                 echo '</div>';
             }
 
@@ -214,7 +223,18 @@ class KCPF_Loop_Renderer
         <div class="kcpf-no-results">
             <p><?php esc_html_e('No properties found matching your criteria.', 'key-cy-properties-filter'); ?></p>
 
-            <?php if (defined('WP_DEBUG') && WP_DEBUG || (isset($_GET['debug_filters']) && $_GET['debug_filters'] === '1')): ?>
+            <!-- Quick debug link -->
+            <div style="background: #e3f2fd; padding: 10px; margin: 10px 0; border: 1px solid #2196f3; text-align: center;">
+                <p style="margin: 0; font-size: 14px;">
+                    <strong>🔍 Debug Mode:</strong>
+                    <a href="<?php echo esc_url(add_query_arg('debug_filters', '1')); ?>" style="color: #1976d2; text-decoration: none; font-weight: bold;">
+                        Enable Debug Mode
+                    </a>
+                    (Shows detailed filter analysis)
+                </p>
+            </div>
+
+            <?php if (defined('WP_DEBUG') && WP_DEBUG || (isset($_REQUEST['debug_filters']) && $_REQUEST['debug_filters'] === '1')): ?>
             <div style="background: #fff3cd; padding: 20px; margin: 20px 0; border: 2px solid #ffc107; font-family: monospace; font-size: 12px; line-height: 1.4;">
                 <h3 style="margin-top: 0; color: #856404;">🔍 BEDROOM/BATHROOM FILTER DEBUG</h3>
 

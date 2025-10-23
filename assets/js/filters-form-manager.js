@@ -55,7 +55,14 @@
      * Handle form submission
      */
     handleFormSubmission: function () {
-      // Always use AJAX for form submission
+      // Check if debug mode is enabled before binding AJAX
+      const urlParams = new URLSearchParams(window.location.search);
+      if (urlParams.get("debug_filters") === "1") {
+        console.log("[KCPF] Debug mode detected - skipping AJAX form handling");
+        return; // Don't bind AJAX handlers in debug mode
+      }
+
+      // Always use AJAX for form submission (except in debug mode)
       $(document).on("submit", ".kcpf-filters-form", function (e) {
         e.preventDefault();
         console.log("[KCPF] Form submit event triggered");
@@ -67,6 +74,15 @@
      * Handle apply button clicks
      */
     handleApplyButton: function () {
+      // Check if debug mode is enabled before binding
+      const urlParams = new URLSearchParams(window.location.search);
+      if (urlParams.get("debug_filters") === "1") {
+        console.log(
+          "[KCPF] Debug mode detected - skipping apply button AJAX handling"
+        );
+        return; // Don't bind AJAX handlers in debug mode
+      }
+
       $(document).on("click", ".kcpf-apply-button", function (e) {
         e.preventDefault();
         console.log("[KCPF] Apply button clicked");
@@ -321,6 +337,15 @@
      */
     processFormSubmission: function (form) {
       console.log("[KCPF] Form submitted, processing...");
+
+      // Check if debug mode is enabled - if so, don't use AJAX
+      const urlParams = new URLSearchParams(window.location.search);
+      if (urlParams.get("debug_filters") === "1") {
+        console.log(
+          "[KCPF] Debug mode detected - allowing normal form submission"
+        );
+        return true; // Allow normal form submission for debugging
+      }
 
       // Group form values by field name
       const formData = {};
