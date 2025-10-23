@@ -263,6 +263,11 @@
   min-height: 200px !important;
 }
 
+/* Hide multi-unit tables in info window */
+.kcpf-info-window-card .kcpf-multiunit-section {
+  display: none;
+}
+
 /* ==========================================================================
    Responsive Design
    ========================================================================== */
