@@ -286,17 +286,16 @@
         const value = formData[key];
 
         if (Array.isArray(value)) {
-          // Remove [] from key name if present
-          const cleanKey = key.replace(/\[\]$/, "");
+          // Use array notation for multiple values
+          const arrayKey = key + "[]";
 
           if (value.length === 1) {
-            // Single value - use simple parameter
-            params.set(cleanKey, value[0]);
+            // Single value in array - use array notation
+            params.set(arrayKey, value[0]);
           } else {
-            // Multiple values - append each value without [] brackets
-            // PHP automatically converts these to an array
+            // Multiple values - use array notation
             value.forEach(function (v) {
-              params.append(cleanKey, v);
+              params.append(arrayKey, v);
             });
           }
         } else {

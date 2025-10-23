@@ -62,10 +62,17 @@ class KCPF_URL_Manager
     {
         // Special handling for bedrooms and bathrooms to collect multiple values
         if ($key === 'bedrooms' || $key === 'bathrooms') {
-            // Check for multiple values with same key (bedroom=2&bedroom=3&bedroom=5)
-            $multiple_values = [];
+            // Check for array values (bedroom[]=2&bedroom[]=3&bedroom[]=5)
+            if (isset($_GET[$key]) && is_array($_GET[$key])) {
+                $values = array_map('sanitize_text_field', $_GET[$key]);
+                // Debug logging
+                error_log("[KCPF] getParam called for: $key");
+                error_log("[KCPF] Array values found: " . print_r($values, true));
+                return count($values) === 1 ? $values[0] : $values;
+            }
 
-            // Parse query string to find all instances of this parameter
+            // Fallback: check for multiple values with same key (for backward compatibility)
+            $multiple_values = [];
             if (isset($_SERVER['QUERY_STRING'])) {
                 parse_str($_SERVER['QUERY_STRING'], $query_params);
                 if (isset($query_params[$key]) && is_array($query_params[$key])) {
@@ -78,11 +85,6 @@ class KCPF_URL_Manager
             // Debug logging
             error_log("[KCPF] getParam called for: $key");
             error_log("[KCPF] Multiple values found: " . print_r($multiple_values, true));
-            error_log("[KCPF] isset(\$_GET[$key]): " . (isset($_GET[$key]) ? 'true' : 'false'));
-            if (isset($_GET[$key])) {
-                error_log("[KCPF] \$_GET[$key] value: " . print_r($_GET[$key], true));
-                error_log("[KCPF] \$_GET[$key] type: " . gettype($_GET[$key]));
-            }
 
             if (!empty($multiple_values)) {
                 return count($multiple_values) === 1 ? $multiple_values[0] : $multiple_values;
