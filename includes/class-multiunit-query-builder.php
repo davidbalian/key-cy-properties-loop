@@ -161,23 +161,27 @@ class KCPF_MultiUnit_Query_Builder
         $bedrooms_query = ['relation' => 'OR'];
 
         foreach ($bedroomsValues as $bedroom) {
-            // PHP array format: a:5:{i:1;b:0;i:2;b:1;i:3;b:0;i:4;b:0;i:5;b:1;}
-            // Or simplified: a:1:{i:5;b:1;} for single bedroom
-            $bedrooms_query[] = [
-                'key' => $bedroomsKey,
-                'value' => 'i:' . $bedroom . ';b:1',
-                'compare' => 'LIKE',
-            ];
-
-            // Also try with string true
+            // PHP array string format: i:5;s:4:"true" (this works based on debug output)
             $bedrooms_query[] = [
                 'key' => $bedroomsKey,
                 'value' => 'i:' . $bedroom . ';s:4:"true"',
                 'compare' => 'LIKE',
             ];
 
-            // Handle 8_plus and 9_plus
+            // Also try with boolean format as fallback
+            $bedrooms_query[] = [
+                'key' => $bedroomsKey,
+                'value' => 'i:' . $bedroom . ';b:1',
+                'compare' => 'LIKE',
+            ];
+
+            // Handle 8_plus and 9_plus with correct string format
             if ($bedroom === '8_plus') {
+                $bedrooms_query[] = [
+                    'key' => $bedroomsKey,
+                    'value' => 's:6:"8_plus";s:4:"true"',
+                    'compare' => 'LIKE',
+                ];
                 $bedrooms_query[] = [
                     'key' => $bedroomsKey,
                     'value' => 'i:8_plus;s:4:"true"',
@@ -189,6 +193,11 @@ class KCPF_MultiUnit_Query_Builder
                     'compare' => 'LIKE',
                 ];
             } elseif ($bedroom === '9_plus') {
+                $bedrooms_query[] = [
+                    'key' => $bedroomsKey,
+                    'value' => 's:6:"9_plus";s:4:"true"',
+                    'compare' => 'LIKE',
+                ];
                 $bedrooms_query[] = [
                     'key' => $bedroomsKey,
                     'value' => 'i:9_plus;s:4:"true"',
@@ -227,22 +236,27 @@ class KCPF_MultiUnit_Query_Builder
         $bathrooms_query = ['relation' => 'OR'];
 
         foreach ($bathroomsValues as $bathroom) {
-            // PHP array format: a:5:{i:1;b:0;i:2;b:1;i:3;b:0;i:4;b:0;i:5;b:1;}
-            $bathrooms_query[] = [
-                'key' => $bathroomsKey,
-                'value' => 'i:' . $bathroom . ';b:1',
-                'compare' => 'LIKE',
-            ];
-
-            // Also try with string true
+            // PHP array string format: i:5;s:4:"true" (this works based on debug output)
             $bathrooms_query[] = [
                 'key' => $bathroomsKey,
                 'value' => 'i:' . $bathroom . ';s:4:"true"',
                 'compare' => 'LIKE',
             ];
 
-            // Handle 8_plus and 9_plus
+            // Also try with boolean format as fallback
+            $bathrooms_query[] = [
+                'key' => $bathroomsKey,
+                'value' => 'i:' . $bathroom . ';b:1',
+                'compare' => 'LIKE',
+            ];
+
+            // Handle 8_plus and 9_plus with correct string format
             if ($bathroom === '8_plus') {
+                $bathrooms_query[] = [
+                    'key' => $bathroomsKey,
+                    'value' => 's:6:"8_plus";s:4:"true"',
+                    'compare' => 'LIKE',
+                ];
                 $bathrooms_query[] = [
                     'key' => $bathroomsKey,
                     'value' => 'i:8_plus;s:4:"true"',
@@ -254,6 +268,11 @@ class KCPF_MultiUnit_Query_Builder
                     'compare' => 'LIKE',
                 ];
             } elseif ($bathroom === '9_plus') {
+                $bathrooms_query[] = [
+                    'key' => $bathroomsKey,
+                    'value' => 's:6:"9_plus";s:4:"true"',
+                    'compare' => 'LIKE',
+                ];
                 $bathrooms_query[] = [
                     'key' => $bathroomsKey,
                     'value' => 'i:9_plus;s:4:"true"',
