@@ -38,14 +38,6 @@
         // If current dropdown is active, close it and return
         if (isActive) {
           $dropdown.removeClass("active");
-          // Clear inline styles that were set when opening
-          const $menu = $dropdown.find(".kcpf-multiselect-dropdown-menu");
-          $menu.css({
-            display: "",
-            visibility: "",
-            opacity: "",
-            "z-index": "",
-          });
           console.log("[KCPF] Dropdown closed");
           return;
         }
@@ -54,35 +46,12 @@
         $(".kcpf-multiselect-dropdown").removeClass("active");
         $(".kcpf-range-dropdown").removeClass("active");
 
-        // Clear inline styles from all dropdown menus
-        $(".kcpf-multiselect-dropdown-menu, .kcpf-range-dropdown-menu").css({
-          display: "",
-          visibility: "",
-          opacity: "",
-          "z-index": "",
-        });
-
         // Open current dropdown
         $dropdown.addClass("active");
         console.log(
           "[KCPF] Dropdown opened for:",
           $dropdown.data("filter-name")
         );
-        console.log("[KCPF] Dropdown element:", $dropdown[0]);
-        console.log(
-          "[KCPF] Menu element:",
-          $dropdown.find(".kcpf-multiselect-dropdown-menu")[0]
-        );
-
-        // Force show the menu with inline styles
-        const $menu = $dropdown.find(".kcpf-multiselect-dropdown-menu");
-        $menu.css({
-          display: "block",
-          visibility: "visible",
-          opacity: "1",
-          "z-index": "99999",
-        });
-        console.log("[KCPF] Forced menu display with inline styles");
       });
     },
 
@@ -99,14 +68,6 @@
         // If current dropdown is active, close it and return
         if (isActive) {
           $dropdown.removeClass("active");
-          // Clear inline styles that were set when opening
-          const $menu = $dropdown.find(".kcpf-range-dropdown-menu");
-          $menu.css({
-            display: "",
-            visibility: "",
-            opacity: "",
-            "z-index": "",
-          });
           console.log("[KCPF] Range dropdown closed");
           return;
         }
@@ -114,14 +75,6 @@
         // Close all other dropdowns
         $(".kcpf-multiselect-dropdown").removeClass("active");
         $(".kcpf-range-dropdown").removeClass("active");
-
-        // Clear inline styles from all dropdown menus
-        $(".kcpf-multiselect-dropdown-menu, .kcpf-range-dropdown-menu").css({
-          display: "",
-          visibility: "",
-          opacity: "",
-          "z-index": "",
-        });
 
         // Open current dropdown
         $dropdown.addClass("active");
@@ -136,23 +89,9 @@
       $(document).on("click", function (e) {
         if (!$(e.target).closest(".kcpf-multiselect-dropdown").length) {
           $(".kcpf-multiselect-dropdown").removeClass("active");
-          // Clear inline styles from multiselect dropdown menus
-          $(".kcpf-multiselect-dropdown-menu").css({
-            display: "",
-            visibility: "",
-            opacity: "",
-            "z-index": "",
-          });
         }
         if (!$(e.target).closest(".kcpf-range-dropdown").length) {
           $(".kcpf-range-dropdown").removeClass("active");
-          // Clear inline styles from range dropdown menus
-          $(".kcpf-range-dropdown-menu").css({
-            display: "",
-            visibility: "",
-            opacity: "",
-            "z-index": "",
-          });
         }
       });
     },
