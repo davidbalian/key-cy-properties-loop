@@ -263,20 +263,6 @@ class KCPF_Filter_Renderer
             
             $price_min = KCPF_URL_Manager::getFilterValue('price_min');
             $price_max = KCPF_URL_Manager::getFilterValue('price_max');
-            
-            // Calculate display value with euro symbol
-            $display_value = '';
-            if ($price_min || $price_max) {
-                $min_display = $price_min ? '€' . number_format($price_min) : '';
-                $max_display = $price_max ? '€' . number_format($price_max) : '';
-                if ($min_display && $max_display) {
-                    $display_value = $min_display . ' - ' . $max_display;
-                } elseif ($min_display) {
-                    $display_value = 'From ' . $min_display;
-                } elseif ($max_display) {
-                    $display_value = 'Up to ' . $max_display;
-                }
-            }
         } catch (Exception $e) {
             error_log('KCPF Price Filter Error: ' . $e->getMessage());
             return '';
@@ -288,11 +274,7 @@ class KCPF_Filter_Renderer
             <div class="kcpf-range-dropdown">
                 <div class="kcpf-range-trigger">
                     <div class="kcpf-range-display">
-                        <?php if ($display_value) : ?>
-                            <span><?php echo esc_html($display_value); ?></span>
-                        <?php else : ?>
-                            <span class="kcpf-placeholder"><?php esc_html_e('Price Range', 'key-cy-properties-filter'); ?></span>
-                        <?php endif; ?>
+                        <span class="kcpf-placeholder"><?php esc_html_e('Price Range', 'key-cy-properties-filter'); ?></span>
                     </div>
                     <span class="kcpf-multiselect-arrow">▼</span>
                 </div>
@@ -784,20 +766,6 @@ class KCPF_Filter_Renderer
             
             $area_min = KCPF_URL_Manager::getFilterValue('covered_area_min');
             $area_max = KCPF_URL_Manager::getFilterValue('covered_area_max');
-            
-            // Calculate display value
-            $display_value = '';
-            if ($area_min || $area_max) {
-                $min_display = $area_min ? number_format($area_min) : '';
-                $max_display = $area_max ? number_format($area_max) : '';
-                if ($min_display && $max_display) {
-                    $display_value = $min_display . ' - ' . $max_display . ' m²';
-                } elseif ($min_display) {
-                    $display_value = 'From ' . $min_display . ' m²';
-                } elseif ($max_display) {
-                    $display_value = 'Up to ' . $max_display . ' m²';
-                }
-            }
         } catch (Exception $e) {
             error_log('KCPF Covered Area Filter Error: ' . $e->getMessage());
             return '';
@@ -809,11 +777,7 @@ class KCPF_Filter_Renderer
             <div class="kcpf-range-dropdown">
                 <div class="kcpf-range-trigger">
                     <div class="kcpf-range-display">
-                        <?php if ($display_value) : ?>
-                            <span><?php echo esc_html($display_value); ?></span>
-                        <?php else : ?>
-                            <span class="kcpf-placeholder"><?php esc_html_e('Covered Area, m²', 'key-cy-properties-filter'); ?></span>
-                        <?php endif; ?>
+                        <span class="kcpf-placeholder"><?php esc_html_e('Covered Area, m²', 'key-cy-properties-filter'); ?></span>
                     </div>
                     <span class="kcpf-multiselect-arrow">▼</span>
                 </div>
@@ -900,20 +864,6 @@ class KCPF_Filter_Renderer
             
             $plot_min = KCPF_URL_Manager::getFilterValue('plot_area_min');
             $plot_max = KCPF_URL_Manager::getFilterValue('plot_area_max');
-            
-            // Calculate display value
-            $display_value = '';
-            if ($plot_min || $plot_max) {
-                $min_display = $plot_min ? number_format($plot_min) : '';
-                $max_display = $plot_max ? number_format($plot_max) : '';
-                if ($min_display && $max_display) {
-                    $display_value = $min_display . ' - ' . $max_display . ' m²';
-                } elseif ($min_display) {
-                    $display_value = 'From ' . $min_display . ' m²';
-                } elseif ($max_display) {
-                    $display_value = 'Up to ' . $max_display . ' m²';
-                }
-            }
         } catch (Exception $e) {
             error_log('KCPF Plot Area Filter Error: ' . $e->getMessage());
             return '';
@@ -925,11 +875,7 @@ class KCPF_Filter_Renderer
             <div class="kcpf-range-dropdown">
                 <div class="kcpf-range-trigger">
                     <div class="kcpf-range-display">
-                        <?php if ($display_value) : ?>
-                            <span><?php echo esc_html($display_value); ?></span>
-                        <?php else : ?>
-                            <span class="kcpf-placeholder"><?php esc_html_e('Plot Area, m²', 'key-cy-properties-filter'); ?></span>
-                        <?php endif; ?>
+                        <span class="kcpf-placeholder"><?php esc_html_e('Plot Area, m²', 'key-cy-properties-filter'); ?></span>
                     </div>
                     <span class="kcpf-multiselect-arrow">▼</span>
                 </div>
