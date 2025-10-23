@@ -19,16 +19,17 @@ function debug_bedroom_filter() {
 
     $purpose = isset($_GET['purpose']) ? sanitize_text_field($_GET['purpose']) : 'sale';
 
-    // Handle multiple bedroom values by parsing query string
+    // Handle multiple bedroom values (comma-separated)
     $bedroom_values = [];
-    if (isset($_SERVER['QUERY_STRING'])) {
-        parse_str($_SERVER['QUERY_STRING'], $query_params);
-        if (isset($query_params['bedroom'])) {
-            if (is_array($query_params['bedroom'])) {
-                $bedroom_values = array_map('sanitize_text_field', $query_params['bedroom']);
-            } elseif (!empty($query_params['bedroom'])) {
-                $bedroom_values = [sanitize_text_field($query_params['bedroom'])];
-            }
+    if (isset($_GET['bedroom']) && !empty($_GET['bedroom'])) {
+        $bedroom_param = sanitize_text_field($_GET['bedroom']);
+        if (strpos($bedroom_param, ',') !== false) {
+            // Multiple values separated by commas
+            $bedroom_values = array_map('trim', explode(',', $bedroom_param));
+            $bedroom_values = array_map('sanitize_text_field', $bedroom_values);
+        } else {
+            // Single value
+            $bedroom_values = [sanitize_text_field($bedroom_param)];
         }
     }
 
@@ -286,8 +287,7 @@ function debug_bedroom_filter() {
     echo '<p><strong>Usage:</strong></p>';
     echo '<ul>';
     echo '<li>Single value: <code>?bedroom=2&purpose=sale</code></li>';
-    echo '<li>Multiple values: <code>?bedroom=2&bedroom=3&bedroom=5&purpose=sale</code></li>';
-    echo '<li>Or: <code>?bedroom[]=2&bedroom[]=3&bedroom[]=5&purpose=sale</code></li>';
+    echo '<li>Multiple values: <code>?bedroom=2,3,5&purpose=sale</code></li>';
     echo '</ul>';
     echo '<p><strong>Available bedroom values:</strong> 1, 2, 3, 4, 5, 6, 7, 8, 9_plus</p>';
     echo '<p><strong>Available purposes:</strong> sale, rent</p>';

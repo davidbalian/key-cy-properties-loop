@@ -286,17 +286,12 @@
         const value = formData[key];
 
         if (Array.isArray(value)) {
-          // Use array notation for multiple values
-          const arrayKey = key + "[]";
-
           if (value.length === 1) {
-            // Single value in array - use array notation
-            params.set(arrayKey, value[0]);
+            // Single value
+            params.set(key, value[0]);
           } else {
-            // Multiple values - use array notation
-            value.forEach(function (v) {
-              params.append(arrayKey, v);
-            });
+            // Multiple values - comma separated
+            params.set(key, value.join(","));
           }
         } else {
           // Single value

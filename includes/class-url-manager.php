@@ -60,34 +60,26 @@ class KCPF_URL_Manager
      */
     public static function getParam($key, $default = '')
     {
-        // Special handling for bedrooms and bathrooms to collect multiple values
+        // Special handling for bedrooms and bathrooms to parse comma-separated values
         if ($key === 'bedrooms' || $key === 'bathrooms') {
-            // Check for array values (bedroom[]=2&bedroom[]=3&bedroom[]=5)
-            if (isset($_GET[$key]) && is_array($_GET[$key])) {
-                $values = array_map('sanitize_text_field', $_GET[$key]);
-                // Debug logging
-                error_log("[KCPF] getParam called for: $key");
-                error_log("[KCPF] Array values found: " . print_r($values, true));
-                return count($values) === 1 ? $values[0] : $values;
-            }
-
-            // Fallback: check for multiple values with same key (for backward compatibility)
-            $multiple_values = [];
-            if (isset($_SERVER['QUERY_STRING'])) {
-                parse_str($_SERVER['QUERY_STRING'], $query_params);
-                if (isset($query_params[$key]) && is_array($query_params[$key])) {
-                    $multiple_values = array_map('sanitize_text_field', $query_params[$key]);
-                } elseif (isset($query_params[$key]) && !empty($query_params[$key])) {
-                    $multiple_values = [sanitize_text_field($query_params[$key])];
+            // Check for comma-separated values (bedroom=2,3,5)
+            if (isset($_GET[$key]) && !empty($_GET[$key])) {
+                $value = sanitize_text_field($_GET[$key]);
+                if (strpos($value, ',') !== false) {
+                    // Multiple values separated by commas
+                    $values = array_map('trim', explode(',', $value));
+                    $values = array_map('sanitize_text_field', $values);
+                    // Debug logging
+                    error_log("[KCPF] getParam called for: $key");
+                    error_log("[KCPF] Comma-separated values found: " . print_r($values, true));
+                    return $values;
+                } else {
+                    // Single value
+                    // Debug logging
+                    error_log("[KCPF] getParam called for: $key");
+                    error_log("[KCPF] Single value found: $value");
+                    return $value;
                 }
-            }
-
-            // Debug logging
-            error_log("[KCPF] getParam called for: $key");
-            error_log("[KCPF] Multiple values found: " . print_r($multiple_values, true));
-
-            if (!empty($multiple_values)) {
-                return count($multiple_values) === 1 ? $multiple_values[0] : $multiple_values;
             }
         }
 
