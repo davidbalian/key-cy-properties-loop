@@ -52,11 +52,6 @@
 
       // Setup event handlers
       this.setupEventHandlers();
-
-      // Initialize multiselect handler for filter dropdowns
-      if (typeof KCPF_MultiselectHandler !== "undefined") {
-        KCPF_MultiselectHandler.init();
-      }
     },
 
     /**

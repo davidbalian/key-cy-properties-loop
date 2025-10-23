@@ -16,146 +16,60 @@
      * Initialize multiselect dropdowns
      */
     init: function () {
-      console.log("[KCPF] Multiselect Handler starting initialization...");
-      console.log("[KCPF] jQuery version:", $.fn.jquery);
-      console.log("[KCPF] Document ready state:", document.readyState);
-
-      const multiselectTriggers = $(".kcpf-multiselect-trigger").length;
-      const multiselectDropdowns = $(".kcpf-multiselect-dropdown").length;
-      const rangeTriggers = $(".kcpf-range-trigger").length;
-      const rangeDropdowns = $(".kcpf-range-dropdown").length;
-
-      console.log("[KCPF] Found multiselect triggers:", multiselectTriggers);
-      console.log("[KCPF] Found multiselect dropdowns:", multiselectDropdowns);
-      console.log("[KCPF] Found range triggers:", rangeTriggers);
-      console.log("[KCPF] Found range dropdowns:", rangeDropdowns);
-
-      // Setup handlers (delegated events work even if elements don't exist yet)
       this.handleDropdownToggle();
       this.handleRangeDropdownToggle();
       this.handleOutsideClick();
       this.handleChipRemoval();
       this.handleCheckboxChange();
-
-      console.log("[KCPF] Multiselect Handler initialized successfully");
+      console.log("[KCPF] Multiselect Handler initialized");
     },
 
     /**
      * Handle dropdown toggle
      */
     handleDropdownToggle: function () {
-      console.log("[KCPF] Setting up dropdown toggle handler");
+      $(document).on("click", ".kcpf-multiselect-trigger", function (e) {
+        e.stopPropagation();
+        console.log("[KCPF] Dropdown trigger clicked");
+        const $dropdown = $(this).closest(".kcpf-multiselect-dropdown");
+        const isActive = $dropdown.hasClass("active");
 
-      // Use delegated event handler for trigger clicks
-      $(document).on(
-        "click",
-        ".kcpf-multiselect-trigger, .kcpf-multiselect-trigger *",
-        function (e) {
-          // Don't toggle if clicking on a chip remove button
-          if (
-            $(e.target).hasClass("kcpf-chip-remove") ||
-            $(e.target).closest(".kcpf-chip-remove").length
-          ) {
-            return;
-          }
+        // Close all dropdowns
+        $(".kcpf-multiselect-dropdown").removeClass("active");
+        $(".kcpf-range-dropdown").removeClass("active");
 
-          e.stopPropagation();
-          console.log("[KCPF] Dropdown trigger clicked");
-          console.log("[KCPF] Clicked element:", e.target);
-
-          const $trigger = $(e.target).closest(".kcpf-multiselect-trigger");
-          console.log("[KCPF] Found trigger:", $trigger[0]);
-
-          const $dropdown = $trigger.closest(".kcpf-multiselect-dropdown");
-          console.log("[KCPF] Found dropdown:", $dropdown[0]);
-          console.log(
-            "[KCPF] Dropdown classes before:",
-            $dropdown.attr("class")
-          );
-
-          if ($dropdown.length === 0) {
-            console.error("[KCPF] No dropdown found!");
-            return;
-          }
-
-          const isActive = $dropdown.hasClass("active");
-          console.log("[KCPF] Is active:", isActive);
-
-          // If current dropdown is active, close it and return
-          if (isActive) {
-            $dropdown.removeClass("active");
-            console.log("[KCPF] Dropdown closed");
-            console.log(
-              "[KCPF] Dropdown classes after close:",
-              $dropdown.attr("class")
-            );
-            return;
-          }
-
-          // Close all other dropdowns
-          $(".kcpf-multiselect-dropdown").removeClass("active");
-          $(".kcpf-range-dropdown").removeClass("active");
-
-          // Open current dropdown
+        // Toggle current dropdown
+        if (!isActive) {
           $dropdown.addClass("active");
-          console.log(
-            "[KCPF] Dropdown opened for:",
-            $dropdown.data("filter-name")
-          );
-          console.log(
-            "[KCPF] Dropdown classes after open:",
-            $dropdown.attr("class")
-          );
-
-          // Monitor for class changes
-          setTimeout(() => {
-            console.log("[KCPF] Classes after 100ms:", $dropdown.attr("class"));
-          }, 100);
-
-          setTimeout(() => {
-            console.log("[KCPF] Classes after 500ms:", $dropdown.attr("class"));
-          }, 500);
+          console.log("[KCPF] Dropdown opened");
+        } else {
+          console.log("[KCPF] Dropdown closed");
         }
-      );
+      });
     },
 
     /**
      * Handle range dropdown toggle
      */
     handleRangeDropdownToggle: function () {
-      $(document).on(
-        "click",
-        ".kcpf-range-trigger, .kcpf-range-trigger *",
-        function (e) {
-          e.stopPropagation();
-          console.log("[KCPF] Range dropdown trigger clicked");
+      $(document).on("click", ".kcpf-range-trigger", function (e) {
+        e.stopPropagation();
+        console.log("[KCPF] Range dropdown trigger clicked");
+        const $dropdown = $(this).closest(".kcpf-range-dropdown");
+        const isActive = $dropdown.hasClass("active");
 
-          const $trigger = $(e.target).closest(".kcpf-range-trigger");
-          const $dropdown = $trigger.closest(".kcpf-range-dropdown");
+        // Close all dropdowns
+        $(".kcpf-multiselect-dropdown").removeClass("active");
+        $(".kcpf-range-dropdown").removeClass("active");
 
-          if ($dropdown.length === 0) {
-            console.error("[KCPF] No range dropdown found!");
-            return;
-          }
-
-          const isActive = $dropdown.hasClass("active");
-
-          // If current dropdown is active, close it and return
-          if (isActive) {
-            $dropdown.removeClass("active");
-            console.log("[KCPF] Range dropdown closed");
-            return;
-          }
-
-          // Close all other dropdowns
-          $(".kcpf-multiselect-dropdown").removeClass("active");
-          $(".kcpf-range-dropdown").removeClass("active");
-
-          // Open current dropdown
+        // Toggle current dropdown
+        if (!isActive) {
           $dropdown.addClass("active");
           console.log("[KCPF] Range dropdown opened");
+        } else {
+          console.log("[KCPF] Range dropdown closed");
         }
-      );
+      });
     },
 
     /**
@@ -163,16 +77,10 @@
      */
     handleOutsideClick: function () {
       $(document).on("click", function (e) {
-        // Don't close if clicking on a dropdown element or its children
-        const $clicked = $(e.target);
-        const isMultiselectDropdown =
-          $clicked.closest(".kcpf-multiselect-dropdown").length > 0;
-        const isRangeDropdown =
-          $clicked.closest(".kcpf-range-dropdown").length > 0;
-
-        if (!isMultiselectDropdown && !isRangeDropdown) {
-          console.log("[KCPF] Outside click - closing all dropdowns");
+        if (!$(e.target).closest(".kcpf-multiselect-dropdown").length) {
           $(".kcpf-multiselect-dropdown").removeClass("active");
+        }
+        if (!$(e.target).closest(".kcpf-range-dropdown").length) {
           $(".kcpf-range-dropdown").removeClass("active");
         }
       });

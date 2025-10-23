@@ -40,10 +40,7 @@
 
       // Initialize Multiselect Handler
       if (window.KCPF_MultiselectHandler) {
-        console.log("[KCPF] Initializing Multiselect Handler...");
         KCPF_MultiselectHandler.init();
-      } else {
-        console.error("[KCPF] KCPF_MultiselectHandler not found!");
       }
 
       // Initialize Infinite Scroll
