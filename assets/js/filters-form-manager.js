@@ -322,42 +322,33 @@
     processFormSubmission: function (form) {
       console.log("[KCPF] Form submitted, processing...");
 
-      // Clean up empty values
+      // Group form values by field name
       const formData = {};
       form.serializeArray().forEach(function (item) {
         if (item.value !== "" && item.value !== null) {
-          // Check if this field name already exists (means multiple values)
-          if (formData.hasOwnProperty(item.name)) {
-            // Convert to array if not already
-            if (!Array.isArray(formData[item.name])) {
-              formData[item.name] = [formData[item.name]];
+          // Remove [] from name if present
+          const cleanName = item.name.replace(/\[\]$/, "");
+
+          if (formData.hasOwnProperty(cleanName)) {
+            if (!Array.isArray(formData[cleanName])) {
+              formData[cleanName] = [formData[cleanName]];
             }
-            formData[item.name].push(item.value);
+            formData[cleanName].push(item.value);
           } else {
-            // First occurrence - store as single value
-            formData[item.name] = item.value;
+            formData[cleanName] = item.value;
           }
         }
       });
 
-      console.log("[KCPF] Form data:", formData);
+      console.log("[KCPF] Grouped form data:", formData);
 
       const params = new URLSearchParams();
       Object.keys(formData).forEach(function (key) {
         const value = formData[key];
 
         if (Array.isArray(value)) {
-          // Always use comma-separated format for bedrooms and bathrooms
-          if (key === "bedrooms" || key === "bathrooms") {
-            params.set(key, value.join(","));
-          } else {
-            // For other fields, use array format if multiple values
-            if (value.length === 1) {
-              params.set(key, value[0]);
-            } else {
-              value.forEach((v) => params.append(key + "[]", v));
-            }
-          }
+          // Use comma-separated format for all multi-value fields
+          params.set(key, value.join(","));
         } else {
           // Single value
           params.set(key, value);
