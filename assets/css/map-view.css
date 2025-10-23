@@ -241,31 +241,7 @@
   position: relative;
   max-width: 400px;
   margin: 0;
-}
-
-.kcpf-info-window-close {
-  position: absolute;
-  top: 0.5rem;
-  right: 0.5rem;
-  width: 32px;
-  height: 32px;
-  background: rgba(255, 255, 255, 0.95);
-  border: 1px solid #e0e0e0;
-  border-radius: 50%;
-  cursor: pointer;
-  font-size: 24px;
-  line-height: 32px;
-  text-align: center;
-  color: #333;
-  z-index: 10;
-  transition: all 0.2s ease;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.kcpf-info-window-close:hover {
-  background: #f8f9fa;
-  color: #000;
-  transform: scale(1.1);
+  border: none;
 }
 
 /* Ensure images display properly in info window */

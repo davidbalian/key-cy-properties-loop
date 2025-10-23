@@ -187,22 +187,6 @@
             this.infoWindow.setContent(response.data.html);
             this.infoWindow.setPosition(circle.getCenter());
             this.infoWindow.open(this.map);
-
-            // Add close button event listener after content is set
-            google.maps.event.addListenerOnce(
-              this.infoWindow,
-              "domready",
-              () => {
-                const closeBtn = document.querySelector(
-                  ".kcpf-info-window-close"
-                );
-                if (closeBtn) {
-                  closeBtn.onclick = () => {
-                    this.infoWindow.close();
-                  };
-                }
-              }
-            );
           }
         },
         error: (xhr, status, error) => {
