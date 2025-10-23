@@ -245,13 +245,25 @@ class KCPF_Map_Card_Renderer
             return self::renderNoResults();
         }
         
+        // Create a query to set up posts properly for WordPress functions
+        $query = new WP_Query([
+            'post_type' => 'properties',
+            'post__in' => $property_ids,
+            'orderby' => 'post__in',
+            'posts_per_page' => count($property_ids),
+        ]);
+        
         ob_start();
         
         // Wrap in grid container like the regular loop
         echo '<div class="kcpf-properties-grid">';
         
-        foreach ($property_ids as $property_id) {
-            echo self::renderCard($property_id, $purpose);
+        if ($query->have_posts()) {
+            while ($query->have_posts()) {
+                $query->the_post();
+                echo self::renderCard(get_the_ID(), $purpose);
+            }
+            wp_reset_postdata();
         }
         
         echo '</div>';
