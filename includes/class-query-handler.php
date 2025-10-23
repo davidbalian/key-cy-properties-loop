@@ -123,15 +123,23 @@ class KCPF_Query_Handler
             $bedroomsKey = KCPF_Field_Config::getMetaKey('bedrooms', $purpose);
             $bedroomsValues = is_array($filters['bedrooms']) ? $filters['bedrooms'] : [$filters['bedrooms']];
             
+            error_log('[KCPF] Bedrooms filter - Key: ' . $bedroomsKey . ', Values: ' . print_r($bedroomsValues, true));
+            
             // Build OR query for bedrooms (works for all property types)
             $bedrooms_query = ['relation' => 'OR'];
             
             // Add each bedroom value as an OR condition
             foreach ($bedroomsValues as $bedroom) {
+                // Try both exact match and LIKE for glossary values
                 $bedrooms_query[] = [
                     'key' => $bedroomsKey,
                     'value' => $bedroom,
                     'compare' => '=',
+                ];
+                $bedrooms_query[] = [
+                    'key' => $bedroomsKey,
+                    'value' => $bedroom,
+                    'compare' => 'LIKE',
                 ];
             }
             
@@ -143,15 +151,23 @@ class KCPF_Query_Handler
             $bathroomsKey = KCPF_Field_Config::getMetaKey('bathrooms', $purpose);
             $bathroomsValues = is_array($filters['bathrooms']) ? $filters['bathrooms'] : [$filters['bathrooms']];
             
+            error_log('[KCPF] Bathrooms filter - Key: ' . $bathroomsKey . ', Values: ' . print_r($bathroomsValues, true));
+            
             // Build OR query for bathrooms (works for all property types)
             $bathrooms_query = ['relation' => 'OR'];
             
             // Add each bathroom value as an OR condition
             foreach ($bathroomsValues as $bathroom) {
+                // Try both exact match and LIKE for glossary values
                 $bathrooms_query[] = [
                     'key' => $bathroomsKey,
                     'value' => $bathroom,
                     'compare' => '=',
+                ];
+                $bathrooms_query[] = [
+                    'key' => $bathroomsKey,
+                    'value' => $bathroom,
+                    'compare' => 'LIKE',
                 ];
             }
             

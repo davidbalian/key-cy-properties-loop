@@ -35,6 +35,8 @@ class KCPF_Glossary_Handler
             // Use the correct JetEngine method to get glossary options
             $options = jet_engine()->glossaries->filters->get_glossary_options($glossaryId);
             
+            error_log('[KCPF] Glossary Handler - ID: ' . $glossaryId . ', Options: ' . print_r($options, true));
+            
             if (empty($options)) {
                 error_log('KCPF Glossary Handler: No options found for glossary ID "' . $glossaryId . '"');
                 return [];
