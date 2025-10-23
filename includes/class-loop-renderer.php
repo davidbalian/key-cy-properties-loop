@@ -141,15 +141,25 @@ class KCPF_Loop_Renderer
         <div class="kcpf-no-results">
             <p><?php esc_html_e('No properties found matching your criteria.', 'key-cy-properties-filter'); ?></p>
             
-            <?php if (defined('WP_DEBUG') && WP_DEBUG): ?>
-            <div style="background: #f5f5f5; padding: 15px; margin: 20px 0; border: 1px solid #ddd;">
-                <h3>Debug Information:</h3>
-                <p><strong>Current Filters:</strong> <pre><?php echo esc_html(print_r($filters, true)); ?></pre></p>
-                <p><strong>Bedroom Values:</strong> <pre><?php echo esc_html(print_r($filters['bedrooms'] ?? 'Not Set', true)); ?></pre></p>
-                <p><strong>Bedroom Query:</strong> <pre><?php echo esc_html(print_r($bedroom_query, true)); ?></pre></p>
-                <p><strong>Full Meta Query:</strong> <pre><?php echo esc_html(print_r($query_args['meta_query'] ?? [], true)); ?></pre></p>
+            <div style="background: #f5f5f5; padding: 15px; margin: 20px 0; border: 1px solid #ddd; font-family: monospace; font-size: 13px;">
+                <h3 style="margin-top: 0;">Debug Information:</h3>
+                <div style="margin-bottom: 15px;">
+                    <strong>Current Filters:</strong>
+                    <pre style="background: #fff; padding: 10px; margin: 5px 0; overflow: auto;"><?php echo esc_html(print_r($filters, true)); ?></pre>
+                </div>
+                <div style="margin-bottom: 15px;">
+                    <strong>Bedroom Values:</strong>
+                    <pre style="background: #fff; padding: 10px; margin: 5px 0; overflow: auto;"><?php echo esc_html(print_r($filters['bedrooms'] ?? 'Not Set', true)); ?></pre>
+                </div>
+                <div style="margin-bottom: 15px;">
+                    <strong>Bedroom Query:</strong>
+                    <pre style="background: #fff; padding: 10px; margin: 5px 0; overflow: auto;"><?php echo esc_html(print_r($bedroom_query, true)); ?></pre>
+                </div>
+                <div style="margin-bottom: 15px;">
+                    <strong>Full Meta Query:</strong>
+                    <pre style="background: #fff; padding: 10px; margin: 5px 0; overflow: auto;"><?php echo esc_html(print_r($query_args['meta_query'] ?? [], true)); ?></pre>
+                </div>
             </div>
-            <?php endif; ?>
 
             <?php if (KCPF_URL_Manager::hasActiveFilters()) : ?>
                 <a href="<?php echo esc_url(KCPF_URL_Manager::getResetUrl()); ?>" class="kcpf-reset-link">
