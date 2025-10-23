@@ -174,6 +174,14 @@
      * Show property info window with full card details
      */
     showPropertyInfoWindow: function (circle, property) {
+      // Check if kcpfData is available
+      if (typeof kcpfData === "undefined" || !kcpfData.ajaxUrl) {
+        console.error(
+          "[KCPF Map] kcpfData not found - cannot load property card"
+        );
+        return;
+      }
+
       // Make AJAX request to get property card HTML
       $.ajax({
         url: kcpfData.ajaxUrl,
@@ -348,6 +356,14 @@
       });
 
       console.log("[KCPF Map] AJAX params:", params);
+
+      // Check if kcpfData is available
+      if (typeof kcpfData === "undefined" || !kcpfData.ajaxUrl) {
+        console.error(
+          "[KCPF Map] kcpfData not found - cannot fetch properties"
+        );
+        return;
+      }
 
       // AJAX request
       $.ajax({

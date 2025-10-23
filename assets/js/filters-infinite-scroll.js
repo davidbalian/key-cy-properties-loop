@@ -125,6 +125,14 @@
       // Show loader in the specific loop
       $loop.find(".kcpf-infinite-loader").show();
 
+      // Check if kcpfData is available
+      if (typeof kcpfData === "undefined" || !kcpfData.ajaxUrl) {
+        console.error("[KCPF] kcpfData not found - cannot load next page");
+        $loop.find(".kcpf-infinite-loader").hide();
+        window.kcpfLoadingNextPage = false;
+        return;
+      }
+
       // Get current URL parameters
       const params = new URLSearchParams(window.location.search);
       params.set("paged", nextPage);

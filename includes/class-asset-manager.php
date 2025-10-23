@@ -239,7 +239,8 @@ class KCPF_Asset_Manager
      */
     private static function localizeScripts()
     {
-        wp_localize_script('kcpf-filters', 'kcpfData', [
+        // Attach to AJAX handler since that's what uses kcpfData
+        wp_localize_script('kcpf-ajax-handler', 'kcpfData', [
             'ajaxUrl' => admin_url('admin-ajax.php'),
             'nonce' => wp_create_nonce('kcpf_filter_nonce')
         ]);
