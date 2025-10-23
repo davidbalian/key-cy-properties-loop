@@ -184,11 +184,8 @@
         const cardClone = existingCard.clone();
         cardClone.addClass("kcpf-info-window-card");
 
-        // Remove the link wrapper since we don't want navigation in info window
-        const cardContent = cardClone
-          .find(".kcpf-property-card-link")
-          .contents();
-        cardClone.empty().append(cardContent);
+        // Keep the link wrapper so the card remains clickable
+        // The link will navigate to the property page when clicked
 
         // Set content and show info window
         this.infoWindow.setContent(cardClone[0].outerHTML);
