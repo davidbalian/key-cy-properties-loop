@@ -119,9 +119,38 @@ class KCPF_Loop_Renderer
      */
     private static function renderNoResults()
     {
+        // Get current filters for debugging
+        $filters = KCPF_URL_Manager::getCurrentFilters();
+        $purpose = isset($filters['purpose']) ? $filters['purpose'] : 'sale';
+        
+        // Get the query args that were used
+        $query_args = KCPF_Query_Handler::buildQueryArgs(['purpose' => $purpose]);
+        
+        // Get bedroom query if it exists
+        $bedroom_query = [];
+        if (!empty($query_args['meta_query'])) {
+            foreach ($query_args['meta_query'] as $query) {
+                if (isset($query['key']) && $query['key'] === KCPF_Field_Config::getMetaKey('bedrooms', $purpose)) {
+                    $bedroom_query = $query;
+                    break;
+                }
+            }
+        }
+        
         ?>
         <div class="kcpf-no-results">
             <p><?php esc_html_e('No properties found matching your criteria.', 'key-cy-properties-filter'); ?></p>
+            
+            <?php if (defined('WP_DEBUG') && WP_DEBUG): ?>
+            <div style="background: #f5f5f5; padding: 15px; margin: 20px 0; border: 1px solid #ddd;">
+                <h3>Debug Information:</h3>
+                <p><strong>Current Filters:</strong> <pre><?php echo esc_html(print_r($filters, true)); ?></pre></p>
+                <p><strong>Bedroom Values:</strong> <pre><?php echo esc_html(print_r($filters['bedrooms'] ?? 'Not Set', true)); ?></pre></p>
+                <p><strong>Bedroom Query:</strong> <pre><?php echo esc_html(print_r($bedroom_query, true)); ?></pre></p>
+                <p><strong>Full Meta Query:</strong> <pre><?php echo esc_html(print_r($query_args['meta_query'] ?? [], true)); ?></pre></p>
+            </div>
+            <?php endif; ?>
+
             <?php if (KCPF_URL_Manager::hasActiveFilters()) : ?>
                 <a href="<?php echo esc_url(KCPF_URL_Manager::getResetUrl()); ?>" class="kcpf-reset-link">
                     <?php esc_html_e('Clear all filters', 'key-cy-properties-filter'); ?>
