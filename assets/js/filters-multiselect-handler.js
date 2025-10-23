@@ -17,6 +17,16 @@
      */
     init: function () {
       console.log("[KCPF] Multiselect Handler starting initialization...");
+      console.log("[KCPF] jQuery version:", $.fn.jquery);
+      console.log("[KCPF] Document ready state:", document.readyState);
+      console.log(
+        "[KCPF] Found multiselect triggers:",
+        $(".kcpf-multiselect-trigger").length
+      );
+      console.log(
+        "[KCPF] Found multiselect dropdowns:",
+        $(".kcpf-multiselect-dropdown").length
+      );
       this.handleDropdownToggle();
       this.handleRangeDropdownToggle();
       this.handleOutsideClick();
@@ -29,16 +39,25 @@
      * Handle dropdown toggle
      */
     handleDropdownToggle: function () {
+      console.log("[KCPF] Setting up dropdown toggle handler");
       $(document).on("click", ".kcpf-multiselect-trigger", function (e) {
         e.stopPropagation();
         console.log("[KCPF] Dropdown trigger clicked");
+        console.log("[KCPF] Clicked element:", this);
         const $dropdown = $(this).closest(".kcpf-multiselect-dropdown");
+        console.log("[KCPF] Found dropdown:", $dropdown[0]);
+        console.log("[KCPF] Dropdown classes before:", $dropdown.attr("class"));
         const isActive = $dropdown.hasClass("active");
+        console.log("[KCPF] Is active:", isActive);
 
         // If current dropdown is active, close it and return
         if (isActive) {
           $dropdown.removeClass("active");
           console.log("[KCPF] Dropdown closed");
+          console.log(
+            "[KCPF] Dropdown classes after close:",
+            $dropdown.attr("class")
+          );
           return;
         }
 
@@ -51,6 +70,10 @@
         console.log(
           "[KCPF] Dropdown opened for:",
           $dropdown.data("filter-name")
+        );
+        console.log(
+          "[KCPF] Dropdown classes after open:",
+          $dropdown.attr("class")
         );
       });
     },
