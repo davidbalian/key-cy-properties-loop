@@ -168,30 +168,61 @@ function kcpf_render_debug_page() {
                 while ($query->have_posts()) {
                     $query->the_post();
                     $property_id = get_the_ID();
-                    $bedrooms_value = get_post_meta($property_id, 'bedrooms', true);
+
+                    // Get both unserialized (default) and raw serialized data
+                    $bedrooms_unserialized = get_post_meta($property_id, 'bedrooms', true);
+                    $bedrooms_raw = get_post_meta($property_id, 'bedrooms', false);
 
                     echo '<div class="sample-property">';
                     echo '<h3>' . get_the_title() . ' (ID: ' . $property_id . ')</h3>';
-                    echo '<p><strong>Raw bedroom data:</strong> <code>' . esc_html($bedrooms_value) . '</code></p>';
-                    echo '<p><strong>Data type:</strong> ' . gettype($bedrooms_value) . '</p>';
 
-                    // Test different patterns
-                    $patterns = [
-                        '"5":"true"' => 'JSON format: "5":"true"',
-                        '"5": "true"' => 'JSON with spaces: "5": "true"',
-                        '"5":true' => 'Boolean: "5":true',
-                        's:1:"5";s:4:"true"' => 'Serialized string: s:1:"5";s:4:"true"',
-                        's:1:"5";b:1' => 'Serialized boolean: s:1:"5";b:1'
-                    ];
+                    if (is_array($bedrooms_unserialized)) {
+                        echo '<p><strong>Unserialized data:</strong> <code>' . esc_html(print_r($bedrooms_unserialized, true)) . '</code></p>';
+                        echo '<p><strong>Data type:</strong> array (unserialized)</p>';
 
-                    echo '<div class="query-pattern">';
-                    echo '<p><strong>Pattern matching tests:</strong></p>';
-                    foreach ($patterns as $pattern => $description) {
-                        $matches = strpos($bedrooms_value, $pattern) !== false;
-                        $class = $matches ? 'success' : 'danger';
-                        echo '<p class="' . $class . '">✅ ' . $description . ': <strong>' . ($matches ? 'MATCH' : 'NO MATCH') . '</strong></p>';
+                        // Show which bedrooms are true
+                        echo '<p><strong>Bedrooms set to true:</strong> ';
+                        $true_bedrooms = [];
+                        foreach ($bedrooms_unserialized as $bedroom_num => $value) {
+                            if ($value === true || $value === 'true' || $value === 1 || $value === '1') {
+                                $true_bedrooms[] = $bedroom_num;
+                            }
+                        }
+                        echo '<span class="success">' . implode(', ', $true_bedrooms) . '</span></p>';
+                    } else {
+                        echo '<p><strong>Raw bedroom data:</strong> <code>' . esc_html($bedrooms_unserialized) . '</code></p>';
+                        echo '<p><strong>Data type:</strong> ' . gettype($bedrooms_unserialized) . '</p>';
                     }
-                    echo '</div>';
+
+                    // Get raw database value to see serialized format
+                    global $wpdb;
+                    $raw_db_value = $wpdb->get_var($wpdb->prepare(
+                        "SELECT meta_value FROM {$wpdb->postmeta} WHERE post_id = %d AND meta_key = %s",
+                        $property_id, 'bedrooms'
+                    ));
+
+                    if ($raw_db_value) {
+                        echo '<p><strong>Raw database value:</strong> <code>' . esc_html($raw_db_value) . '</code></p>';
+
+                        // Test PHP array serialization patterns
+                        $array_patterns = [
+                            'i:5;b:1' => 'PHP array: i:5;b:1 (bedroom 5 = true)',
+                            'i:5;s:4:"true"' => 'PHP array: i:5;s:4:"true" (bedroom 5 = "true")',
+                            'i:2;b:1' => 'PHP array: i:2;b:1 (bedroom 2 = true)',
+                            'i:3;b:1' => 'PHP array: i:3;b:1 (bedroom 3 = true)',
+                            'i:4;b:1' => 'PHP array: i:4;b:1 (bedroom 4 = true)'
+                        ];
+
+                        echo '<div class="query-pattern">';
+                        echo '<p><strong>PHP Array Pattern Tests:</strong></p>';
+                        foreach ($array_patterns as $pattern => $description) {
+                            $matches = strpos($raw_db_value, $pattern) !== false;
+                            $class = $matches ? 'success' : 'danger';
+                            echo '<p class="' . $class . '">✅ ' . $description . ': <strong>' . ($matches ? 'MATCH' : 'NO MATCH') . '</strong></p>';
+                        }
+                        echo '</div>';
+                    }
+
                     echo '</div>';
                 }
                 wp_reset_postdata();
@@ -209,11 +240,11 @@ function kcpf_render_debug_page() {
 
                     // Test multiple query formats
                     $query_formats = [
+                        'PHP Array Boolean' => ['key' => 'bedrooms', 'value' => 'i:' . $test_bedroom . ';b:1', 'compare' => 'LIKE'],
+                        'PHP Array String' => ['key' => 'bedrooms', 'value' => 'i:' . $test_bedroom . ';s:4:"true"', 'compare' => 'LIKE'],
                         'JSON format' => ['key' => 'bedrooms', 'value' => '"' . $test_bedroom . '":"true"', 'compare' => 'LIKE'],
                         'JSON with spaces' => ['key' => 'bedrooms', 'value' => '"' . $test_bedroom . '": "true"', 'compare' => 'LIKE'],
-                        'Boolean format' => ['key' => 'bedrooms', 'value' => '"' . $test_bedroom . '":true', 'compare' => 'LIKE'],
-                        'Serialized string' => ['key' => 'bedrooms', 'value' => 's:' . strlen($test_bedroom) . ':"' . $test_bedroom . '";s:4:"true"', 'compare' => 'LIKE'],
-                        'Serialized boolean' => ['key' => 'bedrooms', 'value' => 's:' . strlen($test_bedroom) . ':"' . $test_bedroom . '";b:1', 'compare' => 'LIKE']
+                        'Boolean format' => ['key' => 'bedrooms', 'value' => '"' . $test_bedroom . '":true', 'compare' => 'LIKE']
                     ];
 
                     foreach ($query_formats as $format_name => $meta_query) {

@@ -64,14 +64,14 @@ class KCPF_URL_Manager
         if ($key === 'bedrooms' || $key === 'bathrooms') {
             error_log("[KCPF] Processing $key parameter");
             error_log("[KCPF] Raw GET data for $key: " . print_r($_GET[$key] ?? 'NOT_SET', true));
-            
+
             // Handle array format (bedrooms[]=2&bedrooms[]=3)
             if (isset($_GET[$key]) && is_array($_GET[$key])) {
                 $values = array_map('sanitize_text_field', $_GET[$key]);
                 error_log("[KCPF] Array values found for $key: " . print_r($values, true));
                 return $values;
             }
-            
+
             // Handle array format with [] in key
             $arrayKey = $key . '[]';
             if (isset($_GET[$arrayKey]) && is_array($_GET[$arrayKey])) {
@@ -79,7 +79,7 @@ class KCPF_URL_Manager
                 error_log("[KCPF] Array values found for $arrayKey: " . print_r($values, true));
                 return $values;
             }
-            
+
             // Handle comma-separated format (bedrooms=2,3,5)
             if (isset($_GET[$key]) && !empty($_GET[$key])) {
                 $value = sanitize_text_field($_GET[$key]);
@@ -93,7 +93,7 @@ class KCPF_URL_Manager
                 error_log("[KCPF] Single value found for $key: $value");
                 return [$value]; // Always return array for consistency
             }
-            
+
             error_log("[KCPF] No values found for $key");
             return [];
         }
