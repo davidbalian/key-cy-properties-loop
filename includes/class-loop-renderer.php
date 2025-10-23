@@ -128,14 +128,31 @@ class KCPF_Loop_Renderer
         
         // Get bedroom query if it exists
         $bedroom_query = [];
+        $bedroomsKey = KCPF_Field_Config::getMetaKey('bedrooms', $purpose);
+        
         if (!empty($query_args['meta_query'])) {
             foreach ($query_args['meta_query'] as $query) {
-                if (isset($query['key']) && $query['key'] === KCPF_Field_Config::getMetaKey('bedrooms', $purpose)) {
+                if (isset($query['relation']) && $query['relation'] === 'OR') {
+                    foreach ($query as $subquery) {
+                        if (is_array($subquery) && isset($subquery['key']) && $subquery['key'] === $bedroomsKey) {
+                            $bedroom_query = $query;
+                            break 2;
+                        }
+                    }
+                } elseif (isset($query['key']) && $query['key'] === $bedroomsKey) {
                     $bedroom_query = $query;
                     break;
                 }
             }
         }
+        
+        // Add more debug info
+        $debug_info = [
+            'bedroomsKey' => $bedroomsKey,
+            'raw_meta_query' => $query_args['meta_query'] ?? [],
+            'found_bedroom_query' => !empty($bedroom_query),
+            'filters_from_url' => KCPF_URL_Manager::getCurrentFilters(),
+        ];
         
         ?>
         <div class="kcpf-no-results">
@@ -152,12 +169,20 @@ class KCPF_Loop_Renderer
                     <pre style="background: #fff; padding: 10px; margin: 5px 0; overflow: auto;"><?php echo esc_html(print_r($filters['bedrooms'] ?? 'Not Set', true)); ?></pre>
                 </div>
                 <div style="margin-bottom: 15px;">
+                    <strong>Meta Key Being Used:</strong>
+                    <pre style="background: #fff; padding: 10px; margin: 5px 0; overflow: auto;"><?php echo esc_html($bedroomsKey); ?></pre>
+                </div>
+                <div style="margin-bottom: 15px;">
                     <strong>Bedroom Query:</strong>
                     <pre style="background: #fff; padding: 10px; margin: 5px 0; overflow: auto;"><?php echo esc_html(print_r($bedroom_query, true)); ?></pre>
                 </div>
                 <div style="margin-bottom: 15px;">
                     <strong>Full Meta Query:</strong>
                     <pre style="background: #fff; padding: 10px; margin: 5px 0; overflow: auto;"><?php echo esc_html(print_r($query_args['meta_query'] ?? [], true)); ?></pre>
+                </div>
+                <div style="margin-bottom: 15px;">
+                    <strong>Extra Debug Info:</strong>
+                    <pre style="background: #fff; padding: 10px; margin: 5px 0; overflow: auto;"><?php echo esc_html(print_r($debug_info, true)); ?></pre>
                 </div>
             </div>
 
