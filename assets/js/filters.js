@@ -460,36 +460,7 @@
         const params = new URLSearchParams();
         const purpose = $(this).val();
 
-        const data = {};
-        $form.serializeArray().forEach(function (item) {
-          if (item.value !== "" && item.value !== null) {
-            if (data.hasOwnProperty(item.name)) {
-              if (!Array.isArray(data[item.name])) {
-                data[item.name] = [data[item.name]];
-              }
-              data[item.name].push(item.value);
-            } else {
-              data[item.name] = item.value;
-            }
-          }
-        });
-
-        Object.keys(data).forEach(function (key) {
-          const value = data[key];
-          if (Array.isArray(value)) {
-            const cleanKey = key.replace(/\[\]$/, "");
-            if (value.length === 1) {
-              params.set(cleanKey, value[0]);
-            } else {
-              value.forEach(function (v) {
-                params.append(cleanKey + "[]", v);
-              });
-            }
-          } else {
-            params.set(key, value);
-          }
-        });
-
+        // Only send purpose, not other filter values (we want fresh data)
         params.set("purpose", purpose);
 
         if (typeof kcpfData === "undefined" || !kcpfData.ajaxUrl) {
@@ -503,11 +474,19 @@
           params.toString();
         console.log("[KCPF] Refreshing filters for purpose:", purpose, ajaxUrl);
 
+        // Close any open dropdowns before refresh
+        $root.find(".kcpf-multiselect-dropdown").removeClass("active");
+        $root.find(".kcpf-range-dropdown").removeClass("active");
+
         $.ajax({
           url: ajaxUrl,
           type: "GET",
           dataType: "json",
           timeout: 20000,
+          beforeSend: function () {
+            // Add loading state
+            $root.addClass("kcpf-refreshing");
+          },
           success: function (response) {
             if (
               response &&
@@ -515,6 +494,13 @@
               response.data &&
               response.data.html
             ) {
+              // Destroy existing sliders before replacing HTML
+              $root.find(".kcpf-range-slider").each(function () {
+                if (this.noUiSlider) {
+                  this.noUiSlider.destroy();
+                }
+              });
+
               // Replace fragments inside the homepage block
               if (response.data.html.type) {
                 $root
@@ -526,20 +512,35 @@
                   .find(".kcpf-filter-location")
                   .replaceWith(response.data.html.location);
               }
+              if (response.data.html.bedrooms) {
+                $root
+                  .find(".kcpf-filter-bedrooms")
+                  .replaceWith(response.data.html.bedrooms);
+              }
               if (response.data.html.price) {
                 $root
                   .find(".kcpf-filter-price")
                   .replaceWith(response.data.html.price);
               }
-              // Re-init sliders
+
+              // Re-init sliders with new data
               initRangeSliders();
+
+              // Re-init multiselect dropdowns for new elements
+              // (event delegation handles clicks, but ensure proper state)
+
               console.log("[KCPF] Filters refreshed for purpose:", purpose);
+              console.log("[KCPF] New price range:", response.data.priceRange);
             } else {
               console.error("[KCPF] Invalid refresh response", response);
             }
           },
           error: function (xhr, status, error) {
             console.error("[KCPF] Refresh failed", status, error);
+          },
+          complete: function () {
+            // Remove loading state
+            $root.removeClass("kcpf-refreshing");
           },
         });
       }
@@ -557,6 +558,14 @@
 
     $(".kcpf-range-slider").each(function () {
       const $slider = $(this);
+      const slider = this;
+
+      // Skip if already initialized
+      if (slider.noUiSlider) {
+        console.log("[KCPF] Slider already initialized, skipping");
+        return;
+      }
+
       const $container = $slider.closest(".kcpf-range-slider-container");
       const $minInput = $container.find(".kcpf-range-min");
       const $maxInput = $container.find(".kcpf-range-max");
@@ -568,8 +577,9 @@
       const valueMax = parseFloat($slider.data("value-max")) || max;
       const format = $slider.data("format");
 
+      console.log("[KCPF] Creating slider with range:", min, "-", max);
+
       // Create slider
-      const slider = this;
       noUiSlider.create(slider, {
         start: [valueMin, valueMax],
         connect: true,

@@ -30,18 +30,34 @@ class KCPF_Filters_Ajax
         try {
             // Read purpose and current selections from URL manager
             $purpose = KCPF_URL_Manager::getFilterValue('purpose') ?: 'sale';
+            
+            // Clear any current selections to avoid stale data
+            $_GET['location'] = [];
+            $_GET['property_type'] = [];
+            $_GET['bedrooms'] = [];
+            $_GET['price_min'] = '';
+            $_GET['price_max'] = '';
 
-            // Render updated fragments
+            // Render updated fragments with purpose-aware data
             $location = KCPF_Filter_Renderer::renderLocation([
                 'type' => 'checkbox',
                 'show_count' => true,
             ]);
+            
             $type = KCPF_Filter_Renderer::renderType([
                 'type' => 'checkbox',
             ]);
+            
             $price = KCPF_Filter_Renderer::renderPrice([
                 'type' => 'slider',
             ]);
+            
+            $bedrooms = KCPF_Filter_Renderer::renderBedrooms([
+                'type' => 'checkbox',
+            ]);
+            
+            // Get price range for JS to update slider
+            $priceRange = KCPF_Listing_Values::getMinMax('price', $purpose);
 
             wp_send_json_success([
                 'purpose' => $purpose,
@@ -49,9 +65,15 @@ class KCPF_Filters_Ajax
                     'location' => $location,
                     'type' => $type,
                     'price' => $price,
+                    'bedrooms' => $bedrooms,
+                ],
+                'priceRange' => [
+                    'min' => $priceRange['min'],
+                    'max' => $priceRange['max'],
                 ],
             ]);
         } catch (Exception $e) {
+            error_log('KCPF Refresh Filters Error: ' . $e->getMessage());
             wp_send_json_error([
                 'message' => 'Failed to refresh filters',
                 'error' => $e->getMessage(),

@@ -305,6 +305,11 @@ class Key_CY_Properties_Filter
                 display: inline-block !important;
                 visibility: visible !important;
             }
+            /* Loading state for filter refresh */
+            .kcpf-homepage-filters.kcpf-refreshing {
+                opacity: 0.6;
+                pointer-events: none;
+            }
         </style>
         <?php
     }
