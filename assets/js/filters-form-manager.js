@@ -234,6 +234,9 @@
      * Handle browser back/forward buttons
      */
     handleBrowserNavigation: function () {
+      // Initial URL sync
+      KCPF_FormManager.syncFormWithURL();
+
       window.addEventListener("popstate", function (e) {
         if (e.state && e.state.kcpfFilters) {
           const params = new URLSearchParams(window.location.search);
@@ -247,12 +250,70 @@
               }
             }
           }
+          // Sync form with URL parameters
+          KCPF_FormManager.syncFormWithURL();
           // Use AJAX handler to load properties
           if (window.KCPF_AjaxHandler) {
             KCPF_AjaxHandler.loadProperties(params, false);
           }
         }
       });
+    },
+
+    /**
+     * Sync form values with URL parameters
+     */
+    syncFormWithURL: function () {
+      console.log("[KCPF] Syncing form with URL parameters");
+      const params = new URLSearchParams(window.location.search);
+      const $form = $(".kcpf-filters-form").first();
+
+      if ($form.length === 0) {
+        console.warn("[KCPF] No form found to sync with URL");
+        return;
+      }
+
+      // Clear existing selections first
+      $form
+        .find("input[type='checkbox'], input[type='radio']")
+        .prop("checked", false);
+      $form.find("select").val("");
+
+      // Handle each parameter
+      for (const [key, value] of params.entries()) {
+        console.log(`[KCPF] Processing URL parameter: ${key} = ${value}`);
+
+        // Handle comma-separated values (bedrooms, bathrooms)
+        if (
+          (key === "bedrooms" || key === "bathrooms") &&
+          value.includes(",")
+        ) {
+          const values = value.split(",");
+          values.forEach((val) => {
+            $form
+              .find(`input[name="${key}[]"][value="${val}"]`)
+              .prop("checked", true);
+            $form.find(`select[name="${key}[]"]`).val(val);
+          });
+        }
+        // Handle array parameters (key[])
+        else if (key.endsWith("[]")) {
+          const baseKey = key.slice(0, -2);
+          $form
+            .find(`input[name="${key}"][value="${value}"]`)
+            .prop("checked", true);
+          $form.find(`select[name="${key}"]`).val(value);
+        }
+        // Handle single values
+        else {
+          $form
+            .find(`input[name="${key}"][value="${value}"]`)
+            .prop("checked", true);
+          $form.find(`select[name="${key}"]`).val(value);
+        }
+      }
+
+      console.log("[KCPF] Form sync complete");
     },
 
     /**

@@ -157,10 +157,12 @@ class KCPF_MultiUnit_Query_Builder
         $bedroomsValues = $filters['bedrooms'];
         error_log('[KCPF] Processing bedrooms values: ' . print_r($bedroomsValues, true));
 
-        // Build query to match bedroom values in JSON array
+        // Build query to match bedroom values in JSON array - using exact format from debug tool
         $bedrooms_query = ['relation' => 'OR'];
 
         foreach ($bedroomsValues as $bedroom) {
+            error_log("[KCPF] Building query for bedroom value: " . $bedroom);
+            
             // Match if this bedroom number is set to true in JSON format
             $bedrooms_query[] = [
                 'key' => $bedroomsKey,
@@ -204,10 +206,12 @@ class KCPF_MultiUnit_Query_Builder
         $bathroomsValues = $filters['bathrooms'];
         error_log('[KCPF] Processing bathrooms values: ' . print_r($bathroomsValues, true));
 
-        // Build query to match bathroom values in JSON array
+        // Build query to match bathroom values in JSON array - using exact format from debug tool
         $bathrooms_query = ['relation' => 'OR'];
 
         foreach ($bathroomsValues as $bathroom) {
+            error_log("[KCPF] Building query for bathroom value: " . $bathroom);
+            
             // Match if this bathroom number is set to true in JSON format
             $bathrooms_query[] = [
                 'key' => $bathroomsKey,
