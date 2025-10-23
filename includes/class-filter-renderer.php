@@ -14,6 +14,62 @@ if (!defined('ABSPATH')) {
 class KCPF_Filter_Renderer
 {
     /**
+     * Get taxonomy terms filtered by purpose
+     * 
+     * @param string $taxonomy Taxonomy name
+     * @param string $purpose Property purpose (sale or rent)
+     * @return array Filtered terms
+     */
+    private static function getTermsByPurpose($taxonomy, $purpose = 'sale')
+    {
+        // Get all terms
+        $terms = get_terms([
+            'taxonomy' => $taxonomy,
+            'hide_empty' => true,
+        ]);
+        
+        if (empty($terms) || is_wp_error($terms)) {
+            return [];
+        }
+        
+        // Filter terms to only include those with properties for the given purpose
+        $filtered_terms = [];
+        
+        foreach ($terms as $term) {
+            // Check if this term has any properties with the given purpose
+            $args = [
+                'post_type' => 'properties',
+                'post_status' => 'publish',
+                'posts_per_page' => 1,
+                'fields' => 'ids',
+                'tax_query' => [
+                    'relation' => 'AND',
+                    [
+                        'taxonomy' => $taxonomy,
+                        'field' => 'term_id',
+                        'terms' => $term->term_id,
+                    ],
+                    [
+                        'taxonomy' => 'purpose',
+                        'field' => 'slug',
+                        'terms' => $purpose,
+                    ],
+                ],
+            ];
+            
+            $query = new WP_Query($args);
+            
+            if ($query->have_posts()) {
+                $filtered_terms[] = $term;
+            }
+            
+            wp_reset_postdata();
+        }
+        
+        return $filtered_terms;
+    }
+    
+    /**
      * Render location filter
      * 
      * @param array $attrs Shortcode attributes
@@ -28,12 +84,13 @@ class KCPF_Filter_Renderer
                 'show_count' => false,
             ], $attrs);
             
-            $locations = get_terms([
-                'taxonomy' => 'location',
-                'hide_empty' => true,
-            ]);
+            // Get purpose from URL or use default
+            $purpose = KCPF_URL_Manager::getFilterValue('purpose') ?: 'sale';
             
-            if (empty($locations) || is_wp_error($locations)) {
+            // Get locations filtered by purpose
+            $locations = self::getTermsByPurpose('location', $purpose);
+            
+            if (empty($locations)) {
                 return '';
             }
         } catch (Exception $e) {
@@ -483,12 +540,13 @@ class KCPF_Filter_Renderer
             'type' => 'select',
         ], $attrs);
         
-        $types = get_terms([
-            'taxonomy' => 'property-type',
-            'hide_empty' => true,
-        ]);
+        // Get purpose from URL or use default
+        $purpose = KCPF_URL_Manager::getFilterValue('purpose') ?: 'sale';
         
-        if (empty($types) || is_wp_error($types)) {
+        // Get property types filtered by purpose
+        $types = self::getTermsByPurpose('property-type', $purpose);
+        
+        if (empty($types)) {
             return '';
         }
         
