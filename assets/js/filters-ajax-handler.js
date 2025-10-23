@@ -53,13 +53,16 @@
       );
       console.log("[KCPF] New URL:", newUrl);
       console.log("[KCPF] Request timestamp:", new Date().toISOString());
-      
+
       // Log bedroom and bathroom parameters specifically
-      console.log("[KCPF] Bedrooms parameter:", params.get('bedrooms'));
-      console.log("[KCPF] Bathrooms parameter:", params.get('bathrooms'));
-      console.log("[KCPF] All bedroom parameters:", params.getAll('bedrooms'));
-      console.log("[KCPF] All bathroom parameters:", params.getAll('bathrooms'));
-      
+      console.log("[KCPF] Bedrooms parameter:", params.get("bedrooms"));
+      console.log("[KCPF] Bathrooms parameter:", params.get("bathrooms"));
+      console.log("[KCPF] All bedroom parameters:", params.getAll("bedrooms"));
+      console.log(
+        "[KCPF] All bathroom parameters:",
+        params.getAll("bathrooms")
+      );
+
       // Log all parameters for debugging
       console.log("[KCPF] All parameters:");
       for (const [key, value] of params.entries()) {

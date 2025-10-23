@@ -139,12 +139,16 @@
           $dropdown.find('input[type="checkbox"]:checked').each(function () {
             checkedValues.push($(this).val());
           });
-          
+
           // Log bedroom and bathroom specific changes
-          if (filterName === 'bedrooms' || filterName === 'bathrooms') {
+          if (filterName === "bedrooms" || filterName === "bathrooms") {
             console.log(`[KCPF] ${filterName} filter changed`);
             console.log(`[KCPF] ${filterName} checked values:`, checkedValues);
-            console.log(`[KCPF] ${filterName} checkbox that changed:`, $(this).val(), $(this).is(':checked'));
+            console.log(
+              `[KCPF] ${filterName} checkbox that changed:`,
+              $(this).val(),
+              $(this).is(":checked")
+            );
           }
 
           // Update selected chips
