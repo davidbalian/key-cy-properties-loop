@@ -49,8 +49,7 @@
   display: grid;
   grid-template-columns: 1fr 2fr;
   gap: 1.5rem;
-  min-height: 600px;
-  max-height: 800px;
+  height: 80vh;
 }
 
 /* ==========================================================================
@@ -102,113 +101,42 @@
   background: #555;
 }
 
-.kcpf-map-cards-list {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
 /* ==========================================================================
-   Property Cards
+   Property Cards - Use existing card styles with map-specific enhancements
    ========================================================================== */
 
-.kcpf-map-card {
-  background: #ffffff;
-  border: 1px solid #e9ecef;
-  border-radius: 8px;
-  overflow: hidden;
-  transition: all 0.3s ease;
+/* Map cards use the standard .kcpf-property-card styling from filters.css */
+/* Force single column layout in sidebar */
+
+.kcpf-map-sidebar .kcpf-properties-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+.kcpf-map-sidebar .kcpf-property-card {
   cursor: pointer;
+  transition: all 0.3s ease;
 }
 
-.kcpf-map-card:hover {
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+.kcpf-map-sidebar .kcpf-property-card:hover {
   transform: translateY(-2px);
-  border-color: #007bff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
-.kcpf-map-card.kcpf-card-active {
+.kcpf-map-sidebar .kcpf-property-card.kcpf-card-active {
   border-color: #007bff;
   box-shadow: 0 4px 16px rgba(0, 123, 255, 0.3);
-  background: #f8f9ff;
-}
-
-.kcpf-map-card-link {
-  display: block;
-  text-decoration: none;
-  color: inherit;
-}
-
-.kcpf-map-card-image {
-  width: 100%;
-  height: 180px;
-  background-size: cover;
-  background-position: center;
-  background-color: #e9ecef;
-}
-
-.kcpf-map-card-content {
-  padding: 1rem;
-}
-
-.kcpf-map-card-title {
-  font-size: 1.1rem;
-  font-weight: 600;
-  margin: 0 0 0.5rem 0;
-  color: #212529;
-  line-height: 1.3;
-}
-
-.kcpf-map-card-meta {
-  font-size: 0.9rem;
-  color: #6c757d;
-  margin-bottom: 0.75rem;
-}
-
-.kcpf-map-card-meta .kcpf-separator {
-  margin: 0 0.25rem;
-}
-
-.kcpf-map-card-price {
-  font-size: 1.25rem;
-  font-weight: 700;
-  color: #007bff;
-  margin-bottom: 0.75rem;
-}
-
-.kcpf-map-card-price-multi {
-  color: #28a745;
-}
-
-.kcpf-map-card-specs {
-  display: flex;
-  gap: 1rem;
-  font-size: 0.9rem;
-  color: #495057;
-}
-
-.kcpf-map-card-spec {
-  display: flex;
-  align-items: center;
-  gap: 0.25rem;
-}
-
-.kcpf-spec-icon {
-  font-size: 1rem;
-}
-
-.kcpf-spec-value {
-  font-weight: 500;
 }
 
 /* No Results */
-.kcpf-map-no-results {
+.kcpf-no-results {
   padding: 2rem;
   text-align: center;
   color: #6c757d;
 }
 
-.kcpf-map-no-results p {
+.kcpf-no-results p {
   margin: 0.5rem 0;
 }
 
@@ -227,7 +155,6 @@
 .kcpf-google-map {
   width: 100%;
   height: 100%;
-  min-height: 600px;
 }
 
 /* ==========================================================================

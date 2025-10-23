@@ -232,10 +232,14 @@
      */
     highlightCard: function (propertyId) {
       // Remove active class from all cards
-      $(".kcpf-map-card").removeClass("kcpf-card-active");
+      $(".kcpf-map-sidebar .kcpf-property-card").removeClass(
+        "kcpf-card-active"
+      );
 
       // Add active class to target card
-      const targetCard = $(`.kcpf-map-card[data-property-id="${propertyId}"]`);
+      const targetCard = $(
+        `.kcpf-map-sidebar .kcpf-property-card[data-property-id="${propertyId}"]`
+      );
       if (targetCard.length) {
         targetCard.addClass("kcpf-card-active");
 
@@ -335,12 +339,16 @@
      */
     setupEventHandlers: function () {
       // Card hover - pan to marker
-      $(document).on("mouseenter", ".kcpf-map-card", (e) => {
-        const propertyId = $(e.currentTarget).data("property-id");
-        if (propertyId) {
-          this.panToMarker(propertyId);
+      $(document).on(
+        "mouseenter",
+        ".kcpf-map-sidebar .kcpf-property-card",
+        (e) => {
+          const propertyId = $(e.currentTarget).data("property-id");
+          if (propertyId) {
+            this.panToMarker(propertyId);
+          }
         }
-      });
+      );
 
       // Filter form submission
       $(document).on("submit", ".kcpf-map-filters-form", (e) => {

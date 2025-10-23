@@ -228,6 +228,8 @@ The map view uses CSS classes prefixed with `kcpf-map-`:
 ```css
 .kcpf-map-view           /* Main container */
 /* Main container */
+/* Main container */
+/* Main container */
 .kcpf-map-layout         /* Two-column grid */
 .kcpf-map-sidebar        /* Left column */
 .kcpf-map-container      /* Right column (map) */
