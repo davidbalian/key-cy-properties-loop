@@ -217,39 +217,18 @@ function debug_bedroom_filter() {
 
     try {
         $bedrooms_key = ($purpose === 'rent') ? 'rent_bedrooms' : 'bedrooms';
+        $bedroomsValues = is_array($bedroom) ? [$bedroom] : [$bedroom];
 
+        // Ultra-simplified: just check bedrooms field, works for both single and multi-unit
         $meta_query = ['relation' => 'OR'];
 
-        // Single-unit properties
-        $meta_query[] = [
-            'relation' => 'AND',
-            [
-                'relation' => 'OR',
-                [
-                    'key' => 'multi-unit',
-                    'compare' => 'NOT EXISTS',
-                ],
-                [
-                    'key' => 'multi-unit',
-                    'value' => '1',
-                    'compare' => '!=',
-                ],
-            ],
-            [
+        foreach ($bedroomsValues as $bedroom_val) {
+            $meta_query[] = [
                 'key' => $bedrooms_key,
-                'value' => 'i:' . $bedroom . ';s:4:"true"',
+                'value' => 'i:' . $bedroom_val . ';s:4:"true"',
                 'compare' => 'LIKE',
-            ],
-        ];
-
-        // Multi-unit properties - COMMENTED OUT
-        /*
-        $meta_query[] = [
-            'key' => 'multi-unit_table',
-            'value' => '"unit_bedrooms":"' . $bedroom . '"',
-            'compare' => 'LIKE',
-        ];
-        */
+            ];
+        }
 
         $args = [
             'post_type' => 'properties',

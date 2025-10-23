@@ -155,36 +155,13 @@ class KCPF_MultiUnit_Query_Builder
         $bedroomsKey = KCPF_Field_Config::getMetaKey('bedrooms', $purpose);
         $bedroomsValues = is_array($filters['bedrooms']) ? $filters['bedrooms'] : [$filters['bedrooms']];
 
-        // Simplified approach: use a single OR query that covers all cases
+        // Ultra-simplified: just check bedrooms field, works for both single and multi-unit
         $bedrooms_query = ['relation' => 'OR'];
 
         foreach ($bedroomsValues as $bedroom) {
-            // Single-unit properties: check if bedrooms array contains the value
             $bedrooms_query[] = [
-                'relation' => 'AND',
-                [
-                    'relation' => 'OR',
-                    [
-                        'key' => 'multi-unit',
-                        'compare' => 'NOT EXISTS',
-                    ],
-                    [
-                        'key' => 'multi-unit',
-                        'value' => '1',
-                        'compare' => '!=',
-                    ],
-                ],
-                [
-                    'key' => $bedroomsKey,
-                    'value' => 'i:' . $bedroom . ';s:4:"true"',
-                    'compare' => 'LIKE',
-                ],
-            ];
-
-            // Multi-unit properties: check if any unit has this bedroom count
-            $bedrooms_query[] = [
-                'key' => 'multi-unit_table',
-                'value' => '"unit_bedrooms":"' . $bedroom . '"',
+                'key' => $bedroomsKey,
+                'value' => 'i:' . $bedroom . ';s:4:"true"',
                 'compare' => 'LIKE',
             ];
         }
@@ -208,36 +185,13 @@ class KCPF_MultiUnit_Query_Builder
         $bathroomsKey = KCPF_Field_Config::getMetaKey('bathrooms', $purpose);
         $bathroomsValues = is_array($filters['bathrooms']) ? $filters['bathrooms'] : [$filters['bathrooms']];
 
-        // Simplified approach: use a single OR query that covers all cases
+        // Ultra-simplified: just check bathrooms field, works for both single and multi-unit
         $bathrooms_query = ['relation' => 'OR'];
 
         foreach ($bathroomsValues as $bathroom) {
-            // Single-unit properties: check if bathrooms array contains the value
             $bathrooms_query[] = [
-                'relation' => 'AND',
-                [
-                    'relation' => 'OR',
-                    [
-                        'key' => 'multi-unit',
-                        'compare' => 'NOT EXISTS',
-                    ],
-                    [
-                        'key' => 'multi-unit',
-                        'value' => '1',
-                        'compare' => '!=',
-                    ],
-                ],
-                [
-                    'key' => $bathroomsKey,
-                    'value' => 'i:' . $bathroom . ';s:4:"true"',
-                    'compare' => 'LIKE',
-                ],
-            ];
-
-            // Multi-unit properties: check if any unit has this bathroom count
-            $bathrooms_query[] = [
-                'key' => 'multi-unit_table',
-                'value' => '"unit_bathrooms":"' . $bathroom . '"',
+                'key' => $bathroomsKey,
+                'value' => 'i:' . $bathroom . ';s:4:"true"',
                 'compare' => 'LIKE',
             ];
         }
