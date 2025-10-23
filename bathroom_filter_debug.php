@@ -113,7 +113,7 @@ function debug_bathroom_filter() {
         foreach ($bathroom_values as $bathroom_val) {
             $meta_query[] = [
                 'key' => $bathrooms_key,
-                'value' => 'i:' . $bathroom_val . ';s:4:"true"',
+                'value' => ':"' . $bathroom_val . '";s:4:"true"',
                 'compare' => 'LIKE',
             ];
         }

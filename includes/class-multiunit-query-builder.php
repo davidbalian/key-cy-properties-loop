@@ -155,15 +155,30 @@ class KCPF_MultiUnit_Query_Builder
         $bedroomsKey = KCPF_Field_Config::getMetaKey('bedrooms', $purpose);
         $bedroomsValues = is_array($filters['bedrooms']) ? $filters['bedrooms'] : [$filters['bedrooms']];
 
-        // Ultra-simplified: just check bedrooms field, works for both single and multi-unit
+        // Build query to match bedroom values in JSON array
         $bedrooms_query = ['relation' => 'OR'];
 
         foreach ($bedroomsValues as $bedroom) {
+            // Match if this bedroom number is set to true in JSON format
             $bedrooms_query[] = [
                 'key' => $bedroomsKey,
-                'value' => 'i:' . $bedroom . ';s:4:"true"',
+                'value' => '"' . $bedroom . '":"true"',
                 'compare' => 'LIKE',
             ];
+
+            // Fallback: try different serialization lengths for 9_plus
+            if ($bedroom === '9_plus') {
+                $bedrooms_query[] = [
+                    'key' => $bedroomsKey,
+                    'value' => 's:6:"9_plus";s:4:"true"',
+                    'compare' => 'LIKE',
+                ];
+                $bedrooms_query[] = [
+                    'key' => $bedroomsKey,
+                    'value' => 's:6:"9_plus";b:1',
+                    'compare' => 'LIKE',
+                ];
+            }
         }
 
         return $bedrooms_query;
@@ -185,15 +200,30 @@ class KCPF_MultiUnit_Query_Builder
         $bathroomsKey = KCPF_Field_Config::getMetaKey('bathrooms', $purpose);
         $bathroomsValues = is_array($filters['bathrooms']) ? $filters['bathrooms'] : [$filters['bathrooms']];
 
-        // Ultra-simplified: just check bathrooms field, works for both single and multi-unit
+        // Build query to match bathroom values in JSON array
         $bathrooms_query = ['relation' => 'OR'];
 
         foreach ($bathroomsValues as $bathroom) {
+            // Match if this bathroom number is set to true in JSON format
             $bathrooms_query[] = [
                 'key' => $bathroomsKey,
-                'value' => 'i:' . $bathroom . ';s:4:"true"',
+                'value' => '"' . $bathroom . '":"true"',
                 'compare' => 'LIKE',
             ];
+
+            // Fallback: try different serialization lengths for 9_plus
+            if ($bathroom === '9_plus') {
+                $bathrooms_query[] = [
+                    'key' => $bathroomsKey,
+                    'value' => 's:6:"9_plus";s:4:"true"',
+                    'compare' => 'LIKE',
+                ];
+                $bathrooms_query[] = [
+                    'key' => $bathroomsKey,
+                    'value' => 's:6:"9_plus";b:1',
+                    'compare' => 'LIKE',
+                ];
+            }
         }
 
         return $bathrooms_query;
