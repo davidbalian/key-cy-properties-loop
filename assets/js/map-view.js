@@ -254,6 +254,9 @@
         if (property) {
           this.showPropertyInfoWindow(circle, property);
         }
+
+        // Highlight the corresponding card
+        this.highlightCard(propertyId);
       }
     },
 

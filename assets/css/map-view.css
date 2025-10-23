@@ -125,8 +125,8 @@
 }
 
 .kcpf-map-sidebar .kcpf-property-card.kcpf-card-active {
-  border-color: #007bff;
-  box-shadow: 0 4px 16px rgba(0, 123, 255, 0.3);
+  border-color: #000000;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
 }
 
 /* Sale cards: vertical layout (image on top) for map view only */
