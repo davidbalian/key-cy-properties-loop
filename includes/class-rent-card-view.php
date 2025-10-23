@@ -35,9 +35,9 @@ class KCPF_Rent_Card_View
         
         ?>
         <article class="kcpf-property-card kcpf-property-card-rent">
-            <a href="<?php the_permalink(); ?>" class="kcpf-property-card-link">
-                <?php if (has_post_thumbnail()) : 
-                    $image_url = get_the_post_thumbnail_url(get_the_ID(), 'full');
+            <a href="<?php echo get_permalink($property_id); ?>" class="kcpf-property-card-link">
+                <?php if (has_post_thumbnail($property_id)) : 
+                    $image_url = get_the_post_thumbnail_url($property_id, 'full');
                 ?>
                     <div class="kcpf-property-image-rent" style="background-image: url('<?php echo esc_url($image_url); ?>');">
                     </div>
@@ -45,7 +45,7 @@ class KCPF_Rent_Card_View
                 
                 <div class="kcpf-property-content-rent">
                     <h2 class="kcpf-property-title-rent">
-                        <?php the_title(); ?>
+                        <?php echo get_the_title($property_id); ?>
                     </h2>
                 
                 <div class="kcpf-property-meta-row-rent">

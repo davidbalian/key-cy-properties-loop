@@ -143,6 +143,11 @@
   width: 100%;
 }
 
+/* Rent cards: ensure consistent image height in map view */
+.kcpf-map-sidebar .kcpf-property-card-rent .kcpf-property-image-rent {
+  height: 200px !important;
+}
+
 /* No Results */
 .kcpf-no-results {
   padding: 2rem;
