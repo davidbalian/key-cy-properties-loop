@@ -47,53 +47,19 @@ class Key_CY_Properties_Filter
      */
     private function __construct()
     {
-        $this->loadDependencies();
+        $this->loadManagerClasses();
         $this->initializePlugin();
     }
     
     /**
-     * Load required files
+     * Load manager classes
      */
-    private function loadDependencies()
+    private function loadManagerClasses()
     {
-        require_once KCPF_INCLUDES_DIR . 'class-field-config.php';
-        require_once KCPF_INCLUDES_DIR . 'class-glossary-handler.php';
-        require_once KCPF_INCLUDES_DIR . 'class-url-manager.php';
-        require_once KCPF_INCLUDES_DIR . 'class-multiunit-query-builder.php';
-        require_once KCPF_INCLUDES_DIR . 'class-query-handler.php';
-        require_once KCPF_INCLUDES_DIR . 'class-card-data-helper.php';
-        require_once KCPF_INCLUDES_DIR . 'class-rent-card-view.php';
-        require_once KCPF_INCLUDES_DIR . 'class-loop-renderer.php';
-        require_once KCPF_INCLUDES_DIR . 'class-listing-values.php';
-        
-        // Filter renderer classes (loaded before facade)
-        require_once KCPF_INCLUDES_DIR . 'class-filter-renderer-base.php';
-        require_once KCPF_INCLUDES_DIR . 'class-location-filter-renderer.php';
-        require_once KCPF_INCLUDES_DIR . 'class-purpose-filter-renderer.php';
-        require_once KCPF_INCLUDES_DIR . 'class-price-filter-renderer.php';
-        require_once KCPF_INCLUDES_DIR . 'class-bedrooms-filter-renderer.php';
-        require_once KCPF_INCLUDES_DIR . 'class-bathrooms-filter-renderer.php';
-        require_once KCPF_INCLUDES_DIR . 'class-type-filter-renderer.php';
-        require_once KCPF_INCLUDES_DIR . 'class-area-filter-renderer.php';
-        require_once KCPF_INCLUDES_DIR . 'class-amenities-filter-renderer.php';
-        require_once KCPF_INCLUDES_DIR . 'class-misc-filter-renderer.php';
-        require_once KCPF_INCLUDES_DIR . 'class-filter-renderer.php'; // Facade
-        
-        require_once KCPF_INCLUDES_DIR . 'class-homepage-filters.php';
-        require_once KCPF_INCLUDES_DIR . 'class-filters-ajax.php';
-        require_once KCPF_INCLUDES_DIR . 'class-debug-viewer.php';
-        
-        // Map view classes
-        require_once KCPF_INCLUDES_DIR . 'class-settings-manager.php';
-        require_once KCPF_INCLUDES_DIR . 'class-map-filters.php';
-        require_once KCPF_INCLUDES_DIR . 'class-map-card-renderer.php';
-        require_once KCPF_INCLUDES_DIR . 'class-map-shortcode.php';
-        
-        // Style Editor classes - Disabled
-        // require_once KCPF_INCLUDES_DIR . 'class-style-settings-manager.php';
-        // require_once KCPF_INCLUDES_DIR . 'class-css-generator.php';
-        // require_once KCPF_INCLUDES_DIR . 'class-style-preview.php';
-        // require_once KCPF_INCLUDES_DIR . 'class-style-editor.php';
+        require_once KCPF_INCLUDES_DIR . 'class-plugin-loader.php';
+        require_once KCPF_INCLUDES_DIR . 'class-shortcode-manager.php';
+        require_once KCPF_INCLUDES_DIR . 'class-ajax-manager.php';
+        require_once KCPF_INCLUDES_DIR . 'class-asset-manager.php';
     }
     
     /**
@@ -101,390 +67,23 @@ class Key_CY_Properties_Filter
      */
     private function initializePlugin()
     {
-        // Enqueue assets
-        add_action('wp_enqueue_scripts', [$this, 'enqueueAssets']);
+        // Load all plugin dependencies
+        KCPF_Plugin_Loader::loadDependencies();
         
-        // Add critical CSS overrides
-        add_action('wp_head', [$this, 'addCriticalOverrides'], 100);
+        // Initialize asset manager
+        KCPF_Asset_Manager::init();
         
         // Register shortcodes
-        $this->registerShortcodes();
+        KCPF_Shortcode_Manager::register();
         
         // Register AJAX handlers
-        $this->registerAjaxHandlers();
+        KCPF_Ajax_Manager::register();
         
         // Initialize admin features
         if (is_admin()) {
             KCPF_Debug_Viewer::init();
             KCPF_Settings_Manager::init();
-            // Style Editor disabled
-            // KCPF_Style_Editor::init();
         }
-    }
-    
-    /**
-     * Register AJAX handlers
-     */
-    private function registerAjaxHandlers()
-    {
-        // For logged-in users
-        add_action('wp_ajax_kcpf_load_properties', [$this, 'ajaxLoadProperties']);
-        add_action('wp_ajax_kcpf_test', [$this, 'ajaxTest']);
-        add_action('wp_ajax_kcpf_load_map_properties', [KCPF_Map_Shortcode::class, 'ajaxLoadMapProperties']);
-        add_action('wp_ajax_kcpf_get_property_card', [KCPF_Map_Shortcode::class, 'ajaxGetPropertyCard']);
-        KCPF_Filters_Ajax::register();
-        
-        // For non-logged-in users
-        add_action('wp_ajax_nopriv_kcpf_load_properties', [$this, 'ajaxLoadProperties']);
-        add_action('wp_ajax_nopriv_kcpf_test', [$this, 'ajaxTest']);
-        add_action('wp_ajax_nopriv_kcpf_load_map_properties', [KCPF_Map_Shortcode::class, 'ajaxLoadMapProperties']);
-        add_action('wp_ajax_nopriv_kcpf_get_property_card', [KCPF_Map_Shortcode::class, 'ajaxGetPropertyCard']);
-        KCPF_Filters_Ajax::register();
-    }
-    
-    /**
-     * Simple AJAX test endpoint
-     */
-    public function ajaxTest()
-    {
-        wp_send_json_success([
-            'message' => 'AJAX is working!',
-            'received_params' => $_GET,
-            'timestamp' => current_time('mysql'),
-        ]);
-    }
-    
-    /**
-     * AJAX handler to load filtered properties
-     */
-    public function ajaxLoadProperties()
-    {
-        // Set a time limit to prevent hanging
-        set_time_limit(60);
-        
-        // Ensure we have a clean output buffer
-        @ob_clean();
-        
-        try {
-            // Log the start of the request
-            error_log('[KCPF] ============================================');
-            error_log('[KCPF] AJAX request started');
-            error_log('[KCPF] Total $_GET parameters: ' . count($_GET));
-            error_log('[KCPF] $_GET contents: ' . print_r($_GET, true));
-            
-            // Log all filter parameters being received
-            $receivedFilters = [];
-            foreach ($_GET as $key => $value) {
-                if ($key !== 'action') {
-                    $receivedFilters[$key] = $value;
-                }
-            }
-            error_log('[KCPF] Filter parameters received: ' . print_r($receivedFilters, true));
-            
-            // Get attributes from AJAX request - pass all filter parameters
-            $attrs = [
-                'purpose' => isset($_GET['purpose']) ? sanitize_text_field($_GET['purpose']) : 'sale',
-                'posts_per_page' => isset($_GET['posts_per_page']) ? intval($_GET['posts_per_page']) : 10,
-            ];
-            
-            // Note: All other filter parameters are read from $_GET by URL_Manager
-            // No need to explicitly pass them here as they're accessed via getCurrentFilters()
-            
-            error_log('[KCPF] Calling render with attrs: ' . print_r($attrs, true));
-            
-            // Render properties loop
-            $html = KCPF_Loop_Renderer::render($attrs);
-            
-            error_log('[KCPF] Render completed, HTML length: ' . strlen($html));
-            
-            // Return JSON response
-            wp_send_json_success([
-                'html' => $html,
-            ]);
-            
-            // Exit is not needed as wp_send_json_success already exits
-        } catch (Exception $e) {
-            // Log error with full details
-            error_log('[KCPF] AJAX Exception: ' . $e->getMessage());
-            error_log('[KCPF] AJAX Trace: ' . $e->getTraceAsString());
-            
-            // Ensure clean output buffer before sending error
-            @ob_clean();
-            
-            // Return error response
-            wp_send_json_error([
-                'message' => 'Error loading properties',
-                'error' => $e->getMessage(),
-                'trace' => $e->getTraceAsString(),
-            ]);
-        } catch (Error $e) {
-            // Catch fatal errors too
-            error_log('[KCPF] AJAX Fatal Error: ' . $e->getMessage());
-            error_log('[KCPF] AJAX Trace: ' . $e->getTraceAsString());
-            
-            // Ensure clean output buffer before sending error
-            @ob_clean();
-            
-            wp_send_json_error([
-                'message' => 'Fatal error loading properties',
-                'error' => $e->getMessage(),
-                'trace' => $e->getTraceAsString(),
-            ]);
-        }
-    }
-    
-    /**
-     * Register all shortcodes
-     */
-    private function registerShortcodes()
-    {
-        // Properties loop
-        add_shortcode('properties_loop', [KCPF_Loop_Renderer::class, 'render']);
-        // Homepage composite
-        add_shortcode('homepage_filters', [KCPF_Homepage_Filters::class, 'render']);
-        // Map view
-        add_shortcode('properties_map', [KCPF_Map_Shortcode::class, 'render']);
-        
-        // Filter shortcodes
-        add_shortcode('property_filter_location', [KCPF_Filter_Renderer::class, 'renderLocation']);
-        add_shortcode('property_filter_purpose', [KCPF_Filter_Renderer::class, 'renderPurpose']);
-        add_shortcode('property_filter_price', [KCPF_Filter_Renderer::class, 'renderPrice']);
-        add_shortcode('property_filter_bedrooms', [KCPF_Filter_Renderer::class, 'renderBedrooms']);
-        add_shortcode('property_filter_bathrooms', [KCPF_Filter_Renderer::class, 'renderBathrooms']);
-        add_shortcode('property_filter_type', [KCPF_Filter_Renderer::class, 'renderType']);
-        add_shortcode('property_filter_amenities', [KCPF_Filter_Renderer::class, 'renderAmenities']);
-        add_shortcode('property_filter_covered_area', [KCPF_Filter_Renderer::class, 'renderCoveredArea']);
-        add_shortcode('property_filter_plot_area', [KCPF_Filter_Renderer::class, 'renderPlotArea']);
-        add_shortcode('property_filter_id', [KCPF_Filter_Renderer::class, 'renderPropertyId']);
-        add_shortcode('property_filters_apply', [KCPF_Filter_Renderer::class, 'renderApplyButton']);
-        add_shortcode('property_filters_reset', [KCPF_Filter_Renderer::class, 'renderResetButton']);
-    }
-    
-    /**
-     * Add critical CSS overrides
-     */
-    public function addCriticalOverrides()
-    {
-        ?>
-        <style type="text/css">
-            .kcpf-multiselect-trigger,
-            .kcpf-filter .kcpf-multiselect-trigger,
-            .kcpf-multiselect-dropdown .kcpf-multiselect-trigger {
-                background-color: #fff !important;
-            }
-            .kcpf-filter-select {
-                background-color: #fff !important;
-            }
-            .kcpf-input,
-            .kcpf-property-id-input {
-                background-color: #fff !important;
-            }
-            .kcpf-toggle-label span,
-            .kcpf-radio-label span,
-            .kcpf-button-label span {
-                background-color: #fff !important;
-            }
-            .kcpf-reset-button {
-                background-color: #f0f0f0 !important;
-            }
-            .kcpf-chip {
-                background-color: #f0f0f0 !important;
-                color: #000 !important;
-            }
-            .kcpf-chip-remove {
-                color: #000 !important;
-                font-size: 1rem !important;
-            }
-            .kcpf-multiselect-dropdown.active .kcpf-multiselect-dropdown-menu {
-                display: block !important;
-                padding: 0.5rem !important;
-            }
-            .kcpf-multiselect-option {
-                display: flex !important;
-                padding: 0.5rem 0.75rem !important;
-                margin-bottom: 0.5rem !important;
-            }
-            .kcpf-placeholder {
-                color: #666 !important;
-            }
-            .kcpf-range-trigger {
-                background-color: #fff !important;
-            }
-            .kcpf-range-dropdown-menu {
-                background-color: #fff !important;
-            }
-            /* Ensure Sale/Rent labels are visible */
-            .kcpf-filter-purpose label,
-            .kcpf-radio-label,
-            .kcpf-toggle-label {
-                display: inline-flex !important;
-                align-items: center !important;
-                visibility: visible !important;
-                opacity: 1 !important;
-            }
-            .kcpf-filter-purpose .kcpf-radio-label span,
-            .kcpf-filter-purpose .kcpf-toggle-label span {
-                display: inline-block !important;
-                visibility: visible !important;
-            }
-            .kcpf-filter-purpose input[type="radio"] {
-                display: inline-block !important;
-                visibility: visible !important;
-            }
-            /* Loading state for filter refresh */
-            .kcpf-homepage-filters.kcpf-refreshing {
-                position: relative;
-            }
-            .kcpf-homepage-filters.kcpf-refreshing .kcpf-filters-form {
-                opacity: 0.5;
-                pointer-events: none;
-            }
-            .kcpf-refresh-spinner {
-                position: absolute;
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%, -50%);
-                z-index: 1000;
-                background: rgba(255, 255, 255, 0.9);
-                padding: 20px;
-                border-radius: 8px;
-                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            }
-            .kcpf-spinner {
-                border: 3px solid #f3f3f3;
-                border-top: 3px solid #3498db;
-                border-radius: 50%;
-                width: 40px;
-                height: 40px;
-                animation: kcpf-spin 1s linear infinite;
-            }
-            @keyframes kcpf-spin {
-                0% { transform: rotate(0deg); }
-                100% { transform: rotate(360deg); }
-            }
-            /* Input prefix/suffix styling */
-            .kcpf-input-wrapper {
-                position: relative;
-                display: inline-flex;
-                align-items: center;
-                flex: 1;
-            }
-            .kcpf-input-prefix {
-                position: absolute;
-                left: 12px;
-                color: #666;
-                font-size: 14px;
-                pointer-events: none;
-                z-index: 1;
-            }
-            .kcpf-input-wrapper .kcpf-input {
-                padding-left: 28px !important;
-            }
-            .kcpf-input-suffix {
-                position: absolute;
-                right: 12px;
-                color: #666;
-                font-size: 12px;
-                pointer-events: none;
-                z-index: 1;
-            }
-            .kcpf-input-wrapper .kcpf-input {
-                padding-right: 32px !important;
-            }
-        </style>
-        <?php
-    }
-    
-    /**
-     * Enqueue CSS and JavaScript
-     */
-    public function enqueueAssets()
-    {
-        // Enqueue noUiSlider CSS
-        wp_enqueue_style(
-            'nouislider',
-            KCPF_ASSETS_URL . 'libs/nouislider.min.css',
-            [],
-            '15.7.1'
-        );
-        
-        // Enqueue CSS
-        wp_enqueue_style(
-            'kcpf-filters',
-            KCPF_ASSETS_URL . 'css/filters.css',
-            ['nouislider'],
-            KCPF_VERSION
-        );
-        
-        // Enqueue Map View CSS
-        wp_enqueue_style(
-            'kcpf-map-view',
-            KCPF_ASSETS_URL . 'css/map-view.css',
-            ['kcpf-filters'],
-            KCPF_VERSION
-        );
-        
-        // Dynamic CSS generation disabled
-        // if (class_exists('KCPF_CSS_Generator')) {
-        //     try {
-        //         $custom_css = KCPF_CSS_Generator::generate();
-        //         if (!empty($custom_css)) {
-        //             wp_add_inline_style('kcpf-filters', $custom_css);
-        //         }
-        //     } catch (Exception $e) {
-        //         error_log('KCPF Style Editor Error: ' . $e->getMessage());
-        //     }
-        // }
-        
-        // Enqueue Google Maps API if API key is configured
-        if (KCPF_Settings_Manager::hasApiKey()) {
-            $api_key = KCPF_Settings_Manager::getApiKey();
-            wp_enqueue_script(
-                'google-maps',
-                'https://maps.googleapis.com/maps/api/js?key=' . urlencode($api_key) . '&callback=kcpfInitMap',
-                [],
-                null,
-                true
-            );
-        }
-        
-        // Enqueue noUiSlider JavaScript
-        wp_enqueue_script(
-            'nouislider',
-            KCPF_ASSETS_URL . 'libs/nouislider.min.js',
-            [],
-            '15.7.1',
-            true
-        );
-        
-        // Enqueue JavaScript
-        wp_enqueue_script(
-            'kcpf-filters',
-            KCPF_ASSETS_URL . 'js/filters.js',
-            ['jquery', 'nouislider'],
-            KCPF_VERSION,
-            true
-        );
-        
-        // Enqueue Map View JavaScript
-        $map_dependencies = ['jquery', 'kcpf-filters'];
-        if (KCPF_Settings_Manager::hasApiKey()) {
-            $map_dependencies[] = 'google-maps';
-        }
-        
-        wp_enqueue_script(
-            'kcpf-map-view',
-            KCPF_ASSETS_URL . 'js/map-view.js',
-            $map_dependencies,
-            KCPF_VERSION,
-            true
-        );
-        
-        // Localize script
-        wp_localize_script('kcpf-filters', 'kcpfData', [
-            'ajaxUrl' => admin_url('admin-ajax.php'),
-            'nonce' => wp_create_nonce('kcpf_filter_nonce')
-        ]);
     }
 }
 
@@ -492,4 +91,3 @@ class Key_CY_Properties_Filter
 add_action('plugins_loaded', function() {
     Key_CY_Properties_Filter::getInstance();
 });
-
