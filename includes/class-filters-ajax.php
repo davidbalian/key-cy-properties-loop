@@ -35,6 +35,7 @@ class KCPF_Filters_Ajax
             $_GET['location'] = [];
             $_GET['property_type'] = [];
             $_GET['bedrooms'] = [];
+            $_GET['bathrooms'] = [];
             $_GET['price_min'] = '';
             $_GET['price_max'] = '';
 
@@ -56,6 +57,10 @@ class KCPF_Filters_Ajax
                 'type' => 'checkbox',
             ]);
             
+            $bathrooms = KCPF_Filter_Renderer::renderBathrooms([
+                'type' => 'checkbox',
+            ]);
+            
             // Get price range for JS to update slider
             $priceRange = KCPF_Listing_Values::getMinMax('price', $purpose);
 
@@ -66,6 +71,7 @@ class KCPF_Filters_Ajax
                     'type' => $type,
                     'price' => $price,
                     'bedrooms' => $bedrooms,
+                    'bathrooms' => $bathrooms,
                 ],
                 'priceRange' => [
                     'min' => $priceRange['min'],

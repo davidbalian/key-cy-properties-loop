@@ -131,7 +131,7 @@ class KCPF_Query_Handler
                 $bedrooms_query[] = [
                     'key' => $bedroomsKey,
                     'value' => $bedroom,
-                    'compare' => 'LIKE',
+                    'compare' => '=',
                 ];
             }
             
@@ -151,7 +151,7 @@ class KCPF_Query_Handler
                 $bathrooms_query[] = [
                     'key' => $bathroomsKey,
                     'value' => $bathroom,
-                    'compare' => 'LIKE',
+                    'compare' => '=',
                 ];
             }
             
