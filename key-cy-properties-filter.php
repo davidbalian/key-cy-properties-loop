@@ -307,8 +307,34 @@ class Key_CY_Properties_Filter
             }
             /* Loading state for filter refresh */
             .kcpf-homepage-filters.kcpf-refreshing {
-                opacity: 0.6;
+                position: relative;
+            }
+            .kcpf-homepage-filters.kcpf-refreshing .kcpf-filters-form {
+                opacity: 0.5;
                 pointer-events: none;
+            }
+            .kcpf-refresh-spinner {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                z-index: 1000;
+                background: rgba(255, 255, 255, 0.9);
+                padding: 20px;
+                border-radius: 8px;
+                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            }
+            .kcpf-spinner {
+                border: 3px solid #f3f3f3;
+                border-top: 3px solid #3498db;
+                border-radius: 50%;
+                width: 40px;
+                height: 40px;
+                animation: kcpf-spin 1s linear infinite;
+            }
+            @keyframes kcpf-spin {
+                0% { transform: rotate(0deg); }
+                100% { transform: rotate(360deg); }
             }
         </style>
         <?php

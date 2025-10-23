@@ -456,93 +456,8 @@
       '.kcpf-homepage-filters .kcpf-filter-purpose input[name="purpose"]',
       function () {
         const $root = $(this).closest(".kcpf-homepage-filters");
-        const $form = $root.find(".kcpf-filters-form");
-        const params = new URLSearchParams();
         const purpose = $(this).val();
-
-        // Only send purpose, not other filter values (we want fresh data)
-        params.set("purpose", purpose);
-
-        if (typeof kcpfData === "undefined" || !kcpfData.ajaxUrl) {
-          console.error("[KCPF] Missing ajaxUrl for refresh");
-          return;
-        }
-
-        const ajaxUrl =
-          kcpfData.ajaxUrl +
-          "?action=kcpf_refresh_filters&" +
-          params.toString();
-        console.log("[KCPF] Refreshing filters for purpose:", purpose, ajaxUrl);
-
-        // Close any open dropdowns before refresh
-        $root.find(".kcpf-multiselect-dropdown").removeClass("active");
-        $root.find(".kcpf-range-dropdown").removeClass("active");
-
-        $.ajax({
-          url: ajaxUrl,
-          type: "GET",
-          dataType: "json",
-          timeout: 20000,
-          beforeSend: function () {
-            // Add loading state
-            $root.addClass("kcpf-refreshing");
-          },
-          success: function (response) {
-            if (
-              response &&
-              response.success &&
-              response.data &&
-              response.data.html
-            ) {
-              // Destroy existing sliders before replacing HTML
-              $root.find(".kcpf-range-slider").each(function () {
-                if (this.noUiSlider) {
-                  this.noUiSlider.destroy();
-                }
-              });
-
-              // Replace fragments inside the homepage block
-              if (response.data.html.type) {
-                $root
-                  .find(".kcpf-filter-type")
-                  .replaceWith(response.data.html.type);
-              }
-              if (response.data.html.location) {
-                $root
-                  .find(".kcpf-filter-location")
-                  .replaceWith(response.data.html.location);
-              }
-              if (response.data.html.bedrooms) {
-                $root
-                  .find(".kcpf-filter-bedrooms")
-                  .replaceWith(response.data.html.bedrooms);
-              }
-              if (response.data.html.price) {
-                $root
-                  .find(".kcpf-filter-price")
-                  .replaceWith(response.data.html.price);
-              }
-
-              // Re-init sliders with new data
-              initRangeSliders();
-
-              // Re-init multiselect dropdowns for new elements
-              // (event delegation handles clicks, but ensure proper state)
-
-              console.log("[KCPF] Filters refreshed for purpose:", purpose);
-              console.log("[KCPF] New price range:", response.data.priceRange);
-            } else {
-              console.error("[KCPF] Invalid refresh response", response);
-            }
-          },
-          error: function (xhr, status, error) {
-            console.error("[KCPF] Refresh failed", status, error);
-          },
-          complete: function () {
-            // Remove loading state
-            $root.removeClass("kcpf-refreshing");
-          },
-        });
+        refreshHomepageFilters($root, purpose);
       }
     );
   }
@@ -948,11 +863,132 @@
   }
 
   /**
+   * Initialize homepage filters on page load
+   */
+  function initHomepageFilters() {
+    const $homepage = $(".kcpf-homepage-filters");
+    if ($homepage.length === 0) {
+      return;
+    }
+
+    // Check if URL has purpose parameter (back button scenario)
+    const urlParams = new URLSearchParams(window.location.search);
+    const urlPurpose = urlParams.get("purpose");
+    const currentPurpose = $homepage.data("current-purpose") || "sale";
+
+    if (urlPurpose && urlPurpose !== currentPurpose) {
+      console.log(
+        "[KCPF] URL purpose mismatch detected:",
+        urlPurpose,
+        "vs",
+        currentPurpose
+      );
+      // Update the radio button to match URL
+      $homepage
+        .find('input[name="purpose"][value="' + urlPurpose + '"]')
+        .prop("checked", true)
+        .trigger("change");
+    }
+  }
+
+  /**
+   * Refresh homepage filters for purpose change
+   */
+  function refreshHomepageFilters($root, purpose) {
+    const params = new URLSearchParams();
+    params.set("purpose", purpose);
+
+    if (typeof kcpfData === "undefined" || !kcpfData.ajaxUrl) {
+      console.error("[KCPF] Missing ajaxUrl for refresh");
+      return;
+    }
+
+    const ajaxUrl =
+      kcpfData.ajaxUrl + "?action=kcpf_refresh_filters&" + params.toString();
+    console.log("[KCPF] Refreshing filters for purpose:", purpose, ajaxUrl);
+
+    // Close any open dropdowns before refresh
+    $root.find(".kcpf-multiselect-dropdown").removeClass("active");
+    $root.find(".kcpf-range-dropdown").removeClass("active");
+
+    // Show spinner
+    $root.find(".kcpf-refresh-spinner").show();
+
+    $.ajax({
+      url: ajaxUrl,
+      type: "GET",
+      dataType: "json",
+      timeout: 20000,
+      beforeSend: function () {
+        // Add loading state
+        $root.addClass("kcpf-refreshing");
+      },
+      success: function (response) {
+        if (
+          response &&
+          response.success &&
+          response.data &&
+          response.data.html
+        ) {
+          // Destroy existing sliders before replacing HTML
+          $root.find(".kcpf-range-slider").each(function () {
+            if (this.noUiSlider) {
+              this.noUiSlider.destroy();
+            }
+          });
+
+          // Replace fragments inside the homepage block
+          if (response.data.html.type) {
+            $root
+              .find(".kcpf-filter-type")
+              .replaceWith(response.data.html.type);
+          }
+          if (response.data.html.location) {
+            $root
+              .find(".kcpf-filter-location")
+              .replaceWith(response.data.html.location);
+          }
+          if (response.data.html.bedrooms) {
+            $root
+              .find(".kcpf-filter-bedrooms")
+              .replaceWith(response.data.html.bedrooms);
+          }
+          if (response.data.html.price) {
+            $root
+              .find(".kcpf-filter-price")
+              .replaceWith(response.data.html.price);
+          }
+
+          // Re-init sliders with new data
+          initRangeSliders();
+
+          // Update data attribute for future checks
+          $root.attr("data-current-purpose", purpose);
+
+          console.log("[KCPF] Filters refreshed for purpose:", purpose);
+          console.log("[KCPF] New price range:", response.data.priceRange);
+        } else {
+          console.error("[KCPF] Invalid refresh response", response);
+        }
+      },
+      error: function (xhr, status, error) {
+        console.error("[KCPF] Refresh failed", status, error);
+      },
+      complete: function () {
+        // Remove loading state and hide spinner
+        $root.removeClass("kcpf-refreshing");
+        $root.find(".kcpf-refresh-spinner").hide();
+      },
+    });
+  }
+
+  /**
    * Initialize on document ready
    */
   $(document).ready(function () {
     initFilters();
     initMultiselectDropdowns();
+    initHomepageFilters();
     console.log("[KCPF] Filters initialized");
 
     // Test AJAX after a short delay

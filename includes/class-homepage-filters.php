@@ -75,7 +75,13 @@ class KCPF_Homepage_Filters
 
         ob_start();
         ?>
-        <div class="kcpf-homepage-filters" data-sale-url="<?php echo esc_attr($attrs['sale_url']); ?>" data-rent-url="<?php echo esc_attr($attrs['rent_url']); ?>">
+        <div class="kcpf-homepage-filters" 
+             data-sale-url="<?php echo esc_attr($attrs['sale_url']); ?>" 
+             data-rent-url="<?php echo esc_attr($attrs['rent_url']); ?>"
+             data-current-purpose="<?php echo esc_attr($currentPurpose); ?>">
+            <div class="kcpf-refresh-spinner" style="display: none;">
+                <div class="kcpf-spinner"></div>
+            </div>
             <form class="kcpf-filters-form" method="get">
                 <?php echo $purposeHtml; // Purpose radio ?>
                 <?php echo $typeHtml; // Property type ?>
