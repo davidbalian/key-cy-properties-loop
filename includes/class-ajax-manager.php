@@ -101,6 +101,19 @@ class KCPF_Ajax_Manager
             }
             error_log('[KCPF] Filter parameters received: ' . print_r($receivedFilters, true));
             
+            // Specifically log bedroom and bathroom filters
+            if (isset($_GET['bedrooms'])) {
+                error_log('[KCPF] Bedrooms filter received: ' . print_r($_GET['bedrooms'], true));
+                error_log('[KCPF] Bedrooms filter type: ' . gettype($_GET['bedrooms']));
+                error_log('[KCPF] Bedrooms filter is_array: ' . (is_array($_GET['bedrooms']) ? 'true' : 'false'));
+            }
+            
+            if (isset($_GET['bathrooms'])) {
+                error_log('[KCPF] Bathrooms filter received: ' . print_r($_GET['bathrooms'], true));
+                error_log('[KCPF] Bathrooms filter type: ' . gettype($_GET['bathrooms']));
+                error_log('[KCPF] Bathrooms filter is_array: ' . (is_array($_GET['bathrooms']) ? 'true' : 'false'));
+            }
+            
             // Get attributes from AJAX request - pass all filter parameters
             $attrs = [
                 'purpose' => isset($_GET['purpose']) ? sanitize_text_field($_GET['purpose']) : 'sale',

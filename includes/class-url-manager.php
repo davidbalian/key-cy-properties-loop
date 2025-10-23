@@ -20,7 +20,7 @@ class KCPF_URL_Manager
      */
     public static function getCurrentFilters()
     {
-        return [
+        $filters = [
             'location' => self::getParam('location'),
             'purpose' => self::getParam('purpose'),
             'property_type' => self::getParam('property_type'),
@@ -36,6 +36,16 @@ class KCPF_URL_Manager
             'property_id' => self::getParam('property_id'),
             'paged' => self::getParam('paged', 1),
         ];
+        
+        // Log bedroom and bathroom filters specifically
+        error_log('[KCPF] URL_Manager - Raw $_GET bedrooms: ' . print_r($_GET['bedrooms'] ?? 'NOT_SET', true));
+        error_log('[KCPF] URL_Manager - Raw $_GET bathrooms: ' . print_r($_GET['bathrooms'] ?? 'NOT_SET', true));
+        error_log('[KCPF] URL_Manager - Processed bedrooms: ' . print_r($filters['bedrooms'], true));
+        error_log('[KCPF] URL_Manager - Processed bathrooms: ' . print_r($filters['bathrooms'], true));
+        error_log('[KCPF] URL_Manager - Bedrooms empty check: ' . (empty($filters['bedrooms']) ? 'EMPTY' : 'NOT_EMPTY'));
+        error_log('[KCPF] URL_Manager - Bathrooms empty check: ' . (empty($filters['bathrooms']) ? 'EMPTY' : 'NOT_EMPTY'));
+        
+        return $filters;
     }
     
     /**

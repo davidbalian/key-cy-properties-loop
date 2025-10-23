@@ -97,5 +97,26 @@ class KCPF_Field_Config
     {
         return isset(self::$rentFields[$baseField]);
     }
+    
+    /**
+     * Debug method to test field configuration
+     * 
+     * @param string $baseField
+     * @param string $purpose
+     * @return array Debug information
+     */
+    public static function debugFieldConfig($baseField, $purpose = 'sale')
+    {
+        $metaKey = self::getMetaKey($baseField, $purpose);
+        
+        return [
+            'baseField' => $baseField,
+            'purpose' => $purpose,
+            'metaKey' => $metaKey,
+            'isPurposeDependent' => self::isPurposeDependent($baseField),
+            'saleField' => self::$saleFields[$baseField] ?? 'NOT_FOUND',
+            'rentField' => self::$rentFields[$baseField] ?? 'NOT_FOUND',
+        ];
+    }
 }
 

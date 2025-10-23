@@ -124,22 +124,34 @@ class KCPF_Query_Handler
             $bedroomsKey = KCPF_Field_Config::getMetaKey('bedrooms', $purpose);
             $bedroomsValues = is_array($filters['bedrooms']) ? $filters['bedrooms'] : [$filters['bedrooms']];
             
-            error_log('[KCPF] Bedrooms filter - Key: ' . $bedroomsKey . ', Values: ' . print_r($bedroomsValues, true));
+            error_log('[KCPF] ========== BEDROOMS FILTER DEBUG ==========');
+            error_log('[KCPF] Purpose: ' . $purpose);
+            error_log('[KCPF] Bedrooms Key: ' . $bedroomsKey);
+            error_log('[KCPF] Field Config Debug: ' . print_r(KCPF_Field_Config::debugFieldConfig('bedrooms', $purpose), true));
+            error_log('[KCPF] Bedrooms Values: ' . print_r($bedroomsValues, true));
+            error_log('[KCPF] Bedrooms Values Count: ' . count($bedroomsValues));
+            error_log('[KCPF] First bedroom value: ' . (isset($bedroomsValues[0]) ? $bedroomsValues[0] : 'NONE'));
+            error_log('[KCPF] First bedroom value type: ' . (isset($bedroomsValues[0]) ? gettype($bedroomsValues[0]) : 'NONE'));
             
             // Build OR query for bedrooms (works for all property types)
             $bedrooms_query = ['relation' => 'OR'];
             
             // Add each bedroom value as an OR condition
             foreach ($bedroomsValues as $bedroom) {
-                $bedrooms_query[] = [
+                $bedroom_condition = [
                     'key' => $bedroomsKey,
                     'value' => $bedroom,
                     'compare' => 'LIKE',
                 ];
+                $bedrooms_query[] = $bedroom_condition;
+                error_log('[KCPF] Added bedroom condition: ' . print_r($bedroom_condition, true));
             }
             
             $meta_query[] = $bedrooms_query;
-            error_log('[KCPF] Bedrooms query added: ' . print_r($bedrooms_query, true));
+            error_log('[KCPF] Final bedrooms query: ' . print_r($bedrooms_query, true));
+            error_log('[KCPF] ===========================================');
+        } else {
+            error_log('[KCPF] No bedrooms filter applied - filters[bedrooms] is empty');
         }
         
         // Bathrooms filter - apply to both regular and multi-unit properties
@@ -147,22 +159,34 @@ class KCPF_Query_Handler
             $bathroomsKey = KCPF_Field_Config::getMetaKey('bathrooms', $purpose);
             $bathroomsValues = is_array($filters['bathrooms']) ? $filters['bathrooms'] : [$filters['bathrooms']];
             
-            error_log('[KCPF] Bathrooms filter - Key: ' . $bathroomsKey . ', Values: ' . print_r($bathroomsValues, true));
+            error_log('[KCPF] ========== BATHROOMS FILTER DEBUG ==========');
+            error_log('[KCPF] Purpose: ' . $purpose);
+            error_log('[KCPF] Bathrooms Key: ' . $bathroomsKey);
+            error_log('[KCPF] Field Config Debug: ' . print_r(KCPF_Field_Config::debugFieldConfig('bathrooms', $purpose), true));
+            error_log('[KCPF] Bathrooms Values: ' . print_r($bathroomsValues, true));
+            error_log('[KCPF] Bathrooms Values Count: ' . count($bathroomsValues));
+            error_log('[KCPF] First bathroom value: ' . (isset($bathroomsValues[0]) ? $bathroomsValues[0] : 'NONE'));
+            error_log('[KCPF] First bathroom value type: ' . (isset($bathroomsValues[0]) ? gettype($bathroomsValues[0]) : 'NONE'));
             
             // Build OR query for bathrooms (works for all property types)
             $bathrooms_query = ['relation' => 'OR'];
             
             // Add each bathroom value as an OR condition
             foreach ($bathroomsValues as $bathroom) {
-                $bathrooms_query[] = [
+                $bathroom_condition = [
                     'key' => $bathroomsKey,
                     'value' => $bathroom,
                     'compare' => 'LIKE',
                 ];
+                $bathrooms_query[] = $bathroom_condition;
+                error_log('[KCPF] Added bathroom condition: ' . print_r($bathroom_condition, true));
             }
             
             $meta_query[] = $bathrooms_query;
-            error_log('[KCPF] Bathrooms query added: ' . print_r($bathrooms_query, true));
+            error_log('[KCPF] Final bathrooms query: ' . print_r($bathrooms_query, true));
+            error_log('[KCPF] ===========================================');
+        } else {
+            error_log('[KCPF] No bathrooms filter applied - filters[bathrooms] is empty');
         }
         
         // Covered area filter - handle both regular and multi-unit properties
