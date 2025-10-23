@@ -75,6 +75,15 @@
           "[KCPF] Dropdown classes after open:",
           $dropdown.attr("class")
         );
+
+        // Monitor for class changes
+        setTimeout(() => {
+          console.log("[KCPF] Classes after 100ms:", $dropdown.attr("class"));
+        }, 100);
+
+        setTimeout(() => {
+          console.log("[KCPF] Classes after 500ms:", $dropdown.attr("class"));
+        }, 500);
       });
     },
 
@@ -110,10 +119,17 @@
      */
     handleOutsideClick: function () {
       $(document).on("click", function (e) {
+        console.log("[KCPF] Document click detected on:", e.target);
         if (!$(e.target).closest(".kcpf-multiselect-dropdown").length) {
+          console.log(
+            "[KCPF] Outside click - removing active from multiselect dropdowns"
+          );
           $(".kcpf-multiselect-dropdown").removeClass("active");
         }
         if (!$(e.target).closest(".kcpf-range-dropdown").length) {
+          console.log(
+            "[KCPF] Outside click - removing active from range dropdowns"
+          );
           $(".kcpf-range-dropdown").removeClass("active");
         }
       });

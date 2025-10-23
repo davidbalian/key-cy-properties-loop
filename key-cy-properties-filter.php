@@ -18,7 +18,7 @@ if (!defined('ABSPATH')) {
 }
 
 // Define plugin constants
-define('KCPF_VERSION', '2.4.1');
+define('KCPF_VERSION', '2.4.2');
 define('KCPF_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('KCPF_PLUGIN_URL', plugin_dir_url(__FILE__));
 define('KCPF_INCLUDES_DIR', KCPF_PLUGIN_DIR . 'includes/');

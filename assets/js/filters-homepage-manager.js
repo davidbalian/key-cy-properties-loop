@@ -67,6 +67,7 @@
       console.log("[KCPF] Refreshing filters for purpose:", purpose, ajaxUrl);
 
       // Close any open dropdowns before refresh
+      console.log("[KCPF] Homepage Manager: Closing dropdowns before refresh");
       $root.find(".kcpf-multiselect-dropdown").removeClass("active");
       $root.find(".kcpf-range-dropdown").removeClass("active");
 
