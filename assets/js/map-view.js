@@ -174,33 +174,32 @@
      * Show property info window with full card details
      */
     showPropertyInfoWindow: function (circle, property) {
-      // Check if kcpfData is available
-      if (typeof kcpfData === "undefined" || !kcpfData.ajaxUrl) {
-        console.error(
-          "[KCPF Map] kcpfData not found - cannot load property card"
-        );
-        return;
-      }
+      // Get the existing card HTML from the sidebar
+      const existingCard = $(
+        `.kcpf-map-sidebar .kcpf-property-card[data-property-id="${property.id}"]`
+      );
 
-      // Make AJAX request to get property card HTML
-      $.ajax({
-        url: kcpfData.ajaxUrl,
-        type: "GET",
-        data: {
-          action: "kcpf_get_property_card",
-          property_id: property.id,
-        },
-        success: (response) => {
-          if (response.success && response.data.html) {
-            this.infoWindow.setContent(response.data.html);
-            this.infoWindow.setPosition(circle.getCenter());
-            this.infoWindow.open(this.map);
-          }
-        },
-        error: (xhr, status, error) => {
-          console.error("[KCPF Map] Error loading property card:", error);
-        },
-      });
+      if (existingCard.length) {
+        // Clone the card and add info window class
+        const cardClone = existingCard.clone();
+        cardClone.addClass("kcpf-info-window-card");
+
+        // Remove the link wrapper since we don't want navigation in info window
+        const cardContent = cardClone
+          .find(".kcpf-property-card-link")
+          .contents();
+        cardClone.empty().append(cardContent);
+
+        // Set content and show info window
+        this.infoWindow.setContent(cardClone[0].outerHTML);
+        this.infoWindow.setPosition(circle.getCenter());
+        this.infoWindow.open(this.map);
+      } else {
+        console.error(
+          "[KCPF Map] Card not found in sidebar for property:",
+          property.id
+        );
+      }
     },
 
     /**
