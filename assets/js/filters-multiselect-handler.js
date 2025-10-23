@@ -16,12 +16,13 @@
      * Initialize multiselect dropdowns
      */
     init: function () {
+      console.log("[KCPF] Multiselect Handler starting initialization...");
       this.handleDropdownToggle();
       this.handleRangeDropdownToggle();
       this.handleOutsideClick();
       this.handleChipRemoval();
       this.handleCheckboxChange();
-      console.log("[KCPF] Multiselect Handler initialized");
+      console.log("[KCPF] Multiselect Handler initialized successfully");
     },
 
     /**
@@ -41,7 +42,10 @@
         // Toggle current dropdown
         if (!isActive) {
           $dropdown.addClass("active");
-          console.log("[KCPF] Dropdown opened");
+          console.log(
+            "[KCPF] Dropdown opened for:",
+            $dropdown.data("filter-name")
+          );
         } else {
           console.log("[KCPF] Dropdown closed");
         }
