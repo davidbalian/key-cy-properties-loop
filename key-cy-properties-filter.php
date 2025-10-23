@@ -66,6 +66,8 @@ class Key_CY_Properties_Filter
         require_once KCPF_INCLUDES_DIR . 'class-loop-renderer.php';
         require_once KCPF_INCLUDES_DIR . 'class-listing-values.php';
         require_once KCPF_INCLUDES_DIR . 'class-filter-renderer.php';
+        require_once KCPF_INCLUDES_DIR . 'class-homepage-filters.php';
+        require_once KCPF_INCLUDES_DIR . 'class-filters-ajax.php';
         require_once KCPF_INCLUDES_DIR . 'class-debug-viewer.php';
         
         // Style Editor classes - Disabled
@@ -108,10 +110,12 @@ class Key_CY_Properties_Filter
         // For logged-in users
         add_action('wp_ajax_kcpf_load_properties', [$this, 'ajaxLoadProperties']);
         add_action('wp_ajax_kcpf_test', [$this, 'ajaxTest']);
+        KCPF_Filters_Ajax::register();
         
         // For non-logged-in users
         add_action('wp_ajax_nopriv_kcpf_load_properties', [$this, 'ajaxLoadProperties']);
         add_action('wp_ajax_nopriv_kcpf_test', [$this, 'ajaxTest']);
+        KCPF_Filters_Ajax::register();
     }
     
     /**
@@ -212,6 +216,8 @@ class Key_CY_Properties_Filter
     {
         // Properties loop
         add_shortcode('properties_loop', [KCPF_Loop_Renderer::class, 'render']);
+        // Homepage composite
+        add_shortcode('homepage_filters', [KCPF_Homepage_Filters::class, 'render']);
         
         // Filter shortcodes
         add_shortcode('property_filter_location', [KCPF_Filter_Renderer::class, 'renderLocation']);

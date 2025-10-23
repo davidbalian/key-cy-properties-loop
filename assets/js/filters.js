@@ -71,6 +71,68 @@
       const form = $(this).closest("form");
       console.log("[KCPF] Form found:", form.length);
 
+      // Homepage composite redirect behavior
+      const $homepage = $(this).closest(".kcpf-homepage-filters");
+      const submitType = $(this).data("type");
+      if ($homepage.length > 0 && submitType === "redirect") {
+        const params = new URLSearchParams();
+        const data = {};
+        (form.length ? form : $(".kcpf-filters-form").first())
+          .serializeArray()
+          .forEach(function (item) {
+            if (item.value !== "" && item.value !== null) {
+              if (data.hasOwnProperty(item.name)) {
+                if (!Array.isArray(data[item.name])) {
+                  data[item.name] = [data[item.name]];
+                }
+                data[item.name].push(item.value);
+              } else {
+                data[item.name] = item.value;
+              }
+            }
+          });
+
+        Object.keys(data).forEach(function (key) {
+          const value = data[key];
+          if (Array.isArray(value)) {
+            const cleanKey = key.replace(/\[\]$/, "");
+            if (value.length === 1) {
+              params.set(cleanKey, value[0]);
+            } else {
+              value.forEach(function (v) {
+                params.append(cleanKey + "[]", v);
+              });
+            }
+          } else {
+            params.set(key, value);
+          }
+        });
+
+        // Ensure purpose present
+        let purpose = params.get("purpose");
+        if (!purpose) {
+          const $purposeInput = $homepage.find('input[name="purpose"]:checked');
+          if ($purposeInput.length) {
+            purpose = $purposeInput.val();
+            params.set("purpose", purpose);
+          }
+        }
+
+        const saleUrl =
+          $(this).data("sale-url") ||
+          $homepage.data("sale-url") ||
+          "/test-sale-archive";
+        const rentUrl =
+          $(this).data("rent-url") ||
+          $homepage.data("rent-url") ||
+          "/test-rent-page";
+        const target = purpose === "rent" ? rentUrl : saleUrl;
+        const url = target + (params.toString() ? "?" + params.toString() : "");
+        console.log("[KCPF] Redirecting to:", url);
+        window.location.href = url;
+        return;
+      }
+
       if (form.length > 0) {
         form.submit();
       } else {
@@ -387,6 +449,101 @@
     ).each(function () {
       $(this).closest("label").addClass("active");
     });
+
+    // Live purpose change refresh in homepage composite
+    $(document).on(
+      "change",
+      '.kcpf-homepage-filters .kcpf-filter-purpose input[name="purpose"]',
+      function () {
+        const $root = $(this).closest(".kcpf-homepage-filters");
+        const $form = $root.find(".kcpf-filters-form");
+        const params = new URLSearchParams();
+        const purpose = $(this).val();
+
+        const data = {};
+        $form.serializeArray().forEach(function (item) {
+          if (item.value !== "" && item.value !== null) {
+            if (data.hasOwnProperty(item.name)) {
+              if (!Array.isArray(data[item.name])) {
+                data[item.name] = [data[item.name]];
+              }
+              data[item.name].push(item.value);
+            } else {
+              data[item.name] = item.value;
+            }
+          }
+        });
+
+        Object.keys(data).forEach(function (key) {
+          const value = data[key];
+          if (Array.isArray(value)) {
+            const cleanKey = key.replace(/\[\]$/, "");
+            if (value.length === 1) {
+              params.set(cleanKey, value[0]);
+            } else {
+              value.forEach(function (v) {
+                params.append(cleanKey + "[]", v);
+              });
+            }
+          } else {
+            params.set(key, value);
+          }
+        });
+
+        params.set("purpose", purpose);
+
+        if (typeof kcpfData === "undefined" || !kcpfData.ajaxUrl) {
+          console.error("[KCPF] Missing ajaxUrl for refresh");
+          return;
+        }
+
+        const ajaxUrl =
+          kcpfData.ajaxUrl +
+          "?action=kcpf_refresh_filters&" +
+          params.toString();
+        console.log("[KCPF] Refreshing filters for purpose:", purpose, ajaxUrl);
+
+        $.ajax({
+          url: ajaxUrl,
+          type: "GET",
+          dataType: "json",
+          timeout: 20000,
+          success: function (response) {
+            if (
+              response &&
+              response.success &&
+              response.data &&
+              response.data.html
+            ) {
+              // Replace fragments inside the homepage block
+              if (response.data.html.type) {
+                $root
+                  .find(".kcpf-filter-type")
+                  .replaceWith(response.data.html.type);
+              }
+              if (response.data.html.location) {
+                $root
+                  .find(".kcpf-filter-location")
+                  .replaceWith(response.data.html.location);
+              }
+              if (response.data.html.price) {
+                $root
+                  .find(".kcpf-filter-price")
+                  .replaceWith(response.data.html.price);
+              }
+              // Re-init sliders
+              initRangeSliders();
+              console.log("[KCPF] Filters refreshed for purpose:", purpose);
+            } else {
+              console.error("[KCPF] Invalid refresh response", response);
+            }
+          },
+          error: function (xhr, status, error) {
+            console.error("[KCPF] Refresh failed", status, error);
+          },
+        });
+      }
+    );
   }
 
   /**

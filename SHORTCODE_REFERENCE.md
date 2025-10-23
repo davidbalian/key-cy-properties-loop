@@ -40,6 +40,35 @@ Location taxonomy filter.
 [property_filter_location type="checkbox" show_count="true"]
 ```
 
+### `[homepage_filters]`
+
+Composite, purpose-aware homepage filter with redirect.
+
+**Attributes:**
+
+- `sale_url` (string) - Target URL when purpose is `sale` (default: `/test-sale-archive`)
+- `rent_url` (string) - Target URL when purpose is `rent` (default: `/test-rent-page`)
+- `apply_text` (string) - Button text (default: `Filter results`)
+
+Includes:
+
+- Purpose radio (sale/rent)
+- Property type (purpose-filtered)
+- Location with purpose-specific counts
+- Bedrooms
+- Price range slider with purpose-specific min/max
+
+Behavior:
+
+- When toggling purpose, type/location options and price min/max refresh live
+- Clicking "Filter results" redirects to the purpose-specific URL with all selections added to the query string
+
+**Example:**
+
+```
+[homepage_filters sale_url="/test-sale-archive" rent_url="/test-rent-page" apply_text="Filter results"]
+```
+
 ---
 
 ### `[property_filter_purpose]`
