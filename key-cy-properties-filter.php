@@ -336,6 +336,35 @@ class Key_CY_Properties_Filter
                 0% { transform: rotate(0deg); }
                 100% { transform: rotate(360deg); }
             }
+            /* Input prefix/suffix styling */
+            .kcpf-input-wrapper {
+                position: relative;
+                display: inline-flex;
+                align-items: center;
+                flex: 1;
+            }
+            .kcpf-input-prefix {
+                position: absolute;
+                left: 12px;
+                color: #666;
+                font-size: 14px;
+                pointer-events: none;
+                z-index: 1;
+            }
+            .kcpf-input-wrapper .kcpf-input {
+                padding-left: 28px !important;
+            }
+            .kcpf-input-suffix {
+                position: absolute;
+                right: 12px;
+                color: #666;
+                font-size: 12px;
+                pointer-events: none;
+                z-index: 1;
+            }
+            .kcpf-input-wrapper .kcpf-input {
+                padding-right: 32px !important;
+            }
         </style>
         <?php
     }

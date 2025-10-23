@@ -264,11 +264,11 @@ class KCPF_Filter_Renderer
             $price_min = KCPF_URL_Manager::getFilterValue('price_min');
             $price_max = KCPF_URL_Manager::getFilterValue('price_max');
             
-            // Calculate display value
+            // Calculate display value with euro symbol
             $display_value = '';
             if ($price_min || $price_max) {
-                $min_display = $price_min ? number_format($price_min) : '';
-                $max_display = $price_max ? number_format($price_max) : '';
+                $min_display = $price_min ? '€' . number_format($price_min) : '';
+                $max_display = $price_max ? '€' . number_format($price_max) : '';
                 if ($min_display && $max_display) {
                     $display_value = $min_display . ' - ' . $max_display;
                 } elseif ($min_display) {
@@ -309,25 +309,31 @@ class KCPF_Filter_Renderer
                         </div>
                         
                         <div class="kcpf-range-inputs">
-                            <input type="number" 
-                                   name="price_min" 
-                                   placeholder="Min Price"
-                                   value="<?php echo esc_attr($price_min); ?>"
-                                   min="<?php echo esc_attr($attrs['min']); ?>"
-                                   max="<?php echo esc_attr($attrs['max']); ?>"
-                                   step="<?php echo esc_attr($attrs['step']); ?>"
-                                   class="kcpf-input kcpf-range-min">
+                            <div class="kcpf-input-wrapper">
+                                <span class="kcpf-input-prefix">€</span>
+                                <input type="number" 
+                                       name="price_min" 
+                                       placeholder="Min"
+                                       value="<?php echo esc_attr($price_min); ?>"
+                                       min="<?php echo esc_attr($attrs['min']); ?>"
+                                       max="<?php echo esc_attr($attrs['max']); ?>"
+                                       step="<?php echo esc_attr($attrs['step']); ?>"
+                                       class="kcpf-input kcpf-range-min">
+                            </div>
                             
                             <span class="kcpf-range-separator">-</span>
                             
-                            <input type="number" 
-                                   name="price_max" 
-                                   placeholder="Max Price"
-                                   value="<?php echo esc_attr($price_max); ?>"
-                                   min="<?php echo esc_attr($attrs['min']); ?>"
-                                   max="<?php echo esc_attr($attrs['max']); ?>"
-                                   step="<?php echo esc_attr($attrs['step']); ?>"
-                                   class="kcpf-input kcpf-range-max">
+                            <div class="kcpf-input-wrapper">
+                                <span class="kcpf-input-prefix">€</span>
+                                <input type="number" 
+                                       name="price_max" 
+                                       placeholder="Max"
+                                       value="<?php echo esc_attr($price_max); ?>"
+                                       min="<?php echo esc_attr($attrs['min']); ?>"
+                                       max="<?php echo esc_attr($attrs['max']); ?>"
+                                       step="<?php echo esc_attr($attrs['step']); ?>"
+                                       class="kcpf-input kcpf-range-max">
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -823,25 +829,31 @@ class KCPF_Filter_Renderer
                         </div>
                         
                         <div class="kcpf-range-inputs">
-                            <input type="number" 
-                                   name="covered_area_min" 
-                                   placeholder="Min"
-                                   value="<?php echo esc_attr($area_min); ?>"
-                                   min="<?php echo esc_attr($attrs['min']); ?>"
-                                   max="<?php echo esc_attr($attrs['max']); ?>"
-                                   step="<?php echo esc_attr($attrs['step']); ?>"
-                                   class="kcpf-input kcpf-range-min">
+                            <div class="kcpf-input-wrapper">
+                                <input type="number" 
+                                       name="covered_area_min" 
+                                       placeholder="Min"
+                                       value="<?php echo esc_attr($area_min); ?>"
+                                       min="<?php echo esc_attr($attrs['min']); ?>"
+                                       max="<?php echo esc_attr($attrs['max']); ?>"
+                                       step="<?php echo esc_attr($attrs['step']); ?>"
+                                       class="kcpf-input kcpf-range-min">
+                                <span class="kcpf-input-suffix">m²</span>
+                            </div>
                             
                             <span class="kcpf-range-separator">-</span>
                             
-                            <input type="number" 
-                                   name="covered_area_max" 
-                                   placeholder="Max"
-                                   value="<?php echo esc_attr($area_max); ?>"
-                                   min="<?php echo esc_attr($attrs['min']); ?>"
-                                   max="<?php echo esc_attr($attrs['max']); ?>"
-                                   step="<?php echo esc_attr($attrs['step']); ?>"
-                                   class="kcpf-input kcpf-range-max">
+                            <div class="kcpf-input-wrapper">
+                                <input type="number" 
+                                       name="covered_area_max" 
+                                       placeholder="Max"
+                                       value="<?php echo esc_attr($area_max); ?>"
+                                       min="<?php echo esc_attr($attrs['min']); ?>"
+                                       max="<?php echo esc_attr($attrs['max']); ?>"
+                                       step="<?php echo esc_attr($attrs['step']); ?>"
+                                       class="kcpf-input kcpf-range-max">
+                                <span class="kcpf-input-suffix">m²</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -933,25 +945,31 @@ class KCPF_Filter_Renderer
                         </div>
                         
                         <div class="kcpf-range-inputs">
-                            <input type="number" 
-                                   name="plot_area_min" 
-                                   placeholder="Min"
-                                   value="<?php echo esc_attr($plot_min); ?>"
-                                   min="<?php echo esc_attr($attrs['min']); ?>"
-                                   max="<?php echo esc_attr($attrs['max']); ?>"
-                                   step="<?php echo esc_attr($attrs['step']); ?>"
-                                   class="kcpf-input kcpf-range-min">
+                            <div class="kcpf-input-wrapper">
+                                <input type="number" 
+                                       name="plot_area_min" 
+                                       placeholder="Min"
+                                       value="<?php echo esc_attr($plot_min); ?>"
+                                       min="<?php echo esc_attr($attrs['min']); ?>"
+                                       max="<?php echo esc_attr($attrs['max']); ?>"
+                                       step="<?php echo esc_attr($attrs['step']); ?>"
+                                       class="kcpf-input kcpf-range-min">
+                                <span class="kcpf-input-suffix">m²</span>
+                            </div>
                             
                             <span class="kcpf-range-separator">-</span>
                             
-                            <input type="number" 
-                                   name="plot_area_max" 
-                                   placeholder="Max"
-                                   value="<?php echo esc_attr($plot_max); ?>"
-                                   min="<?php echo esc_attr($attrs['min']); ?>"
-                                   max="<?php echo esc_attr($attrs['max']); ?>"
-                                   step="<?php echo esc_attr($attrs['step']); ?>"
-                                   class="kcpf-input kcpf-range-max">
+                            <div class="kcpf-input-wrapper">
+                                <input type="number" 
+                                       name="plot_area_max" 
+                                       placeholder="Max"
+                                       value="<?php echo esc_attr($plot_max); ?>"
+                                       min="<?php echo esc_attr($attrs['min']); ?>"
+                                       max="<?php echo esc_attr($attrs['max']); ?>"
+                                       step="<?php echo esc_attr($attrs['step']); ?>"
+                                       class="kcpf-input kcpf-range-max">
+                                <span class="kcpf-input-suffix">m²</span>
+                            </div>
                         </div>
                     </div>
                 </div>
