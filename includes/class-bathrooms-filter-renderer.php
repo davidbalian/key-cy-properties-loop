@@ -55,7 +55,7 @@ class KCPF_Bathrooms_Filter_Renderer extends KCPF_Filter_Renderer_Base
         ?>
         <div class="kcpf-filter kcpf-filter-bathrooms">
             <?php if ($attrs['type'] === 'select') : ?>
-                <select name="bathrooms" class="kcpf-filter-select">
+                <select name="bathrooms[]" class="kcpf-filter-select">
                     <option value=""><?php echo esc_html(__('Bathrooms', 'key-cy-properties-filter')); ?></option>
                     <?php foreach ($glossaryOptions as $option) : ?>
                         <option value="<?php echo esc_attr($option['value']); ?>" <?php selected($current_value, $option['value']); ?>>

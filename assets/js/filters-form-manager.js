@@ -345,13 +345,19 @@
       const params = new URLSearchParams();
       Object.keys(formData).forEach(function (key) {
         const value = formData[key];
+        const cleanKey = key.replace(/\[\]$/, "");
 
         if (Array.isArray(value)) {
-          // Use comma-separated format for all multi-value fields
-          params.set(key, value.join(","));
+          // Use comma-separated format for bedrooms and bathrooms
+          if (cleanKey === "bedrooms" || cleanKey === "bathrooms") {
+            params.set(cleanKey, value.join(","));
+          } else {
+            // For other fields, use array format
+            value.forEach((v) => params.append(cleanKey + "[]", v));
+          }
         } else {
           // Single value
-          params.set(key, value);
+          params.set(cleanKey, value);
         }
       });
 
