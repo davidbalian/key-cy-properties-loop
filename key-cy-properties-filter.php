@@ -287,6 +287,24 @@ class Key_CY_Properties_Filter
             .kcpf-range-dropdown-menu {
                 background-color: #fff !important;
             }
+            /* Ensure Sale/Rent labels are visible */
+            .kcpf-filter-purpose label,
+            .kcpf-radio-label,
+            .kcpf-toggle-label {
+                display: inline-flex !important;
+                align-items: center !important;
+                visibility: visible !important;
+                opacity: 1 !important;
+            }
+            .kcpf-filter-purpose .kcpf-radio-label span,
+            .kcpf-filter-purpose .kcpf-toggle-label span {
+                display: inline-block !important;
+                visibility: visible !important;
+            }
+            .kcpf-filter-purpose input[type="radio"] {
+                display: inline-block !important;
+                visibility: visible !important;
+            }
         </style>
         <?php
     }
