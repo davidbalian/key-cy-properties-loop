@@ -28,8 +28,16 @@ class KCPF_Homepage_Filters
         ], $attrs);
 
         // Build inner filters using existing renderers
-        // Try to render purpose via renderer; if taxonomy missing, fallback to static radio
-        $currentPurpose = KCPF_URL_Manager::getFilterValue('purpose') ?: 'sale';
+        // Always default to 'sale' on homepage, ignoring URL parameters
+        $currentPurpose = 'sale';
+        
+        // Clear URL parameters for homepage filters
+        $_GET['purpose'] = 'sale';
+        $_GET['location'] = [];
+        $_GET['property_type'] = [];
+        $_GET['bedrooms'] = [];
+        $_GET['price_min'] = '';
+        $_GET['price_max'] = '';
         $purposeHtml = KCPF_Filter_Renderer::renderPurpose([
             'type' => 'radio',
             'default' => $currentPurpose,

@@ -871,24 +871,16 @@
       return;
     }
 
-    // Check if URL has purpose parameter (back button scenario)
+    // Always default to sale on homepage, clear URL if present
     const urlParams = new URLSearchParams(window.location.search);
-    const urlPurpose = urlParams.get("purpose");
-    const currentPurpose = $homepage.data("current-purpose") || "sale";
-
-    if (urlPurpose && urlPurpose !== currentPurpose) {
-      console.log(
-        "[KCPF] URL purpose mismatch detected:",
-        urlPurpose,
-        "vs",
-        currentPurpose
-      );
-      // Update the radio button to match URL
-      $homepage
-        .find('input[name="purpose"][value="' + urlPurpose + '"]')
-        .prop("checked", true)
-        .trigger("change");
+    if (urlParams.toString()) {
+      // Clear URL parameters without reload
+      window.history.replaceState({}, document.title, window.location.pathname);
+      console.log("[KCPF] Homepage filters: cleared URL parameters");
     }
+
+    // Ensure 'sale' is selected
+    $homepage.find('input[name="purpose"][value="sale"]').prop("checked", true);
   }
 
   /**
