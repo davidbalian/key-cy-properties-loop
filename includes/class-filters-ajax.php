@@ -35,6 +35,7 @@ class KCPF_Filters_Ajax
             $_GET['location'] = [];
             $_GET['property_type'] = [];
             $_GET['bedrooms'] = [];
+            $_GET['bathrooms'] = [];
             $_GET['price_min'] = '';
             $_GET['price_max'] = '';
 

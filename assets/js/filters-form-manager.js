@@ -166,6 +166,46 @@
         e.preventDefault();
         console.log("[KCPF] Reset button clicked");
 
+        // Clear all form inputs
+        const $form = $(this).closest("form");
+        if ($form.length === 0) {
+          // Fallback: find any form on page
+          $form = $(".kcpf-filters-form").first();
+        }
+
+        if ($form.length > 0) {
+          // Clear all inputs
+          $form
+            .find("input[type='checkbox'], input[type='radio']")
+            .prop("checked", false);
+          $form
+            .find("input[type='text'], input[type='number'], select")
+            .val("");
+          $form.find("input[type='hidden']").val("");
+
+          // Clear multiselect dropdowns
+          $form.find(".kcpf-multiselect-selected").each(function () {
+            const $selected = $(this);
+            const filterName = $selected
+              .closest(".kcpf-multiselect-dropdown")
+              .data("filter-name");
+            const placeholder =
+              "Select " +
+              filterName.charAt(0).toUpperCase() +
+              filterName.slice(1);
+            $selected.html(
+              '<span class="kcpf-placeholder">' + placeholder + "</span>"
+            );
+          });
+
+          // Clear range sliders (if any)
+          if (window.KCPF_RangeSliders && window.KCPF_RangeSliders.reset) {
+            window.KCPF_RangeSliders.reset();
+          }
+
+          console.log("[KCPF] Form inputs cleared");
+        }
+
         // Clear URL and reload properties
         const params = new URLSearchParams();
 

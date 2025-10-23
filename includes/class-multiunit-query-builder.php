@@ -156,12 +156,10 @@ class KCPF_MultiUnit_Query_Builder
 
         $bedrooms_query = ['relation' => 'OR'];
 
-        // For each bedroom value, create OR conditions for both property types
+        // For each bedroom value, check both single-unit and multi-unit properties
         foreach ($bedroomsValues as $bedroom) {
-            $bedroom_conditions = ['relation' => 'OR'];
-
-            // Condition 1: Non-multi-unit properties (check bedrooms field)
-            $bedroom_conditions[] = [
+            // Check single-unit properties (bedrooms array contains the value)
+            $bedrooms_query[] = [
                 'relation' => 'AND',
                 [
                     'relation' => 'OR',
@@ -182,8 +180,8 @@ class KCPF_MultiUnit_Query_Builder
                 ],
             ];
 
-            // Condition 2: Multi-unit properties (check multi-unit_table for units with this bedroom count)
-            $bedroom_conditions[] = [
+            // Check multi-unit properties (multi-unit_table contains the bedroom value)
+            $bedrooms_query[] = [
                 'relation' => 'AND',
                 [
                     'key' => 'multi-unit',
@@ -192,12 +190,10 @@ class KCPF_MultiUnit_Query_Builder
                 ],
                 [
                     'key' => 'multi-unit_table',
-                    'value' => '"bedrooms":"' . preg_quote($bedroom, '/') . '"',
+                    'value' => $bedroom,
                     'compare' => 'LIKE',
                 ],
             ];
-
-            $bedrooms_query[] = $bedroom_conditions;
         }
 
         return $bedrooms_query;
@@ -221,12 +217,10 @@ class KCPF_MultiUnit_Query_Builder
 
         $bathrooms_query = ['relation' => 'OR'];
 
-        // For each bathroom value, create OR conditions for both property types
+        // For each bathroom value, check both single-unit and multi-unit properties
         foreach ($bathroomsValues as $bathroom) {
-            $bathroom_conditions = ['relation' => 'OR'];
-
-            // Condition 1: Non-multi-unit properties (check bathrooms field)
-            $bathroom_conditions[] = [
+            // Check single-unit properties (bathrooms array contains the value)
+            $bathrooms_query[] = [
                 'relation' => 'AND',
                 [
                     'relation' => 'OR',
@@ -247,8 +241,8 @@ class KCPF_MultiUnit_Query_Builder
                 ],
             ];
 
-            // Condition 2: Multi-unit properties (check multi-unit_table for units with this bathroom count)
-            $bathroom_conditions[] = [
+            // Check multi-unit properties (multi-unit_table contains the bathroom value)
+            $bathrooms_query[] = [
                 'relation' => 'AND',
                 [
                     'key' => 'multi-unit',
@@ -257,12 +251,10 @@ class KCPF_MultiUnit_Query_Builder
                 ],
                 [
                     'key' => 'multi-unit_table',
-                    'value' => '"bathrooms":"' . preg_quote($bathroom, '/') . '"',
+                    'value' => $bathroom,
                     'compare' => 'LIKE',
                 ],
             ];
-
-            $bathrooms_query[] = $bathroom_conditions;
         }
 
         return $bathrooms_query;
