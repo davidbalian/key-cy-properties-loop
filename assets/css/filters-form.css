@@ -11,12 +11,14 @@
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   gap: 1rem;
+  overflow: visible !important;
 }
 
 /* Filter Container */
 .kcpf-filter {
   margin-bottom: 0;
   position: relative;
+  overflow: visible !important;
 }
 
 /* Hide all labels - they're now placeholders */
@@ -88,6 +90,7 @@
 .kcpf-multiselect-dropdown {
   position: relative;
   width: 100%;
+  overflow: visible !important;
 }
 
 .kcpf-multiselect-trigger,
@@ -189,10 +192,7 @@
   max-height: 300px;
   overflow-y: auto;
   z-index: 9999 !important;
-  display: none;
-  visibility: hidden;
-  opacity: 0;
-  transition: opacity 0.2s ease;
+  display: none !important;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   min-width: 100%;
   padding: 0.5rem;
@@ -200,8 +200,6 @@
 
 .kcpf-multiselect-dropdown.active .kcpf-multiselect-dropdown-menu {
   display: block !important;
-  visibility: visible;
-  opacity: 1;
 }
 
 .kcpf-multiselect-option {
@@ -322,6 +320,7 @@
 .kcpf-range-dropdown {
   position: relative;
   width: 100%;
+  overflow: visible !important;
 }
 
 .kcpf-range-trigger {
@@ -373,18 +372,13 @@
   border-radius: 0 0 20px 20px !important;
   padding: 1rem;
   z-index: 9999 !important;
-  display: none;
-  visibility: hidden;
-  opacity: 0;
-  transition: opacity 0.2s ease;
+  display: none !important;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   min-width: 400px;
 }
 
 .kcpf-range-dropdown.active .kcpf-range-dropdown-menu {
   display: block !important;
-  visibility: visible;
-  opacity: 1;
 }
 
 /* Range Slider Container */
