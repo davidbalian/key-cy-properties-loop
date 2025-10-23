@@ -36,7 +36,7 @@ class KCPF_Map_Card_Renderer
         $isSale = ($purposeSlug === 'sale');
         
         // Get coordinates for data attribute
-        $coordinates = get_post_meta($property_id, 'display_coordinates', true);
+        $coordinates = KCPF_Card_Data_Helper::getCoordinates($property_id);
         
         // Get formatted values using helper
         $bedrooms = KCPF_Card_Data_Helper::getBedrooms($property_id, $purposeSlug);

@@ -274,5 +274,16 @@ class KCPF_Card_Data_Helper
         
         return number_format($value);
     }
+    
+    /**
+     * Get property display coordinates
+     * 
+     * @param int $property_id Property ID
+     * @return string Coordinates string
+     */
+    public static function getCoordinates($property_id)
+    {
+        return get_post_meta($property_id, 'display_coordinates', true);
+    }
 }
 
