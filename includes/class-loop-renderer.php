@@ -146,12 +146,45 @@ class KCPF_Loop_Renderer
             }
         }
         
+        // Get sample property data for debugging
+        $sample_query = new WP_Query([
+            'post_type' => 'properties',
+            'posts_per_page' => 5,
+            'tax_query' => [
+                [
+                    'taxonomy' => 'purpose',
+                    'field' => 'slug',
+                    'terms' => 'sale'
+                ]
+            ]
+        ]);
+
+        $sample_data = [];
+        if ($sample_query->have_posts()) {
+            while ($sample_query->have_posts()) {
+                $sample_query->the_post();
+                $property_id = get_the_ID();
+                $bedrooms_value = get_post_meta($property_id, $bedroomsKey, true);
+                if (!empty($bedrooms_value)) {
+                    $sample_data[] = [
+                        'id' => $property_id,
+                        'title' => get_the_title(),
+                        'bedrooms_raw' => $bedrooms_value,
+                        'bedrooms_type' => gettype($bedrooms_value),
+                        'has_5_bedrooms' => strpos($bedrooms_value, '"5":"true"') !== false
+                    ];
+                }
+            }
+            wp_reset_postdata();
+        }
+
         // Add more debug info
         $debug_info = [
             'bedroomsKey' => $bedroomsKey,
             'raw_meta_query' => $query_args['meta_query'] ?? [],
             'found_bedroom_query' => !empty($bedroom_query),
             'filters_from_url' => KCPF_URL_Manager::getCurrentFilters(),
+            'sample_properties' => $sample_data
         ];
         
         ?>
