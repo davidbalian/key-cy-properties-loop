@@ -119,17 +119,91 @@ class KCPF_Asset_Manager
             true
         );
         
-        // Enqueue main filters JavaScript
+        // Enqueue Filter Manager Modules (in dependency order)
+        
+        // 1. AJAX Handler (foundation - no dependencies on other modules)
         wp_enqueue_script(
-            'kcpf-filters',
-            KCPF_ASSETS_URL . 'js/filters.js',
+            'kcpf-ajax-handler',
+            KCPF_ASSETS_URL . 'js/filters-ajax-handler.js',
+            ['jquery'],
+            KCPF_VERSION,
+            true
+        );
+        
+        // 2. Range Sliders (depends on noUiSlider)
+        wp_enqueue_script(
+            'kcpf-range-sliders',
+            KCPF_ASSETS_URL . 'js/filters-range-sliders.js',
             ['jquery', 'nouislider'],
             KCPF_VERSION,
             true
         );
         
+        // 3. Toggle Handler (no special dependencies)
+        wp_enqueue_script(
+            'kcpf-toggle-handler',
+            KCPF_ASSETS_URL . 'js/filters-toggle-handler.js',
+            ['jquery'],
+            KCPF_VERSION,
+            true
+        );
+        
+        // 4. Multiselect Handler (no special dependencies)
+        wp_enqueue_script(
+            'kcpf-multiselect-handler',
+            KCPF_ASSETS_URL . 'js/filters-multiselect-handler.js',
+            ['jquery'],
+            KCPF_VERSION,
+            true
+        );
+        
+        // 5. Infinite Scroll (no special dependencies)
+        wp_enqueue_script(
+            'kcpf-infinite-scroll',
+            KCPF_ASSETS_URL . 'js/filters-infinite-scroll.js',
+            ['jquery'],
+            KCPF_VERSION,
+            true
+        );
+        
+        // 6. Homepage Manager (depends on Range Sliders for refresh)
+        wp_enqueue_script(
+            'kcpf-homepage-manager',
+            KCPF_ASSETS_URL . 'js/filters-homepage-manager.js',
+            ['jquery', 'kcpf-range-sliders'],
+            KCPF_VERSION,
+            true
+        );
+        
+        // 7. Form Manager (depends on AJAX Handler)
+        wp_enqueue_script(
+            'kcpf-form-manager',
+            KCPF_ASSETS_URL . 'js/filters-form-manager.js',
+            ['jquery', 'kcpf-ajax-handler'],
+            KCPF_VERSION,
+            true
+        );
+        
+        // 8. Coordinator (depends on all modules - initializes everything)
+        wp_enqueue_script(
+            'kcpf-filters-coordinator',
+            KCPF_ASSETS_URL . 'js/filters-coordinator.js',
+            [
+                'jquery',
+                'kcpf-ajax-handler',
+                'kcpf-range-sliders',
+                'kcpf-toggle-handler',
+                'kcpf-multiselect-handler',
+                'kcpf-infinite-scroll',
+                'kcpf-homepage-manager',
+                'kcpf-form-manager'
+            ],
+            KCPF_VERSION,
+            true
+        );
+        
         // Enqueue Map View JavaScript
-        $map_dependencies = ['jquery', 'kcpf-filters'];
+        $map_dependencies = ['jquery', 'kcpf-filters-coordinator'];
         if (KCPF_Settings_Manager::hasApiKey()) {
             $map_dependencies[] = 'google-maps';
         }
