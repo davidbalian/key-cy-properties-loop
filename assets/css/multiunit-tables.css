@@ -1,0 +1,119 @@
+/**
+ * Key CY Properties Filter - Multi-Unit Table Styles
+ * 
+ * Styles for multi-unit property comparison tables
+ * 
+ * @package Key_CY_Properties_Filter
+ */
+
+.kcpf-multiunit-section {
+  margin-top: 0.5rem;
+}
+
+.kcpf-more-units-text {
+  color: #999 !important;
+  font-size: 14px !important;
+  margin-top: 0.5rem;
+  font-style: italic;
+  text-align: center;
+}
+
+.kcpf-multiunit-header {
+  font-weight: 300;
+  margin-bottom: 0.5rem;
+  color: #999 !important;
+  font-size: 16px !important;
+}
+
+/* Multi-unit table wrapper */
+.kcpf-multiunit-table-wrapper {
+  overflow-x: auto;
+  overflow-y: hidden;
+  width: 100%;
+}
+
+.kcpf-multiunit-table-container {
+  display: flex;
+  flex-direction: column;
+  min-width: 100%;
+}
+
+/* Multi-unit table header */
+.kcpf-multiunit-table-header {
+  display: grid;
+  background-color: #ededed !important;
+  font-weight: 600;
+  color: #706f6f !important;
+  border-bottom: none !important;
+}
+
+.kcpf-multiunit-header-cell {
+  padding: 0.25rem !important;
+  text-align: left;
+  color: #706f6f !important;
+  font-size: 14px !important;
+  line-height: 1 !important;
+  width: max-content !important;
+}
+
+/* Multi-unit table rows */
+.kcpf-multiunit-table-rows {
+  display: flex;
+  flex-direction: column;
+}
+
+.kcpf-multiunit-table-row {
+  display: grid;
+  border-bottom: none !important;
+}
+
+.kcpf-multiunit-table-row:hover {
+  background-color: #f8f8f8;
+}
+
+.kcpf-multiunit-cell {
+  padding: 0.25rem !important;
+  text-align: left;
+  font-size: 14px !important;
+  color: #706f6f !important;
+  line-height: 1 !important;
+  width: max-content !important;
+}
+
+/* Listing units table (non-land properties) */
+#listing-units-table-header {
+  grid-template-columns: 0.4fr repeat(5, 1fr) !important;
+  width: 100%;
+}
+
+#listing-units-table-rows {
+  max-height: 85px !important;
+  overflow-y: hidden !important;
+  overflow-x: hidden !important;
+  position: relative;
+  width: 100%;
+}
+
+#listing-units-table-rows .kcpf-multiunit-table-row {
+  grid-template-columns: 0.4fr repeat(5, 1fr) !important;
+  width: 100%;
+}
+
+/* Listing plots table (land properties) */
+#listing-plots-table-header {
+  grid-template-columns: 0.4fr repeat(3, 1fr) !important;
+  width: 100%;
+}
+
+#listing-plots-table-rows {
+  max-height: 85px !important;
+  overflow-y: hidden !important;
+  overflow-x: hidden !important;
+  position: relative;
+  width: 100%;
+}
+
+#listing-plots-table-rows .kcpf-multiunit-table-row {
+  grid-template-columns: 0.4fr repeat(3, 1fr) !important;
+  width: 100%;
+}

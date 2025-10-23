@@ -45,11 +45,51 @@ class KCPF_Asset_Manager
             '15.7.1'
         );
         
-        // Enqueue main filters CSS
+        // Enqueue base card styles (must be loaded before specific card styles)
         wp_enqueue_style(
-            'kcpf-filters',
-            KCPF_ASSETS_URL . 'css/filters.css',
+            'kcpf-property-cards-shared',
+            KCPF_ASSETS_URL . 'css/property-cards-shared.css',
             ['nouislider'],
+            KCPF_VERSION
+        );
+        
+        // Enqueue sale card styles
+        wp_enqueue_style(
+            'kcpf-property-cards-sale',
+            KCPF_ASSETS_URL . 'css/property-cards-sale.css',
+            ['kcpf-property-cards-shared'],
+            KCPF_VERSION
+        );
+        
+        // Enqueue rent card styles
+        wp_enqueue_style(
+            'kcpf-property-cards-rent',
+            KCPF_ASSETS_URL . 'css/property-cards-rent.css',
+            ['kcpf-property-cards-shared'],
+            KCPF_VERSION
+        );
+        
+        // Enqueue multi-unit table styles
+        wp_enqueue_style(
+            'kcpf-multiunit-tables',
+            KCPF_ASSETS_URL . 'css/multiunit-tables.css',
+            ['kcpf-property-cards-shared'],
+            KCPF_VERSION
+        );
+        
+        // Enqueue filter form styles
+        wp_enqueue_style(
+            'kcpf-filters-form',
+            KCPF_ASSETS_URL . 'css/filters-form.css',
+            ['nouislider'],
+            KCPF_VERSION
+        );
+        
+        // Enqueue responsive styles (must be loaded after all other styles)
+        wp_enqueue_style(
+            'kcpf-responsive',
+            KCPF_ASSETS_URL . 'css/responsive.css',
+            ['kcpf-property-cards-shared', 'kcpf-property-cards-sale', 'kcpf-property-cards-rent', 'kcpf-multiunit-tables', 'kcpf-filters-form'],
             KCPF_VERSION
         );
         
@@ -57,7 +97,7 @@ class KCPF_Asset_Manager
         wp_enqueue_style(
             'kcpf-map-view',
             KCPF_ASSETS_URL . 'css/map-view.css',
-            ['kcpf-filters'],
+            ['kcpf-responsive'],
             KCPF_VERSION
         );
     }

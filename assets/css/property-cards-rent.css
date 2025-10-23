@@ -1,0 +1,101 @@
+/**
+ * Key CY Properties Filter - Rent Card Styles
+ * 
+ * Styles specific to rent property cards (single-column layout)
+ * 
+ * @package Key_CY_Properties_Filter
+ */
+
+/* Rent Property Card - Single Column Layout */
+.kcpf-property-card-rent {
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  overflow: hidden;
+  transition: box-shadow 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  height: fit-content;
+}
+
+.kcpf-property-card-rent:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.kcpf-property-image-rent {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  height: 250px !important;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.kcpf-property-content-rent {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.kcpf-property-title-rent {
+  margin: 0 !important;
+  font-size: 20px !important;
+  font-family: "Jost", Helvetica, sans-serif !important;
+  color: #000 !important;
+  font-weight: 400 !important;
+  letter-spacing: 0 !important;
+}
+
+.kcpf-property-meta-row-rent {
+  display: flex;
+  align-items: center;
+  font-size: 0.9rem;
+  color: #666;
+  flex-wrap: wrap;
+}
+
+.kcpf-property-meta-row-rent .kcpf-separator-rent {
+  margin-left: 0;
+  margin-right: 0.2rem;
+}
+
+.kcpf-property-meta-row-rent .kcpf-city-area-rent {
+  margin-right: 0.25rem;
+}
+
+.kcpf-property-meta-row-rent .kcpf-property-type-rent {
+  margin-right: 0.5rem;
+}
+
+.kcpf-separator-rent {
+  color: #999;
+}
+
+.kcpf-location-rent,
+.kcpf-city-area-rent,
+.kcpf-property-type-rent {
+  color: #666;
+}
+
+.kcpf-property-specs-rent {
+  display: flex;
+  gap: 1rem;
+  font-size: 0.9rem;
+  color: #666;
+  padding-top: 0.5rem;
+  border-top: 1px solid #e0e0e0;
+}
+
+.kcpf-property-specs-rent span {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.kcpf-property-price-rent {
+  font-size: 18px !important;
+  font-weight: normal !important;
+  color: #000 !important;
+  margin-top: auto;
+}

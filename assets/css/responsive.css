@@ -1,0 +1,125 @@
+/**
+ * Key CY Properties Filter - Responsive Styles
+ * 
+ * Media queries for tablet and mobile layouts
+ * 
+ * @package Key_CY_Properties_Filter
+ */
+
+/* Responsive - Tablet */
+@media only screen and (max-width: 1024px) {
+  .kcpf-filters-form {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 250px));
+  }
+
+  #listing-units-table-wrapper,
+  #listing-plots-table-wrapper {
+    overflow-x: auto;
+  }
+
+  #listing-units-table-container,
+  #listing-plots-table-container {
+    min-width: fit-content !important;
+  }
+
+  #listing-units-table-header {
+    grid-template-columns: 40px repeat(5, 90px) !important;
+    min-width: fit-content !important;
+  }
+
+  #listing-units-table-rows .kcpf-multiunit-table-row {
+    grid-template-columns: 40px repeat(5, 90px) !important;
+    min-width: fit-content !important;
+  }
+
+  #listing-plots-table-header {
+    grid-template-columns: 40px repeat(3, 90px) !important;
+    min-width: fit-content !important;
+  }
+
+  #listing-plots-table-rows .kcpf-multiunit-table-row {
+    grid-template-columns: 40px repeat(3, 90px) !important;
+    min-width: fit-content !important;
+  }
+}
+
+/* Responsive - Mobile */
+@media (max-width: 768px) {
+  .kcpf-filters-form {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 250px));
+  }
+
+  .kcpf-properties-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* Stack sale card layout on mobile */
+  .kcpf-property-card-sale-wrapper {
+    flex-direction: column;
+  }
+
+  .kcpf-property-image-sale {
+    flex: 0 0 auto;
+    height: 250px !important;
+  }
+
+  .kcpf-price-inputs,
+  .kcpf-range-inputs {
+    flex-direction: column;
+  }
+
+  .kcpf-price-separator,
+  .kcpf-range-separator {
+    display: none;
+  }
+
+  .kcpf-toggle-buttons,
+  .kcpf-radio-buttons,
+  .kcpf-button-group {
+    flex-direction: column;
+  }
+
+  .kcpf-filter-amenities.active .kcpf-multiselect-dropdown-menu {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+  }
+
+  .kcpf-filter-amenities.active .kcpf-multiselect-option:nth-child(odd) {
+    border-right: none;
+  }
+
+  .kcpf-range-dropdown-menu {
+    min-width: 100%;
+  }
+
+  /* Multi-unit table responsive styles */
+  #listing-units-table-wrapper,
+  #listing-plots-table-wrapper {
+    overflow-x: auto;
+  }
+
+  #listing-units-table-container,
+  #listing-plots-table-container {
+    min-width: fit-content !important;
+  }
+
+  #listing-units-table-header,
+  #listing-units-table-rows .kcpf-multiunit-table-row {
+    grid-template-columns: 40px repeat(5, 90px) !important;
+    justify-content: space-between !important;
+  }
+
+  #listing-plots-table-header,
+  #listing-plots-table-rows .kcpf-multiunit-table-row {
+    grid-template-columns: 40px repeat(3, 90px) !important;
+    justify-content: space-between !important;
+  }
+
+  .kcpf-multiunit-header-cell,
+  .kcpf-multiunit-cell {
+    padding: 0.25rem !important;
+    font-size: 14px !important;
+    color: #706f6f !important;
+    line-height: 1 !important;
+  }
+}

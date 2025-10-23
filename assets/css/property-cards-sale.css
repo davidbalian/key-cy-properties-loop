@@ -1,0 +1,94 @@
+/**
+ * Key CY Properties Filter - Sale Card Styles
+ * 
+ * Styles specific to sale property cards (two-column layout)
+ * 
+ * @package Key_CY_Properties_Filter
+ */
+
+/* Sale Property Card - Two Column Layout */
+.kcpf-property-card-sale {
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  overflow: hidden;
+  transition: box-shadow 0.3s ease;
+}
+
+.kcpf-property-card-sale:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.kcpf-property-card-sale-wrapper {
+  display: flex;
+  flex-direction: row;
+  min-height: 200px;
+}
+
+.kcpf-property-image-sale {
+  flex: 0 0 40%;
+  position: relative;
+  overflow: hidden;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.kcpf-property-content-sale {
+  flex: 1;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.kcpf-property-content-sale .kcpf-property-title {
+  font-size: 20px !important;
+  font-family: "Jost", Helvetica, sans-serif !important;
+  color: #000 !important;
+  font-weight: 400 !important;
+  margin: 0 !important;
+}
+
+.kcpf-property-meta-row {
+  display: flex;
+  align-items: center;
+  font-size: 0.9rem;
+  color: #666;
+  flex-wrap: wrap;
+}
+
+.kcpf-property-meta-row .kcpf-separator {
+  margin-left: 0;
+  margin-right: 0.5rem;
+}
+
+.kcpf-property-meta-row .kcpf-location,
+.kcpf-property-meta-row .kcpf-property-type {
+  margin-right: 0.5rem;
+}
+
+.kcpf-separator {
+  color: #999;
+}
+
+.kcpf-city-area,
+.kcpf-location,
+.kcpf-property-type {
+  color: #666;
+}
+
+.kcpf-property-specs {
+  display: flex;
+  gap: 1rem;
+  font-size: 0.9rem;
+  color: #666;
+  margin-top: auto;
+  padding-top: 0.5rem;
+  border-top: 1px solid #e0e0e0;
+}
+
+.kcpf-property-specs span {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}

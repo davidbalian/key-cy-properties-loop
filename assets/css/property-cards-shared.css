@@ -1,0 +1,234 @@
+/**
+ * Key CY Properties Filter - Shared Card Styles
+ * 
+ * Base styles for property cards and grids
+ * 
+ * @package Key_CY_Properties_Filter
+ */
+
+/* Properties Loop */
+.kcpf-properties-loop {
+  margin: 2rem 0;
+  position: relative;
+  min-height: 200px;
+}
+
+.kcpf-properties-loop.kcpf-loading {
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.kcpf-properties-loop.kcpf-loading::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 50px;
+  height: 50px;
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #000;
+  border-radius: 50%;
+  animation: kcpf-spin 1s linear infinite;
+}
+
+@keyframes kcpf-spin {
+  0% {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  100% {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+.kcpf-properties-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+/* Ensure single column for sale properties grid */
+.kcpf-properties-grid.kcpf-grid-sale {
+  grid-template-columns: 1fr;
+}
+
+/* Rent properties grid - responsive */
+.kcpf-properties-grid.kcpf-grid-rent {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+@media (max-width: 1024px) {
+  .kcpf-properties-grid.kcpf-grid-rent {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .kcpf-properties-grid.kcpf-grid-rent {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Property Card */
+.kcpf-property-card {
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  overflow: hidden;
+  transition: box-shadow 0.3s ease;
+}
+
+.kcpf-property-card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Property Card Link - Makes entire card clickable */
+.kcpf-property-card-link {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+}
+
+.kcpf-property-card-link:hover {
+  text-decoration: none;
+}
+
+/* Shared Property Elements */
+.kcpf-property-image {
+  position: relative;
+  overflow: hidden;
+}
+
+.kcpf-property-image img {
+  width: 100%;
+  height: auto;
+  display: block;
+  transition: transform 0.3s ease;
+}
+
+.kcpf-property-card:hover .kcpf-property-image img {
+  transform: scale(1.05);
+}
+
+.kcpf-property-content {
+  padding: 1.5rem;
+}
+
+.kcpf-property-title {
+  font-size: 20px !important;
+  font-family: "Jost", Helvetica, sans-serif !important;
+  color: #000 !important;
+  font-weight: 400 !important;
+  letter-spacing: 0 !important;
+  margin: 0 !important;
+}
+
+.kcpf-property-price {
+  font-size: 18px !important;
+  font-weight: normal !important;
+  color: #000 !important;
+  margin-bottom: 1rem;
+}
+
+.kcpf-property-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.kcpf-property-meta span {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.kcpf-property-purpose {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  background-color: #f0f0f0;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+}
+
+/* Shared Spec Icon Styles */
+.kcpf-property-specs-icon,
+.kcpf-property-specs-rent-icon {
+  width: 16px !important;
+  height: 16px !important;
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.kcpf-property-specs-icon svg,
+.kcpf-property-specs-rent-icon svg {
+  width: 16px !important;
+  height: 16px !important;
+  fill: currentColor;
+}
+
+/* Infinite Scroll Loader */
+.kcpf-infinite-loader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 1rem;
+  margin-top: 2rem;
+}
+
+.kcpf-loading-spinner {
+  width: 50px;
+  height: 50px;
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #000;
+  border-radius: 50%;
+  animation: kcpf-spin 1s linear infinite;
+  margin-bottom: 1rem;
+}
+
+.kcpf-loading-text {
+  color: #666;
+  font-size: 1rem;
+  margin: 0;
+}
+
+@keyframes kcpf-spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* No Results */
+.kcpf-no-results {
+  text-align: center;
+  padding: 3rem 1rem;
+}
+
+.kcpf-no-results p {
+  font-size: 1.25rem;
+  color: #666;
+  margin-bottom: 1rem;
+}
+
+.kcpf-reset-link {
+  display: inline-block;
+  padding: 0.75rem 2rem;
+  background-color: #000;
+  color: #fff;
+  border-radius: 4px;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+}
+
+.kcpf-reset-link:hover {
+  background-color: #005a87;
+}
