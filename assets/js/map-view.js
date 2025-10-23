@@ -14,9 +14,7 @@
    */
   const KCPFMapView = {
     map: null,
-    markers: [],
     circles: [],
-    markerClusterer: null,
     infoWindow: null,
     properties: [],
     currentPurpose: "sale",
@@ -99,13 +97,10 @@
       // Create info window
       this.infoWindow = new google.maps.InfoWindow();
 
-      // Add markers
+      // Add circles (replacing markers)
       this.addMarkers();
 
-      // Initialize clustering
-      this.initializeClustering();
-
-      // Fit bounds to show all markers
+      // Fit bounds to show all circles
       this.fitBoundsToMarkers();
     },
 
@@ -127,89 +122,45 @@
           return;
         }
 
-        // Create marker
-        const marker = new google.maps.Marker({
-          position: { lat: property.lat, lng: property.lng },
-          map: this.map,
-          title: property.title,
-          propertyId: property.id,
-        });
-
-        // Create 100m radius circle
+        // Create 200m radius circle (black) - this replaces the marker
         const circle = new google.maps.Circle({
-          strokeColor: "#007bff",
+          strokeColor: "#000000",
           strokeOpacity: 0.6,
           strokeWeight: 2,
-          fillColor: "#007bff",
+          fillColor: "#000000",
           fillOpacity: 0.15,
           map: this.map,
           center: { lat: property.lat, lng: property.lng },
-          radius: 100, // 100 meters
+          radius: 200, // 200 meters
+          clickable: true,
+          cursor: "pointer",
         });
 
-        // Add click listener to marker
-        marker.addListener("click", () => {
-          this.onMarkerClick(marker, property);
+        // Store property data on the circle
+        circle.propertyId = property.id;
+        circle.propertyData = property;
+
+        // Add click listener to circle
+        circle.addListener("click", () => {
+          this.onCircleClick(circle, property);
         });
 
-        this.markers.push(marker);
         this.circles.push(circle);
       });
 
-      console.log("[KCPF Map] Added " + this.markers.length + " markers");
+      console.log(
+        "[KCPF Map] Added " + this.circles.length + " property circles"
+      );
     },
 
     /**
-     * Initialize marker clustering
+     * Handle circle click
      */
-    initializeClustering: function () {
-      // Check if MarkerClusterer is available
-      if (typeof MarkerClusterer === "undefined") {
-        console.warn(
-          "[KCPF Map] MarkerClusterer not available, loading from CDN"
-        );
-        this.loadMarkerClusterer();
-        return;
-      }
+    onCircleClick: function (circle, property) {
+      console.log("[KCPF Map] Circle clicked:", property.id);
 
-      console.log("[KCPF Map] Initializing marker clustering");
-
-      // Clear existing clusterer
-      if (this.markerClusterer) {
-        this.markerClusterer.clearMarkers();
-      }
-
-      // Create new clusterer
-      this.markerClusterer = new MarkerClusterer(this.map, this.markers, {
-        imagePath:
-          "https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m",
-        gridSize: 50,
-        maxZoom: 15,
-      });
-    },
-
-    /**
-     * Load MarkerClusterer library
-     */
-    loadMarkerClusterer: function () {
-      const script = document.createElement("script");
-      script.src =
-        "https://unpkg.com/@googlemaps/markerclustererplus/dist/index.min.js";
-      script.onload = () => {
-        console.log("[KCPF Map] MarkerClusterer loaded");
-        this.initializeClustering();
-      };
-      document.head.appendChild(script);
-    },
-
-    /**
-     * Handle marker click
-     */
-    onMarkerClick: function (marker, property) {
-      console.log("[KCPF Map] Marker clicked:", property.id);
-
-      // Pan to marker
-      this.map.panTo(marker.getPosition());
+      // Pan to circle center
+      this.map.panTo(circle.getCenter());
       this.map.setZoom(16);
 
       // Show info window
@@ -221,7 +172,8 @@
       `;
 
       this.infoWindow.setContent(content);
-      this.infoWindow.open(this.map, marker);
+      this.infoWindow.setPosition(circle.getCenter());
+      this.infoWindow.open(this.map);
 
       // Highlight and scroll to corresponding card
       this.highlightCard(property.id);
@@ -261,15 +213,15 @@
     },
 
     /**
-     * Pan to marker by property ID
+     * Pan to circle by property ID
      */
     panToMarker: function (propertyId) {
-      const marker = this.markers.find(
-        (m) => m.propertyId === parseInt(propertyId)
+      const circle = this.circles.find(
+        (c) => c.propertyId === parseInt(propertyId)
       );
 
-      if (marker) {
-        this.map.panTo(marker.getPosition());
+      if (circle) {
+        this.map.panTo(circle.getCenter());
         this.map.setZoom(16);
 
         // Optionally show info window
@@ -284,53 +236,43 @@
             </div>
           `;
           this.infoWindow.setContent(content);
-          this.infoWindow.open(this.map, marker);
+          this.infoWindow.setPosition(circle.getCenter());
+          this.infoWindow.open(this.map);
         }
       }
     },
 
     /**
-     * Fit map bounds to show all markers
+     * Fit map bounds to show all circles
      */
     fitBoundsToMarkers: function () {
-      if (this.markers.length === 0) {
+      if (this.circles.length === 0) {
         return;
       }
 
       const bounds = new google.maps.LatLngBounds();
 
-      this.markers.forEach((marker) => {
-        bounds.extend(marker.getPosition());
+      this.circles.forEach((circle) => {
+        bounds.extend(circle.getCenter());
       });
 
       this.map.fitBounds(bounds);
 
-      // Prevent over-zooming for single marker
-      if (this.markers.length === 1) {
+      // Prevent over-zooming for single circle
+      if (this.circles.length === 1) {
         this.map.setZoom(14);
       }
     },
 
     /**
-     * Clear all markers and circles
+     * Clear all circles
      */
     clearMarkers: function () {
-      // Remove markers from map
-      this.markers.forEach((marker) => {
-        marker.setMap(null);
-      });
-
       // Remove circles from map
       this.circles.forEach((circle) => {
         circle.setMap(null);
       });
 
-      // Clear clusterer
-      if (this.markerClusterer) {
-        this.markerClusterer.clearMarkers();
-      }
-
-      this.markers = [];
       this.circles = [];
     },
 
@@ -422,9 +364,8 @@
             // Update properties data
             this.properties = response.data.properties_data || [];
 
-            // Update map markers
+            // Update map circles
             this.addMarkers();
-            this.initializeClustering();
             this.fitBoundsToMarkers();
           } else {
             console.error("[KCPF Map] AJAX error:", response.data);
