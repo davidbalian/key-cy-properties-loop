@@ -91,3 +91,225 @@ class Key_CY_Properties_Filter
 add_action('plugins_loaded', function() {
     Key_CY_Properties_Filter::getInstance();
 });
+
+// Standalone debug page (no AJAX interference)
+add_action('init', 'kcpf_standalone_debug_page');
+function kcpf_standalone_debug_page() {
+    if (isset($_GET['kcpf_debug']) && $_GET['kcpf_debug'] === '1') {
+        if (!current_user_can('manage_options')) {
+            wp_die('Admin access required');
+        }
+
+        // Prevent any redirects or AJAX interference
+        define('KCPF_DEBUG_MODE', true);
+
+        // Output debug page directly
+        kcpf_render_debug_page();
+        exit;
+    }
+}
+
+function kcpf_render_debug_page() {
+    ?>
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Key CY Properties Filter Debug</title>
+        <style>
+            body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; margin: 0; padding: 20px; background: #f5f5f5; }
+            .debug-container { max-width: 1200px; margin: 0 auto; }
+            .debug-section { background: white; margin: 20px 0; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+            .debug-title { color: #333; border-bottom: 3px solid #007cba; padding-bottom: 10px; }
+            .debug-content { font-family: 'Courier New', monospace; font-size: 13px; line-height: 1.5; }
+            .sample-property { background: #f8f9fa; padding: 15px; margin: 10px 0; border-left: 4px solid #28a745; }
+            .query-pattern { background: #fff3cd; padding: 10px; margin: 5px 0; border-left: 4px solid #ffc107; }
+            .no-match { background: #f8d7da; padding: 10px; margin: 5px 0; border-left: 4px solid #dc3545; }
+            code { background: #f8f9fa; padding: 2px 4px; border-radius: 3px; font-family: 'Courier New', monospace; }
+            .success { color: #28a745; }
+            .warning { color: #ffc107; }
+            .danger { color: #dc3545; }
+        </style>
+    </head>
+    <body>
+        <div class="debug-container">
+            <h1>🔍 Key CY Properties Filter Debug</h1>
+            <p>This page shows bedroom/bathroom data format and query analysis without AJAX interference.</p>
+
+            <?php
+            // Get sample properties with bedroom data
+            $args = [
+                'post_type' => 'properties',
+                'posts_per_page' => 10,
+                'post_status' => 'publish',
+                'tax_query' => [
+                    [
+                        'taxonomy' => 'purpose',
+                        'field' => 'slug',
+                        'terms' => 'sale'
+                    ]
+                ],
+                'meta_query' => [
+                    [
+                        'key' => 'bedrooms',
+                        'compare' => 'EXISTS'
+                    ]
+                ]
+            ];
+
+            $query = new WP_Query($args);
+
+            if ($query->have_posts()) {
+                echo '<div class="debug-section">';
+                echo '<h2 class="debug-title">📊 Sample Properties Analysis</h2>';
+                echo '<p><strong>Found ' . $query->found_posts . ' sale properties with bedroom data</strong></p>';
+
+                while ($query->have_posts()) {
+                    $query->the_post();
+                    $property_id = get_the_ID();
+                    $bedrooms_value = get_post_meta($property_id, 'bedrooms', true);
+
+                    echo '<div class="sample-property">';
+                    echo '<h3>' . get_the_title() . ' (ID: ' . $property_id . ')</h3>';
+                    echo '<p><strong>Raw bedroom data:</strong> <code>' . esc_html($bedrooms_value) . '</code></p>';
+                    echo '<p><strong>Data type:</strong> ' . gettype($bedrooms_value) . '</p>';
+
+                    // Test different patterns
+                    $patterns = [
+                        '"5":"true"' => 'JSON format: "5":"true"',
+                        '"5": "true"' => 'JSON with spaces: "5": "true"',
+                        '"5":true' => 'Boolean: "5":true',
+                        's:1:"5";s:4:"true"' => 'Serialized string: s:1:"5";s:4:"true"',
+                        's:1:"5";b:1' => 'Serialized boolean: s:1:"5";b:1'
+                    ];
+
+                    echo '<div class="query-pattern">';
+                    echo '<p><strong>Pattern matching tests:</strong></p>';
+                    foreach ($patterns as $pattern => $description) {
+                        $matches = strpos($bedrooms_value, $pattern) !== false;
+                        $class = $matches ? 'success' : 'danger';
+                        echo '<p class="' . $class . '">✅ ' . $description . ': <strong>' . ($matches ? 'MATCH' : 'NO MATCH') . '</strong></p>';
+                    }
+                    echo '</div>';
+                    echo '</div>';
+                }
+                wp_reset_postdata();
+
+                echo '</div>';
+
+                // Test actual queries
+                echo '<div class="debug-section">';
+                echo '<h2 class="debug-title">🔍 Query Testing</h2>';
+                echo '<p><strong>Testing different query approaches:</strong></p>';
+
+                $test_values = ['2', '3', '4', '5'];
+                foreach ($test_values as $test_bedroom) {
+                    echo '<h3>Testing bedroom value: ' . $test_bedroom . '</h3>';
+
+                    // Test multiple query formats
+                    $query_formats = [
+                        'JSON format' => ['key' => 'bedrooms', 'value' => '"' . $test_bedroom . '":"true"', 'compare' => 'LIKE'],
+                        'JSON with spaces' => ['key' => 'bedrooms', 'value' => '"' . $test_bedroom . '": "true"', 'compare' => 'LIKE'],
+                        'Boolean format' => ['key' => 'bedrooms', 'value' => '"' . $test_bedroom . '":true', 'compare' => 'LIKE'],
+                        'Serialized string' => ['key' => 'bedrooms', 'value' => 's:' . strlen($test_bedroom) . ':"' . $test_bedroom . '";s:4:"true"', 'compare' => 'LIKE'],
+                        'Serialized boolean' => ['key' => 'bedrooms', 'value' => 's:' . strlen($test_bedroom) . ':"' . $test_bedroom . '";b:1', 'compare' => 'LIKE']
+                    ];
+
+                    foreach ($query_formats as $format_name => $meta_query) {
+                        $test_args = [
+                            'post_type' => 'properties',
+                            'posts_per_page' => -1,
+                            'post_status' => 'publish',
+                            'tax_query' => [
+                                [
+                                    'taxonomy' => 'purpose',
+                                    'field' => 'slug',
+                                    'terms' => 'sale'
+                                ]
+                            ],
+                            'meta_query' => [$meta_query]
+                        ];
+
+                        $test_query = new WP_Query($test_args);
+                        echo '<p><strong>' . $format_name . ':</strong> ' . $test_query->found_posts . ' properties found</p>';
+
+                        if ($test_query->found_posts > 0) {
+                            echo '<div style="background: #d4edda; padding: 10px; margin: 5px 0; border-left: 4px solid #28a745;">';
+                            echo '<strong>✅ SUCCESS! This query format works:</strong><br>';
+                            echo 'Query: <code>' . esc_html(json_encode($meta_query)) . '</code>';
+                            echo '</div>';
+                        }
+                        wp_reset_postdata();
+                    }
+                }
+
+                echo '</div>';
+            } else {
+                echo '<div class="debug-section">';
+                echo '<h2 class="debug-title">❌ No Properties Found</h2>';
+                echo '<p>No sale properties found with bedroom data. This might indicate an issue with the data or the query.</p>';
+                echo '</div>';
+            }
+
+            // Show current query builder output
+            echo '<div class="debug-section">';
+            echo '<h2 class="debug-title">🔧 Current Query Builder Output</h2>';
+            echo '<p><strong>Testing the current bedroom query builder:</strong></p>';
+
+            $test_filters = [
+                'bedrooms' => ['5'],
+                'purpose' => 'sale'
+            ];
+
+            $bedroom_query = KCPF_MultiUnit_Query_Builder::buildBedroomsQuery($test_filters, 'sale');
+            echo '<p><strong>Generated query:</strong></p>';
+            echo '<pre>' . esc_html(print_r($bedroom_query, true)) . '</pre>';
+
+            if (!empty($bedroom_query)) {
+                $test_args = [
+                    'post_type' => 'properties',
+                    'posts_per_page' => -1,
+                    'post_status' => 'publish',
+                    'tax_query' => [
+                        [
+                            'taxonomy' => 'purpose',
+                            'field' => 'slug',
+                            'terms' => 'sale'
+                        ]
+                    ],
+                    'meta_query' => [$bedroom_query]
+                ];
+
+                $test_query = new WP_Query($test_args);
+                echo '<p><strong>Query result:</strong> ' . $test_query->found_posts . ' properties found</p>';
+                wp_reset_postdata();
+
+                if ($test_query->found_posts > 0) {
+                    echo '<div style="background: #d4edda; padding: 10px; margin: 5px 0; border-left: 4px solid #28a745;">';
+                    echo '<strong>✅ SUCCESS! The current query builder works!</strong>';
+                    echo '</div>';
+                } else {
+                    echo '<div style="background: #f8d7da; padding: 10px; margin: 5px 0; border-left: 4px solid #dc3545;">';
+                    echo '<strong>❌ The current query builder is not working.</strong>';
+                    echo '</div>';
+                }
+            }
+
+            echo '</div>';
+            ?>
+
+            <div class="debug-section">
+                <h2 class="debug-title">📋 Usage Instructions</h2>
+                <p><strong>Current URL:</strong> <code><?php echo esc_html(add_query_arg([])); ?></code></p>
+                <p><strong>To test filters:</strong> Add bedroom/bathroom parameters to the URL above</p>
+                <p><strong>Example:</strong> <code><?php echo esc_html(add_query_arg(['bedrooms' => '5'])); ?></code></p>
+                <p><strong>Multiple values:</strong> <code><?php echo esc_html(add_query_arg(['bedrooms' => '2,3,5'])); ?></code></p>
+            </div>
+
+            <p><a href="<?php echo esc_url(home_url('/properties/')); ?>" style="color: #007cba;">← Back to Properties</a></p>
+        </div>
+    </body>
+    </html>
+    <?php
+}
