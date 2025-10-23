@@ -286,12 +286,16 @@
         const value = formData[key];
 
         if (Array.isArray(value)) {
-          if (value.length === 1) {
-            // Single value
-            params.set(key, value[0]);
-          } else {
-            // Multiple values - comma separated
+          // Always use comma-separated format for bedrooms and bathrooms
+          if (key === "bedrooms" || key === "bathrooms") {
             params.set(key, value.join(","));
+          } else {
+            // For other fields, use array format if multiple values
+            if (value.length === 1) {
+              params.set(key, value[0]);
+            } else {
+              value.forEach((v) => params.append(key + "[]", v));
+            }
           }
         } else {
           // Single value
