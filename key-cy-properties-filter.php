@@ -118,12 +118,14 @@ class Key_CY_Properties_Filter
         add_action('wp_ajax_kcpf_load_properties', [$this, 'ajaxLoadProperties']);
         add_action('wp_ajax_kcpf_test', [$this, 'ajaxTest']);
         add_action('wp_ajax_kcpf_load_map_properties', [KCPF_Map_Shortcode::class, 'ajaxLoadMapProperties']);
+        add_action('wp_ajax_kcpf_get_property_card', [KCPF_Map_Shortcode::class, 'ajaxGetPropertyCard']);
         KCPF_Filters_Ajax::register();
         
         // For non-logged-in users
         add_action('wp_ajax_nopriv_kcpf_load_properties', [$this, 'ajaxLoadProperties']);
         add_action('wp_ajax_nopriv_kcpf_test', [$this, 'ajaxTest']);
         add_action('wp_ajax_nopriv_kcpf_load_map_properties', [KCPF_Map_Shortcode::class, 'ajaxLoadMapProperties']);
+        add_action('wp_ajax_nopriv_kcpf_get_property_card', [KCPF_Map_Shortcode::class, 'ajaxGetPropertyCard']);
         KCPF_Filters_Ajax::register();
     }
     

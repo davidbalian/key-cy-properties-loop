@@ -163,20 +163,36 @@
       this.map.panTo(circle.getCenter());
       this.map.setZoom(16);
 
-      // Show info window
-      const content = `
-        <div class="kcpf-map-info-window">
-          <h4 class="kcpf-map-info-title">${property.title}</h4>
-          <a href="${property.url}" class="kcpf-map-info-link" target="_blank">View Details →</a>
-        </div>
-      `;
-
-      this.infoWindow.setContent(content);
-      this.infoWindow.setPosition(circle.getCenter());
-      this.infoWindow.open(this.map);
+      // Get full property card HTML via AJAX
+      this.showPropertyInfoWindow(circle, property);
 
       // Highlight and scroll to corresponding card
       this.highlightCard(property.id);
+    },
+
+    /**
+     * Show property info window with full card details
+     */
+    showPropertyInfoWindow: function (circle, property) {
+      // Make AJAX request to get property card HTML
+      $.ajax({
+        url: kcpfData.ajaxUrl,
+        type: "GET",
+        data: {
+          action: "kcpf_get_property_card",
+          property_id: property.id,
+        },
+        success: (response) => {
+          if (response.success && response.data.html) {
+            this.infoWindow.setContent(response.data.html);
+            this.infoWindow.setPosition(circle.getCenter());
+            this.infoWindow.open(this.map);
+          }
+        },
+        error: (xhr, status, error) => {
+          console.error("[KCPF Map] Error loading property card:", error);
+        },
+      });
     },
 
     /**
@@ -224,20 +240,12 @@
         this.map.panTo(circle.getCenter());
         this.map.setZoom(16);
 
-        // Optionally show info window
+        // Show info window with full property card
         const property = this.properties.find(
           (p) => p.id === parseInt(propertyId)
         );
         if (property) {
-          const content = `
-            <div class="kcpf-map-info-window">
-              <h4 class="kcpf-map-info-title">${property.title}</h4>
-              <a href="${property.url}" class="kcpf-map-info-link" target="_blank">View Details →</a>
-            </div>
-          `;
-          this.infoWindow.setContent(content);
-          this.infoWindow.setPosition(circle.getCenter());
-          this.infoWindow.open(this.map);
+          this.showPropertyInfoWindow(circle, property);
         }
       }
     },

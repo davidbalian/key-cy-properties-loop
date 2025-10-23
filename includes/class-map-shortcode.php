@@ -198,6 +198,106 @@ class KCPF_Map_Shortcode
     }
     
     /**
+     * AJAX handler for getting a single property card for info window
+     */
+    public static function ajaxGetPropertyCard()
+    {
+        try {
+            $property_id = isset($_GET['property_id']) ? intval($_GET['property_id']) : 0;
+            
+            if (!$property_id) {
+                wp_send_json_error(['message' => 'No property ID provided']);
+                return;
+            }
+            
+            // Get property purpose
+            $purpose_terms = get_the_terms($property_id, 'purpose');
+            $purpose = 'sale';
+            if ($purpose_terms && !is_wp_error($purpose_terms) && !empty($purpose_terms)) {
+                $purpose = $purpose_terms[0]->slug;
+            }
+            
+            // Render info window card
+            $html = self::renderInfoWindowCard($property_id, $purpose);
+            
+            wp_send_json_success(['html' => $html]);
+        } catch (Exception $e) {
+            wp_send_json_error([
+                'message' => 'Error loading property card',
+                'error' => $e->getMessage(),
+            ]);
+        }
+    }
+    
+    /**
+     * Render property card for info window
+     * 
+     * @param int $property_id Property ID
+     * @param string $purpose Property purpose
+     * @return string HTML output
+     */
+    private static function renderInfoWindowCard($property_id, $purpose = 'sale')
+    {
+        // Get property data
+        $bedrooms = KCPF_Card_Data_Helper::getBedrooms($property_id, $purpose);
+        $bathrooms = KCPF_Card_Data_Helper::getBathrooms($property_id, $purpose);
+        $price = KCPF_Card_Data_Helper::getPrice($property_id, $purpose);
+        $totalCoveredArea = KCPF_Card_Data_Helper::getTotalCoveredArea($property_id, $purpose);
+        
+        // Get featured image
+        $image_url = get_the_post_thumbnail_url($property_id, 'medium');
+        
+        ob_start();
+        ?>
+        <div class="kcpf-info-window-card">
+            <?php if ($image_url) : ?>
+                <div class="kcpf-info-window-image">
+                    <img src="<?php echo esc_url($image_url); ?>" alt="<?php echo esc_attr(get_the_title($property_id)); ?>">
+                </div>
+            <?php endif; ?>
+            
+            <div class="kcpf-info-window-content">
+                <h3 class="kcpf-info-window-title">
+                    <a href="<?php echo get_permalink($property_id); ?>" target="_blank">
+                        <?php echo get_the_title($property_id); ?>
+                    </a>
+                </h3>
+                
+                <div class="kcpf-info-window-specs">
+                    <?php if ($bedrooms) : ?>
+                        <span class="kcpf-info-spec">
+                            <span class="kcpf-spec-icon">🛏️</span>
+                            <span class="kcpf-spec-value"><?php echo esc_html($bedrooms); ?></span>
+                        </span>
+                    <?php endif; ?>
+                    
+                    <?php if ($bathrooms) : ?>
+                        <span class="kcpf-info-spec">
+                            <span class="kcpf-spec-icon">🚿</span>
+                            <span class="kcpf-spec-value"><?php echo esc_html($bathrooms); ?></span>
+                        </span>
+                    <?php endif; ?>
+                    
+                    <?php if ($totalCoveredArea) : ?>
+                        <span class="kcpf-info-spec">
+                            <span class="kcpf-spec-icon">📐</span>
+                            <span class="kcpf-spec-value"><?php echo esc_html($totalCoveredArea); ?> m²</span>
+                        </span>
+                    <?php endif; ?>
+                </div>
+                
+                <?php if ($price) : ?>
+                    <div class="kcpf-info-window-price">
+                        €<?php echo esc_html($price); ?>
+                    </div>
+                <?php endif; ?>
+            </div>
+        </div>
+        <?php
+        return ob_get_clean();
+    }
+    
+    /**
      * Render API key warning
      * 
      * @return string HTML output

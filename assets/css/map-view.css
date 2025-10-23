@@ -229,40 +229,73 @@
 }
 
 /* ==========================================================================
-   Custom Map Markers & Info Windows
+   Info Window Card Styling
    ========================================================================== */
 
-.kcpf-map-marker-label {
-  background: #007bff;
-  color: white;
-  padding: 4px 8px;
+.kcpf-info-window-card {
+  max-width: 280px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+.kcpf-info-window-image {
+  width: 100%;
+  margin-bottom: 12px;
+}
+
+.kcpf-info-window-image img {
+  width: 100%;
+  height: auto;
+  display: block;
   border-radius: 4px;
-  font-size: 12px;
-  font-weight: 600;
-  white-space: nowrap;
 }
 
-.kcpf-map-info-window {
-  max-width: 250px;
+.kcpf-info-window-content {
+  padding: 0 4px;
 }
 
-.kcpf-map-info-title {
-  font-size: 14px;
+.kcpf-info-window-title {
+  font-size: 16px;
   font-weight: 600;
-  margin: 0 0 8px 0;
+  margin: 0 0 10px 0;
+  line-height: 1.3;
+}
+
+.kcpf-info-window-title a {
   color: #212529;
-}
-
-.kcpf-map-info-link {
-  display: inline-block;
-  margin-top: 8px;
-  color: #007bff;
   text-decoration: none;
-  font-size: 13px;
 }
 
-.kcpf-map-info-link:hover {
-  text-decoration: underline;
+.kcpf-info-window-title a:hover {
+  color: #007bff;
+}
+
+.kcpf-info-window-specs {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 10px;
+  font-size: 14px;
+}
+
+.kcpf-info-spec {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: #495057;
+}
+
+.kcpf-spec-icon {
+  font-size: 16px;
+}
+
+.kcpf-spec-value {
+  font-weight: 500;
+}
+
+.kcpf-info-window-price {
+  font-size: 18px;
+  font-weight: 700;
+  color: #007bff;
+  margin-top: 10px;
 }
 
 /* ==========================================================================
