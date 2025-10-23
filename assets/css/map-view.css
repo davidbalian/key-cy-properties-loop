@@ -244,10 +244,23 @@
   border: none;
 }
 
-/* Ensure images display properly in info window */
-.kcpf-info-window-card .kcpf-property-image-sale,
-.kcpf-info-window-card .kcpf-property-image-rent {
+/* Info window cards: vertical layout (image on top) like sidebar */
+.kcpf-info-window-card .kcpf-property-card-sale-wrapper {
+  flex-direction: column;
+}
+
+.kcpf-info-window-card .kcpf-property-image-sale {
+  width: 100%;
   min-height: 200px;
+}
+
+.kcpf-info-window-card .kcpf-property-content-sale {
+  width: 100%;
+}
+
+/* Rent cards: ensure consistent image height in info window */
+.kcpf-info-window-card .kcpf-property-image-rent {
+  min-height: 200px !important;
 }
 
 /* ==========================================================================
