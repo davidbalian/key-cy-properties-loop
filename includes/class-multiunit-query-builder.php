@@ -100,7 +100,7 @@ class KCPF_MultiUnit_Query_Builder
     
     /**
      * Build plot area query supporting both regular and multi-unit properties
-     * 
+     *
      * @param array $filters Current filters
      * @return array Meta query array
      */
@@ -108,10 +108,10 @@ class KCPF_MultiUnit_Query_Builder
     {
         $minValue = isset($filters['plot_area_min']) && $filters['plot_area_min'] !== '' ? intval($filters['plot_area_min']) : null;
         $maxValue = isset($filters['plot_area_max']) && $filters['plot_area_max'] !== '' ? intval($filters['plot_area_max']) : null;
-        
+
         // Simplified: Just query the regular plot area field
         $plot_query = [];
-        
+
         if ($minValue !== null && $maxValue !== null) {
             $plot_query[] = [
                 'key' => 'plot_area_land_only',
@@ -134,8 +134,138 @@ class KCPF_MultiUnit_Query_Builder
                 'compare' => '<=',
             ];
         }
-        
+
         return $plot_query;
+    }
+
+    /**
+     * Build bedrooms query supporting both regular and multi-unit properties
+     *
+     * @param array $filters Current filters
+     * @param string $purpose Current purpose (sale/rent)
+     * @return array Meta query array
+     */
+    public static function buildBedroomsQuery($filters, $purpose)
+    {
+        if (!isset($filters['bedrooms']) || empty($filters['bedrooms'])) {
+            return [];
+        }
+
+        $bedroomsKey = KCPF_Field_Config::getMetaKey('bedrooms', $purpose);
+        $bedroomsValues = is_array($filters['bedrooms']) ? $filters['bedrooms'] : [$filters['bedrooms']];
+
+        $bedrooms_query = ['relation' => 'OR'];
+
+        // For each bedroom value, create OR conditions for both property types
+        foreach ($bedroomsValues as $bedroom) {
+            $bedroom_conditions = ['relation' => 'OR'];
+
+            // Condition 1: Non-multi-unit properties (check bedrooms field)
+            $bedroom_conditions[] = [
+                'relation' => 'AND',
+                [
+                    'relation' => 'OR',
+                    [
+                        'key' => 'multi-unit',
+                        'compare' => 'NOT EXISTS',
+                    ],
+                    [
+                        'key' => 'multi-unit',
+                        'value' => '1',
+                        'compare' => '!=',
+                    ],
+                ],
+                [
+                    'key' => $bedroomsKey,
+                    'value' => 's:\d+:"' . preg_quote($bedroom, '/') . '";b:1;',
+                    'compare' => 'REGEXP',
+                ],
+            ];
+
+            // Condition 2: Multi-unit properties (check multi-unit_table for units with this bedroom count)
+            $bedroom_conditions[] = [
+                'relation' => 'AND',
+                [
+                    'key' => 'multi-unit',
+                    'value' => '1',
+                    'compare' => '=',
+                ],
+                [
+                    'key' => 'multi-unit_table',
+                    'value' => '"bedrooms":"' . preg_quote($bedroom, '/') . '"',
+                    'compare' => 'LIKE',
+                ],
+            ];
+
+            $bedrooms_query[] = $bedroom_conditions;
+        }
+
+        return $bedrooms_query;
+    }
+
+    /**
+     * Build bathrooms query supporting both regular and multi-unit properties
+     *
+     * @param array $filters Current filters
+     * @param string $purpose Current purpose (sale/rent)
+     * @return array Meta query array
+     */
+    public static function buildBathroomsQuery($filters, $purpose)
+    {
+        if (!isset($filters['bathrooms']) || empty($filters['bathrooms'])) {
+            return [];
+        }
+
+        $bathroomsKey = KCPF_Field_Config::getMetaKey('bathrooms', $purpose);
+        $bathroomsValues = is_array($filters['bathrooms']) ? $filters['bathrooms'] : [$filters['bathrooms']];
+
+        $bathrooms_query = ['relation' => 'OR'];
+
+        // For each bathroom value, create OR conditions for both property types
+        foreach ($bathroomsValues as $bathroom) {
+            $bathroom_conditions = ['relation' => 'OR'];
+
+            // Condition 1: Non-multi-unit properties (check bathrooms field)
+            $bathroom_conditions[] = [
+                'relation' => 'AND',
+                [
+                    'relation' => 'OR',
+                    [
+                        'key' => 'multi-unit',
+                        'compare' => 'NOT EXISTS',
+                    ],
+                    [
+                        'key' => 'multi-unit',
+                        'value' => '1',
+                        'compare' => '!=',
+                    ],
+                ],
+                [
+                    'key' => $bathroomsKey,
+                    'value' => 's:\d+:"' . preg_quote($bathroom, '/') . '";b:1;',
+                    'compare' => 'REGEXP',
+                ],
+            ];
+
+            // Condition 2: Multi-unit properties (check multi-unit_table for units with this bathroom count)
+            $bathroom_conditions[] = [
+                'relation' => 'AND',
+                [
+                    'key' => 'multi-unit',
+                    'value' => '1',
+                    'compare' => '=',
+                ],
+                [
+                    'key' => 'multi-unit_table',
+                    'value' => '"bathrooms":"' . preg_quote($bathroom, '/') . '"',
+                    'compare' => 'LIKE',
+                ],
+            ];
+
+            $bathrooms_query[] = $bathroom_conditions;
+        }
+
+        return $bathrooms_query;
     }
     
     /**
