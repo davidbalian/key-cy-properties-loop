@@ -46,6 +46,17 @@
             "[KCPF] Dropdown opened for:",
             $dropdown.data("filter-name")
           );
+          console.log("[KCPF] Dropdown element:", $dropdown[0]);
+          console.log(
+            "[KCPF] Menu element:",
+            $dropdown.find(".kcpf-multiselect-dropdown-menu")[0]
+          );
+          console.log(
+            "[KCPF] Menu computed styles:",
+            window.getComputedStyle(
+              $dropdown.find(".kcpf-multiselect-dropdown-menu")[0]
+            )
+          );
         } else {
           console.log("[KCPF] Dropdown closed");
         }
