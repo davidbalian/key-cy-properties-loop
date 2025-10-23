@@ -60,26 +60,29 @@ class KCPF_URL_Manager
      */
     public static function getParam($key, $default = '')
     {
-        // Special handling for bedrooms and bathrooms to parse comma-separated values
+        // Special handling for bedrooms and bathrooms arrays
         if ($key === 'bedrooms' || $key === 'bathrooms') {
-            // Check for comma-separated values (bedroom=2,3,5)
+            error_log("[KCPF] Processing $key parameter");
+            
+            // Handle array format (bedrooms[]=2&bedrooms[]=3)
+            if (isset($_GET[$key]) && is_array($_GET[$key])) {
+                $values = array_map('sanitize_text_field', $_GET[$key]);
+                error_log("[KCPF] Array values found for $key: " . print_r($values, true));
+                return $values;
+            }
+            
+            // Handle comma-separated format (bedrooms=2,3,5)
             if (isset($_GET[$key]) && !empty($_GET[$key])) {
                 $value = sanitize_text_field($_GET[$key]);
                 if (strpos($value, ',') !== false) {
-                    // Multiple values separated by commas
                     $values = array_map('trim', explode(',', $value));
                     $values = array_map('sanitize_text_field', $values);
-                    // Debug logging
-                    error_log("[KCPF] getParam called for: $key");
-                    error_log("[KCPF] Comma-separated values found: " . print_r($values, true));
+                    error_log("[KCPF] Comma-separated values found for $key: " . print_r($values, true));
                     return $values;
-                } else {
-                    // Single value
-                    // Debug logging
-                    error_log("[KCPF] getParam called for: $key");
-                    error_log("[KCPF] Single value found: $value");
-                    return $value;
                 }
+                // Single value
+                error_log("[KCPF] Single value found for $key: $value");
+                return [$value]; // Always return array for consistency
             }
         }
 

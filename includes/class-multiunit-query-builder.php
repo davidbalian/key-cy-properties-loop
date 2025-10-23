@@ -153,7 +153,9 @@ class KCPF_MultiUnit_Query_Builder
         }
 
         $bedroomsKey = KCPF_Field_Config::getMetaKey('bedrooms', $purpose);
-        $bedroomsValues = is_array($filters['bedrooms']) ? $filters['bedrooms'] : [$filters['bedrooms']];
+        // Bedrooms should already be an array from URL_Manager
+        $bedroomsValues = $filters['bedrooms'];
+        error_log('[KCPF] Processing bedrooms values: ' . print_r($bedroomsValues, true));
 
         // Build query to match bedroom values in JSON array
         $bedrooms_query = ['relation' => 'OR'];
@@ -198,7 +200,9 @@ class KCPF_MultiUnit_Query_Builder
         }
 
         $bathroomsKey = KCPF_Field_Config::getMetaKey('bathrooms', $purpose);
-        $bathroomsValues = is_array($filters['bathrooms']) ? $filters['bathrooms'] : [$filters['bathrooms']];
+        // Bathrooms should already be an array from URL_Manager
+        $bathroomsValues = $filters['bathrooms'];
+        error_log('[KCPF] Processing bathrooms values: ' . print_r($bathroomsValues, true));
 
         // Build query to match bathroom values in JSON array
         $bathrooms_query = ['relation' => 'OR'];
