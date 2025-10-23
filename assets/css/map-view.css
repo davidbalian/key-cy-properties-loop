@@ -237,71 +237,51 @@
    Info Window Card Styling
    ========================================================================== */
 
-.kcpf-info-window-card {
-  max-width: 280px;
+.kcpf-info-window-wrapper {
+  position: relative;
+  max-width: 350px;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
     "Helvetica Neue", Arial, sans-serif;
 }
 
-.kcpf-info-window-image {
-  width: 100%;
-  margin-bottom: 12px;
-}
-
-.kcpf-info-window-image img {
-  width: 100%;
-  height: auto;
-  display: block;
-  border-radius: 4px;
-}
-
-.kcpf-info-window-content {
-  padding: 0 4px;
-}
-
-.kcpf-info-window-title {
-  font-size: 16px;
-  font-weight: 600;
-  margin: 0 0 10px 0;
-  line-height: 1.3;
-}
-
-.kcpf-info-window-title a {
-  color: #212529;
-  text-decoration: none;
-}
-
-.kcpf-info-window-title a:hover {
-  color: #007bff;
-}
-
-.kcpf-info-window-specs {
-  display: flex;
-  gap: 12px;
-  margin-bottom: 10px;
-  font-size: 14px;
-}
-
-.kcpf-info-spec {
+.kcpf-info-window-close {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  width: 32px;
+  height: 32px;
+  background: rgba(255, 255, 255, 0.95);
+  border: 1px solid #e0e0e0;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 24px;
+  line-height: 1;
+  color: #333;
   display: flex;
   align-items: center;
-  gap: 4px;
-  color: #495057;
+  justify-content: center;
+  z-index: 10;
+  padding: 0;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.kcpf-spec-icon {
-  font-size: 16px;
+.kcpf-info-window-close:hover {
+  background: #f8f9fa;
+  color: #000;
+  transform: scale(1.1);
 }
 
-.kcpf-spec-value {
-  font-weight: 500;
+/* Remove default info window styles to match sidebar cards */
+.kcpf-info-window-wrapper .kcpf-property-card {
+  margin: 0;
+  max-width: 100%;
 }
 
-.kcpf-info-window-price {
-  font-size: 18px;
-  font-weight: 700;
-  color: #007bff;
-  margin-top: 10px;
+/* Ensure images display properly in info window */
+.kcpf-info-window-wrapper .kcpf-property-image-sale,
+.kcpf-info-window-wrapper .kcpf-property-image-rent {
+  min-height: 200px;
 }
 
 /* ==========================================================================

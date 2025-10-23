@@ -18,9 +18,10 @@ class KCPF_Map_Card_Renderer
      * 
      * @param int $property_id Property ID
      * @param string $purpose Property purpose (sale/rent)
+     * @param bool $hideMultiUnit Whether to hide multi-unit tables (for info windows)
      * @return string HTML output
      */
-    public static function renderCard($property_id, $purpose = 'sale')
+    public static function renderCard($property_id, $purpose = 'sale', $hideMultiUnit = false)
     {
         $location = get_the_terms($property_id, 'location');
         $purposeTerms = get_the_terms($property_id, 'purpose');
@@ -46,7 +47,7 @@ class KCPF_Map_Card_Renderer
         $isMultiUnit = KCPF_Card_Data_Helper::isMultiUnit($property_id);
         $multiUnitPrice = $isMultiUnit ? KCPF_Card_Data_Helper::getMultiUnitPrice($property_id, $purposeSlug) : null;
         $multiUnitCount = $isMultiUnit ? KCPF_Card_Data_Helper::getMultiUnitCount($property_id) : null;
-        $multiUnitTable = $isMultiUnit ? KCPF_Card_Data_Helper::getMultiUnitTable($property_id) : null;
+        $multiUnitTable = ($isMultiUnit && !$hideMultiUnit) ? KCPF_Card_Data_Helper::getMultiUnitTable($property_id) : null;
         
         // Get additional data for sale properties
         $cityArea = $isSale ? KCPF_Card_Data_Helper::getCityArea($property_id) : null;
@@ -237,9 +238,10 @@ class KCPF_Map_Card_Renderer
      * 
      * @param array $property_ids Array of property IDs
      * @param string $purpose Property purpose (sale/rent)
+     * @param bool $hideMultiUnit Whether to hide multi-unit tables (for info windows)
      * @return string HTML output
      */
-    public static function renderCards($property_ids, $purpose = 'sale')
+    public static function renderCards($property_ids, $purpose = 'sale', $hideMultiUnit = false)
     {
         if (empty($property_ids)) {
             return self::renderNoResults();
@@ -261,7 +263,7 @@ class KCPF_Map_Card_Renderer
         if ($query->have_posts()) {
             while ($query->have_posts()) {
                 $query->the_post();
-                echo self::renderCard(get_the_ID(), $purpose);
+                echo self::renderCard(get_the_ID(), $purpose, $hideMultiUnit);
             }
             wp_reset_postdata();
         }

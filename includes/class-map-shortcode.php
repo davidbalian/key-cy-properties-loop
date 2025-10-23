@@ -238,60 +238,14 @@ class KCPF_Map_Shortcode
      */
     private static function renderInfoWindowCard($property_id, $purpose = 'sale')
     {
-        // Get property data
-        $bedrooms = KCPF_Card_Data_Helper::getBedrooms($property_id, $purpose);
-        $bathrooms = KCPF_Card_Data_Helper::getBathrooms($property_id, $purpose);
-        $price = KCPF_Card_Data_Helper::getPrice($property_id, $purpose);
-        $totalCoveredArea = KCPF_Card_Data_Helper::getTotalCoveredArea($property_id, $purpose);
-        
-        // Get featured image
-        $image_url = get_the_post_thumbnail_url($property_id, 'medium');
+        // Use the same card renderer as the sidebar, but hide multi-unit tables
+        $cardHtml = KCPF_Map_Card_Renderer::renderCard($property_id, $purpose, true);
         
         ob_start();
         ?>
-        <div class="kcpf-info-window-card">
-            <?php if ($image_url) : ?>
-                <div class="kcpf-info-window-image">
-                    <img src="<?php echo esc_url($image_url); ?>" alt="<?php echo esc_attr(get_the_title($property_id)); ?>">
-                </div>
-            <?php endif; ?>
-            
-            <div class="kcpf-info-window-content">
-                <h3 class="kcpf-info-window-title">
-                    <a href="<?php echo get_permalink($property_id); ?>" target="_blank">
-                        <?php echo get_the_title($property_id); ?>
-                    </a>
-                </h3>
-                
-                <div class="kcpf-info-window-specs">
-                    <?php if ($bedrooms) : ?>
-                        <span class="kcpf-info-spec">
-                            <span class="kcpf-spec-icon">🛏️</span>
-                            <span class="kcpf-spec-value"><?php echo esc_html($bedrooms); ?></span>
-                        </span>
-                    <?php endif; ?>
-                    
-                    <?php if ($bathrooms) : ?>
-                        <span class="kcpf-info-spec">
-                            <span class="kcpf-spec-icon">🚿</span>
-                            <span class="kcpf-spec-value"><?php echo esc_html($bathrooms); ?></span>
-                        </span>
-                    <?php endif; ?>
-                    
-                    <?php if ($totalCoveredArea) : ?>
-                        <span class="kcpf-info-spec">
-                            <span class="kcpf-spec-icon">📐</span>
-                            <span class="kcpf-spec-value"><?php echo esc_html($totalCoveredArea); ?> m²</span>
-                        </span>
-                    <?php endif; ?>
-                </div>
-                
-                <?php if ($price) : ?>
-                    <div class="kcpf-info-window-price">
-                        €<?php echo esc_html($price); ?>
-                    </div>
-                <?php endif; ?>
-            </div>
+        <div class="kcpf-info-window-wrapper">
+            <button class="kcpf-info-window-close" type="button">×</button>
+            <?php echo $cardHtml; ?>
         </div>
         <?php
         return ob_get_clean();
