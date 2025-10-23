@@ -33,11 +33,11 @@ class KCPF_Filters_Ajax
 
             // Render updated fragments
             $location = KCPF_Filter_Renderer::renderLocation([
-                'type' => 'select',
+                'type' => 'checkbox',
                 'show_count' => true,
             ]);
             $type = KCPF_Filter_Renderer::renderType([
-                'type' => 'select',
+                'type' => 'checkbox',
             ]);
             $price = KCPF_Filter_Renderer::renderPrice([
                 'type' => 'slider',

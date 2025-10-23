@@ -28,22 +28,45 @@ class KCPF_Homepage_Filters
         ], $attrs);
 
         // Build inner filters using existing renderers
+        // Try to render purpose via renderer; if taxonomy missing, fallback to static radio
+        $currentPurpose = KCPF_URL_Manager::getFilterValue('purpose') ?: 'sale';
         $purposeHtml = KCPF_Filter_Renderer::renderPurpose([
             'type' => 'radio',
-            'default' => KCPF_URL_Manager::getFilterValue('purpose') ?: 'sale',
+            'default' => $currentPurpose,
         ]);
+        if (!$purposeHtml) {
+            ob_start();
+            ?>
+            <div class="kcpf-filter kcpf-filter-purpose">
+                <div class="kcpf-radio-buttons">
+                    <label class="kcpf-radio-label">
+                        <input type="radio" name="purpose" value="sale" <?php checked($currentPurpose, 'sale'); ?>>
+                        <span><?php echo esc_html(__('Sale', 'key-cy-properties-filter')); ?></span>
+                    </label>
+                    <label class="kcpf-radio-label">
+                        <input type="radio" name="purpose" value="rent" <?php checked($currentPurpose, 'rent'); ?>>
+                        <span><?php echo esc_html(__('Rent', 'key-cy-properties-filter')); ?></span>
+                    </label>
+                </div>
+            </div>
+            <?php
+            $purposeHtml = ob_get_clean();
+        }
 
+        // Multiselect dropdown for property type
         $typeHtml = KCPF_Filter_Renderer::renderType([
-            'type' => 'select',
+            'type' => 'checkbox',
         ]);
 
+        // Multiselect dropdown for location
         $locationHtml = KCPF_Filter_Renderer::renderLocation([
-            'type' => 'select',
+            'type' => 'checkbox',
             'show_count' => true,
         ]);
 
+        // Multiselect dropdown for bedrooms
         $bedroomsHtml = KCPF_Filter_Renderer::renderBedrooms([
-            'type' => 'select',
+            'type' => 'checkbox',
         ]);
 
         $priceHtml = KCPF_Filter_Renderer::renderPrice([
