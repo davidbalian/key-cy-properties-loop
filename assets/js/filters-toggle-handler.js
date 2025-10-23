@@ -19,7 +19,6 @@
       this.handleToggleButtons();
       this.initializeActiveStates();
       this.handlePurposeChange();
-      console.log("[KCPF] Toggle Handler initialized");
     },
 
     /**

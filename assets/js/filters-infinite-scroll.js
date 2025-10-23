@@ -17,7 +17,6 @@
      */
     init: function () {
       this.handleScroll();
-      console.log("[KCPF] Infinite Scroll initialized");
     },
 
     /**
@@ -113,21 +112,11 @@
       const nextPage = currentPage + 1;
       const purpose = $loop.data("purpose") || "";
 
-      console.log(
-        "[KCPF] Loading page " +
-          nextPage +
-          " of " +
-          maxPages +
-          " for purpose: " +
-          purpose
-      );
-
       // Show loader in the specific loop
       $loop.find(".kcpf-infinite-loader").show();
 
       // Check if kcpfData is available
       if (typeof kcpfData === "undefined" || !kcpfData.ajaxUrl) {
-        console.error("[KCPF] kcpfData not found - cannot load next page");
         $loop.find(".kcpf-infinite-loader").hide();
         window.kcpfLoadingNextPage = false;
         return;
@@ -146,8 +135,6 @@
       const ajaxUrl =
         kcpfData.ajaxUrl + "?action=kcpf_load_properties&" + params.toString();
 
-      console.log("[KCPF] Infinite scroll AJAX URL:", ajaxUrl);
-
       $.ajax({
         url: ajaxUrl,
         type: "GET",
@@ -163,7 +150,6 @@
           );
         },
         error: function (xhr, status, error) {
-          console.error("[KCPF] Infinite scroll error:", status, error);
           $loop.find(".kcpf-infinite-loader").hide();
         },
         complete: function () {
@@ -176,8 +162,6 @@
      * Handle successful page load
      */
     handleSuccess: function (response, $loop, $grid, nextPage, maxPages) {
-      console.log("[KCPF] Page " + nextPage + " loaded successfully");
-
       if (response.success && response.data.html) {
         const $newContent = $(response.data.html);
         const $newGrid = $newContent.find(".kcpf-properties-grid");
@@ -201,13 +185,8 @@
           } else {
             $loop.find(".kcpf-infinite-loader").hide();
           }
-
-          console.log(
-            "[KCPF] Updated to page " + newCurrentPage + " of " + newMaxPages
-          );
         }
       } else {
-        console.error("[KCPF] Invalid response format:", response);
         $loop.find(".kcpf-infinite-loader").hide();
       }
     },

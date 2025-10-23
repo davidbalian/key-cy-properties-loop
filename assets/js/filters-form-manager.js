@@ -29,25 +29,18 @@
     wrapFiltersInForm: function () {
       const filters = $(".kcpf-filter");
 
-      console.log("[KCPF] Found " + filters.length + " filter elements");
-
       if (filters.length === 0) {
-        console.warn("[KCPF] No filter elements found");
         return;
       }
 
       // Check if already wrapped
       if (filters.first().closest("form").length > 0) {
-        console.log("[KCPF] Filters already wrapped in form");
         return;
       }
 
       // Wrap all filters together in a form
-      console.log("[KCPF] Wrapping " + filters.length + " filters in form");
-
       if (filters.length > 0) {
         filters.wrapAll('<form class="kcpf-filters-form" method="get"></form>');
-        console.log("[KCPF] Filters wrapped successfully");
       }
     },
 
@@ -58,14 +51,12 @@
       // Check if debug mode is enabled before binding AJAX
       const urlParams = new URLSearchParams(window.location.search);
       if (urlParams.get("debug_filters") === "1") {
-        console.log("[KCPF] Debug mode detected - skipping AJAX form handling");
         return; // Don't bind AJAX handlers in debug mode
       }
 
       // Always use AJAX for form submission (except in debug mode)
       $(document).on("submit", ".kcpf-filters-form", function (e) {
         e.preventDefault();
-        console.log("[KCPF] Form submit event triggered");
         KCPF_FormManager.processFormSubmission($(this));
       });
     },
@@ -77,18 +68,13 @@
       // Check if debug mode is enabled before binding
       const urlParams = new URLSearchParams(window.location.search);
       if (urlParams.get("debug_filters") === "1") {
-        console.log(
-          "[KCPF] Debug mode detected - skipping apply button AJAX handling"
-        );
         return; // Don't bind AJAX handlers in debug mode
       }
 
       $(document).on("click", ".kcpf-apply-button", function (e) {
         e.preventDefault();
-        console.log("[KCPF] Apply button clicked");
 
         const form = $(this).closest("form");
-        console.log("[KCPF] Form found:", form.length);
 
         // Homepage composite redirect behavior
         const $homepage = $(this).closest(".kcpf-homepage-filters");
@@ -103,11 +89,9 @@
         } else {
           // Fallback: find form on page
           const $form = $(".kcpf-filters-form").first();
-          console.log("[KCPF] Fallback form found:", $form.length);
           if ($form.length > 0) {
             $form.submit();
           } else {
-            console.error("[KCPF] No form found - cannot submit filters");
           }
         }
       });
@@ -170,7 +154,6 @@
         "/test-rent-page";
       const target = purpose === "rent" ? rentUrl : saleUrl;
       const url = target + (params.toString() ? "?" + params.toString() : "");
-      console.log("[KCPF] Redirecting to:", url);
       window.location.href = url;
     },
 
@@ -180,7 +163,6 @@
     handleResetButton: function () {
       $(document).on("click", ".kcpf-reset-button", function (e) {
         e.preventDefault();
-        console.log("[KCPF] Reset button clicked");
 
         // Clear all form inputs
         const $form = $(this).closest("form");
@@ -218,8 +200,6 @@
           if (window.KCPF_RangeSliders && window.KCPF_RangeSliders.reset) {
             window.KCPF_RangeSliders.reset();
           }
-
-          console.log("[KCPF] Form inputs cleared");
         }
 
         // Clear URL and reload properties
@@ -280,12 +260,10 @@
      * Sync form values with URL parameters
      */
     syncFormWithURL: function () {
-      console.log("[KCPF] Syncing form with URL parameters");
       const params = new URLSearchParams(window.location.search);
       const $form = $(".kcpf-filters-form").first();
 
       if ($form.length === 0) {
-        console.warn("[KCPF] No form found to sync with URL");
         return;
       }
 
@@ -297,8 +275,6 @@
 
       // Handle each parameter
       for (const [key, value] of params.entries()) {
-        console.log(`[KCPF] Processing URL parameter: ${key} = ${value}`);
-
         // Handle comma-separated values (bedrooms, bathrooms)
         if (
           (key === "bedrooms" || key === "bathrooms") &&
@@ -328,22 +304,15 @@
           $form.find(`select[name="${key}"]`).val(value);
         }
       }
-
-      console.log("[KCPF] Form sync complete");
     },
 
     /**
      * Process form submission
      */
     processFormSubmission: function (form) {
-      console.log("[KCPF] Form submitted, processing...");
-
       // Check if debug mode is enabled - if so, don't use AJAX
       const urlParams = new URLSearchParams(window.location.search);
       if (urlParams.get("debug_filters") === "1") {
-        console.log(
-          "[KCPF] Debug mode detected - allowing normal form submission"
-        );
         return true; // Allow normal form submission for debugging
       }
 
@@ -364,8 +333,6 @@
           }
         }
       });
-
-      console.log("[KCPF] Grouped form data:", formData);
 
       const params = new URLSearchParams();
       Object.keys(formData).forEach(function (key) {
@@ -405,10 +372,7 @@
       // Add purpose to params if found
       if (purpose) {
         params.set("purpose", purpose);
-        console.log("[KCPF] Detected purpose:", purpose);
       }
-
-      console.log("[KCPF] URL params:", params.toString());
 
       // Use AJAX handler to load properties
       if (window.KCPF_AjaxHandler) {

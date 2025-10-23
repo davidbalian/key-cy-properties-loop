@@ -86,33 +86,6 @@ class KCPF_Ajax_Manager
         @ob_clean();
         
         try {
-            // Log the start of the request
-            error_log('[KCPF] ============================================');
-            error_log('[KCPF] AJAX request started');
-            error_log('[KCPF] Total $_GET parameters: ' . count($_GET));
-            error_log('[KCPF] $_GET contents: ' . print_r($_GET, true));
-            
-            // Log all filter parameters being received
-            $receivedFilters = [];
-            foreach ($_GET as $key => $value) {
-                if ($key !== 'action') {
-                    $receivedFilters[$key] = $value;
-                }
-            }
-            error_log('[KCPF] Filter parameters received: ' . print_r($receivedFilters, true));
-            
-            // Specifically log bedroom and bathroom filters
-            if (isset($_GET['bedrooms'])) {
-                error_log('[KCPF] Bedrooms filter received: ' . print_r($_GET['bedrooms'], true));
-                error_log('[KCPF] Bedrooms filter type: ' . gettype($_GET['bedrooms']));
-                error_log('[KCPF] Bedrooms filter is_array: ' . (is_array($_GET['bedrooms']) ? 'true' : 'false'));
-            }
-            
-            if (isset($_GET['bathrooms'])) {
-                error_log('[KCPF] Bathrooms filter received: ' . print_r($_GET['bathrooms'], true));
-                error_log('[KCPF] Bathrooms filter type: ' . gettype($_GET['bathrooms']));
-                error_log('[KCPF] Bathrooms filter is_array: ' . (is_array($_GET['bathrooms']) ? 'true' : 'false'));
-            }
             
             // Get attributes from AJAX request - pass all filter parameters
             $attrs = [
@@ -123,12 +96,10 @@ class KCPF_Ajax_Manager
             // Note: All other filter parameters are read from $_GET by URL_Manager
             // No need to explicitly pass them here as they're accessed via getCurrentFilters()
             
-            error_log('[KCPF] Calling render with attrs: ' . print_r($attrs, true));
             
             // Render properties loop
             $html = KCPF_Loop_Renderer::render($attrs);
             
-            error_log('[KCPF] Render completed, HTML length: ' . strlen($html));
             
             // Return JSON response
             wp_send_json_success([
@@ -137,31 +108,21 @@ class KCPF_Ajax_Manager
             
             // Exit is not needed as wp_send_json_success already exits
         } catch (Exception $e) {
-            // Log error with full details
-            error_log('[KCPF] AJAX Exception: ' . $e->getMessage());
-            error_log('[KCPF] AJAX Trace: ' . $e->getTraceAsString());
-            
             // Ensure clean output buffer before sending error
             @ob_clean();
-            
+
             // Return error response
             wp_send_json_error([
                 'message' => 'Error loading properties',
                 'error' => $e->getMessage(),
-                'trace' => $e->getTraceAsString(),
             ]);
         } catch (Error $e) {
             // Catch fatal errors too
-            error_log('[KCPF] AJAX Fatal Error: ' . $e->getMessage());
-            error_log('[KCPF] AJAX Trace: ' . $e->getTraceAsString());
-            
-            // Ensure clean output buffer before sending error
             @ob_clean();
-            
+
             wp_send_json_error([
                 'message' => 'Fatal error loading properties',
                 'error' => $e->getMessage(),
-                'trace' => $e->getTraceAsString(),
             ]);
         }
     }

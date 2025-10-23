@@ -21,7 +21,6 @@
       this.handleOutsideClick();
       this.handleChipRemoval();
       this.handleCheckboxChange();
-      console.log("[KCPF] Multiselect Handler initialized");
     },
 
     /**
@@ -30,7 +29,6 @@
     handleDropdownToggle: function () {
       $(document).on("click", ".kcpf-multiselect-trigger", function (e) {
         e.stopPropagation();
-        console.log("[KCPF] Dropdown trigger clicked");
         const $dropdown = $(this).closest(".kcpf-multiselect-dropdown");
         const isActive = $dropdown.hasClass("active");
 
@@ -41,9 +39,7 @@
         // Toggle current dropdown
         if (!isActive) {
           $dropdown.addClass("active");
-          console.log("[KCPF] Dropdown opened");
         } else {
-          console.log("[KCPF] Dropdown closed");
         }
       });
     },
@@ -54,7 +50,6 @@
     handleRangeDropdownToggle: function () {
       $(document).on("click", ".kcpf-range-trigger", function (e) {
         e.stopPropagation();
-        console.log("[KCPF] Range dropdown trigger clicked");
         const $dropdown = $(this).closest(".kcpf-range-dropdown");
         const isActive = $dropdown.hasClass("active");
 
@@ -65,9 +60,7 @@
         // Toggle current dropdown
         if (!isActive) {
           $dropdown.addClass("active");
-          console.log("[KCPF] Range dropdown opened");
         } else {
-          console.log("[KCPF] Range dropdown closed");
         }
       });
     },
@@ -93,7 +86,6 @@
       $(document).on("click", ".kcpf-chip-remove", function (e) {
         e.stopPropagation();
         e.preventDefault();
-        console.log("[KCPF] Chip remove clicked");
         const $chip = $(this).closest(".kcpf-chip");
         const value = $(this).data("value");
         const $dropdown = $(this).closest(".kcpf-multiselect-dropdown");
@@ -129,7 +121,6 @@
         "change",
         ".kcpf-multiselect-option input[type='checkbox']",
         function () {
-          console.log("[KCPF] Checkbox changed");
           const $dropdown = $(this).closest(".kcpf-multiselect-dropdown");
           const filterName = $dropdown.data("filter-name");
           const $selected = $dropdown.find(".kcpf-multiselect-selected");
@@ -142,13 +133,6 @@
 
           // Log bedroom and bathroom specific changes
           if (filterName === "bedrooms" || filterName === "bathrooms") {
-            console.log(`[KCPF] ${filterName} filter changed`);
-            console.log(`[KCPF] ${filterName} checked values:`, checkedValues);
-            console.log(
-              `[KCPF] ${filterName} checkbox that changed:`,
-              $(this).val(),
-              $(this).is(":checked")
-            );
           }
 
           // Update selected chips

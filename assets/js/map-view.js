@@ -23,14 +23,9 @@
      * Initialize map view
      */
     init: function () {
-      console.log("[KCPF Map] Initializing map view");
-
       // Check if map container exists
       const mapContainer = document.getElementById("kcpf-google-map");
       if (!mapContainer) {
-        console.log(
-          "[KCPF Map] Map container not found, skipping initialization"
-        );
         return;
       }
 
@@ -47,7 +42,6 @@
       if (typeof google !== "undefined" && google.maps) {
         this.initializeMap();
       } else {
-        console.error("[KCPF Map] Google Maps API not loaded");
       }
 
       // Setup event handlers
@@ -62,11 +56,7 @@
       if (dataElement) {
         try {
           this.properties = JSON.parse(dataElement.textContent);
-          console.log(
-            "[KCPF Map] Loaded " + this.properties.length + " properties"
-          );
         } catch (e) {
-          console.error("[KCPF Map] Error parsing properties data:", e);
           this.properties = [];
         }
       }

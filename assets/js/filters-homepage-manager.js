@@ -17,7 +17,6 @@
      */
     init: function () {
       this.initializeHomepage();
-      console.log("[KCPF] Homepage Manager initialized");
     },
 
     /**
@@ -38,7 +37,6 @@
           document.title,
           window.location.pathname
         );
-        console.log("[KCPF] Homepage filters: cleared URL parameters");
       }
 
       // Ensure 'sale' is selected
@@ -58,16 +56,13 @@
       params.set("purpose", purpose);
 
       if (typeof kcpfData === "undefined" || !kcpfData.ajaxUrl) {
-        console.error("[KCPF] Missing ajaxUrl for refresh");
         return;
       }
 
       const ajaxUrl =
         kcpfData.ajaxUrl + "?action=kcpf_refresh_filters&" + params.toString();
-      console.log("[KCPF] Refreshing filters for purpose:", purpose, ajaxUrl);
 
       // Close any open dropdowns before refresh
-      console.log("[KCPF] Homepage Manager: Closing dropdowns before refresh");
       $root.find(".kcpf-multiselect-dropdown").removeClass("active");
       $root.find(".kcpf-range-dropdown").removeClass("active");
 
@@ -86,9 +81,7 @@
         success: function (response) {
           KCPF_HomepageManager.handleRefreshSuccess(response, $root, purpose);
         },
-        error: function (xhr, status, error) {
-          console.error("[KCPF] Refresh failed", status, error);
-        },
+        error: function (xhr, status, error) {},
         complete: function () {
           // Remove loading state and hide spinner
           $root.removeClass("kcpf-refreshing");
@@ -134,11 +127,7 @@
 
         // Update data attribute for future checks
         $root.attr("data-current-purpose", purpose);
-
-        console.log("[KCPF] Filters refreshed for purpose:", purpose);
-        console.log("[KCPF] New price range:", response.data.priceRange);
       } else {
-        console.error("[KCPF] Invalid refresh response", response);
       }
     },
   };

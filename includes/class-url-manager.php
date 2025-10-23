@@ -37,16 +37,6 @@ class KCPF_URL_Manager
             'paged' => self::getParam('paged', 1),
         ];
         
-        // Log bedroom and bathroom filters specifically
-        error_log('[KCPF] URL_Manager - Checking all $_GET keys: ' . print_r(array_keys($_GET), true));
-        error_log('[KCPF] URL_Manager - Raw $_GET bedrooms: ' . print_r($_GET['bedrooms'] ?? 'NOT_SET', true));
-        error_log('[KCPF] URL_Manager - Raw $_GET bathrooms: ' . print_r($_GET['bathrooms'] ?? 'NOT_SET', true));
-        error_log('[KCPF] URL_Manager - Raw $_GET bedrooms[]: ' . print_r($_GET['bedrooms[]'] ?? 'NOT_SET', true));
-        error_log('[KCPF] URL_Manager - Raw $_GET bathrooms[]: ' . print_r($_GET['bathrooms[]'] ?? 'NOT_SET', true));
-        error_log('[KCPF] URL_Manager - Processed bedrooms: ' . print_r($filters['bedrooms'], true));
-        error_log('[KCPF] URL_Manager - Processed bathrooms: ' . print_r($filters['bathrooms'], true));
-        error_log('[KCPF] URL_Manager - Bedrooms empty check: ' . (empty($filters['bedrooms']) ? 'EMPTY' : 'NOT_EMPTY'));
-        error_log('[KCPF] URL_Manager - Bathrooms empty check: ' . (empty($filters['bathrooms']) ? 'EMPTY' : 'NOT_EMPTY'));
         
         return $filters;
     }
@@ -62,13 +52,10 @@ class KCPF_URL_Manager
     {
         // Special handling for bedrooms and bathrooms
         if ($key === 'bedrooms' || $key === 'bathrooms') {
-            error_log("[KCPF] Processing $key parameter");
-            error_log("[KCPF] Raw GET data for $key: " . print_r($_GET[$key] ?? 'NOT_SET', true));
 
             // Handle array format (bedrooms[]=2&bedrooms[]=3)
             if (isset($_GET[$key]) && is_array($_GET[$key])) {
                 $values = array_map('sanitize_text_field', $_GET[$key]);
-                error_log("[KCPF] Array values found for $key: " . print_r($values, true));
                 return $values;
             }
 
@@ -76,7 +63,6 @@ class KCPF_URL_Manager
             $arrayKey = $key . '[]';
             if (isset($_GET[$arrayKey]) && is_array($_GET[$arrayKey])) {
                 $values = array_map('sanitize_text_field', $_GET[$arrayKey]);
-                error_log("[KCPF] Array values found for $arrayKey: " . print_r($values, true));
                 return $values;
             }
 
@@ -86,15 +72,12 @@ class KCPF_URL_Manager
                 if (strpos($value, ',') !== false) {
                     $values = array_map('trim', explode(',', $value));
                     $values = array_map('sanitize_text_field', $values);
-                    error_log("[KCPF] Comma-separated values found for $key: " . print_r($values, true));
                     return $values;
                 }
                 // Single value
-                error_log("[KCPF] Single value found for $key: $value");
                 return [$value]; // Always return array for consistency
             }
 
-            error_log("[KCPF] No values found for $key");
             return [];
         }
 

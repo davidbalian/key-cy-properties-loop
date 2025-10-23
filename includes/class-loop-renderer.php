@@ -56,10 +56,6 @@ class KCPF_Loop_Renderer
             
             echo '<div class="' . esc_attr($gridClass) . '" data-current-page="' . esc_attr($current_page) . '" data-max-pages="' . esc_attr($max_pages) . '">';
 
-            // Show debug link when results are found
-            echo '<div style="background: #e3f2fd; padding: 8px; margin: 10px 0; border: 1px solid #2196f3; text-align: center; font-size: 12px;">';
-            echo '<p style="margin: 0;">🔍 <a href="' . esc_url(home_url('/properties/?kcpf_debug=1')) . '" style="color: #1976d2;">Open Standalone Debug Page</a> to analyze bedroom/bathroom data format</p>';
-            echo '</div>';
 
             while ($query->have_posts()) {
                 $query->the_post();
@@ -136,16 +132,6 @@ class KCPF_Loop_Renderer
         <div class="kcpf-no-results">
             <p><?php esc_html_e('No properties found matching your criteria.', 'key-cy-properties-filter'); ?></p>
 
-            <!-- Debug link -->
-            <div style="background: #e3f2fd; padding: 10px; margin: 10px 0; border: 1px solid #2196f3; text-align: center;">
-                <p style="margin: 0; font-size: 14px;">
-                    <strong>🔍 Debug:</strong>
-                    <a href="<?php echo esc_url(home_url('/properties/?kcpf_debug=1')); ?>" style="color: #1976d2; text-decoration: none; font-weight: bold;">
-                        Open Standalone Debug Page
-                    </a>
-                    (Analyzes bedroom/bathroom data format)
-                </p>
-            </div>
 
             <?php if (KCPF_URL_Manager::hasActiveFilters()) : ?>
                 <a href="<?php echo esc_url(KCPF_URL_Manager::getResetUrl()); ?>" class="kcpf-reset-link">

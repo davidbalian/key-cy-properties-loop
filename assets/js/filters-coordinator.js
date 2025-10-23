@@ -16,8 +16,6 @@
      * Initialize all filter modules
      */
     init: function () {
-      console.log("[KCPF] Initializing all filter modules...");
-
       // Initialize Form Manager
       if (window.KCPF_FormManager) {
         KCPF_FormManager.init();
@@ -52,8 +50,6 @@
       if (window.KCPF_HomepageManager) {
         KCPF_HomepageManager.init();
       }
-
-      console.log("[KCPF] All filter modules initialized successfully");
 
       // Test AJAX endpoint after initialization
       this.testAjaxEndpoint();

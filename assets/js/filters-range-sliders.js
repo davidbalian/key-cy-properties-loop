@@ -17,7 +17,6 @@
      */
     init: function () {
       this.initializeSliders();
-      console.log("[KCPF] Range Sliders initialized");
     },
 
     /**
@@ -25,7 +24,6 @@
      */
     initializeSliders: function () {
       if (typeof noUiSlider === "undefined") {
-        console.warn("[KCPF] noUiSlider library not loaded");
         return;
       }
 
@@ -35,7 +33,6 @@
 
         // Skip if already initialized
         if (slider.noUiSlider) {
-          console.log("[KCPF] Slider already initialized, skipping");
           return;
         }
 
@@ -48,8 +45,6 @@
         const step = parseFloat($slider.data("step")) || 1;
         const valueMin = parseFloat($slider.data("value-min")) || min;
         const valueMax = parseFloat($slider.data("value-max")) || max;
-
-        console.log("[KCPF] Creating slider with range:", min, "-", max);
 
         // Create slider
         noUiSlider.create(slider, {
