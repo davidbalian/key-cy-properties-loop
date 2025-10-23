@@ -17,11 +17,26 @@ function debug_bedroom_filter() {
         wp_die('Admin access required');
     }
 
-    $bedroom = sanitize_text_field($_GET['bedroom']);
     $purpose = isset($_GET['purpose']) ? sanitize_text_field($_GET['purpose']) : 'sale';
 
+    // Handle multiple bedroom values by parsing query string
+    $bedroom_values = [];
+    if (isset($_SERVER['QUERY_STRING'])) {
+        parse_str($_SERVER['QUERY_STRING'], $query_params);
+        if (isset($query_params['bedroom'])) {
+            if (is_array($query_params['bedroom'])) {
+                $bedroom_values = array_map('sanitize_text_field', $query_params['bedroom']);
+            } elseif (!empty($query_params['bedroom'])) {
+                $bedroom_values = [sanitize_text_field($query_params['bedroom'])];
+            }
+        }
+    }
+
+    $bedroom_display = implode(', ', $bedroom_values);
+
     echo '<h1>Bedroom Filter Debug</h1>';
-    echo '<p>Testing bedroom filter: <strong>' . esc_html($bedroom) . '</strong> for purpose: <strong>' . esc_html($purpose) . '</strong></p>';
+    echo '<p>Testing bedroom filter: <strong>' . esc_html($bedroom_display) . '</strong> for purpose: <strong>' . esc_html($purpose) . '</strong></p>';
+    echo '<p>Bedroom values array: ' . json_encode($bedroom_values) . '</p>';
 
     // Test 1: Simple query without any meta filters
     echo '<h2>Test 1: Basic Properties Query</h2>';
@@ -117,10 +132,10 @@ function debug_bedroom_filter() {
                         'compare' => '!=',
                     ],
                 ],
-                // Simple LIKE query for bedrooms
+                // Simple LIKE query for bedrooms (first value only for Test 3)
                 [
                     'key' => $bedrooms_key,
-                    'value' => 'i:' . $bedroom . ';s:4:"true"',
+                    'value' => 'i:' . $bedroom_values[0] . ';s:4:"true"',
                     'compare' => 'LIKE',
                 ],
             ]
@@ -217,12 +232,11 @@ function debug_bedroom_filter() {
 
     try {
         $bedrooms_key = ($purpose === 'rent') ? 'rent_bedrooms' : 'bedrooms';
-        $bedroomsValues = is_array($bedroom) ? [$bedroom] : [$bedroom];
 
         // Ultra-simplified: just check bedrooms field, works for both single and multi-unit
         $meta_query = ['relation' => 'OR'];
 
-        foreach ($bedroomsValues as $bedroom_val) {
+        foreach ($bedroom_values as $bedroom_val) {
             $meta_query[] = [
                 'key' => $bedrooms_key,
                 'value' => 'i:' . $bedroom_val . ';s:4:"true"',
@@ -269,7 +283,12 @@ function debug_bedroom_filter() {
     }
 
     echo '<hr>';
-    echo '<p><strong>Usage:</strong> Add ?bedroom=2&purpose=sale to URL</p>';
+    echo '<p><strong>Usage:</strong></p>';
+    echo '<ul>';
+    echo '<li>Single value: <code>?bedroom=2&purpose=sale</code></li>';
+    echo '<li>Multiple values: <code>?bedroom=2&bedroom=3&bedroom=5&purpose=sale</code></li>';
+    echo '<li>Or: <code>?bedroom[]=2&bedroom[]=3&bedroom[]=5&purpose=sale</code></li>';
+    echo '</ul>';
     echo '<p><strong>Available bedroom values:</strong> 1, 2, 3, 4, 5, 6, 7, 8, 9_plus</p>';
     echo '<p><strong>Available purposes:</strong> sale, rent</p>';
 

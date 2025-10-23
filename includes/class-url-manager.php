@@ -53,32 +53,51 @@ class KCPF_URL_Manager
     
     /**
      * Get a single parameter from URL
-     * 
+     *
      * @param string $key Parameter key
      * @param mixed $default Default value
      * @return mixed Parameter value
      */
     public static function getParam($key, $default = '')
     {
-        // Special handling for bedrooms and bathrooms to debug
+        // Special handling for bedrooms and bathrooms to collect multiple values
         if ($key === 'bedrooms' || $key === 'bathrooms') {
+            // Check for multiple values with same key (bedroom=2&bedroom=3&bedroom=5)
+            $multiple_values = [];
+
+            // Parse query string to find all instances of this parameter
+            if (isset($_SERVER['QUERY_STRING'])) {
+                parse_str($_SERVER['QUERY_STRING'], $query_params);
+                if (isset($query_params[$key]) && is_array($query_params[$key])) {
+                    $multiple_values = array_map('sanitize_text_field', $query_params[$key]);
+                } elseif (isset($query_params[$key]) && !empty($query_params[$key])) {
+                    $multiple_values = [sanitize_text_field($query_params[$key])];
+                }
+            }
+
+            // Debug logging
             error_log("[KCPF] getParam called for: $key");
+            error_log("[KCPF] Multiple values found: " . print_r($multiple_values, true));
             error_log("[KCPF] isset(\$_GET[$key]): " . (isset($_GET[$key]) ? 'true' : 'false'));
             if (isset($_GET[$key])) {
                 error_log("[KCPF] \$_GET[$key] value: " . print_r($_GET[$key], true));
                 error_log("[KCPF] \$_GET[$key] type: " . gettype($_GET[$key]));
             }
+
+            if (!empty($multiple_values)) {
+                return count($multiple_values) === 1 ? $multiple_values[0] : $multiple_values;
+            }
         }
-        
+
         if (!isset($_GET[$key]) || $_GET[$key] === '') {
             return $default;
         }
-        
-        // Handle array parameters (for checkboxes)
+
+        // Handle array parameters (for checkboxes with [])
         if (is_array($_GET[$key])) {
             return array_map('sanitize_text_field', $_GET[$key]);
         }
-        
+
         return sanitize_text_field($_GET[$key]);
     }
     
