@@ -35,41 +35,38 @@
         const $dropdown = $(this).closest(".kcpf-multiselect-dropdown");
         const isActive = $dropdown.hasClass("active");
 
-        // Close all dropdowns
+        // If current dropdown is active, close it and return
+        if (isActive) {
+          $dropdown.removeClass("active");
+          console.log("[KCPF] Dropdown closed");
+          return;
+        }
+
+        // Close all other dropdowns
         $(".kcpf-multiselect-dropdown").removeClass("active");
         $(".kcpf-range-dropdown").removeClass("active");
 
-        // Toggle current dropdown
-        if (!isActive) {
-          $dropdown.addClass("active");
-          console.log(
-            "[KCPF] Dropdown opened for:",
-            $dropdown.data("filter-name")
-          );
-          console.log("[KCPF] Dropdown element:", $dropdown[0]);
-          console.log(
-            "[KCPF] Menu element:",
-            $dropdown.find(".kcpf-multiselect-dropdown-menu")[0]
-          );
-          console.log(
-            "[KCPF] Menu computed styles:",
-            window.getComputedStyle(
-              $dropdown.find(".kcpf-multiselect-dropdown-menu")[0]
-            )
-          );
+        // Open current dropdown
+        $dropdown.addClass("active");
+        console.log(
+          "[KCPF] Dropdown opened for:",
+          $dropdown.data("filter-name")
+        );
+        console.log("[KCPF] Dropdown element:", $dropdown[0]);
+        console.log(
+          "[KCPF] Menu element:",
+          $dropdown.find(".kcpf-multiselect-dropdown-menu")[0]
+        );
 
-          // Force show the menu with inline styles
-          const $menu = $dropdown.find(".kcpf-multiselect-dropdown-menu");
-          $menu.css({
-            display: "block",
-            visibility: "visible",
-            opacity: "1",
-            "z-index": "99999",
-          });
-          console.log("[KCPF] Forced menu display with inline styles");
-        } else {
-          console.log("[KCPF] Dropdown closed");
-        }
+        // Force show the menu with inline styles
+        const $menu = $dropdown.find(".kcpf-multiselect-dropdown-menu");
+        $menu.css({
+          display: "block",
+          visibility: "visible",
+          opacity: "1",
+          "z-index": "99999",
+        });
+        console.log("[KCPF] Forced menu display with inline styles");
       });
     },
 
@@ -83,17 +80,20 @@
         const $dropdown = $(this).closest(".kcpf-range-dropdown");
         const isActive = $dropdown.hasClass("active");
 
-        // Close all dropdowns
+        // If current dropdown is active, close it and return
+        if (isActive) {
+          $dropdown.removeClass("active");
+          console.log("[KCPF] Range dropdown closed");
+          return;
+        }
+
+        // Close all other dropdowns
         $(".kcpf-multiselect-dropdown").removeClass("active");
         $(".kcpf-range-dropdown").removeClass("active");
 
-        // Toggle current dropdown
-        if (!isActive) {
-          $dropdown.addClass("active");
-          console.log("[KCPF] Range dropdown opened");
-        } else {
-          console.log("[KCPF] Range dropdown closed");
-        }
+        // Open current dropdown
+        $dropdown.addClass("active");
+        console.log("[KCPF] Range dropdown opened");
       });
     },
 
