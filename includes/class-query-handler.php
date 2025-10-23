@@ -128,7 +128,8 @@ class KCPF_Query_Handler
             $bedrooms_query = KCPF_MultiUnit_Query_Builder::buildBedroomsQuery($filters, $purpose);
             if (!empty($bedrooms_query)) {
                 $meta_query[] = $bedrooms_query;
-                error_log('[KCPF] Final bedrooms query: ' . print_r($bedrooms_query, true));
+                error_log('[KCPF] Bedrooms query added to meta_query. Total meta_query relations: ' . count($meta_query));
+                error_log('[KCPF] Bedrooms query structure: ' . print_r($bedrooms_query, true));
             }
             error_log('[KCPF] ===========================================');
         } else {

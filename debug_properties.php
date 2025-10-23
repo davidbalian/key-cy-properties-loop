@@ -133,7 +133,7 @@ function display_raw_value($value) {
     if (is_array($value)) {
         return 'ARRAY: ' . json_encode($value);
     } elseif (is_serialized($value)) {
-        return 'SERIALIZED: ' . $value;
+        return 'SERIALIZED: ' . $value . '<br><small>UNSER: ' . json_encode(maybe_unserialize($value)) . '</small>';
     } else {
         return 'VALUE: ' . $value;
     }
