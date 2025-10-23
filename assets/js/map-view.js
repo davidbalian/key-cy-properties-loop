@@ -296,17 +296,14 @@
      * Setup event handlers
      */
     setupEventHandlers: function () {
-      // Card hover - pan to marker
-      $(document).on(
-        "mouseenter",
-        ".kcpf-map-sidebar .kcpf-property-card",
-        (e) => {
-          const propertyId = $(e.currentTarget).data("property-id");
-          if (propertyId) {
-            this.panToMarker(propertyId);
-          }
+      // Card click - prevent link and show info window
+      $(document).on("click", ".kcpf-map-sidebar .kcpf-property-card", (e) => {
+        e.preventDefault(); // Prevent default link behavior
+        const propertyId = $(e.currentTarget).data("property-id");
+        if (propertyId) {
+          this.panToMarker(propertyId);
         }
-      );
+      });
 
       // Filter form submission
       $(document).on("submit", ".kcpf-map-filters-form", (e) => {
