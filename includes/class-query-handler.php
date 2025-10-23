@@ -111,6 +111,7 @@ class KCPF_Query_Handler
      */
     private static function buildMetaQuery($filters, $purpose = 'sale')
     {
+        error_log('[KCPF] buildMetaQuery called with filters: ' . print_r($filters, true) . ', purpose: ' . $purpose);
         $meta_query = ['relation' => 'AND'];
         
         // Price range filter - handle both regular and multi-unit properties
@@ -130,12 +131,6 @@ class KCPF_Query_Handler
             
             // Add each bedroom value as an OR condition
             foreach ($bedroomsValues as $bedroom) {
-                // Try both exact match and LIKE for glossary values
-                $bedrooms_query[] = [
-                    'key' => $bedroomsKey,
-                    'value' => $bedroom,
-                    'compare' => '=',
-                ];
                 $bedrooms_query[] = [
                     'key' => $bedroomsKey,
                     'value' => $bedroom,
@@ -144,6 +139,7 @@ class KCPF_Query_Handler
             }
             
             $meta_query[] = $bedrooms_query;
+            error_log('[KCPF] Bedrooms query added: ' . print_r($bedrooms_query, true));
         }
         
         // Bathrooms filter - apply to both regular and multi-unit properties
@@ -158,12 +154,6 @@ class KCPF_Query_Handler
             
             // Add each bathroom value as an OR condition
             foreach ($bathroomsValues as $bathroom) {
-                // Try both exact match and LIKE for glossary values
-                $bathrooms_query[] = [
-                    'key' => $bathroomsKey,
-                    'value' => $bathroom,
-                    'compare' => '=',
-                ];
                 $bathrooms_query[] = [
                     'key' => $bathroomsKey,
                     'value' => $bathroom,
@@ -172,6 +162,7 @@ class KCPF_Query_Handler
             }
             
             $meta_query[] = $bathrooms_query;
+            error_log('[KCPF] Bathrooms query added: ' . print_r($bathrooms_query, true));
         }
         
         // Covered area filter - handle both regular and multi-unit properties

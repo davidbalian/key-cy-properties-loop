@@ -82,7 +82,6 @@ class KCPF_Plugin_Loader
         require_once KCPF_INCLUDES_DIR . 'class-map-filters.php';
         require_once KCPF_INCLUDES_DIR . 'class-map-card-renderer.php';
         require_once KCPF_INCLUDES_DIR . 'class-map-shortcode.php';
-        require_once KCPF_INCLUDES_DIR . 'class-debug-bedrooms-bathrooms.php';
     }
 }
 
