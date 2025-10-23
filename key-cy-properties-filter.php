@@ -65,7 +65,20 @@ class Key_CY_Properties_Filter
         require_once KCPF_INCLUDES_DIR . 'class-rent-card-view.php';
         require_once KCPF_INCLUDES_DIR . 'class-loop-renderer.php';
         require_once KCPF_INCLUDES_DIR . 'class-listing-values.php';
-        require_once KCPF_INCLUDES_DIR . 'class-filter-renderer.php';
+        
+        // Filter renderer classes (loaded before facade)
+        require_once KCPF_INCLUDES_DIR . 'class-filter-renderer-base.php';
+        require_once KCPF_INCLUDES_DIR . 'class-location-filter-renderer.php';
+        require_once KCPF_INCLUDES_DIR . 'class-purpose-filter-renderer.php';
+        require_once KCPF_INCLUDES_DIR . 'class-price-filter-renderer.php';
+        require_once KCPF_INCLUDES_DIR . 'class-bedrooms-filter-renderer.php';
+        require_once KCPF_INCLUDES_DIR . 'class-bathrooms-filter-renderer.php';
+        require_once KCPF_INCLUDES_DIR . 'class-type-filter-renderer.php';
+        require_once KCPF_INCLUDES_DIR . 'class-area-filter-renderer.php';
+        require_once KCPF_INCLUDES_DIR . 'class-amenities-filter-renderer.php';
+        require_once KCPF_INCLUDES_DIR . 'class-misc-filter-renderer.php';
+        require_once KCPF_INCLUDES_DIR . 'class-filter-renderer.php'; // Facade
+        
         require_once KCPF_INCLUDES_DIR . 'class-homepage-filters.php';
         require_once KCPF_INCLUDES_DIR . 'class-filters-ajax.php';
         require_once KCPF_INCLUDES_DIR . 'class-debug-viewer.php';

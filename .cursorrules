@@ -1,0 +1,262 @@
+# Key Cyprus Properties Filter - Project Rules
+
+## Core Principles
+
+### Code Reusability
+
+- **ALWAYS** reuse existing classes, helpers, and renderers before creating new ones
+- **NEVER** duplicate functionality that already exists in the codebase
+- Check for existing helpers in `includes/` directory before writing new logic
+- Prefer composition and delegation over duplication
+
+### Existing Components to Reuse
+
+#### Card Rendering
+
+- Use `KCPF_Map_Card_Renderer::renderCard()` for rendering property cards in ANY context (map, loop, AJAX)
+- Use `KCPF_Rent_Card_View::render()` for rent property cards
+- Both renderers accept property ID directly - NO reliance on WordPress loop context
+- Pass `$hideMultiUnit = true` parameter when multi-unit tables should be hidden
+
+#### Data Helpers
+
+- **ALWAYS** use `KCPF_Card_Data_Helper` for retrieving property data:
+  - `getBedrooms($property_id, $purpose)`
+  - `getBathrooms($property_id, $purpose)`
+  - `getPrice($property_id, $purpose)`
+  - `getTotalCoveredArea($property_id, $purpose)`
+  - `getCityArea($property_id)`
+  - `getPropertyType($property_id)`
+  - `isMultiUnit($property_id)`
+  - `getMultiUnitPrice($property_id, $purpose)`
+  - `getMultiUnitTable($property_id)`
+- **NEVER** directly access post meta or taxonomies for property data
+
+#### Query Building
+
+- Use `KCPF_Query_Handler::buildQueryArgs()` for WP_Query construction
+- Use `KCPF_Multiunit_Query_Builder` for multi-unit property queries
+
+#### Filters
+
+- Use `KCPF_Filter_Renderer` for rendering filter controls
+- Use `KCPF_URL_Manager` for URL parameter handling
+- Filter values come from `KCPF_Listing_Values` class
+
+### CSS Class Naming Convention
+
+#### Property Cards
+
+**Sale Cards:**
+
+- `.kcpf-property-card` - Base card class (ALWAYS include)
+- `.kcpf-property-card-sale` - Sale-specific styling
+- `.kcpf-property-card-sale-wrapper` - Inner wrapper
+- `.kcpf-property-image-sale` - Image container (background-image)
+- `.kcpf-property-content-sale` - Content wrapper
+- `.kcpf-property-title` - Property title
+- `.kcpf-property-meta-row` - Metadata row (location, type)
+- `.kcpf-property-price` - Price display
+- `.kcpf-property-price-range` - Multi-unit price range
+- `.kcpf-property-specs` - Specs container (bed/bath/area)
+- `.kcpf-bedrooms`, `.kcpf-bathrooms`, `.kcpf-covered-area` - Individual specs
+- `.kcpf-property-specs-icon` - Icon wrapper
+
+**Rent Cards:**
+
+- `.kcpf-property-card` - Base card class (ALWAYS include)
+- `.kcpf-property-card-rent` - Rent-specific styling
+- `.kcpf-property-image-rent` - Image container (background-image)
+- `.kcpf-property-content-rent` - Content wrapper
+- `.kcpf-property-title-rent` - Property title
+- `.kcpf-property-meta-row-rent` - Metadata row
+- `.kcpf-property-price-rent` - Price with /mo
+- `.kcpf-property-specs-rent` - Specs container
+- `.kcpf-bedrooms-rent`, `.kcpf-bathrooms-rent`, `.kcpf-area-rent` - Individual specs
+- `.kcpf-property-specs-rent-icon` - Icon wrapper
+
+**Context-Specific Classes:**
+
+- `.kcpf-info-window-card` - For map info windows
+- `.kcpf-card-active` - Active/highlighted state
+
+#### Filters
+
+- `.kcpf-filters-container` - Main filters wrapper
+- `.kcpf-filters-row` - Filter row
+- `.kcpf-filter` - Individual filter wrapper
+- `.kcpf-filter-label` - Filter label
+- `.kcpf-filter-select`, `.kcpf-filter-input` - Form controls
+- `.kcpf-apply-button`, `.kcpf-reset-button` - Action buttons
+
+#### Map View
+
+- `.kcpf-map-view` - Main map container
+- `.kcpf-map-layout` - Two-column layout
+- `.kcpf-map-sidebar` - Left sidebar with cards
+- `.kcpf-map-cards-container` - Scrollable cards container
+- `.kcpf-map-container` - Map wrapper
+- `.kcpf-google-map` - Google Map element
+- `.kcpf-map-filters-section` - Filters area
+
+#### Multi-Unit Tables
+
+- `.kcpf-multiunit-section` - Table wrapper
+- `.kcpf-multiunit-table-container` - Table container
+- `.kcpf-multiunit-table-header` - Header row
+- `.kcpf-multiunit-table-rows` - Body rows
+- `.kcpf-multiunit-cell` - Individual cells
+
+### Style Reusability Rules
+
+1. **Card Styles Are Global**
+
+   - `.kcpf-property-card` styles in `assets/css/filters.css` apply EVERYWHERE
+   - Context-specific overrides go in context files (e.g., `map-view.css`)
+   - Use context-specific selectors: `.kcpf-map-sidebar .kcpf-property-card { }`
+
+2. **Image Containers Use Background Images**
+
+   - `.kcpf-property-image-sale` and `.kcpf-property-image-rent` use `background-image`
+   - Set `background-size: cover` and `background-position: center`
+   - Use `min-height` not `height` to prevent image cropping
+
+3. **Spec Icons Are Inline SVG**
+
+   - Icons are embedded SVG within `.kcpf-property-specs-icon`
+   - Consistent sizing: `width="24"` `height="24"` `viewBox="0 0 24 24"`
+   - Use `fill="currentColor"` for color inheritance
+
+4. **Consistent Spacing**
+   - Card padding: `1.5rem`
+   - Card gaps in grid: `1.5rem`
+   - Spec gaps: `0.5rem` to `1rem`
+   - Filter gaps: `1rem`
+
+### PHP Function Patterns
+
+#### Getting Property Data
+
+```php
+// CORRECT - Use helper
+$bedrooms = KCPF_Card_Data_Helper::getBedrooms($property_id, $purpose);
+
+// WRONG - Don't access directly
+$bedrooms = get_post_meta($property_id, 'bedrooms', true);
+```
+
+#### Rendering Cards
+
+```php
+// CORRECT - Use renderer with property ID
+echo KCPF_Map_Card_Renderer::renderCard($property_id, $purpose);
+
+// CORRECT - Hide multi-unit tables
+echo KCPF_Map_Card_Renderer::renderCard($property_id, $purpose, true);
+
+// WRONG - Don't create custom card HTML
+echo '<article>...</article>';
+```
+
+#### Using WordPress Functions
+
+```php
+// CORRECT - Pass property ID explicitly
+has_post_thumbnail($property_id)
+get_the_post_thumbnail_url($property_id, 'full')
+get_permalink($property_id)
+get_the_title($property_id)
+
+// WRONG - Don't rely on global post
+has_post_thumbnail()
+the_post_thumbnail_url()
+the_permalink()
+the_title()
+```
+
+### File Organization
+
+#### When to Create New Files
+
+- File exceeds 400 lines → Split immediately
+- File approaches 500 lines → UNACCEPTABLE
+- Multiple responsibilities → Separate classes
+
+#### Class Naming
+
+- Prefix: `KCPF_` (Key Cyprus Properties Filter)
+- Purpose-based: `_Card_Renderer`, `_Data_Helper`, `_Query_Handler`
+- Context-based: `_Map_`, `_Homepage_`, `_Filters_`
+
+#### File Locations
+
+- Classes: `includes/class-{name}.php`
+- CSS: `assets/css/{context}.css`
+- JS: `assets/js/{context}.js`
+
+### AJAX Patterns
+
+#### Handler Registration
+
+```php
+// Register in main plugin file
+add_action('wp_ajax_kcpf_{action}', ['Class_Name', 'method']);
+add_action('wp_ajax_nopriv_kcpf_{action}', ['Class_Name', 'method']);
+```
+
+#### Response Format
+
+```php
+// Success
+wp_send_json_success([
+    'key' => 'value',
+    'html' => $rendered_html,
+]);
+
+// Error
+wp_send_json_error([
+    'message' => 'User-friendly message',
+    'error' => $technical_details,
+]);
+```
+
+### Testing Checklist
+
+Before marking work complete:
+
+- [ ] Reused existing classes/helpers where possible
+- [ ] No duplicate CSS for existing components
+- [ ] Property data retrieved via helpers
+- [ ] Property IDs passed explicitly (no global post reliance)
+- [ ] Consistent class naming conventions followed
+- [ ] No files exceed 500 lines
+- [ ] AJAX responses use standard format
+- [ ] Card rendering uses existing renderers
+
+### Documentation
+
+When creating new reusable components:
+
+1. Add clear docblocks with `@param` and `@return`
+2. Document in relevant `.md` files (SHORTCODE_REFERENCE, etc.)
+3. Include usage examples in docblock
+4. Note any dependencies or requirements
+
+### Common Mistakes to Avoid
+
+1. ❌ Creating new card HTML when renderers exist
+2. ❌ Duplicating CSS for cards in different contexts
+3. ❌ Accessing post meta directly instead of using helpers
+4. ❌ Using WordPress loop functions without property ID
+5. ❌ Creating context-specific data retrieval methods
+6. ❌ Hardcoding values that should come from helpers
+7. ❌ Using `height` on images instead of `min-height`
+8. ❌ Not considering multi-unit properties in logic
+
+### When Adding New Features
+
+1. **Search First**: Check if functionality exists
+2. **Extend, Don't Duplicate**: Add to existing classes
+3. **Maintain Consistency**: Follow established patterns
+4. **Think Reusability**: Will this be needed elsewhere?
+5. **Document**: Update relevant docs and comments
