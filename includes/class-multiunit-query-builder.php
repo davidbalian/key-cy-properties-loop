@@ -156,33 +156,69 @@ class KCPF_MultiUnit_Query_Builder
         // Bedrooms should already be an array from URL_Manager
         $bedroomsValues = $filters['bedrooms'];
 
-        // Use exact same query format as the working debug tool
-        $bedrooms_query = [
-            'key' => $bedroomsKey,
-            'value' => '"' . $bedroomsValues[0] . '":"true"',
-            'compare' => 'LIKE'
-        ];
+        // Use multiple query formats to match any data format (like the debug tool)
+        $bedrooms_query = ['relation' => 'OR'];
 
-        // Fallback: try different serialization lengths for 9_plus
-        if ($bedroomsValues[0] === '9_plus') {
-            $bedrooms_query = [
-                'relation' => 'OR',
-                [
+        foreach ($bedroomsValues as $bedroom) {
+            // JSON format: "5":"true"
+            $bedrooms_query[] = [
+                'key' => $bedroomsKey,
+                'value' => '"' . $bedroom . '":"true"',
+                'compare' => 'LIKE',
+            ];
+
+            // JSON format with spaces: "5": "true"
+            $bedrooms_query[] = [
+                'key' => $bedroomsKey,
+                'value' => '"' . $bedroom . '": "true"',
+                'compare' => 'LIKE',
+            ];
+
+            // Boolean true: "5":true
+            $bedrooms_query[] = [
+                'key' => $bedroomsKey,
+                'value' => '"' . $bedroom . '":true',
+                'compare' => 'LIKE',
+            ];
+
+            // PHP serialized format: s:1:"5";s:4:"true"
+            $bedrooms_query[] = [
+                'key' => $bedroomsKey,
+                'value' => 's:' . strlen($bedroom) . ':"' . $bedroom . '";s:4:"true"',
+                'compare' => 'LIKE',
+            ];
+
+            // PHP serialized boolean: s:1:"5";b:1
+            $bedrooms_query[] = [
+                'key' => $bedroomsKey,
+                'value' => 's:' . strlen($bedroom) . ':"' . $bedroom . '";b:1',
+                'compare' => 'LIKE',
+            ];
+
+            // Fallback for 8_plus and 9_plus
+            if ($bedroom === '8_plus') {
+                $bedrooms_query[] = [
                     'key' => $bedroomsKey,
-                    'value' => '"9_plus":"true"',
+                    'value' => 's:6:"8_plus";s:4:"true"',
                     'compare' => 'LIKE',
-                ],
-                [
+                ];
+                $bedrooms_query[] = [
+                    'key' => $bedroomsKey,
+                    'value' => 's:6:"8_plus";b:1',
+                    'compare' => 'LIKE',
+                ];
+            } elseif ($bedroom === '9_plus') {
+                $bedrooms_query[] = [
                     'key' => $bedroomsKey,
                     'value' => 's:6:"9_plus";s:4:"true"',
                     'compare' => 'LIKE',
-                ],
-                [
+                ];
+                $bedrooms_query[] = [
                     'key' => $bedroomsKey,
                     'value' => 's:6:"9_plus";b:1',
                     'compare' => 'LIKE',
-                ]
-            ];
+                ];
+            }
         }
 
         return $bedrooms_query;
@@ -205,33 +241,69 @@ class KCPF_MultiUnit_Query_Builder
         // Bathrooms should already be an array from URL_Manager
         $bathroomsValues = $filters['bathrooms'];
 
-        // Use exact same query format as the working debug tool
-        $bathrooms_query = [
-            'key' => $bathroomsKey,
-            'value' => '"' . $bathroomsValues[0] . '":"true"',
-            'compare' => 'LIKE'
-        ];
+        // Use multiple query formats to match any data format (like the debug tool)
+        $bathrooms_query = ['relation' => 'OR'];
 
-        // Fallback: try different serialization lengths for 9_plus
-        if ($bathroomsValues[0] === '9_plus') {
-            $bathrooms_query = [
-                'relation' => 'OR',
-                [
+        foreach ($bathroomsValues as $bathroom) {
+            // JSON format: "5":"true"
+            $bathrooms_query[] = [
+                'key' => $bathroomsKey,
+                'value' => '"' . $bathroom . '":"true"',
+                'compare' => 'LIKE',
+            ];
+
+            // JSON format with spaces: "5": "true"
+            $bathrooms_query[] = [
+                'key' => $bathroomsKey,
+                'value' => '"' . $bathroom . '": "true"',
+                'compare' => 'LIKE',
+            ];
+
+            // Boolean true: "5":true
+            $bathrooms_query[] = [
+                'key' => $bathroomsKey,
+                'value' => '"' . $bathroom . '":true',
+                'compare' => 'LIKE',
+            ];
+
+            // PHP serialized format: s:1:"5";s:4:"true"
+            $bathrooms_query[] = [
+                'key' => $bathroomsKey,
+                'value' => 's:' . strlen($bathroom) . ':"' . $bathroom . '";s:4:"true"',
+                'compare' => 'LIKE',
+            ];
+
+            // PHP serialized boolean: s:1:"5";b:1
+            $bathrooms_query[] = [
+                'key' => $bathroomsKey,
+                'value' => 's:' . strlen($bathroom) . ':"' . $bathroom . '";b:1',
+                'compare' => 'LIKE',
+            ];
+
+            // Fallback for 8_plus and 9_plus
+            if ($bathroom === '8_plus') {
+                $bathrooms_query[] = [
                     'key' => $bathroomsKey,
-                    'value' => '"9_plus":"true"',
+                    'value' => 's:6:"8_plus";s:4:"true"',
                     'compare' => 'LIKE',
-                ],
-                [
+                ];
+                $bathrooms_query[] = [
+                    'key' => $bathroomsKey,
+                    'value' => 's:6:"8_plus";b:1',
+                    'compare' => 'LIKE',
+                ];
+            } elseif ($bathroom === '9_plus') {
+                $bathrooms_query[] = [
                     'key' => $bathroomsKey,
                     'value' => 's:6:"9_plus";s:4:"true"',
                     'compare' => 'LIKE',
-                ],
-                [
+                ];
+                $bathrooms_query[] = [
                     'key' => $bathroomsKey,
                     'value' => 's:6:"9_plus";b:1',
                     'compare' => 'LIKE',
-                ]
-            ];
+                ];
+            }
         }
 
         return $bathrooms_query;
