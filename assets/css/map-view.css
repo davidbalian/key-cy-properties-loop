@@ -1,0 +1,380 @@
+/**
+ * Map View Styles
+ * 
+ * Styles for properties map view with filters and Google Maps integration
+ * 
+ * @package Key_CY_Properties_Filter
+ */
+
+/* ==========================================================================
+   Map View Container
+   ========================================================================== */
+
+.kcpf-map-view {
+  width: 100%;
+  margin: 0 auto;
+}
+
+/* ==========================================================================
+   Filters Section
+   ========================================================================== */
+
+.kcpf-map-filters-section {
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  background: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.kcpf-map-filters-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.kcpf-map-filters-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+  margin-top: 1.5rem;
+}
+
+/* ==========================================================================
+   Two Column Layout
+   ========================================================================== */
+
+.kcpf-map-layout {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 1.5rem;
+  min-height: 600px;
+  max-height: 800px;
+}
+
+/* ==========================================================================
+   Left Column: Property Cards Sidebar
+   ========================================================================== */
+
+.kcpf-map-sidebar {
+  display: flex;
+  flex-direction: column;
+  background: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.kcpf-map-results-header {
+  padding: 1rem 1.5rem;
+  background: #f8f9fa;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.kcpf-map-results-count {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #495057;
+}
+
+.kcpf-map-cards-container {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1rem;
+}
+
+/* Scrollbar styling */
+.kcpf-map-cards-container::-webkit-scrollbar {
+  width: 8px;
+}
+
+.kcpf-map-cards-container::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+.kcpf-map-cards-container::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 4px;
+}
+
+.kcpf-map-cards-container::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+.kcpf-map-cards-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* ==========================================================================
+   Property Cards
+   ========================================================================== */
+
+.kcpf-map-card {
+  background: #ffffff;
+  border: 1px solid #e9ecef;
+  border-radius: 8px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.kcpf-map-card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transform: translateY(-2px);
+  border-color: #007bff;
+}
+
+.kcpf-map-card.kcpf-card-active {
+  border-color: #007bff;
+  box-shadow: 0 4px 16px rgba(0, 123, 255, 0.3);
+  background: #f8f9ff;
+}
+
+.kcpf-map-card-link {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+}
+
+.kcpf-map-card-image {
+  width: 100%;
+  height: 180px;
+  background-size: cover;
+  background-position: center;
+  background-color: #e9ecef;
+}
+
+.kcpf-map-card-content {
+  padding: 1rem;
+}
+
+.kcpf-map-card-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin: 0 0 0.5rem 0;
+  color: #212529;
+  line-height: 1.3;
+}
+
+.kcpf-map-card-meta {
+  font-size: 0.9rem;
+  color: #6c757d;
+  margin-bottom: 0.75rem;
+}
+
+.kcpf-map-card-meta .kcpf-separator {
+  margin: 0 0.25rem;
+}
+
+.kcpf-map-card-price {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #007bff;
+  margin-bottom: 0.75rem;
+}
+
+.kcpf-map-card-price-multi {
+  color: #28a745;
+}
+
+.kcpf-map-card-specs {
+  display: flex;
+  gap: 1rem;
+  font-size: 0.9rem;
+  color: #495057;
+}
+
+.kcpf-map-card-spec {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.kcpf-spec-icon {
+  font-size: 1rem;
+}
+
+.kcpf-spec-value {
+  font-weight: 500;
+}
+
+/* No Results */
+.kcpf-map-no-results {
+  padding: 2rem;
+  text-align: center;
+  color: #6c757d;
+}
+
+.kcpf-map-no-results p {
+  margin: 0.5rem 0;
+}
+
+/* ==========================================================================
+   Right Column: Google Map
+   ========================================================================== */
+
+.kcpf-map-container {
+  position: relative;
+  background: #e9ecef;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.kcpf-google-map {
+  width: 100%;
+  height: 100%;
+  min-height: 600px;
+}
+
+/* ==========================================================================
+   Loading State
+   ========================================================================== */
+
+.kcpf-map-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem;
+  text-align: center;
+}
+
+.kcpf-loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #007bff;
+  border-radius: 50%;
+  animation: kcpf-spin 1s linear infinite;
+  margin-bottom: 1rem;
+}
+
+@keyframes kcpf-spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* ==========================================================================
+   API Key Warning/Error
+   ========================================================================== */
+
+.kcpf-map-error {
+  padding: 2rem;
+  background: #fff3cd;
+  border: 1px solid #ffc107;
+  border-radius: 8px;
+  color: #856404;
+}
+
+.kcpf-map-error h3 {
+  margin-top: 0;
+  color: #856404;
+}
+
+.kcpf-map-error p {
+  margin: 0.5rem 0;
+}
+
+.kcpf-map-error .button {
+  margin-top: 1rem;
+}
+
+/* ==========================================================================
+   Custom Map Markers & Info Windows
+   ========================================================================== */
+
+.kcpf-map-marker-label {
+  background: #007bff;
+  color: white;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.kcpf-map-info-window {
+  max-width: 250px;
+}
+
+.kcpf-map-info-title {
+  font-size: 14px;
+  font-weight: 600;
+  margin: 0 0 8px 0;
+  color: #212529;
+}
+
+.kcpf-map-info-link {
+  display: inline-block;
+  margin-top: 8px;
+  color: #007bff;
+  text-decoration: none;
+  font-size: 13px;
+}
+
+.kcpf-map-info-link:hover {
+  text-decoration: underline;
+}
+
+/* ==========================================================================
+   Responsive Design
+   ========================================================================== */
+
+@media (max-width: 1024px) {
+  .kcpf-map-layout {
+    grid-template-columns: 1fr 1.5fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .kcpf-map-filters-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .kcpf-map-layout {
+    grid-template-columns: 1fr;
+    max-height: none;
+  }
+
+  .kcpf-map-sidebar {
+    max-height: 400px;
+  }
+
+  .kcpf-google-map {
+    min-height: 400px;
+  }
+
+  .kcpf-map-filters-actions {
+    flex-direction: column;
+  }
+
+  .kcpf-map-filters-actions .kcpf-filter {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .kcpf-map-filters-section {
+    padding: 1rem;
+  }
+
+  .kcpf-map-card-image {
+    height: 150px;
+  }
+
+  .kcpf-map-card-title {
+    font-size: 1rem;
+  }
+
+  .kcpf-map-card-price {
+    font-size: 1.1rem;
+  }
+}

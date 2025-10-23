@@ -70,6 +70,12 @@ class Key_CY_Properties_Filter
         require_once KCPF_INCLUDES_DIR . 'class-filters-ajax.php';
         require_once KCPF_INCLUDES_DIR . 'class-debug-viewer.php';
         
+        // Map view classes
+        require_once KCPF_INCLUDES_DIR . 'class-settings-manager.php';
+        require_once KCPF_INCLUDES_DIR . 'class-map-filters.php';
+        require_once KCPF_INCLUDES_DIR . 'class-map-card-renderer.php';
+        require_once KCPF_INCLUDES_DIR . 'class-map-shortcode.php';
+        
         // Style Editor classes - Disabled
         // require_once KCPF_INCLUDES_DIR . 'class-style-settings-manager.php';
         // require_once KCPF_INCLUDES_DIR . 'class-css-generator.php';
@@ -97,6 +103,7 @@ class Key_CY_Properties_Filter
         // Initialize admin features
         if (is_admin()) {
             KCPF_Debug_Viewer::init();
+            KCPF_Settings_Manager::init();
             // Style Editor disabled
             // KCPF_Style_Editor::init();
         }
@@ -110,11 +117,13 @@ class Key_CY_Properties_Filter
         // For logged-in users
         add_action('wp_ajax_kcpf_load_properties', [$this, 'ajaxLoadProperties']);
         add_action('wp_ajax_kcpf_test', [$this, 'ajaxTest']);
+        add_action('wp_ajax_kcpf_load_map_properties', [KCPF_Map_Shortcode::class, 'ajaxLoadMapProperties']);
         KCPF_Filters_Ajax::register();
         
         // For non-logged-in users
         add_action('wp_ajax_nopriv_kcpf_load_properties', [$this, 'ajaxLoadProperties']);
         add_action('wp_ajax_nopriv_kcpf_test', [$this, 'ajaxTest']);
+        add_action('wp_ajax_nopriv_kcpf_load_map_properties', [KCPF_Map_Shortcode::class, 'ajaxLoadMapProperties']);
         KCPF_Filters_Ajax::register();
     }
     
@@ -218,6 +227,8 @@ class Key_CY_Properties_Filter
         add_shortcode('properties_loop', [KCPF_Loop_Renderer::class, 'render']);
         // Homepage composite
         add_shortcode('homepage_filters', [KCPF_Homepage_Filters::class, 'render']);
+        // Map view
+        add_shortcode('properties_map', [KCPF_Map_Shortcode::class, 'render']);
         
         // Filter shortcodes
         add_shortcode('property_filter_location', [KCPF_Filter_Renderer::class, 'renderLocation']);
@@ -390,6 +401,14 @@ class Key_CY_Properties_Filter
             KCPF_VERSION
         );
         
+        // Enqueue Map View CSS
+        wp_enqueue_style(
+            'kcpf-map-view',
+            KCPF_ASSETS_URL . 'css/map-view.css',
+            ['kcpf-filters'],
+            KCPF_VERSION
+        );
+        
         // Dynamic CSS generation disabled
         // if (class_exists('KCPF_CSS_Generator')) {
         //     try {
@@ -401,6 +420,18 @@ class Key_CY_Properties_Filter
         //         error_log('KCPF Style Editor Error: ' . $e->getMessage());
         //     }
         // }
+        
+        // Enqueue Google Maps API if API key is configured
+        if (KCPF_Settings_Manager::hasApiKey()) {
+            $api_key = KCPF_Settings_Manager::getApiKey();
+            wp_enqueue_script(
+                'google-maps',
+                'https://maps.googleapis.com/maps/api/js?key=' . urlencode($api_key) . '&callback=kcpfInitMap',
+                [],
+                null,
+                true
+            );
+        }
         
         // Enqueue noUiSlider JavaScript
         wp_enqueue_script(
@@ -416,6 +447,20 @@ class Key_CY_Properties_Filter
             'kcpf-filters',
             KCPF_ASSETS_URL . 'js/filters.js',
             ['jquery', 'nouislider'],
+            KCPF_VERSION,
+            true
+        );
+        
+        // Enqueue Map View JavaScript
+        $map_dependencies = ['jquery', 'kcpf-filters'];
+        if (KCPF_Settings_Manager::hasApiKey()) {
+            $map_dependencies[] = 'google-maps';
+        }
+        
+        wp_enqueue_script(
+            'kcpf-map-view',
+            KCPF_ASSETS_URL . 'js/map-view.js',
+            $map_dependencies,
             KCPF_VERSION,
             true
         );

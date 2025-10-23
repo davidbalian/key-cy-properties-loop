@@ -21,6 +21,45 @@ Displays the filtered properties grid.
 
 ---
 
+## Properties Map View
+
+### `[properties_map]`
+
+Displays an interactive Google Maps view with property markers, filters, and property cards.
+
+**Attributes:**
+
+- `purpose` (string) - Property purpose: `sale` or `rent` (default: `sale`)
+
+**Examples:**
+
+```
+[properties_map purpose="sale"]
+[properties_map purpose="rent"]
+```
+
+**Features:**
+
+- Interactive Google Map with property markers
+- 100m radius circles around each property
+- Marker clustering for nearby properties
+- Two-column layout: Property cards (left) + Map (right)
+- Purpose-aware filters (all standard filters included)
+- Bidirectional interactivity:
+  - Hover on card → Map pans to marker
+  - Click on marker → Card highlights and scrolls into view
+- AJAX filtering for real-time updates
+- Responsive design
+
+**Requirements:**
+
+- Google Maps API key (configure in Settings > Properties Map)
+- Properties must have `display_coordinates` meta field (format: "lat,lng")
+
+**See also:** [MAP_VIEW_GUIDE.md](MAP_VIEW_GUIDE.md) for complete documentation
+
+---
+
 ## Filter Shortcodes
 
 ### `[property_filter_location]`
