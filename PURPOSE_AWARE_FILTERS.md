@@ -16,7 +16,8 @@ Added a private static method that filters taxonomy terms to only include those 
 
 - Queries each term to check if it has any properties with the specified purpose
 - Returns only terms that have matching properties
-- Ensures filters only show relevant options
+- Updates the count property to reflect only properties with the specified purpose
+- Ensures filters only show relevant options with accurate counts
 
 ### 2. Updated Location Filter
 
@@ -27,9 +28,10 @@ The location filter now:
 - Gets the purpose from URL parameters or defaults to 'sale'
 - Uses `getTermsByPurpose()` to filter locations
 - Only shows locations that have properties for the current purpose
+- Displays accurate property counts for each location based on purpose
 
-**Before:** Showed all locations regardless of purpose
-**After:** Shows only locations with properties matching the current purpose
+**Before:** Showed all locations regardless of purpose with total counts
+**After:** Shows only locations with properties matching the current purpose with purpose-specific counts
 
 ### 3. Updated Property Type Filter
 
@@ -40,9 +42,10 @@ The property type filter now:
 - Gets the purpose from URL parameters or defaults to 'sale'
 - Uses `getTermsByPurpose()` to filter property types
 - Only shows types that have properties for the current purpose
+- Displays accurate property counts for each type based on purpose
 
-**Before:** Showed all property types regardless of purpose
-**After:** Shows only property types with properties matching the current purpose
+**Before:** Showed all property types regardless of purpose with total counts
+**After:** Shows only property types with properties matching the current purpose with purpose-specific counts
 
 ### 4. Already Purpose-Aware Filters
 
@@ -110,3 +113,19 @@ These filters don't need purpose filtering:
 - Maintains backward compatibility with existing shortcodes
 - No changes required to existing filter usage
 - JavaScript already handles purpose propagation correctly
+
+## Count Accuracy Fix
+
+**Issue:** Location and property type filters were showing total counts across all purposes instead of purpose-specific counts.
+
+**Solution:** Updated `getTermsByPurpose()` method to:
+
+- Query all matching properties (`posts_per_page => -1`)
+- Recalculate count for each term using `$query->found_posts`
+- Update the term's count property to reflect only properties with the specified purpose
+
+**Result:**
+
+- Sale page shows accurate counts of sale properties per location/type
+- Rent page shows accurate counts of rent properties per location/type
+- Counts update dynamically when switching between sale and rent

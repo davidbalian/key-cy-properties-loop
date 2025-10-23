@@ -40,7 +40,7 @@ class KCPF_Filter_Renderer
             $args = [
                 'post_type' => 'properties',
                 'post_status' => 'publish',
-                'posts_per_page' => 1,
+                'posts_per_page' => -1,
                 'fields' => 'ids',
                 'tax_query' => [
                     'relation' => 'AND',
@@ -60,6 +60,8 @@ class KCPF_Filter_Renderer
             $query = new WP_Query($args);
             
             if ($query->have_posts()) {
+                // Update the count to reflect only properties with this purpose
+                $term->count = $query->found_posts;
                 $filtered_terms[] = $term;
             }
             
