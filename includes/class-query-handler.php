@@ -22,14 +22,25 @@ class KCPF_Query_Handler
     public static function buildQueryArgs($attrs = [])
     {
         $filters = KCPF_URL_Manager::getCurrentFilters();
-        
-        
+
+        // Debug logging for pagination
+        if (defined('WP_DEBUG') && WP_DEBUG) {
+            error_log('KCPF Query Handler - Attrs: ' . print_r($attrs, true));
+            error_log('KCPF Query Handler - Filters: ' . print_r($filters, true));
+        }
+
         $args = [
             'post_type' => 'properties',
             'post_status' => 'publish',
             'posts_per_page' => isset($attrs['posts_per_page']) ? intval($attrs['posts_per_page']) : 10,
-            'paged' => !empty($filters['paged']) ? intval($filters['paged']) : 1,
+            // Use paged from attrs if provided (for AJAX), otherwise from filters
+            'paged' => !empty($attrs['paged']) ? intval($attrs['paged']) : (!empty($filters['paged']) ? intval($filters['paged']) : 1),
         ];
+
+        // Debug logging for final args
+        if (defined('WP_DEBUG') && WP_DEBUG) {
+            error_log('KCPF Query Handler - Final args paged: ' . $args['paged']);
+        }
         
         // Property ID search
         if (!empty($filters['property_id'])) {

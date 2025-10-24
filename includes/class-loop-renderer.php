@@ -51,8 +51,14 @@ class KCPF_Loop_Renderer
             }
             
             // Get current page info for infinite scroll
-            $current_page = !empty($query->query_vars['paged']) ? intval($query->query_vars['paged']) : 1;
+            // Use paged from attrs if provided (for AJAX requests), otherwise from query vars
+            $current_page = !empty($attrs['paged']) ? intval($attrs['paged']) : (!empty($query->query_vars['paged']) ? intval($query->query_vars['paged']) : 1);
             $max_pages = $query->max_num_pages;
+
+            // Debug logging for pagination
+            if (defined('WP_DEBUG') && WP_DEBUG) {
+                error_log("KCPF Loop Renderer - Current page: {$current_page}, Max pages: {$max_pages}, Query vars paged: " . ($query->query_vars['paged'] ?? 'not set') . ", Attrs paged: " . ($attrs['paged'] ?? 'not set'));
+            }
             
             echo '<div class="' . esc_attr($gridClass) . '" data-current-page="' . esc_attr($current_page) . '" data-max-pages="' . esc_attr($max_pages) . '">';
 
