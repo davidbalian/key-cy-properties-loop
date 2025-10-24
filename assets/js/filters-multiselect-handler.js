@@ -80,32 +80,6 @@
     },
 
     /**
-     * Format filter name for display
-     */
-    formatFilterName: function (filterName) {
-      // Handle specific filter names
-      const specialNames = {
-        property_type: "Property Type",
-        bedrooms: "Bedrooms",
-        bathrooms: "Bathrooms",
-        location: "Location",
-        amenities: "Amenities",
-        price: "Price",
-        covered_area: "Covered Area",
-        city_area: "City Area",
-      };
-
-      if (specialNames[filterName]) {
-        return specialNames[filterName];
-      }
-
-      // Default formatting: replace underscores with spaces and capitalize words
-      return filterName.replace(/_/g, " ").replace(/\b\w/g, function (char) {
-        return char.toUpperCase();
-      });
-    },
-
-    /**
      * Handle chip removal
      */
     handleChipRemoval: function () {
@@ -129,8 +103,9 @@
         const $selected = $dropdown.find(".kcpf-multiselect-selected");
         if ($selected.find(".kcpf-chip").length === 0) {
           const placeholder =
-            $dropdown.data("placeholder") ||
-            "Select " + KCPF_MultiselectHandler.formatFilterName(filterName);
+            "Select " +
+            filterName.charAt(0).toUpperCase() +
+            filterName.slice(1);
           $selected.html(
             '<span class="kcpf-placeholder">' + placeholder + "</span>"
           );
@@ -163,8 +138,9 @@
           // Update selected chips
           if (checkedValues.length === 0) {
             const placeholder =
-              $dropdown.data("placeholder") ||
-              "Select " + KCPF_MultiselectHandler.formatFilterName(filterName);
+              "Select " +
+              filterName.charAt(0).toUpperCase() +
+              filterName.slice(1);
             $selected.html(
               '<span class="kcpf-placeholder">' + placeholder + "</span>"
             );
