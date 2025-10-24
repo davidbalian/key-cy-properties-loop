@@ -30,7 +30,7 @@ class KCPF_Location_Filter_Renderer extends KCPF_Filter_Renderer_Base
         try {
             $attrs = shortcode_atts([
                 'type' => 'select',
-                'placeholder' => 'Select Location',
+                'placeholder' => 'Location',
                 'show_count' => false,
             ], $attrs);
             

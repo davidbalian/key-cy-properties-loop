@@ -102,12 +102,9 @@
         // Show placeholder if no chips remain
         const $selected = $dropdown.find(".kcpf-multiselect-selected");
         if ($selected.find(".kcpf-chip").length === 0) {
-          const placeholder =
-            "Select " +
-            filterName.charAt(0).toUpperCase() +
-            filterName.slice(1);
+          const originalPlaceholder = $selected.data("original-placeholder");
           $selected.html(
-            '<span class="kcpf-placeholder">' + placeholder + "</span>"
+            '<span class="kcpf-placeholder">' + originalPlaceholder + "</span>"
           );
         }
       });
@@ -137,12 +134,11 @@
 
           // Update selected chips
           if (checkedValues.length === 0) {
-            const placeholder =
-              "Select " +
-              filterName.charAt(0).toUpperCase() +
-              filterName.slice(1);
+            const originalPlaceholder = $selected.data("original-placeholder");
             $selected.html(
-              '<span class="kcpf-placeholder">' + placeholder + "</span>"
+              '<span class="kcpf-placeholder">' +
+                originalPlaceholder +
+                "</span>"
             );
           } else {
             let chipsHtml = "";
