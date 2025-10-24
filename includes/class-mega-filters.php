@@ -60,10 +60,18 @@ class KCPF_Mega_Filters
             ob_start();
             ?>
             <div class="kcpf-mega-filters" data-purpose="<?php echo esc_attr($current_filters['purpose'] ?: 'sale'); ?>">
-                <form class="kcpf-filters-form" method="get">
-                    <?php echo $filters_html; // All filters in order ?>
-                    <?php echo $buttons_html; // Apply/Reset buttons ?>
-                </form>
+                <div class="kcpf-accordion">
+                    <div class="kcpf-accordion-header">
+                        <h3 class="kcpf-accordion-title"><?php esc_html_e('Filters', 'key-cy-properties-filter'); ?></h3>
+                        <span class="kcpf-accordion-toggle"></span>
+                    </div>
+                    <div class="kcpf-accordion-content">
+                        <form class="kcpf-filters-form" method="get">
+                            <?php echo $filters_html; // All filters in order ?>
+                            <?php echo $buttons_html; // Apply/Reset buttons ?>
+                        </form>
+                    </div>
+                </div>
             </div>
             <?php
             return ob_get_clean();

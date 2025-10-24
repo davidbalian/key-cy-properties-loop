@@ -112,7 +112,7 @@ Behavior:
 
 ### `[kcpf_mega_filters]`
 
-Comprehensive filter set that combines all available property filters in a specific order. Perfect for complete property search interfaces.
+Comprehensive filter set that combines all available property filters in a specific order. Filters are wrapped in an accordion interface for better UX.
 
 **Filter Order:**
 
@@ -133,12 +133,22 @@ Comprehensive filter set that combines all available property filters in a speci
 - `show_apply` (bool) - Show apply button (default: `true`)
 - `show_reset` (bool) - Show reset button (default: `true`)
 
+**Accordion Features:**
+
+- **Accordion Title**: "Filters"
+- **Responsive Behavior**:
+  - Desktop (≥1024px): Expanded by default
+  - Mobile (<1024px): Collapsed by default
+- **Styling**: 16px border radius, #F1F1F1 background color
+- **Interactive**: Click header to toggle accordion state
+
 **Features:**
 
 - Purpose-aware filtering (automatically adjusts options based on sale/rent context)
 - All filters read from URL parameters and work with `[properties_loop]`
 - Form submission reloads the page with filter parameters
 - Automatically detects loops on the current page
+- Smooth animations and hover effects
 
 **Examples:**
 

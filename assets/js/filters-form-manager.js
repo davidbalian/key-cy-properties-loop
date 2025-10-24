@@ -21,6 +21,7 @@
       this.handleResetButton();
       this.handleApplyButton();
       this.handleBrowserNavigation();
+      this.initAccordion();
     },
 
     /**
@@ -377,6 +378,71 @@
       // Use AJAX handler to load properties
       if (window.KCPF_AjaxHandler) {
         KCPF_AjaxHandler.loadProperties(params);
+      }
+    },
+
+    /**
+     * Initialize accordion functionality
+     */
+    initAccordion: function () {
+      const $accordion = $(".kcpf-accordion");
+      if ($accordion.length === 0) {
+        return;
+      }
+
+      // Set initial state based on screen size
+      this.setInitialAccordionState($accordion);
+
+      // Handle accordion toggle
+      $accordion.on("click", ".kcpf-accordion-header", function () {
+        const $thisAccordion = $(this).closest(".kcpf-accordion");
+        KCPF_FormManager.toggleAccordion($thisAccordion);
+      });
+
+      // Handle window resize to update accordion state
+      $(window).on("resize", function () {
+        KCPF_FormManager.updateAccordionState($accordion);
+      });
+    },
+
+    /**
+     * Set initial accordion state based on screen size
+     */
+    setInitialAccordionState: function ($accordion) {
+      const screenWidth = window.innerWidth;
+
+      if (screenWidth >= 1024) {
+        // Expanded by default on large screens
+        $accordion.addClass("expanded");
+      } else {
+        // Collapsed by default on small screens
+        $accordion.removeClass("expanded");
+      }
+    },
+
+    /**
+     * Toggle accordion state
+     */
+    toggleAccordion: function ($accordion) {
+      if ($accordion.hasClass("expanded")) {
+        $accordion.removeClass("expanded");
+      } else {
+        $accordion.addClass("expanded");
+      }
+    },
+
+    /**
+     * Update accordion state on window resize
+     */
+    updateAccordionState: function ($accordion) {
+      const screenWidth = window.innerWidth;
+
+      if (screenWidth >= 1024) {
+        // Ensure expanded on large screens
+        $accordion.addClass("expanded");
+      } else {
+        // Ensure collapsed on small screens
+        $accordion.removeClass("expanded");
       }
     },
   };

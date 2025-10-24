@@ -2,7 +2,7 @@
 
 ## Overview
 
-The `[mega_filters]` shortcode provides a comprehensive filter interface that combines all available property filters in a specific order. It automatically detects and works with properties loops on the current page.
+The `[kcpf_mega_filters]` shortcode provides a comprehensive filter interface that combines all available property filters in a specific order. It automatically detects and works with properties loops on the current page. The filters are wrapped in an accordion interface for better user experience.
 
 ## Filter Order
 
@@ -17,6 +17,31 @@ The mega filters display filters in this exact order:
 7. **Amenities** - Checkbox multiselect
 8. **Land Area** - Range slider (plot area, renamed from "Plot Area")
 9. **Search by ID** - Text input for property ID search
+
+## Accordion Interface
+
+The mega filters are wrapped in an accordion with the following features:
+
+- **Accordion Title**: "Filters"
+- **Background Color**: #F1F1F1
+- **Border Radius**: 16px
+- **Responsive Behavior**:
+  - **Desktop (≥1024px)**: Expanded by default
+  - **Mobile (<1024px)**: Collapsed by default
+- **Interactive**: Click the header to toggle between expanded/collapsed states
+- **Smooth Animations**: CSS transitions for opening/closing
+
+## CSS Classes
+
+The mega filters accordion uses these CSS classes:
+
+- `.kcpf-mega-filters` - Main container
+- `.kcpf-accordion` - Accordion wrapper
+- `.kcpf-accordion-header` - Clickable header
+- `.kcpf-accordion-title` - Header title ("Filters")
+- `.kcpf-accordion-toggle` - Toggle icon (plus/minus)
+- `.kcpf-accordion-content` - Collapsible content area
+- `.kcpf-accordion.expanded` - Expanded state class
 
 ## Basic Usage
 
