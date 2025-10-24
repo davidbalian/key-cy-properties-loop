@@ -138,12 +138,23 @@ class KCPF_Filter_Renderer
     
     /**
      * Render property ID search filter
-     * 
+     *
      * @param array $attrs Shortcode attributes
      * @return string HTML output
      */
     public static function renderPropertyId($attrs)
     {
         return KCPF_Misc_Filter_Renderer::renderPropertyId($attrs);
+    }
+
+    /**
+     * Render mega filters (comprehensive filter set)
+     *
+     * @param array $attrs Shortcode attributes
+     * @return string HTML output
+     */
+    public static function renderMegaFilters($attrs)
+    {
+        return KCPF_Mega_Filters::render($attrs);
     }
 }

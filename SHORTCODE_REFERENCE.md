@@ -110,6 +110,56 @@ Behavior:
 
 ---
 
+### `[mega_filters]`
+
+Comprehensive filter set that combines all available property filters in a specific order. Perfect for complete property search interfaces.
+
+**Filter Order:**
+
+1. **Type** (Property Type) - Checkbox multiselect
+2. **Location** - Checkbox multiselect with property counts
+3. **Bedrooms** - Checkbox multiselect
+4. **Bathrooms** - Checkbox multiselect
+5. **Price** - Range slider with purpose-aware min/max
+6. **Covered Area** - Range slider (m²)
+7. **Amenities** - Checkbox multiselect
+8. **Land Area** - Range slider (plot area, renamed from "Plot Area")
+9. **Search by ID** - Text input for property ID search
+
+**Attributes:**
+
+- `apply_text` (string) - Apply button text (default: `Apply Filters`)
+- `reset_text` (string) - Reset button text (default: `Reset Filters`)
+- `show_apply` (bool) - Show apply button (default: `true`)
+- `show_reset` (bool) - Show reset button (default: `true`)
+
+**Features:**
+
+- Purpose-aware filtering (automatically adjusts options based on sale/rent context)
+- All filters read from URL parameters and work with `[properties_loop]`
+- Form submission reloads the page with filter parameters
+- Automatically detects loops on the current page
+
+**Examples:**
+
+```
+[mega_filters]
+
+[mega_filters apply_text="Search Properties" reset_text="Clear All"]
+
+[mega_filters show_apply="false" show_reset="true"]
+```
+
+**Usage with Properties Loop:**
+
+```
+[mega_filters]
+
+[properties_loop posts_per_page="12"]
+```
+
+---
+
 ### `[property_filter_purpose]`
 
 Purpose filter (Sale/Rent).
@@ -241,7 +291,7 @@ Covered area range filter with slider.
 
 ### `[property_filter_plot_area]`
 
-Plot area range filter with slider.
+Plot area range filter with slider (displays as "Land Area" in the interface).
 
 **Attributes:**
 
@@ -255,6 +305,8 @@ Plot area range filter with slider.
 [property_filter_plot_area]
 [property_filter_plot_area min="100" max="10000" step="100"]
 ```
+
+**Note:** This filter displays as "Land Area" in the user interface, but uses the `plot_area` field internally.
 
 ---
 

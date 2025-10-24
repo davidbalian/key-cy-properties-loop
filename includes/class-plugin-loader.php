@@ -70,6 +70,7 @@ class KCPF_Plugin_Loader
     private static function loadFilterClasses()
     {
         require_once KCPF_INCLUDES_DIR . 'class-homepage-filters.php';
+        require_once KCPF_INCLUDES_DIR . 'class-mega-filters.php';
         require_once KCPF_INCLUDES_DIR . 'class-filters-ajax.php';
     }
     

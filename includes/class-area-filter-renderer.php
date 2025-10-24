@@ -136,7 +136,7 @@ class KCPF_Area_Filter_Renderer extends KCPF_Filter_Renderer_Base
         <div class="kcpf-filter kcpf-filter-plot-area">
             <?php echo self::renderRangeFilter(
                 'plot_area',
-                __('Plot Area, m²', 'key-cy-properties-filter'),
+                __('Land Area, m²', 'key-cy-properties-filter'),
                 $attrs['min'],
                 $attrs['max'],
                 $attrs['step'],
