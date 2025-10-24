@@ -212,7 +212,7 @@
   display: flex !important;
   align-items: center;
   gap: 0.35rem;
-  padding: 0.25rem 0.55rem !important;
+  padding: 0.25rem 0.5rem !important;
   cursor: pointer;
   transition: background-color 0.2s ease;
   width: fit-content;
