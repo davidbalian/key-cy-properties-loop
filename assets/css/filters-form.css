@@ -211,12 +211,15 @@
 .kcpf-multiselect-option {
   display: flex !important;
   align-items: center;
-  gap: 0.5rem;
-  padding: 0.5rem 0.75rem !important;
-  margin-bottom: 0.5rem !important;
+  gap: 0.35rem;
+  padding: 0.25rem 0.55rem !important;
   cursor: pointer;
   transition: background-color 0.2s ease;
   width: fit-content;
+}
+
+.kcpf-multiselect-option span {
+  font-size: 0.875rem;
 }
 
 .kcpf-multiselect-option:hover {
