@@ -194,7 +194,7 @@
               .split(" ")
               .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
               .join(" ");
-            const placeholder = "Select " + displayName;
+            const placeholder = displayName;
             $selected.html(
               '<span class="kcpf-placeholder">' + placeholder + "</span>"
             );
