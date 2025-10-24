@@ -213,13 +213,40 @@ class KCPF_Map_Card_Renderer
                             <div class="kcpf-multiunit-cell"><?php echo esc_html($unit['unit_id'] ?? ''); ?></div>
                             <div class="kcpf-multiunit-cell"><?php echo esc_html($unit['unit_title'] ?? ''); ?></div>
                             <?php if ($isLand) : ?>
-                                <div class="kcpf-multiunit-cell"><?php echo esc_html($unit['unit_plot_area_for_lands'] ?? ''); ?></div>
+                                <div class="kcpf-multiunit-cell">
+                                    <?php
+                                    $landArea = $unit['unit_plot_area_for_lands'] ?? '';
+                                    if (is_numeric($landArea)) {
+                                        echo esc_html(number_format($landArea)) . ' m²';
+                                    } else {
+                                        echo esc_html($landArea);
+                                    }
+                                    ?>
+                                </div>
                             <?php else : ?>
                                 <div class="kcpf-multiunit-cell"><?php echo esc_html($unit['unit_bedrooms'] ?? ''); ?></div>
                                 <div class="kcpf-multiunit-cell"><?php echo esc_html($unit['unit_bathrooms'] ?? ''); ?></div>
-                                <div class="kcpf-multiunit-cell"><?php echo esc_html($unit['unit_covered_area'] ?? ''); ?></div>
+                                <div class="kcpf-multiunit-cell">
+                                    <?php
+                                    $coveredArea = $unit['unit_covered_area'] ?? '';
+                                    if (is_numeric($coveredArea)) {
+                                        echo esc_html(number_format($coveredArea)) . ' m²';
+                                    } else {
+                                        echo esc_html($coveredArea);
+                                    }
+                                    ?>
+                                </div>
                             <?php endif; ?>
-                            <div class="kcpf-multiunit-cell"><?php echo esc_html($unit['unit_price'] ?? ''); ?></div>
+                            <div class="kcpf-multiunit-cell">
+                                <?php
+                                $unitPrice = $unit['unit_price'] ?? '';
+                                if (is_numeric($unitPrice)) {
+                                    echo '€' . esc_html(number_format($unitPrice));
+                                } else {
+                                    echo esc_html($unitPrice);
+                                }
+                                ?>
+                            </div>
                         </div>
                     <?php endforeach; ?>
                 </div>
