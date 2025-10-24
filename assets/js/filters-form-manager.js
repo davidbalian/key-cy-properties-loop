@@ -13,6 +13,31 @@
    */
   window.KCPF_FormManager = {
     /**
+     * Format filter name for display
+     */
+    formatFilterName: function (filterName) {
+      // Handle specific filter names
+      const specialNames = {
+        property_type: "Property Type",
+        bedrooms: "Bedrooms",
+        bathrooms: "Bathrooms",
+        location: "Location",
+        amenities: "Amenities",
+        price: "Price",
+        covered_area: "Covered Area",
+        city_area: "City Area",
+      };
+
+      if (specialNames[filterName]) {
+        return specialNames[filterName];
+      }
+
+      // Default formatting: replace underscores with spaces and capitalize words
+      return filterName.replace(/_/g, " ").replace(/\b\w/g, function (char) {
+        return char.toUpperCase();
+      });
+    },
+    /**
      * Initialize form management
      */
     init: function () {
@@ -185,13 +210,11 @@
           // Clear multiselect dropdowns
           $form.find(".kcpf-multiselect-selected").each(function () {
             const $selected = $(this);
-            const filterName = $selected
-              .closest(".kcpf-multiselect-dropdown")
-              .data("filter-name");
+            const $dropdown = $selected.closest(".kcpf-multiselect-dropdown");
+            const filterName = $dropdown.data("filter-name");
             const placeholder =
-              "Select " +
-              filterName.charAt(0).toUpperCase() +
-              filterName.slice(1);
+              $dropdown.data("placeholder") ||
+              "Select " + KCPF_FormManager.formatFilterName(filterName);
             $selected.html(
               '<span class="kcpf-placeholder">' + placeholder + "</span>"
             );

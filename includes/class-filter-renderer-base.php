@@ -90,7 +90,7 @@ class KCPF_Filter_Renderer_Base
         
         ob_start();
         ?>
-        <div class="kcpf-multiselect-dropdown" data-filter-name="<?php echo esc_attr($filter_name); ?>">
+        <div class="kcpf-multiselect-dropdown" data-filter-name="<?php echo esc_attr($filter_name); ?>" data-placeholder="<?php echo esc_attr($placeholder); ?>">
             <div class="kcpf-multiselect-trigger">
                 <div class="kcpf-multiselect-selected">
                     <?php if (empty($current_values)) : ?>
@@ -154,7 +154,7 @@ class KCPF_Filter_Renderer_Base
     {
         ob_start();
         ?>
-        <div class="kcpf-range-dropdown">
+        <div class="kcpf-range-dropdown" data-filter-name="<?php echo esc_attr($filter_name); ?>" data-placeholder="<?php echo esc_attr($placeholder); ?>">
             <div class="kcpf-range-trigger">
                 <div class="kcpf-range-display">
                     <span class="kcpf-placeholder"><?php echo esc_html($placeholder); ?></span>
