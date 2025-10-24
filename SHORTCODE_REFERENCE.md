@@ -110,7 +110,7 @@ Behavior:
 
 ---
 
-### `[mega_filters]`
+### `[kcpf_mega_filters]`
 
 Comprehensive filter set that combines all available property filters in a specific order. Perfect for complete property search interfaces.
 
@@ -143,17 +143,17 @@ Comprehensive filter set that combines all available property filters in a speci
 **Examples:**
 
 ```
-[mega_filters]
+[kcpf_mega_filters]
 
-[mega_filters apply_text="Search Properties" reset_text="Clear All"]
+[kcpf_mega_filters apply_text="Search Properties" reset_text="Clear All"]
 
-[mega_filters show_apply="false" show_reset="true"]
+[kcpf_mega_filters show_apply="false" show_reset="true"]
 ```
 
 **Usage with Properties Loop:**
 
 ```
-[mega_filters]
+[kcpf_mega_filters]
 
 [properties_loop posts_per_page="12"]
 ```

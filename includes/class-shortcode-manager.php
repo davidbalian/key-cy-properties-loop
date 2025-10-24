@@ -51,7 +51,7 @@ class KCPF_Shortcode_Manager
         add_shortcode('property_filters_reset', [KCPF_Filter_Renderer::class, 'renderResetButton']);
 
         // Mega filters shortcode (comprehensive filter set)
-        add_shortcode('mega_filters', [KCPF_Filter_Renderer::class, 'renderMegaFilters']);
+        add_shortcode('kcpf_mega_filters', [KCPF_Filter_Renderer::class, 'renderMegaFilters']);
     }
     
     /**

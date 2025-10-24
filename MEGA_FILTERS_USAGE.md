@@ -23,7 +23,7 @@ The mega filters display filters in this exact order:
 ### Simple Implementation
 
 ```php
-[mega_filters]
+[kcpf_mega_filters]
 
 [properties_loop posts_per_page="12"]
 ```
@@ -31,7 +31,7 @@ The mega filters display filters in this exact order:
 ### With Custom Button Text
 
 ```php
-[mega_filters apply_text="Search Properties" reset_text="Clear All"]
+[kcpf_mega_filters apply_text="Search Properties" reset_text="Clear All"]
 
 [properties_loop purpose="sale" posts_per_page="9"]
 ```
@@ -39,7 +39,7 @@ The mega filters display filters in this exact order:
 ### Hide Buttons
 
 ```php
-[mega_filters show_apply="false" show_reset="true"]
+[kcpf_mega_filters show_apply="false" show_reset="true"]
 
 [properties_loop purpose="rent" posts_per_page="15"]
 ```
@@ -83,7 +83,7 @@ The mega filters container uses these CSS classes:
 ```php
 <div class="property-search-container">
     <div class="search-filters">
-        [mega_filters apply_text="Find Properties" reset_text="Reset Search"]
+        [kcpf_mega_filters apply_text="Find Properties" reset_text="Reset Search"]
     </div>
 
     <div class="search-results">
