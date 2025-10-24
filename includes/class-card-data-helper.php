@@ -276,8 +276,94 @@ class KCPF_Card_Data_Helper
     }
     
     /**
+     * Get bedrooms range for multi-unit properties
+     *
+     * @param int $property_id Property ID
+     * @return string|null Bedrooms range or null
+     */
+    public static function getBedroomsRange($property_id)
+    {
+        $range = get_post_meta($property_id, 'bedrooms_range', true);
+
+        if (empty($range)) {
+            return null;
+        }
+
+        return $range;
+    }
+
+    /**
+     * Get bathrooms range for multi-unit properties
+     *
+     * @param int $property_id Property ID
+     * @return string|null Bathrooms range or null
+     */
+    public static function getBathroomsRange($property_id)
+    {
+        $range = get_post_meta($property_id, 'bathrooms_range', true);
+
+        if (empty($range)) {
+            return null;
+        }
+
+        return $range;
+    }
+
+    /**
+     * Get covered area range for multi-unit properties
+     *
+     * @param int $property_id Property ID
+     * @return string|null Covered area range with m² or null
+     */
+    public static function getCoveredAreaRange($property_id)
+    {
+        $minArea = get_post_meta($property_id, 'minimum_covered_area', true);
+        $maxArea = get_post_meta($property_id, 'maximum_covered_area', true);
+
+        if (empty($minArea) || empty($maxArea) || !is_numeric($minArea) || !is_numeric($maxArea)) {
+            return null;
+        }
+
+        return number_format($minArea) . '-' . number_format($maxArea) . ' m²';
+    }
+
+    /**
+     * Check if property is land type
+     *
+     * @param int $property_id Property ID
+     * @return bool
+     */
+    public static function isLandProperty($property_id)
+    {
+        $propertyType = self::getPropertyType($property_id);
+
+        if (!$propertyType) {
+            return false;
+        }
+
+        return strtolower($propertyType) === 'land';
+    }
+
+    /**
+     * Get plot area for land properties
+     *
+     * @param int $property_id Property ID
+     * @return string|null Plot area with m² or null
+     */
+    public static function getPlotAreaLandOnly($property_id)
+    {
+        $plotArea = get_post_meta($property_id, 'plot_area_land_only', true);
+
+        if (empty($plotArea) || !is_numeric($plotArea)) {
+            return null;
+        }
+
+        return number_format($plotArea) . ' m²';
+    }
+
+    /**
      * Get property display coordinates
-     * 
+     *
      * @param int $property_id Property ID
      * @return string Coordinates string
      */
