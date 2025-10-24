@@ -31,7 +31,9 @@ The mega filters are wrapped in an accordion with the following features:
   - **Desktop (≥1024px)**: Expanded by default
   - **Mobile (<1024px)**: Collapsed by default
 - **Interactive**: Click the header to toggle between expanded/collapsed states
-- **Smooth Animations**: CSS transitions (0.4s duration) for opening/closing
+- **Smooth Animations**: CSS transitions (0.3s duration) for opening/closing
+- **Dropdown Visibility**: All filter dropdowns properly display above accordion when expanded (z-index: 10000-10001)
+- **Dropdown Layout**: Options use `width: fit-content` and wrap naturally with `flex-wrap` (amenities use 2-column grid on larger screens)
 
 ## CSS Classes
 

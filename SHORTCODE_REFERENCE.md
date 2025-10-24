@@ -141,9 +141,11 @@ Comprehensive filter set that combines all available property filters in a speci
   - Mobile (<1024px): Collapsed by default
 - **Styling**: 16px border radius, #f1f1f1 background color, no box shadow
 - **Interactive**: Click header to toggle accordion state
-- **Header Padding**: 0.5rem 1rem
+- **Header Padding**: 0.75rem 1rem
 - **Content Padding**: 1rem all around
-- **Transitions**: 0.4s duration for smoother animations
+- **Transitions**: 0.3s duration for smoother animations
+- **Dropdown Support**: Filter dropdowns properly display above accordion (z-index: 10000-10001)
+- **Dropdown Layout**: Options use `width: fit-content` and wrap naturally with `flex-wrap` (amenities use 2-column grid on larger screens)
 
 **Features:**
 
