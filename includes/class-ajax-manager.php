@@ -86,23 +86,12 @@ class KCPF_Ajax_Manager
         @ob_clean();
         
         try {
-
-            // Debug logging for pagination
-            if (defined('WP_DEBUG') && WP_DEBUG) {
-                error_log('KCPF AJAX Load Properties - GET params: ' . print_r($_GET, true));
-            }
-
             // Get attributes from AJAX request - pass all filter parameters
             $attrs = [
                 'purpose' => isset($_GET['purpose']) ? sanitize_text_field($_GET['purpose']) : 'sale',
                 'posts_per_page' => isset($_GET['posts_per_page']) ? intval($_GET['posts_per_page']) : 10,
                 'paged' => isset($_GET['paged']) ? intval($_GET['paged']) : 1,
             ];
-
-            // Debug logging for attributes
-            if (defined('WP_DEBUG') && WP_DEBUG) {
-                error_log('KCPF AJAX Load Properties - Attributes: ' . print_r($attrs, true));
-            }
             
             // Note: All other filter parameters are read from $_GET by URL_Manager
             // No need to explicitly pass them here as they're accessed via getCurrentFilters()
