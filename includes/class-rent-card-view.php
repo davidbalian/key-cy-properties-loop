@@ -34,7 +34,7 @@ class KCPF_Rent_Card_View
         $rentArea = KCPF_Card_Data_Helper::getTotalCoveredArea($property_id, $purposeSlug);
         
         ?>
-        <article class="kcpf-property-card kcpf-property-card-rent">
+        <article class="kcpf-property-card kcpf-property-card-rent" data-property-id="<?php echo esc_attr($property_id); ?>">
             <a href="<?php echo get_permalink($property_id); ?>" class="kcpf-property-card-link">
                 <?php if (has_post_thumbnail($property_id)) : 
                     $image_url = get_the_post_thumbnail_url($property_id, 'full');
