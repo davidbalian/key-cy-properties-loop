@@ -185,18 +185,11 @@
           // Clear multiselect dropdowns
           $form.find(".kcpf-multiselect-selected").each(function () {
             const $selected = $(this);
-            const filterName = $selected
-              .closest(".kcpf-multiselect-dropdown")
-              .data("filter-name");
-            // Convert underscores to spaces and capitalize each word
-            const displayName = filterName
-              .replace(/_/g, " ")
-              .split(" ")
-              .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-              .join(" ");
-            const placeholder = displayName;
+            const originalPlaceholder = $selected.data("original-placeholder");
             $selected.html(
-              '<span class="kcpf-placeholder">' + placeholder + "</span>"
+              '<span class="kcpf-placeholder">' +
+                originalPlaceholder +
+                "</span>"
             );
           });
 

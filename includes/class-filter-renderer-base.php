@@ -92,7 +92,7 @@ class KCPF_Filter_Renderer_Base
         ?>
         <div class="kcpf-multiselect-dropdown" data-filter-name="<?php echo esc_attr($filter_name); ?>">
             <div class="kcpf-multiselect-trigger">
-                <div class="kcpf-multiselect-selected">
+                <div class="kcpf-multiselect-selected" data-original-placeholder="<?php echo esc_attr($placeholder); ?>">
                     <?php if (empty($current_values)) : ?>
                         <span class="kcpf-placeholder"><?php echo esc_html($placeholder); ?></span>
                     <?php else: ?>
