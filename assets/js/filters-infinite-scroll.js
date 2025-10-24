@@ -12,6 +12,9 @@
    * Infinite Scroll Manager
    */
   window.KCPF_InfiniteScroll = {
+    // Track last scroll time to prevent rapid-fire events
+    lastScrollTime: 0,
+
     /**
      * Initialize infinite scroll
      */
@@ -24,8 +27,19 @@
      */
     handleScroll: function () {
       $(window).on("scroll", function () {
+        const now = Date.now();
+
+        // Throttle scroll events to prevent rapid-fire triggers
+        if (now - window.KCPF_InfiniteScroll.lastScrollTime < 200) {
+          return;
+        }
+        window.KCPF_InfiniteScroll.lastScrollTime = now;
+
         // Don't trigger if already loading
         if (window.kcpfLoadingNextPage) {
+          console.log(
+            "KCPF Infinite Scroll: Already loading, skipping scroll event"
+          );
           return;
         }
 
@@ -52,12 +66,39 @@
         const $loop = $visibleLoops.first();
         const $grid = $loop.find(".kcpf-properties-grid");
 
+        console.log(
+          "KCPF Infinite Scroll: Found",
+          $visibleLoops.length,
+          "visible loops"
+        );
+        console.log(
+          "KCPF Infinite Scroll: Using loop with purpose:",
+          $loop.data("purpose")
+        );
+        console.log("KCPF Infinite Scroll: Grid element:", $grid.get(0));
+        console.log(
+          "KCPF Infinite Scroll: All loops on page:",
+          $(".kcpf-properties-loop")
+            .map(function () {
+              return $(this).data("purpose") || "no-purpose";
+            })
+            .get()
+        );
+
         if ($grid.length === 0) {
+          console.log("KCPF Infinite Scroll: No grid found in selected loop");
           return;
         }
 
         const currentPage = parseInt($grid.data("current-page")) || 1;
         const maxPages = parseInt($grid.data("max-pages")) || 1;
+
+        console.log(
+          "KCPF Infinite Scroll: Grid data attributes - current-page:",
+          $grid.attr("data-current-page"),
+          "max-pages:",
+          $grid.attr("data-max-pages")
+        );
 
         // Check if we've reached the last page
         if (currentPage >= maxPages) {
@@ -102,8 +143,8 @@
         return;
       }
 
-      const currentPage = parseInt($grid.data("current-page")) || 1;
-      const maxPages = parseInt($grid.data("max-pages")) || 1;
+      const currentPage = parseInt($grid.attr("data-current-page")) || 1;
+      const maxPages = parseInt($grid.attr("data-max-pages")) || 1;
 
       console.log(
         "KCPF Infinite Scroll: Current page:",
@@ -140,6 +181,12 @@
       }
 
       // Get current URL parameters
+      const currentUrlParams = new URLSearchParams(window.location.search);
+      console.log(
+        "KCPF Infinite Scroll: Original URL params:",
+        Object.fromEntries(currentUrlParams)
+      );
+
       const params = new URLSearchParams(window.location.search);
       params.set("paged", nextPage);
 
@@ -154,7 +201,7 @@
 
       console.log("KCPF Infinite Scroll: AJAX URL:", ajaxUrl);
       console.log(
-        "KCPF Infinite Scroll: Request params:",
+        "KCPF Infinite Scroll: Final request params:",
         Object.fromEntries(params)
       );
 
@@ -212,22 +259,31 @@
 
           // Append new property cards to existing grid and track duplicates
           const newIds = [];
+          let duplicatesSkipped = 0;
           $newCards.each(function () {
             const $card = $(this);
             const cardId = $card.data("property-id") || $card.attr("id");
 
             if (cardId) {
-              newIds.push(cardId);
               if (existingIds.includes(cardId)) {
                 console.warn(
-                  "KCPF Infinite Scroll: DUPLICATE PROPERTY DETECTED - ID:",
+                  "KCPF Infinite Scroll: SKIPPING DUPLICATE PROPERTY - ID:",
                   cardId
                 );
+                duplicatesSkipped++;
+                return; // Skip this duplicate card
               }
+              newIds.push(cardId);
             }
 
             $grid.append($card);
           });
+
+          console.log(
+            "KCPF Infinite Scroll: Skipped",
+            duplicatesSkipped,
+            "duplicate cards"
+          );
 
           console.log("KCPF Infinite Scroll: New property IDs:", newIds);
           console.log(
@@ -237,10 +293,37 @@
 
           // Update current page number
           const newCurrentPage =
-            parseInt($newGrid.data("current-page")) || nextPage;
-          const newMaxPages = parseInt($newGrid.data("max-pages")) || maxPages;
+            parseInt($newGrid.attr("data-current-page")) || nextPage;
+          const newMaxPages =
+            parseInt($newGrid.attr("data-max-pages")) || maxPages;
+
+          console.log(
+            "KCPF Infinite Scroll: Updating grid element:",
+            $grid.get(0)
+          );
+          console.log(
+            "KCPF Infinite Scroll: Setting data-current-page to:",
+            newCurrentPage,
+            "data-max-pages to:",
+            newMaxPages
+          );
+
           $grid.attr("data-current-page", newCurrentPage);
           $grid.attr("data-max-pages", newMaxPages);
+
+          // Verify the attributes were set
+          console.log(
+            "KCPF Infinite Scroll: After update - data-current-page:",
+            $grid.attr("data-current-page"),
+            "data-max-pages:",
+            $grid.attr("data-max-pages")
+          );
+
+          // Force DOM update to ensure attributes are written immediately
+          $grid
+            .get(0)
+            .setAttribute("data-current-page", newCurrentPage.toString());
+          $grid.get(0).setAttribute("data-max-pages", newMaxPages.toString());
 
           console.log(
             "KCPF Infinite Scroll: Updated to page",
