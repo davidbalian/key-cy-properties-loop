@@ -511,27 +511,27 @@
   background-color: #f1f1f1;
   border-radius: 16px;
   overflow: hidden;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .kcpf-accordion-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 1.25rem 1.5rem;
+  padding: 0.5rem 1rem;
   cursor: pointer;
   background-color: #f1f1f1;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.4s ease;
   user-select: none;
 }
 
 .kcpf-accordion-header:hover {
   background-color: #e8e8e8;
+  transition: background-color 0.4s ease;
 }
 
 .kcpf-accordion-title {
   margin: 0;
-  font-size: 1.25rem;
+  font-size: 1rem;
   font-weight: 600;
   color: #333;
 }
@@ -543,7 +543,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: transform 0.3s ease;
+  transition: transform 0.4s ease;
 }
 
 .kcpf-accordion-toggle::before {
@@ -553,7 +553,7 @@
   height: 2px;
   background-color: #666;
   border-radius: 1px;
-  transition: all 0.3s ease;
+  transition: all 0.4s ease;
 }
 
 .kcpf-accordion-toggle::after {
@@ -563,7 +563,7 @@
   height: 16px;
   background-color: #666;
   border-radius: 1px;
-  transition: all 0.3s ease;
+  transition: all 0.4s ease;
 }
 
 .kcpf-accordion.expanded .kcpf-accordion-toggle::after {
@@ -572,16 +572,16 @@
 }
 
 .kcpf-accordion-content {
-  padding: 0 1.5rem 1.5rem;
+  padding: 1rem;
   max-height: 0;
   overflow: hidden;
-  transition: all 0.3s ease;
+  transition: all 0.4s ease;
   background-color: #f1f1f1;
 }
 
 .kcpf-accordion.expanded .kcpf-accordion-content {
   max-height: 2000px;
-  padding: 0 1.5rem 1.5rem;
+  padding: 1rem;
 }
 
 .kcpf-accordion.expanded .kcpf-accordion-toggle {
@@ -600,7 +600,7 @@
 
   .kcpf-accordion:not(.expanded) .kcpf-accordion-content {
     max-height: 0;
-    padding: 0 1.5rem 0;
+    padding: 0;
   }
 }
 
@@ -611,7 +611,7 @@
 
   .kcpf-accordion:not(.expanded) .kcpf-accordion-content {
     max-height: 0;
-    padding: 0 1.5rem 0;
+    padding: 0;
   }
 }
 
@@ -658,14 +658,14 @@
   }
 
   .kcpf-accordion-header {
-    padding: 1rem;
+    padding: 0.5rem 1rem;
   }
 
   .kcpf-accordion-content {
-    padding: 0 1rem 1rem;
+    padding: 1rem;
   }
 
   .kcpf-accordion.expanded .kcpf-accordion-content {
-    padding: 0 1rem 1rem;
+    padding: 1rem;
   }
 }

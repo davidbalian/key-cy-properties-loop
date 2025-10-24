@@ -22,14 +22,16 @@ The mega filters display filters in this exact order:
 
 The mega filters are wrapped in an accordion with the following features:
 
-- **Accordion Title**: "Filters"
-- **Background Color**: #F1F1F1
-- **Border Radius**: 16px
+- **Accordion Title**: "Filters" (span element)
+- **Background Color**: #f1f1f1
+- **Border Radius**: 16px (no box shadow)
+- **Header Padding**: 0.5rem 1rem
+- **Content Padding**: 1rem all around
 - **Responsive Behavior**:
   - **Desktop (≥1024px)**: Expanded by default
   - **Mobile (<1024px)**: Collapsed by default
 - **Interactive**: Click the header to toggle between expanded/collapsed states
-- **Smooth Animations**: CSS transitions for opening/closing
+- **Smooth Animations**: CSS transitions (0.4s duration) for opening/closing
 
 ## CSS Classes
 
@@ -38,7 +40,7 @@ The mega filters accordion uses these CSS classes:
 - `.kcpf-mega-filters` - Main container
 - `.kcpf-accordion` - Accordion wrapper
 - `.kcpf-accordion-header` - Clickable header
-- `.kcpf-accordion-title` - Header title ("Filters")
+- `.kcpf-accordion-title` - Header title ("Filters") - span element
 - `.kcpf-accordion-toggle` - Toggle icon (plus/minus)
 - `.kcpf-accordion-content` - Collapsible content area
 - `.kcpf-accordion.expanded` - Expanded state class

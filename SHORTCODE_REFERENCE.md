@@ -135,12 +135,15 @@ Comprehensive filter set that combines all available property filters in a speci
 
 **Accordion Features:**
 
-- **Accordion Title**: "Filters"
+- **Accordion Title**: "Filters" (span element)
 - **Responsive Behavior**:
   - Desktop (≥1024px): Expanded by default
   - Mobile (<1024px): Collapsed by default
-- **Styling**: 16px border radius, #F1F1F1 background color
+- **Styling**: 16px border radius, #f1f1f1 background color, no box shadow
 - **Interactive**: Click header to toggle accordion state
+- **Header Padding**: 0.5rem 1rem
+- **Content Padding**: 1rem all around
+- **Transitions**: 0.4s duration for smoother animations
 
 **Features:**
 

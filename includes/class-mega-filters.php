@@ -62,7 +62,7 @@ class KCPF_Mega_Filters
             <div class="kcpf-mega-filters" data-purpose="<?php echo esc_attr($current_filters['purpose'] ?: 'sale'); ?>">
                 <div class="kcpf-accordion">
                     <div class="kcpf-accordion-header">
-                        <h3 class="kcpf-accordion-title"><?php esc_html_e('Filters', 'key-cy-properties-filter'); ?></h3>
+                        <span class="kcpf-accordion-title"><?php esc_html_e('Filters', 'key-cy-properties-filter'); ?></span>
                         <span class="kcpf-accordion-toggle"></span>
                     </div>
                     <div class="kcpf-accordion-content">
