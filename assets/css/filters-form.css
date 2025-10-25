@@ -603,21 +603,15 @@
   padding: 0;
 }
 
-/* Make purpose filter span full width in homepage filters */
-.kcpf-homepage-filters .kcpf-filter-purpose {
-  grid-column: 1 / -1;
-}
-
-/* Style radio buttons to span 50% each within the purpose filter */
+/* Style radio buttons to stack vertically in first column */
 .kcpf-homepage-filters .kcpf-radio-buttons {
   display: flex;
-  gap: 0;
+  flex-direction: column;
+  gap: var(--kcpf-spacing-sm);
   width: 100%;
 }
 
 .kcpf-homepage-filters .kcpf-radio-label {
-  flex: 1;
-  text-align: center;
   margin: 0;
 }
 
