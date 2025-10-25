@@ -14,6 +14,41 @@ if (!defined('ABSPATH')) {
 class KCPF_Ajax_Manager
 {
     /**
+     * Detect the purpose from properties_loop shortcodes on the current page
+     *
+     * @return string Detected purpose ('sale', 'rent', or 'sale' as default)
+     */
+    private static function detectPagePurpose()
+    {
+        // Only detect on singular pages/posts
+        if (!is_singular()) {
+            return 'sale';
+        }
+
+        global $post;
+        if (!$post || !isset($post->post_content)) {
+            return 'sale';
+        }
+
+        $content = $post->post_content;
+
+        // Look for properties_loop shortcode with purpose attribute
+        if (preg_match('/\[properties_loop[^]]*purpose\s*=\s*["\']([^"\']+)["\'][^\]]*\]/i', $content, $matches)) {
+            $purpose = strtolower(trim($matches[1]));
+            if (in_array($purpose, ['sale', 'rent'])) {
+                return $purpose;
+            }
+        }
+
+        // Look for properties_loop shortcode without purpose (defaults to sale)
+        if (strpos($content, '[properties_loop') !== false) {
+            return 'sale';
+        }
+
+        return 'sale';
+    }
+
+    /**
      * Register all AJAX handlers
      */
     public static function register()
@@ -86,9 +121,15 @@ class KCPF_Ajax_Manager
         @ob_clean();
         
         try {
+            // Get purpose from request or detect from page content
+            $purpose = isset($_GET['purpose']) ? sanitize_text_field($_GET['purpose']) : null;
+            if (!$purpose) {
+                $purpose = self::detectPagePurpose();
+            }
+
             // Get attributes from AJAX request - pass all filter parameters
             $attrs = [
-                'purpose' => isset($_GET['purpose']) ? sanitize_text_field($_GET['purpose']) : 'sale',
+                'purpose' => $purpose ?: 'sale',
                 'posts_per_page' => isset($_GET['posts_per_page']) ? intval($_GET['posts_per_page']) : 10,
                 'paged' => isset($_GET['paged']) ? intval($_GET['paged']) : 1,
             ];
