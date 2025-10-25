@@ -25,7 +25,7 @@ Displays the filtered properties grid.
 
 ### `[properties_map]`
 
-Displays an interactive Google Maps view with property markers, filters, and property cards.
+Displays an interactive Google Maps view with property markers and property cards. Can be connected to external filters for dynamic updates.
 
 **Attributes:**
 
@@ -44,13 +44,22 @@ Displays an interactive Google Maps view with property markers, filters, and pro
 - 100m radius circles around each property
 - Marker clustering for nearby properties
 - Two-column layout: Property cards (left) + Map (right)
-- Comprehensive mega filters in accordion interface
-- Purpose-aware filtering (automatically adjusts options based on sale/rent context)
 - Bidirectional interactivity:
   - Hover on card → Map pans to marker
   - Click on marker → Card highlights and scrolls into view
-- AJAX filtering for real-time updates
+- AJAX filtering support for external filter connections
 - Responsive design
+
+**Usage with External Filters:**
+
+The map view can be connected to external filters (like mega filters) for dynamic updates:
+
+```
+[kcpf_mega_filters]
+[properties_map purpose="sale"]
+```
+
+External filters will automatically update the map markers and property cards via AJAX.
 
 **Requirements:**
 
