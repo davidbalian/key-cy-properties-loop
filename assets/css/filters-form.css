@@ -581,10 +581,65 @@
   background-color: var(--kcpf-color-gray-lightest) !important;
 }
 
-/* Mega Filters & Homepage Filters Accordion */
+/* Mega Filters Accordion & Homepage Filters */
 .kcpf-mega-filters,
 .kcpf-homepage-filters {
   margin-bottom: var(--kcpf-spacing-lg);
+}
+
+/* Homepage filters - no accordion, direct form display */
+.kcpf-homepage-filters {
+  background-color: var(--kcpf-color-gray-light);
+  border-radius: var(--kcpf-border-radius-medium);
+  padding: var(--kcpf-spacing-lg);
+}
+
+/* Homepage filters form - 3 column grid */
+.kcpf-homepage-filters .kcpf-filters-form {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--kcpf-spacing-lg);
+  margin: 0;
+  padding: 0;
+}
+
+/* Make purpose filter span full width in homepage filters */
+.kcpf-homepage-filters .kcpf-filter-purpose {
+  grid-column: 1 / -1;
+}
+
+/* Style radio buttons to span 50% each within the purpose filter */
+.kcpf-homepage-filters .kcpf-radio-buttons {
+  display: flex;
+  gap: 0;
+  width: 100%;
+}
+
+.kcpf-homepage-filters .kcpf-radio-label {
+  flex: 1;
+  text-align: center;
+  margin: 0;
+}
+
+.kcpf-homepage-filters .kcpf-radio-label span {
+  display: block !important;
+  width: 100% !important;
+  padding: 0.75rem 1rem !important;
+}
+
+/* Responsive behavior for homepage filters */
+@media (max-width: 900px) {
+  .kcpf-homepage-filters .kcpf-filters-form {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--kcpf-spacing-lg);
+  }
+}
+
+@media (max-width: 600px) {
+  .kcpf-homepage-filters .kcpf-filters-form {
+    grid-template-columns: 1fr;
+    gap: var(--kcpf-spacing-lg);
+  }
 }
 
 .kcpf-accordion {
@@ -718,8 +773,7 @@
   padding: 0;
 }
 
-/* Make purpose filter (radio buttons) span full width in mega and homepage filters */
-.kcpf-mega-filters .kcpf-filter-purpose,
+/* Make purpose filter (radio buttons) span full width in homepage filters */
 .kcpf-homepage-filters .kcpf-filter-purpose {
   grid-column: 1 / -1;
 }

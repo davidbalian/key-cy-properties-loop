@@ -90,31 +90,23 @@ class KCPF_Homepage_Filters
             <div class="kcpf-refresh-spinner" style="display: none;">
                 <div class="kcpf-spinner"></div>
             </div>
-            <div class="kcpf-accordion">
-                <div class="kcpf-accordion-header">
-                    <span class="kcpf-accordion-title"><?php esc_html_e('Filters', 'key-cy-properties-filter'); ?></span>
-                    <span class="kcpf-accordion-toggle"></span>
-                </div>
-                <div class="kcpf-accordion-content">
-                    <form class="kcpf-filters-form" method="get">
-                        <?php echo $purposeHtml; // Purpose radio ?>
-                        <?php echo $typeHtml; // Property type ?>
-                        <?php echo $locationHtml; // Location ?>
-                        <?php echo $bedroomsHtml; // Bedrooms ?>
-                        <?php echo $priceHtml; // Price range ?>
+            <form class="kcpf-filters-form" method="get">
+                <?php echo $purposeHtml; // Purpose radio ?>
+                <?php echo $typeHtml; // Property type ?>
+                <?php echo $locationHtml; // Location ?>
+                <?php echo $bedroomsHtml; // Bedrooms ?>
+                <?php echo $priceHtml; // Price range ?>
 
-                        <div class="kcpf-filter kcpf-filter-apply">
-                            <button type="submit"
-                                    class="kcpf-apply-button"
-                                    data-type="redirect"
-                                    data-rent-url="<?php echo esc_attr($attrs['rent_url']); ?>"
-                                    data-sale-url="<?php echo esc_attr($attrs['sale_url']); ?>">
-                                <?php echo esc_html($attrs['apply_text']); ?>
-                            </button>
-                        </div>
-                    </form>
+                <div class="kcpf-filter kcpf-filter-apply">
+                    <button type="submit"
+                            class="kcpf-apply-button"
+                            data-type="redirect"
+                            data-rent-url="<?php echo esc_attr($attrs['rent_url']); ?>"
+                            data-sale-url="<?php echo esc_attr($attrs['sale_url']); ?>">
+                        <?php echo esc_html($attrs['apply_text']); ?>
+                    </button>
                 </div>
-            </div>
+            </form>
         </div>
         <?php
         return ob_get_clean();
