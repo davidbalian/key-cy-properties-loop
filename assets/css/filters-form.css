@@ -377,7 +377,7 @@
   display: inline-block !important;
   padding: 0.25rem 0.75rem !important;
   border: 1px solid #ddd !important;
-  border-radius: 100px !important;
+  border-radius: var(--kcpf-border-radius-tiny) !important;
   background-color: #fff !important;
   transition: all 0.3s ease;
 }
@@ -581,8 +581,9 @@
   background-color: var(--kcpf-color-gray-lightest) !important;
 }
 
-/* Mega Filters Accordion */
-.kcpf-mega-filters {
+/* Mega Filters & Homepage Filters Accordion */
+.kcpf-mega-filters,
+.kcpf-homepage-filters {
   margin-bottom: var(--kcpf-spacing-lg);
 }
 
@@ -669,14 +670,7 @@
 
 /* Responsive Behavior */
 @media (min-width: 1024px) {
-  .kcpf-accordion {
-    /* Expanded by default on large screens */
-  }
-
-  .kcpf-accordion.expanded {
-    /* Already expanded */
-  }
-
+  /* Accordion expanded by default on large screens */
   .kcpf-accordion:not(.expanded) .kcpf-accordion-content {
     max-height: 0;
     padding: 0;
@@ -696,10 +690,7 @@
 }
 
 @media (max-width: 1023px) {
-  .kcpf-accordion:not(.expanded) {
-    /* Collapsed by default on small screens */
-  }
-
+  /* Accordion collapsed by default on small screens */
   .kcpf-accordion:not(.expanded) .kcpf-accordion-content {
     max-height: 0;
     padding: 0;
@@ -725,6 +716,12 @@
   gap: var(--kcpf-spacing-lg);
   margin: 0;
   padding: 0;
+}
+
+/* Make purpose filter (radio buttons) span full width in mega and homepage filters */
+.kcpf-mega-filters .kcpf-filter-purpose,
+.kcpf-homepage-filters .kcpf-filter-purpose {
+  grid-column: 1 / -1;
 }
 
 /* Ensure all dropdowns within accordion have proper z-index */
