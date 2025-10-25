@@ -350,7 +350,7 @@
         }
       });
 
-      // Get purpose from form or find closest loop
+      // Get purpose from form or find closest loop/map
       let purpose = params.get("purpose");
       if (!purpose) {
         // Try to find the purpose from the closest loop
@@ -358,10 +358,22 @@
         if ($closestLoop.length > 0) {
           purpose = $closestLoop.data("purpose");
         } else {
-          // Fallback: find first loop on page
-          const $firstLoop = $(".kcpf-properties-loop").first();
-          if ($firstLoop.length > 0) {
-            purpose = $firstLoop.data("purpose");
+          // Try to find the purpose from the closest map view
+          const $closestMap = form.closest(".kcpf-map-view");
+          if ($closestMap.length > 0) {
+            purpose = $closestMap.data("purpose");
+          } else {
+            // Fallback: find first loop on page
+            const $firstLoop = $(".kcpf-properties-loop").first();
+            if ($firstLoop.length > 0) {
+              purpose = $firstLoop.data("purpose");
+            } else {
+              // Fallback: find first map view on page
+              const $firstMap = $(".kcpf-map-view").first();
+              if ($firstMap.length > 0) {
+                purpose = $firstMap.data("purpose");
+              }
+            }
           }
         }
       }

@@ -54,6 +54,13 @@
           } else {
             $(".kcpf-properties-loop").addClass("kcpf-loading");
           }
+
+          // Also show loading for map views
+          const $mapView = $(".kcpf-map-view");
+          if ($mapView.length > 0) {
+            $(".kcpf-map-cards-container").hide();
+            $(".kcpf-map-loading").show();
+          }
         },
         success: function (response) {
           KCPF_AjaxHandler.handleSuccess(
@@ -73,6 +80,10 @@
           } else {
             $(".kcpf-properties-loop").removeClass("kcpf-loading");
           }
+
+          // Also hide loading for map views (in case of error)
+          $(".kcpf-map-loading").hide();
+          $(".kcpf-map-cards-container").show();
         },
         error: function (xhr, status, error) {
           KCPF_AjaxHandler.handleError(xhr, status, error);
@@ -102,8 +113,13 @@
         }
 
         // Replace the matching properties loop content
-        const $newContent = $(response.data.html);
-        $targetLoop.replaceWith($newContent);
+        if ($targetLoop && $targetLoop.length > 0) {
+          const $newContent = $(response.data.html);
+          $targetLoop.replaceWith($newContent);
+        }
+
+        // Check for map views and update them too
+        this.updateMapViews(params);
 
         // Reset infinite scroll state
         window.kcpfLoadingNextPage = false;
@@ -113,7 +129,7 @@
           history.pushState({ kcpfFilters: true }, "", newUrl);
         }
 
-        // Scroll to results if exists
+        // Scroll to results if exists (only for regular loops)
         const $loop = $(".kcpf-properties-loop");
         if ($loop.length > 0) {
           $("html, body").animate(
@@ -131,6 +147,81 @@
           );
         }
       }
+    },
+
+    /**
+     * Update map views with filtered results
+     *
+     * @param {URLSearchParams} params - Filter parameters
+     */
+    updateMapViews: function (params) {
+      // Check if map view exists on the page
+      const $mapView = $(".kcpf-map-view");
+      if ($mapView.length === 0) {
+        return; // No map view found
+      }
+
+      // Convert URLSearchParams to object for map AJAX
+      const paramsObj = { action: "kcpf_load_map_properties" };
+      for (const [key, value] of params) {
+        if (paramsObj.hasOwnProperty(key)) {
+          if (!Array.isArray(paramsObj[key])) {
+            paramsObj[key] = [paramsObj[key]];
+          }
+          paramsObj[key].push(value);
+        } else {
+          paramsObj[key] = value;
+        }
+      }
+
+      // Show loading state for map
+      $(".kcpf-map-cards-container").hide();
+      $(".kcpf-map-loading").show();
+
+      // Check if kcpfData is available
+      if (typeof kcpfData === "undefined" || !kcpfData.ajaxUrl) {
+        console.error("[KCPF Ajax] kcpfData not found - cannot update map");
+        return;
+      }
+
+      // Make AJAX request to update map
+      $.ajax({
+        url: kcpfData.ajaxUrl,
+        type: "GET",
+        data: paramsObj,
+        success: function (response) {
+          if (response.success) {
+            // Update map cards
+            $("#kcpf-map-cards").html(response.data.cards_html);
+
+            // Update results count
+            $(".kcpf-map-results-count").text(
+              response.data.count +
+                (response.data.count === 1
+                  ? " property found"
+                  : " properties found")
+            );
+
+            // Update map markers if KCPFMapView is available
+            if (window.KCPFMapView && response.data.properties_data) {
+              window.KCPFMapView.properties = response.data.properties_data;
+              window.KCPFMapView.addMarkers();
+              window.KCPFMapView.fitBoundsToMarkers();
+            }
+          } else {
+            console.error("[KCPF Ajax] Map update error:", response.data);
+          }
+
+          // Hide loading state
+          $(".kcpf-map-loading").hide();
+          $(".kcpf-map-cards-container").show();
+        },
+        error: function (xhr, status, error) {
+          console.error("[KCPF Ajax] Map update error:", error);
+          $(".kcpf-map-loading").hide();
+          $(".kcpf-map-cards-container").show();
+        },
+      });
     },
 
     /**
