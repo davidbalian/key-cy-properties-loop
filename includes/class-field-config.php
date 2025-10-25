@@ -15,13 +15,13 @@ class KCPF_Field_Config
 {
     /**
      * Meta field mappings for sale properties
-     * 
+     *
      * @var array
      */
     private static $saleFields = [
         'price' => 'price',
-        'bedrooms' => 'bedrooms',
-        'bathrooms' => 'bathrooms',
+        'bedrooms' => 'rent_bedrooms',
+        'bathrooms' => 'rent_bathrooms',
         'covered_area' => 'total_covered_area',
     ];
     
