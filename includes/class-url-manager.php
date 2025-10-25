@@ -14,6 +14,24 @@ if (!defined('ABSPATH')) {
 class KCPF_URL_Manager
 {
     /**
+     * Context purpose override for current request
+     * Used by mega filters to set purpose detected from page content
+     *
+     * @var string|null
+     */
+    private static $context_purpose = null;
+
+    /**
+     * Set context purpose for current request
+     *
+     * @param string $purpose Purpose ('sale' or 'rent')
+     */
+    public static function setContextPurpose($purpose)
+    {
+        self::$context_purpose = $purpose;
+    }
+
+    /**
      * Get current filter values from URL
      * 
      * @return array Filter values
@@ -36,8 +54,12 @@ class KCPF_URL_Manager
             'property_id' => self::getParam('property_id'),
             'paged' => self::getParam('paged', 1),
         ];
-        
-        
+
+        // Override purpose with context purpose if set
+        if (self::$context_purpose !== null) {
+            $filters['purpose'] = self::$context_purpose;
+        }
+
         return $filters;
     }
     
@@ -163,12 +185,17 @@ class KCPF_URL_Manager
     
     /**
      * Get filter value for a specific key
-     * 
+     *
      * @param string $key Filter key
      * @return mixed Filter value
      */
     public static function getFilterValue($key)
     {
+        // Check context purpose override first
+        if ($key === 'purpose' && self::$context_purpose !== null) {
+            return self::$context_purpose;
+        }
+
         $filters = self::getCurrentFilters();
         return $filters[$key] ?? '';
     }

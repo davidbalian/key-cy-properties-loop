@@ -15,6 +15,44 @@ if (!defined('ABSPATH')) {
 class KCPF_Mega_Filters
 {
     /**
+     * Detect the purpose from properties_loop shortcodes on the current page
+     *
+     * Parses the current post content to find properties_loop shortcodes
+     * and extracts the purpose attribute.
+     *
+     * @return string Detected purpose ('sale', 'rent', or 'sale' as default)
+     */
+    private static function detectPagePurpose()
+    {
+        // Only detect on singular pages/posts
+        if (!is_singular()) {
+            return 'sale';
+        }
+
+        global $post;
+        if (!$post || !isset($post->post_content)) {
+            return 'sale';
+        }
+
+        $content = $post->post_content;
+
+        // Look for properties_loop shortcode with purpose attribute
+        if (preg_match('/\[properties_loop[^]]*purpose\s*=\s*["\']([^"\']+)["\'][^\]]*\]/i', $content, $matches)) {
+            $purpose = strtolower(trim($matches[1]));
+            if (in_array($purpose, ['sale', 'rent'])) {
+                return $purpose;
+            }
+        }
+
+        // Look for properties_loop shortcode without purpose (defaults to sale)
+        if (strpos($content, '[properties_loop') !== false) {
+            return 'sale';
+        }
+
+        return 'sale';
+    }
+
+    /**
      * Render the mega filters shortcode
      *
      * Displays all property filters in the following order:
@@ -27,6 +65,8 @@ class KCPF_Mega_Filters
      * 7. Amenities
      * 8. Land Area (Plot Area with custom title)
      * 9. Search by ID
+     *
+     * Automatically detects the purpose from properties_loop shortcodes on the current page.
      *
      * @param array $attrs Shortcode attributes
      *                     - apply_text: Text for apply button (default: 'Apply Filters')
@@ -47,6 +87,13 @@ class KCPF_Mega_Filters
 
             // Get current filter values from URL
             $current_filters = KCPF_URL_Manager::getCurrentFilters();
+
+            // Detect purpose from page content if not set in URL
+            if (empty($current_filters['purpose'])) {
+                $detected_purpose = self::detectPagePurpose();
+                KCPF_URL_Manager::setContextPurpose($detected_purpose);
+                $current_filters['purpose'] = $detected_purpose;
+            }
 
             // Build all filters in specified order
             $filters_html = self::renderFiltersInOrder($current_filters);
