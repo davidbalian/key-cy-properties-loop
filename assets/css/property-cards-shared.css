@@ -70,6 +70,19 @@
   }
 }
 
+/* Loop Results Header */
+.kcpf-loop-results-header {
+  padding: 1rem 0;
+  margin-bottom: 1rem;
+  text-align: left;
+}
+
+.kcpf-loop-results-count {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #495057;
+}
+
 /* Property Card */
 .kcpf-property-card {
   border: 1px solid #e0e0e0;

@@ -57,6 +57,15 @@ class KCPF_Loop_Renderer
             
             echo '<div class="' . esc_attr($gridClass) . '" data-current-page="' . esc_attr($current_page) . '" data-max-pages="' . esc_attr($max_pages) . '">';
 
+            // Add results count display (similar to map view)
+            echo '<div class="kcpf-loop-results-header">';
+            echo '<span class="kcpf-loop-results-count">';
+            echo sprintf(
+                _n('%d property found', '%d properties found', $query->found_posts, 'key-cy-properties-filter'),
+                $query->found_posts
+            );
+            echo '</span>';
+            echo '</div>';
 
             while ($query->have_posts()) {
                 $query->the_post();
