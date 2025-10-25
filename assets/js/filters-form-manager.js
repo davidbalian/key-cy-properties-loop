@@ -82,8 +82,8 @@
       });
 
       // Capture multiselect states
-      $form.find(".kcpf-multiselect").each(function () {
-        const name = $(this).data("name");
+      $form.find(".kcpf-multiselect-dropdown").each(function () {
+        const name = $(this).data("filter-name");
         if (name) {
           const selectedValues = [];
           $(this)
@@ -100,14 +100,33 @@
         const $container = $(this);
         const $minInput = $container.find(".kcpf-range-min");
         const $maxInput = $container.find(".kcpf-range-max");
-        const name = $minInput.attr("name");
+        const $slider = $container.find(".kcpf-range-slider");
 
-        if (name && $minInput.length && $maxInput.length) {
-          const minName = name.replace("_max", "_min");
-          initialState.ranges[minName] = {
-            min: $minInput.val(),
-            max: $maxInput.val(),
-          };
+        if ($minInput.length && $maxInput.length && $slider.length) {
+          const minName = $minInput.attr("name");
+          const maxName = $maxInput.attr("name");
+
+          if (minName && maxName) {
+            // Capture current input values, or empty if they represent the full range
+            const currentMin = $minInput.val();
+            const currentMax = $maxInput.val();
+            const sliderMin = $slider.data("min");
+            const sliderMax = $slider.data("max");
+
+            // If inputs show the full range, capture as empty to indicate "no filter applied"
+            const isFullRange =
+              parseFloat(currentMin) === parseFloat(sliderMin) &&
+              parseFloat(currentMax) === parseFloat(sliderMax);
+
+            initialState.ranges[minName] = {
+              min: isFullRange ? "" : currentMin,
+              max: isFullRange ? "" : currentMax,
+              minName: minName,
+              maxName: maxName,
+              sliderMin: sliderMin,
+              sliderMax: sliderMax,
+            };
+          }
         }
       });
 
@@ -350,45 +369,83 @@
               // First clear all
               $form
                 .find(
-                  `.kcpf-multiselect[data-name='${name}'] input[type='checkbox']`
+                  `.kcpf-multiselect-dropdown[data-filter-name='${name}'] input[type='checkbox']`
                 )
                 .prop("checked", false);
               // Then check the initial ones
               initialState.multiselects[name].forEach(function (value) {
                 $form
                   .find(
-                    `.kcpf-multiselect[data-name='${name}'] input[type='checkbox'][value='${value}']`
+                    `.kcpf-multiselect-dropdown[data-filter-name='${name}'] input[type='checkbox'][value='${value}']`
                   )
                   .prop("checked", true);
               });
 
               // Update the display
               KCPF_FormManager.updateMultiselectDisplay(
-                $form.find(`.kcpf-multiselect[data-name='${name}']`)
+                $form.find(
+                  `.kcpf-multiselect-dropdown[data-filter-name='${name}']`
+                )
               );
             });
 
             // Restore range sliders
-            Object.keys(initialState.ranges).forEach(function (name) {
-              const rangeData = initialState.ranges[name];
-              const $minInput = $form.find(`input[name='${name}']`);
+            Object.keys(initialState.ranges).forEach(function (minName) {
+              const rangeData = initialState.ranges[minName];
+              const $minInput = $form.find(
+                `input[name='${rangeData.minName}']`
+              );
               const $maxInput = $form.find(
-                `input[name='${name.replace("_min", "_max")}']`
+                `input[name='${rangeData.maxName}']`
               );
 
               if ($minInput.length && $maxInput.length) {
-                $minInput.val(rangeData.min);
-                $maxInput.val(rangeData.max);
-
-                // Update the slider if it exists
+                // Get the slider element
                 const $container = $minInput.closest(
                   ".kcpf-range-slider-container"
                 );
-                if ($container.length) {
-                  const $slider = $container.find(".kcpf-range-slider");
-                  if ($slider.length && $slider[0].noUiSlider) {
-                    $slider[0].noUiSlider.set([rangeData.min, rangeData.max]);
+                const $slider = $container.find(".kcpf-range-slider");
+
+                if ($slider.length && $slider[0] && $slider[0].noUiSlider) {
+                  // Use the stored slider min/max from initial state, or fall back to data attributes
+                  const sliderMin =
+                    parseFloat(rangeData.sliderMin) ||
+                    parseFloat($slider.data("min"));
+                  const sliderMax =
+                    parseFloat(rangeData.sliderMax) ||
+                    parseFloat($slider.data("max"));
+
+                  // Determine what values to restore
+                  let restoreMin, restoreMax;
+
+                  if (rangeData.min === "" && rangeData.max === "") {
+                    // Initial state was full range, restore to full range
+                    restoreMin = sliderMin;
+                    restoreMax = sliderMax;
+                  } else {
+                    // Restore to captured values, but ensure they're valid
+                    restoreMin = parseFloat(rangeData.min) || sliderMin;
+                    restoreMax = parseFloat(rangeData.max) || sliderMax;
                   }
+
+                  // Ensure min <= max and within bounds
+                  if (restoreMin > restoreMax) {
+                    restoreMin = sliderMin;
+                    restoreMax = sliderMax;
+                  }
+                  if (restoreMin < sliderMin) restoreMin = sliderMin;
+                  if (restoreMax > sliderMax) restoreMax = sliderMax;
+
+                  // Set the slider position
+                  $slider[0].noUiSlider.set([restoreMin, restoreMax]);
+
+                  // Update the input values
+                  $minInput.val(restoreMin);
+                  $maxInput.val(restoreMax);
+                } else {
+                  // No slider, just set the input values
+                  $minInput.val(rangeData.min);
+                  $maxInput.val(rangeData.max);
                 }
               }
             });
