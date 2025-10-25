@@ -406,4 +406,7 @@
     console.log("[KCPF Map] Google Maps API loaded via callback");
     KCPFMapView.init();
   };
+
+  // Make KCPFMapView globally available for AJAX updates
+  window.KCPFMapView = KCPFMapView;
 })(jQuery);

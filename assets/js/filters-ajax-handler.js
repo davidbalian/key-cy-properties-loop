@@ -82,10 +82,8 @@
             $(".kcpf-properties-loop").removeClass("kcpf-loading");
           }
 
-          // Also hide loading for map views (in case of error)
-          console.log("[KCPF Ajax] Hiding map loading state (complete)");
-          $(".kcpf-map-loading").hide();
-          $(".kcpf-map-cards-container").show();
+          // Note: Map loading state is managed in the map AJAX success/error callbacks
+          // Don't hide it here as it would hide it before the map AJAX completes
         },
         error: function (xhr, status, error) {
           KCPF_AjaxHandler.handleError(xhr, status, error);
@@ -264,11 +262,24 @@
                 response.data.properties_data.length
               );
               window.KCPFMapView.properties = response.data.properties_data;
-              window.KCPFMapView.addMarkers();
-              window.KCPFMapView.fitBoundsToMarkers();
+
+              // Check if map is initialized before updating markers
+              if (window.KCPFMapView.map) {
+                window.KCPFMapView.addMarkers();
+                window.KCPFMapView.fitBoundsToMarkers();
+              } else {
+                console.log(
+                  "[KCPF Ajax] Map not initialized yet, markers will be updated when map loads"
+                );
+                // The map will use the updated properties when it initializes
+              }
             } else {
               console.log(
-                "[KCPF Ajax] KCPFMapView not available or no properties data"
+                "[KCPF Ajax] KCPFMapView not available or no properties data",
+                {
+                  KCPFMapView: !!window.KCPFMapView,
+                  propertiesData: !!response.data.properties_data,
+                }
               );
             }
           } else {
@@ -282,6 +293,7 @@
         },
         error: function (xhr, status, error) {
           console.error("[KCPF Ajax] Map update error:", error);
+          console.log("[KCPF Ajax] Hiding map loading state (map ajax error)");
           $(".kcpf-map-loading").hide();
           $(".kcpf-map-cards-container").show();
         },
