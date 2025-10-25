@@ -41,7 +41,11 @@ class KCPF_Map_Shortcode
         <div class="kcpf-map-view" data-purpose="<?php echo esc_attr($purpose); ?>">
             <!-- Filters Section -->
             <div class="kcpf-map-filters-section">
-                <?php echo KCPF_Map_Filters::render($purpose); ?>
+                <?php
+                // Set purpose in GET parameters for mega filters
+                $_GET['purpose'] = $purpose;
+                echo KCPF_Filter_Renderer::renderMegaFilters([]);
+                ?>
             </div>
             
             <!-- Two Column Layout -->

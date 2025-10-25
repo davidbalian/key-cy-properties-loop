@@ -44,7 +44,8 @@ Displays an interactive Google Maps view with property markers, filters, and pro
 - 100m radius circles around each property
 - Marker clustering for nearby properties
 - Two-column layout: Property cards (left) + Map (right)
-- Purpose-aware filters (all standard filters included)
+- Comprehensive mega filters in accordion interface
+- Purpose-aware filtering (automatically adjusts options based on sale/rent context)
 - Bidirectional interactivity:
   - Hover on card → Map pans to marker
   - Click on marker → Card highlights and scrolls into view

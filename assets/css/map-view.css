@@ -27,6 +27,14 @@
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
+/* Mega filters accordion within map view */
+.kcpf-map-filters-section .kcpf-accordion {
+  background: transparent;
+  box-shadow: none;
+  margin: -1.5rem -1.5rem 0 -1.5rem;
+  border-radius: 0;
+}
+
 .kcpf-map-filters-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
