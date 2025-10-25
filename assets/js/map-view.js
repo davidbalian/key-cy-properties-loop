@@ -294,24 +294,8 @@
         }
       });
 
-      // Filter form submission
-      $(document).on("submit", ".kcpf-map-filters-form", (e) => {
-        e.preventDefault();
-        this.handleFilterSubmit($(e.currentTarget));
-      });
-
-      // Apply button click
-      $(document).on("click", ".kcpf-map-filters .kcpf-apply-button", (e) => {
-        e.preventDefault();
-        const form = $(e.currentTarget).closest("form");
-        this.handleFilterSubmit(form);
-      });
-
-      // Reset button click
-      $(document).on("click", ".kcpf-map-filters .kcpf-reset-button", (e) => {
-        e.preventDefault();
-        this.handleFilterReset();
-      });
+      // Note: Map filtering is now handled by external filters via AJAX
+      // The map view no longer handles its own filter forms
     },
 
     /**

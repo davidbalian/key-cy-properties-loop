@@ -58,6 +58,7 @@
           // Also show loading for map views
           const $mapView = $(".kcpf-map-view");
           if ($mapView.length > 0) {
+            console.log("[KCPF Ajax] Showing map loading state");
             $(".kcpf-map-cards-container").hide();
             $(".kcpf-map-loading").show();
           }
@@ -82,6 +83,7 @@
           }
 
           // Also hide loading for map views (in case of error)
+          console.log("[KCPF Ajax] Hiding map loading state (complete)");
           $(".kcpf-map-loading").hide();
           $(".kcpf-map-cards-container").show();
         },
@@ -155,24 +157,46 @@
      * @param {URLSearchParams} params - Filter parameters
      */
     updateMapViews: function (params) {
+      console.log("[KCPF Ajax] updateMapViews called");
+
       // Check if map view exists on the page
       const $mapView = $(".kcpf-map-view");
+      console.log("[KCPF Ajax] Map view elements found:", $mapView.length);
+
       if ($mapView.length === 0) {
+        console.log("[KCPF Ajax] No map view found, skipping update");
         return; // No map view found
       }
 
       // Convert URLSearchParams to object for map AJAX
+      // The map AJAX expects parameters in the same format as form.serializeArray()
       const paramsObj = { action: "kcpf_load_map_properties" };
+
+      // Convert URLSearchParams to the format expected by map AJAX
       for (const [key, value] of params) {
-        if (paramsObj.hasOwnProperty(key)) {
-          if (!Array.isArray(paramsObj[key])) {
-            paramsObj[key] = [paramsObj[key]];
+        if (key === "bedrooms" || key === "bathrooms") {
+          // These come as comma-separated values, need to be sent as arrays
+          const values = value.split(",");
+          values.forEach((val) => {
+            if (!paramsObj[key]) {
+              paramsObj[key] = [];
+            }
+            paramsObj[key].push(val);
+          });
+        } else if (key.endsWith("[]")) {
+          // Array parameters
+          const cleanKey = key.slice(0, -2);
+          if (!paramsObj[cleanKey]) {
+            paramsObj[cleanKey] = [];
           }
-          paramsObj[key].push(value);
+          paramsObj[cleanKey].push(value);
         } else {
+          // Single value
           paramsObj[key] = value;
         }
       }
+
+      console.log("[KCPF Ajax] Converted params for map AJAX:", paramsObj);
 
       // Show loading state for map
       $(".kcpf-map-cards-container").hide();
@@ -190,12 +214,43 @@
         type: "GET",
         data: paramsObj,
         success: function (response) {
+          console.log("[KCPF Ajax] Map update response:", response);
+
           if (response.success) {
+            console.log(
+              "[KCPF Ajax] Updating map cards with:",
+              response.data.cards_html ? "HTML present" : "No HTML"
+            );
+            console.log("[KCPF Ajax] Cards count:", response.data.count);
+
             // Update map cards
-            $("#kcpf-map-cards").html(response.data.cards_html);
+            const $mapCards = $("#kcpf-map-cards");
+            console.log(
+              "[KCPF Ajax] Map cards element found:",
+              $mapCards.length > 0
+            );
+            console.log(
+              "[KCPF Ajax] Current cards HTML length:",
+              $mapCards.html().length
+            );
+            console.log(
+              "[KCPF Ajax] New cards HTML length:",
+              response.data.cards_html.length
+            );
+
+            $mapCards.html(response.data.cards_html);
+
+            // Force DOM update
+            $mapCards.hide().show(0);
 
             // Update results count
-            $(".kcpf-map-results-count").text(
+            const $resultsCount = $(".kcpf-map-results-count");
+            console.log(
+              "[KCPF Ajax] Results count element found:",
+              $resultsCount.length > 0
+            );
+
+            $resultsCount.text(
               response.data.count +
                 (response.data.count === 1
                   ? " property found"
@@ -204,15 +259,24 @@
 
             // Update map markers if KCPFMapView is available
             if (window.KCPFMapView && response.data.properties_data) {
+              console.log(
+                "[KCPF Ajax] Updating map markers, properties count:",
+                response.data.properties_data.length
+              );
               window.KCPFMapView.properties = response.data.properties_data;
               window.KCPFMapView.addMarkers();
               window.KCPFMapView.fitBoundsToMarkers();
+            } else {
+              console.log(
+                "[KCPF Ajax] KCPFMapView not available or no properties data"
+              );
             }
           } else {
             console.error("[KCPF Ajax] Map update error:", response.data);
           }
 
           // Hide loading state
+          console.log("[KCPF Ajax] Hiding map loading state (success)");
           $(".kcpf-map-loading").hide();
           $(".kcpf-map-cards-container").show();
         },
