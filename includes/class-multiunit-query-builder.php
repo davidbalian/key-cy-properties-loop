@@ -156,6 +156,41 @@ class KCPF_MultiUnit_Query_Builder
         // Bedrooms should already be an array from URL_Manager
         $bedroomsValues = $filters['bedrooms'];
 
+        // Handle rent properties differently - they use simple numeric values
+        if ($purpose === 'rent') {
+            $bedrooms_query = ['relation' => 'OR'];
+
+            foreach ($bedroomsValues as $bedroom) {
+                // Handle special cases for 8_plus and 9_plus
+                if ($bedroom === '8_plus') {
+                    $bedrooms_query[] = [
+                        'key' => $bedroomsKey,
+                        'value' => 8,
+                        'type' => 'NUMERIC',
+                        'compare' => '>=',
+                    ];
+                } elseif ($bedroom === '9_plus') {
+                    $bedrooms_query[] = [
+                        'key' => $bedroomsKey,
+                        'value' => 9,
+                        'type' => 'NUMERIC',
+                        'compare' => '>=',
+                    ];
+                } else {
+                    // Direct numeric comparison for regular numbers
+                    $bedrooms_query[] = [
+                        'key' => $bedroomsKey,
+                        'value' => intval($bedroom),
+                        'type' => 'NUMERIC',
+                        'compare' => '=',
+                    ];
+                }
+            }
+
+            return $bedrooms_query;
+        }
+
+        // For sale properties, use array-based filtering (existing logic)
         // For PHP arrays, we need to search within the serialized array string
         // WordPress stores arrays as serialized strings in the database
         $bedrooms_query = ['relation' => 'OR'];
@@ -231,6 +266,41 @@ class KCPF_MultiUnit_Query_Builder
         // Bathrooms should already be an array from URL_Manager
         $bathroomsValues = $filters['bathrooms'];
 
+        // Handle rent properties differently - they use simple numeric values
+        if ($purpose === 'rent') {
+            $bathrooms_query = ['relation' => 'OR'];
+
+            foreach ($bathroomsValues as $bathroom) {
+                // Handle special cases for 8_plus and 9_plus
+                if ($bathroom === '8_plus') {
+                    $bathrooms_query[] = [
+                        'key' => $bathroomsKey,
+                        'value' => 8,
+                        'type' => 'NUMERIC',
+                        'compare' => '>=',
+                    ];
+                } elseif ($bathroom === '9_plus') {
+                    $bathrooms_query[] = [
+                        'key' => $bathroomsKey,
+                        'value' => 9,
+                        'type' => 'NUMERIC',
+                        'compare' => '>=',
+                    ];
+                } else {
+                    // Direct numeric comparison for regular numbers
+                    $bathrooms_query[] = [
+                        'key' => $bathroomsKey,
+                        'value' => intval($bathroom),
+                        'type' => 'NUMERIC',
+                        'compare' => '=',
+                    ];
+                }
+            }
+
+            return $bathrooms_query;
+        }
+
+        // For sale properties, use array-based filtering (existing logic)
         // For PHP arrays, we need to search within the serialized array string
         // WordPress stores arrays as serialized strings in the database
         $bathrooms_query = ['relation' => 'OR'];
