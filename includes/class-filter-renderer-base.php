@@ -168,8 +168,8 @@ class KCPF_Filter_Renderer_Base
                          data-min="<?php echo esc_attr($min); ?>"
                          data-max="<?php echo esc_attr($max); ?>"
                          data-step="<?php echo esc_attr($step); ?>"
-                         data-value-min="<?php echo esc_attr($current_min ?: $min); ?>"
-                         data-value-max="<?php echo esc_attr($current_max ?: $max); ?>"
+                         data-value-min="<?php echo esc_attr($current_min !== '' ? $current_min : $min); ?>"
+                         data-value-max="<?php echo esc_attr($current_max !== '' ? $current_max : $max); ?>"
                          <?php if ($format) : ?>data-format="<?php echo esc_attr($format); ?>"<?php endif; ?>>
                     </div>
                     

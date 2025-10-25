@@ -99,5 +99,33 @@
         }
       });
     },
+
+    /**
+     * Reset all sliders to their full range
+     */
+    reset: function () {
+      $(".kcpf-range-slider").each(function () {
+        const $slider = $(this);
+        const slider = this;
+
+        if (!slider.noUiSlider) {
+          return;
+        }
+
+        const $container = $slider.closest(".kcpf-range-slider-container");
+        const $minInput = $container.find(".kcpf-range-min");
+        const $maxInput = $container.find(".kcpf-range-max");
+
+        const min = parseFloat($slider.data("min"));
+        const max = parseFloat($slider.data("max"));
+
+        // Reset slider to full range
+        slider.noUiSlider.set([min, max]);
+
+        // Clear input values to show full range
+        $minInput.val("");
+        $maxInput.val("");
+      });
+    },
   };
 })(jQuery);

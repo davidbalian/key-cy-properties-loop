@@ -202,12 +202,17 @@
         // Clear URL and reload properties
         const params = new URLSearchParams();
 
-        // Keep purpose parameter if it exists
-        const currentPurpose = new URLSearchParams(window.location.search).get(
-          "purpose"
-        );
-        if (currentPurpose) {
-          params.set("purpose", currentPurpose);
+        // For mega filters, don't keep purpose parameter as it's auto-detected
+        // Only keep purpose if it's explicitly set by user (not from page content)
+        const $megaFilters = $(this).closest(".kcpf-mega-filters");
+        if ($megaFilters.length === 0) {
+          // Not mega filters, keep purpose if it exists
+          const currentPurpose = new URLSearchParams(
+            window.location.search
+          ).get("purpose");
+          if (currentPurpose) {
+            params.set("purpose", currentPurpose);
+          }
         }
 
         // Update URL and load properties
