@@ -594,13 +594,45 @@
   padding: var(--kcpf-spacing-lg);
 }
 
-/* Homepage filters form - 3 column grid */
+/* Homepage filters form - 3 column x 2 row grid */
 .kcpf-homepage-filters .kcpf-filters-form {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: auto auto;
   gap: var(--kcpf-spacing-lg);
   margin: 0;
   padding: 0;
+}
+
+/* Homepage filters grid positioning */
+.kcpf-homepage-filters .kcpf-filter-purpose {
+  grid-column: 1;
+  grid-row: 1;
+}
+
+.kcpf-homepage-filters .kcpf-filter-type {
+  grid-column: 2;
+  grid-row: 1;
+}
+
+.kcpf-homepage-filters .kcpf-filter-location {
+  grid-column: 3;
+  grid-row: 1;
+}
+
+.kcpf-homepage-filters .kcpf-filter-bedrooms {
+  grid-column: 1;
+  grid-row: 2;
+}
+
+.kcpf-homepage-filters .kcpf-filter-price {
+  grid-column: 2;
+  grid-row: 2;
+}
+
+.kcpf-homepage-filters .kcpf-filter-apply {
+  grid-column: 3;
+  grid-row: 2;
 }
 
 /* Style radio buttons to stack vertically in first column */
@@ -624,15 +656,58 @@
 /* Responsive behavior for homepage filters */
 @media (max-width: 900px) {
   .kcpf-homepage-filters .kcpf-filters-form {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto auto;
     gap: var(--kcpf-spacing-lg);
+  }
+
+  /* Adjust positioning for tablet */
+  .kcpf-homepage-filters .kcpf-filter-purpose {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .kcpf-homepage-filters .kcpf-filter-type {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  .kcpf-homepage-filters .kcpf-filter-location {
+    grid-column: 1;
+    grid-row: 2;
+  }
+
+  .kcpf-homepage-filters .kcpf-filter-bedrooms {
+    grid-column: 2;
+    grid-row: 2;
+  }
+
+  .kcpf-homepage-filters .kcpf-filter-price {
+    grid-column: 1;
+    grid-row: 3;
+  }
+
+  .kcpf-homepage-filters .kcpf-filter-apply {
+    grid-column: 2;
+    grid-row: 3;
   }
 }
 
 @media (max-width: 600px) {
   .kcpf-homepage-filters .kcpf-filters-form {
     grid-template-columns: 1fr;
+    grid-template-rows: auto auto auto auto auto auto;
     gap: var(--kcpf-spacing-lg);
+  }
+
+  /* Single column layout for mobile */
+  .kcpf-homepage-filters .kcpf-filter-purpose,
+  .kcpf-homepage-filters .kcpf-filter-type,
+  .kcpf-homepage-filters .kcpf-filter-location,
+  .kcpf-homepage-filters .kcpf-filter-bedrooms,
+  .kcpf-homepage-filters .kcpf-filter-price,
+  .kcpf-homepage-filters .kcpf-filter-apply {
+    grid-column: 1;
   }
 }
 
