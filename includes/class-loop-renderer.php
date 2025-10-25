@@ -54,10 +54,8 @@ class KCPF_Loop_Renderer
             // Use paged from attrs if provided (for AJAX requests), otherwise from query vars
             $current_page = !empty($attrs['paged']) ? intval($attrs['paged']) : (!empty($query->query_vars['paged']) ? intval($query->query_vars['paged']) : 1);
             $max_pages = $query->max_num_pages;
-            
-            echo '<div class="' . esc_attr($gridClass) . '" data-current-page="' . esc_attr($current_page) . '" data-max-pages="' . esc_attr($max_pages) . '">';
 
-            // Add results count display (similar to map view)
+            // Add results count display above the grid (similar to map view)
             echo '<div class="kcpf-loop-results-header">';
             echo '<span class="kcpf-loop-results-count">';
             echo sprintf(
@@ -66,6 +64,8 @@ class KCPF_Loop_Renderer
             );
             echo '</span>';
             echo '</div>';
+
+            echo '<div class="' . esc_attr($gridClass) . '" data-current-page="' . esc_attr($current_page) . '" data-max-pages="' . esc_attr($max_pages) . '">';
 
             while ($query->have_posts()) {
                 $query->the_post();
