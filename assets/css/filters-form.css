@@ -608,6 +608,8 @@
 .kcpf-homepage-filters .kcpf-filter-purpose {
   grid-column: 1;
   grid-row: 1;
+  display: flex;
+  gap: var(--kcpf-spacing-sm);
 }
 
 .kcpf-homepage-filters .kcpf-filter-type {
@@ -840,11 +842,6 @@
   gap: var(--kcpf-spacing-lg);
   margin: 0;
   padding: 0;
-}
-
-/* Make purpose filter (radio buttons) span full width in homepage filters */
-.kcpf-homepage-filters .kcpf-filter-purpose {
-  grid-column: 1 / -1;
 }
 
 /* Ensure all dropdowns within accordion have proper z-index */
