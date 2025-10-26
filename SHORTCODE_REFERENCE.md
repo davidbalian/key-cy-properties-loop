@@ -138,6 +138,7 @@ Comprehensive filter set that combines all available property filters in a speci
 
 **Attributes:**
 
+- `purpose` (string) - Explicit purpose override ('sale' or 'rent') - overrides auto-detection
 - `apply_text` (string) - Apply button text (default: `Apply Filters`)
 - `reset_text` (string) - Reset button text (default: `Reset Filters`)
 - `show_apply` (bool) - Show apply button (default: `true`)
@@ -169,6 +170,10 @@ Comprehensive filter set that combines all available property filters in a speci
 
 ```
 [kcpf_mega_filters]
+
+[kcpf_mega_filters purpose="sale" apply_text="Search Sale Properties"]
+
+[kcpf_mega_filters purpose="rent" apply_text="Search Rental Properties"]
 
 [kcpf_mega_filters apply_text="Search Properties" reset_text="Clear All"]
 
