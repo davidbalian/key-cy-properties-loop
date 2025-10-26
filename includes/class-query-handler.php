@@ -73,8 +73,8 @@ class KCPF_Query_Handler
             ];
         }
         
-        // Purpose filter (sale/rent)
-        $purpose = !empty($filters['purpose']) ? $filters['purpose'] : ($attrs['purpose'] ?? 'sale');
+        // Purpose filter (sale/rent) - shortcode purpose overrides URL filters
+        $purpose = !empty($attrs['purpose']) ? $attrs['purpose'] : ($filters['purpose'] ?? 'sale');
         if ($purpose) {
             $tax_query[] = [
                 'taxonomy' => 'purpose',
@@ -181,22 +181,22 @@ class KCPF_Query_Handler
     
     /**
      * Get current purpose from filters or shortcode attributes
-     * 
+     *
      * @param array $filters Current filters
      * @param array $attrs Shortcode attributes
      * @return string Purpose (sale or rent)
      */
     private static function getCurrentPurpose($filters, $attrs)
     {
-        // Priority: URL filter > shortcode attribute > default (sale)
-        if (!empty($filters['purpose'])) {
-            return $filters['purpose'];
-        }
-        
+        // Priority: shortcode attribute > URL filter > default (sale)
         if (!empty($attrs['purpose'])) {
             return $attrs['purpose'];
         }
-        
+
+        if (!empty($filters['purpose'])) {
+            return $filters['purpose'];
+        }
+
         return 'sale';
     }
 }
