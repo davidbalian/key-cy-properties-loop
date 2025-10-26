@@ -20,8 +20,8 @@ class KCPF_Field_Config
      */
     private static $saleFields = [
         'price' => 'price',
-        'bedrooms' => 'rent_bedrooms',
-        'bathrooms' => 'rent_bathrooms',
+        'bedrooms' => 'bedrooms',
+        'bathrooms' => 'bathrooms',
         'covered_area' => 'total_covered_area',
     ];
     
