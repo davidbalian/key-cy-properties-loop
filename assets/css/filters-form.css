@@ -347,6 +347,12 @@
   box-shadow: var(--kcpf-shadow-focus) !important;
 }
 
+.kcpf-filter-purpose .kcpf-radio-buttons {
+  display: grid !important;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--kcpf-spacing-sm);
+}
+
 /* Radio & Toggle Buttons */
 .kcpf-toggle-buttons,
 .kcpf-radio-buttons,
@@ -640,7 +646,6 @@
 /* Style radio buttons to stack vertically in first column */
 .kcpf-homepage-filters .kcpf-radio-buttons {
   display: flex;
-  flex-direction: column;
   gap: var(--kcpf-spacing-sm);
   width: 100%;
 }
