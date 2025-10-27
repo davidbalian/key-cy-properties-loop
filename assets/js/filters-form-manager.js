@@ -330,142 +330,50 @@
         }
 
         if ($form.length > 0) {
-          // Get the initial state
-          const initialState = $form.data("initialState");
-          if (initialState) {
-            // Restore checkboxes
-            $form.find("input[type='checkbox']").prop("checked", false);
-            Object.keys(initialState.checkboxes).forEach(function (name) {
-              initialState.checkboxes[name].forEach(function (value) {
-                $form
-                  .find(
-                    `input[type='checkbox'][name='${name}'][value='${value}']`
-                  )
-                  .prop("checked", true);
-              });
-            });
+          // Clear ALL form inputs for proper reset (not restore to initial state)
 
-            // Restore radios
-            Object.keys(initialState.radios).forEach(function (name) {
-              $form
-                .find(`input[type='radio'][name='${name}']`)
-                .prop("checked", false);
-              $form
-                .find(
-                  `input[type='radio'][name='${name}'][value='${initialState.radios[name]}']`
-                )
-                .prop("checked", true);
-            });
+          // Clear all checkboxes
+          $form.find("input[type='checkbox']").prop("checked", false);
 
-            // Restore selects
-            Object.keys(initialState.selects).forEach(function (name) {
-              $form
-                .find(`select[name='${name}']`)
-                .val(initialState.selects[name]);
-            });
+          // Clear all radio buttons (uncheck all)
+          $form.find("input[type='radio']").prop("checked", false);
 
-            // Restore text/number inputs
-            Object.keys(initialState.inputs).forEach(function (name) {
-              $form
-                .find(`input[name='${name}']`)
-                .val(initialState.inputs[name]);
-            });
+          // Reset all select dropdowns to empty/first option
+          $form.find("select").val("");
 
-            // Restore multiselects
-            Object.keys(initialState.multiselects).forEach(function (name) {
-              // First clear all
-              $form
-                .find(
-                  `.kcpf-multiselect-dropdown[data-filter-name='${name}'] input[type='checkbox']`
-                )
-                .prop("checked", false);
-              // Then check the initial ones
-              initialState.multiselects[name].forEach(function (value) {
-                $form
-                  .find(
-                    `.kcpf-multiselect-dropdown[data-filter-name='${name}'] input[type='checkbox'][value='${value}']`
-                  )
-                  .prop("checked", true);
-              });
+          // Clear all text/number inputs
+          $form.find("input[type='text'], input[type='number']").val("");
 
-              // Update the display
-              KCPF_FormManager.updateMultiselectDisplay(
-                $form.find(
-                  `.kcpf-multiselect-dropdown[data-filter-name='${name}']`
-                )
-              );
-            });
+          // Clear all hidden inputs
+          $form.find("input[type='hidden']").val("");
 
-            // Restore range sliders
-            Object.keys(initialState.ranges).forEach(function (minName) {
-              const rangeData = initialState.ranges[minName];
-              const $minInput = $form.find(
-                `input[name='${rangeData.minName}']`
-              );
-              const $maxInput = $form.find(
-                `input[name='${rangeData.maxName}']`
-              );
+          // Clear multiselect dropdowns
+          $form
+            .find(".kcpf-multiselect-dropdown input[type='checkbox']")
+            .prop("checked", false);
 
-              if ($minInput.length && $maxInput.length) {
-                // Get the slider element
-                const $container = $minInput.closest(
-                  ".kcpf-range-slider-container"
-                );
-                const $slider = $container.find(".kcpf-range-slider");
+          // Update multiselect displays
+          $form.find(".kcpf-multiselect-dropdown").each(function () {
+            KCPF_FormManager.updateMultiselectDisplay($(this));
+          });
 
-                if ($slider.length && $slider[0] && $slider[0].noUiSlider) {
-                  // Use the stored slider min/max from initial state, or fall back to data attributes
-                  const sliderMin =
-                    parseFloat(rangeData.sliderMin) ||
-                    parseFloat($slider.data("min"));
-                  const sliderMax =
-                    parseFloat(rangeData.sliderMax) ||
-                    parseFloat($slider.data("max"));
+          // Reset range sliders to full range
+          $form.find(".kcpf-range-slider-container").each(function () {
+            const $container = $(this);
+            const $slider = $container.find(".kcpf-range-slider");
+            const $minInput = $container.find("input").first();
+            const $maxInput = $container.find("input").last();
 
-                  // Determine what values to restore
-                  let restoreMin, restoreMax;
+            if ($slider.length && $slider[0] && $slider[0].noUiSlider) {
+              const sliderMin = parseFloat($slider.data("min"));
+              const sliderMax = parseFloat($slider.data("max"));
 
-                  if (rangeData.min === "" && rangeData.max === "") {
-                    // Initial state was full range, restore to full range
-                    restoreMin = sliderMin;
-                    restoreMax = sliderMax;
-                  } else {
-                    // Restore to captured values, but ensure they're valid
-                    restoreMin = parseFloat(rangeData.min) || sliderMin;
-                    restoreMax = parseFloat(rangeData.max) || sliderMax;
-                  }
-
-                  // Ensure min <= max and within bounds
-                  if (restoreMin > restoreMax) {
-                    restoreMin = sliderMin;
-                    restoreMax = sliderMax;
-                  }
-                  if (restoreMin < sliderMin) restoreMin = sliderMin;
-                  if (restoreMax > sliderMax) restoreMax = sliderMax;
-
-                  // Set the slider position
-                  $slider[0].noUiSlider.set([restoreMin, restoreMax]);
-
-                  // Update the input values
-                  $minInput.val(restoreMin);
-                  $maxInput.val(restoreMax);
-                } else {
-                  // No slider, just set the input values
-                  $minInput.val(rangeData.min);
-                  $maxInput.val(rangeData.max);
-                }
-              }
-            });
-          } else {
-            // Fallback to clearing if no initial state (shouldn't happen)
-            $form
-              .find("input[type='checkbox'], input[type='radio']")
-              .prop("checked", false);
-            $form
-              .find("input[type='text'], input[type='number'], select")
-              .val("");
-            $form.find("input[type='hidden']").val("");
-          }
+              // Reset to full range
+              $slider[0].noUiSlider.set([sliderMin, sliderMax]);
+              $minInput.val(sliderMin);
+              $maxInput.val(sliderMax);
+            }
+          });
         }
 
         // Clear URL and reload properties
