@@ -29,7 +29,7 @@
      * Capture the initial state of all filters when the page loads
      */
     captureInitialState: function () {
-      const $form = $(".kcpf-filters-form").first();
+      const $form = $(".kcpf-filters-form, .kcpf-map-filters-form").first();
       if ($form.length === 0) {
         return;
       }
@@ -206,10 +206,14 @@
       }
 
       // Always use AJAX for form submission (except in debug mode)
-      $(document).on("submit", ".kcpf-filters-form", function (e) {
-        e.preventDefault();
-        KCPF_FormManager.processFormSubmission($(this));
-      });
+      $(document).on(
+        "submit",
+        ".kcpf-filters-form, .kcpf-map-filters-form",
+        function (e) {
+          e.preventDefault();
+          KCPF_FormManager.processFormSubmission($(this));
+        }
+      );
     },
 
     /**
@@ -239,7 +243,7 @@
           form.submit();
         } else {
           // Fallback: find form on page
-          const $form = $(".kcpf-filters-form").first();
+          const $form = $(".kcpf-filters-form, .kcpf-map-filters-form").first();
           if ($form.length > 0) {
             $form.submit();
           } else {
@@ -254,7 +258,10 @@
     handleHomepageRedirect: function (form, $homepage, $button) {
       const params = new URLSearchParams();
       const data = {};
-      (form.length ? form : $(".kcpf-filters-form").first())
+      (form.length
+        ? form
+        : $(".kcpf-filters-form, .kcpf-map-filters-form").first()
+      )
         .serializeArray()
         .forEach(function (item) {
           if (item.value !== "" && item.value !== null) {
@@ -318,8 +325,8 @@
         // Get the form
         const $form = $(this).closest("form");
         if ($form.length === 0) {
-          // Fallback: find any form on page
-          $form = $(".kcpf-filters-form").first();
+          // Fallback: find any filter form on page (multiple possible classes)
+          $form = $(".kcpf-filters-form, .kcpf-map-filters-form").first();
         }
 
         if ($form.length > 0) {
@@ -534,7 +541,7 @@
      */
     syncFormWithURL: function () {
       const params = new URLSearchParams(window.location.search);
-      const $form = $(".kcpf-filters-form").first();
+      const $form = $(".kcpf-filters-form, .kcpf-map-filters-form").first();
 
       if ($form.length === 0) {
         return;
