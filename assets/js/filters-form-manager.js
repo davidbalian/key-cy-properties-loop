@@ -323,7 +323,7 @@
         e.preventDefault();
 
         // Get the form
-        const $form = $(this).closest("form");
+        let $form = $(this).closest("form");
         if ($form.length === 0) {
           // Fallback: find any filter form on page (multiple possible classes)
           $form = $(".kcpf-filters-form, .kcpf-map-filters-form").first();
