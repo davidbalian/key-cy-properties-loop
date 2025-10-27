@@ -127,17 +127,6 @@
         if (updateHistory) {
           history.pushState({ kcpfFilters: true }, "", newUrl);
         }
-
-        // Scroll to results if exists (only for regular loops)
-        const $loop = $(".kcpf-properties-loop");
-        if ($loop.length > 0) {
-          $("html, body").animate(
-            {
-              scrollTop: $loop.offset().top - 100,
-            },
-            400
-          );
-        }
       } else {
         const $loop = $(".kcpf-properties-loop").first();
         if ($loop.length > 0) {
