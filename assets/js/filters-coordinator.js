@@ -41,9 +41,9 @@
         KCPF_MultiselectHandler.init();
       }
 
-      // Initialize Infinite Scroll
-      if (window.KCPF_InfiniteScroll) {
-        KCPF_InfiniteScroll.init();
+      // Initialize Load More
+      if (window.KCPF_LoadMore) {
+        KCPF_LoadMore.init();
       }
 
       // Initialize Homepage Manager

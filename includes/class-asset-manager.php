@@ -157,15 +157,15 @@ class KCPF_Asset_Manager
             true
         );
         
-        // 5. Infinite Scroll (no special dependencies)
+        // 5. Load More (no special dependencies)
         wp_enqueue_script(
-            'kcpf-infinite-scroll',
-            KCPF_ASSETS_URL . 'js/filters-infinite-scroll.js',
+            'kcpf-load-more',
+            KCPF_ASSETS_URL . 'js/filters-load-more.js',
             ['jquery'],
             KCPF_VERSION,
             true
         );
-        
+
         // 6. Homepage Manager (depends on Range Sliders for refresh)
         wp_enqueue_script(
             'kcpf-homepage-manager',
@@ -194,7 +194,7 @@ class KCPF_Asset_Manager
                 'kcpf-range-sliders',
                 'kcpf-toggle-handler',
                 'kcpf-multiselect-handler',
-                'kcpf-infinite-scroll',
+                'kcpf-load-more',
                 'kcpf-homepage-manager',
                 'kcpf-form-manager'
             ],
