@@ -81,7 +81,6 @@ class KCPF_Loop_Renderer
                 echo '<span class="kcpf-load-more-text">Load More</span>';
                 echo '<div class="kcpf-load-more-spinner" style="display: none;">';
                 echo '<div class="kcpf-loading-spinner"></div>';
-                echo '<span class="kcpf-loading-text">Loading...</span>';
                 echo '</div>';
                 echo '</button>';
                 echo '</div>';

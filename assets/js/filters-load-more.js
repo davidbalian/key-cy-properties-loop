@@ -57,7 +57,7 @@
 
       // Set loading state
       $button.addClass("loading");
-      $button.find(".kcpf-load-more-text").hide();
+      $button.find(".kcpf-load-more-text").text("Loading...");
       $button.find(".kcpf-load-more-spinner").show();
 
       // Check if kcpfData is available
@@ -171,7 +171,7 @@
      */
     resetButton: function ($button) {
       $button.removeClass("loading");
-      $button.find(".kcpf-load-more-text").show();
+      $button.find(".kcpf-load-more-text").text("Load More");
       $button.find(".kcpf-load-more-spinner").hide();
     },
   };

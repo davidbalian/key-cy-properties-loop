@@ -247,12 +247,6 @@
   animation: kcpf-spin 1s linear infinite;
 }
 
-.kcpf-load-more-spinner .kcpf-loading-text {
-  color: #fff;
-  font-size: 0.9rem;
-  margin: 0;
-}
-
 /* No Results */
 .kcpf-no-results {
   text-align: center;
