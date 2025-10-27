@@ -345,7 +345,7 @@ class KCPF_Map_Card_Renderer
     
     /**
      * Render no results message
-     * 
+     *
      * @return string HTML output
      */
     private static function renderNoResults()
@@ -355,6 +355,12 @@ class KCPF_Map_Card_Renderer
         <div class="kcpf-no-results">
             <p><?php _e('No properties found matching your filters.', 'key-cy-properties-filter'); ?></p>
             <p><?php _e('Try adjusting your search criteria.', 'key-cy-properties-filter'); ?></p>
+
+            <?php if (KCPF_URL_Manager::hasActiveFilters()) : ?>
+                <button type="button" class="kcpf-reset-button">
+                    <?php _e('Clear all filters', 'key-cy-properties-filter'); ?>
+                </button>
+            <?php endif; ?>
         </div>
         <?php
         return ob_get_clean();

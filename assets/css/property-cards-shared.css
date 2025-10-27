@@ -238,16 +238,20 @@
   margin-bottom: 1rem;
 }
 
-.kcpf-reset-link {
+.kcpf-reset-link,
+.kcpf-reset-button {
   display: inline-block;
   padding: 0.75rem 2rem;
   background-color: #000;
   color: #fff;
   border-radius: 4px;
   text-decoration: none;
+  border: none;
+  cursor: pointer;
   transition: background-color 0.3s ease;
 }
 
-.kcpf-reset-link:hover {
+.kcpf-reset-link:hover,
+.kcpf-reset-button:hover {
   background-color: #005a87;
 }

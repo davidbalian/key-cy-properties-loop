@@ -145,9 +145,9 @@ class KCPF_Loop_Renderer
 
 
             <?php if (KCPF_URL_Manager::hasActiveFilters()) : ?>
-                <a href="<?php echo esc_url(KCPF_URL_Manager::getResetUrl()); ?>" class="kcpf-reset-link">
+                <button type="button" class="kcpf-reset-button">
                     <?php esc_html_e('Clear all filters', 'key-cy-properties-filter'); ?>
-                </a>
+                </button>
             <?php endif; ?>
         </div>
         <?php
