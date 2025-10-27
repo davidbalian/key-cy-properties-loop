@@ -226,27 +226,6 @@
   box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.1);
 }
 
-.kcpf-load-more-text {
-  transition: opacity 0.3s ease;
-}
-
-.kcpf-load-more-spinner {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
-
-.kcpf-load-more-spinner .kcpf-loading-spinner {
-  width: 20px;
-  height: 20px;
-  border: 2px solid #fff;
-  border-top: 2px solid transparent;
-  border-radius: 50%;
-  animation: kcpf-spin 1s linear infinite;
-}
-
 /* No Results */
 .kcpf-no-results {
   text-align: center;

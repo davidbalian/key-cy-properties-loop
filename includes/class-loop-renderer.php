@@ -79,9 +79,6 @@ class KCPF_Loop_Renderer
                 echo '<div class="kcpf-load-more-container">';
                 echo '<button type="button" class="kcpf-load-more-btn" data-current-page="' . esc_attr($current_page) . '" data-max-pages="' . esc_attr($max_pages) . '" data-purpose="' . esc_attr($purpose_attr) . '">';
                 echo '<span class="kcpf-load-more-text">Load More</span>';
-                echo '<div class="kcpf-load-more-spinner" style="display: none;">';
-                echo '<div class="kcpf-loading-spinner"></div>';
-                echo '</div>';
                 echo '</button>';
                 echo '</div>';
             }
