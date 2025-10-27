@@ -241,18 +241,22 @@ class KCPF_Card_Data_Helper
     
     /**
      * Get property type taxonomy
-     * 
+     *
      * @param int $property_id Property ID
-     * @return string|null Property type or null
+     * @return string|null Property type(s) separated by commas, or null
      */
     public static function getPropertyType($property_id)
     {
         $propertyType = get_the_terms($property_id, 'property-type');
-        
+
         if ($propertyType && !is_wp_error($propertyType) && !empty($propertyType)) {
-            return $propertyType[0]->name;
+            // Return all property types separated by commas
+            $typeNames = array_map(function($term) {
+                return $term->name;
+            }, $propertyType);
+            return implode(', ', $typeNames);
         }
-        
+
         return null;
     }
     
