@@ -113,42 +113,48 @@
     ) {
       if (response.success && response.data.html) {
         const $newContent = $(response.data.html);
-        const $newGrid = $newContent.find(".kcpf-properties-grid");
+        const $newLoop = $newContent.filter(".kcpf-properties-loop");
 
-        if ($newGrid.length > 0) {
-          const $newCards = $newGrid.find(".kcpf-property-card");
+        if ($newLoop.length > 0) {
+          const $newGrid = $newLoop.find(".kcpf-properties-grid");
 
-          // Get existing property IDs for duplicate detection
-          const existingIds = [];
-          $grid.find(".kcpf-property-card").each(function () {
-            const cardId = $(this).data("property-id") || $(this).attr("id");
-            if (cardId) existingIds.push(cardId);
-          });
+          if ($newGrid.length > 0) {
+            const $newCards = $newGrid.find(".kcpf-property-card");
 
-          // Append new property cards to existing grid and skip duplicates
-          $newCards.each(function () {
-            const $card = $(this);
-            const cardId = $card.data("property-id") || $card.attr("id");
+            // Get existing property IDs for duplicate detection
+            const existingIds = [];
+            $grid.find(".kcpf-property-card").each(function () {
+              const cardId = $(this).data("property-id") || $(this).attr("id");
+              if (cardId) existingIds.push(cardId);
+            });
 
-            if (cardId && existingIds.includes(cardId)) {
-              return; // Skip this duplicate card
+            // Append new property cards to existing grid and skip duplicates
+            $newCards.each(function () {
+              const $card = $(this);
+              const cardId = $card.data("property-id") || $card.attr("id");
+
+              if (cardId && existingIds.includes(cardId)) {
+                return; // Skip this duplicate card
+              }
+
+              $grid.append($card);
+            });
+
+            // Update button data attributes
+            const newCurrentPage =
+              parseInt($newGrid.attr("data-current-page")) || nextPage;
+            const newMaxPages =
+              parseInt($newGrid.attr("data-max-pages")) || maxPages;
+
+            $button.attr("data-current-page", newCurrentPage);
+            $button.attr("data-max-pages", newMaxPages);
+
+            // Remove button if no more pages, otherwise reset
+            if (newCurrentPage >= newMaxPages) {
+              $button.closest(".kcpf-load-more-container").remove();
+            } else {
+              this.resetButton($button);
             }
-
-            $grid.append($card);
-          });
-
-          // Update button data attributes
-          const newCurrentPage =
-            parseInt($newGrid.attr("data-current-page")) || nextPage;
-          const newMaxPages =
-            parseInt($newGrid.attr("data-max-pages")) || maxPages;
-
-          $button.attr("data-current-page", newCurrentPage);
-          $button.attr("data-max-pages", newMaxPages);
-
-          // Remove button if no more pages, otherwise reset
-          if (newCurrentPage >= newMaxPages) {
-            $button.closest(".kcpf-load-more-container").remove();
           } else {
             this.resetButton($button);
           }
