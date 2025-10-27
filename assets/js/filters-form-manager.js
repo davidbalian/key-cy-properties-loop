@@ -401,15 +401,23 @@
           }
         }
 
-        // Update URL and load properties
-        const newUrl =
-          window.location.pathname +
-          (params.toString() ? "?" + params.toString() : "");
-        window.history.pushState({ kcpfFilters: true }, "", newUrl);
+        // If no form was found (clear all filters button), redirect to clean URL
+        if ($form.length === 0) {
+          const newUrl =
+            window.location.pathname +
+            (params.toString() ? "?" + params.toString() : "");
+          window.location.href = newUrl;
+        } else {
+          // Form was found, use AJAX to update
+          const newUrl =
+            window.location.pathname +
+            (params.toString() ? "?" + params.toString() : "");
+          window.history.pushState({ kcpfFilters: true }, "", newUrl);
 
-        // Use AJAX handler to load properties
-        if (window.KCPF_AjaxHandler) {
-          KCPF_AjaxHandler.loadProperties(params, false);
+          // Use AJAX handler to load properties
+          if (window.KCPF_AjaxHandler) {
+            KCPF_AjaxHandler.loadProperties(params, false);
+          }
         }
       });
     },
