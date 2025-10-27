@@ -97,11 +97,19 @@ class KCPF_Filter_Renderer_Base
                         <span class="kcpf-placeholder"><?php echo esc_html($placeholder); ?></span>
                     <?php else: ?>
                         <?php foreach ($current_values as $val) : 
-                            $option = array_filter($options, function($opt) use ($val) { 
-                                return (isset($opt->slug) && $opt->slug === $val) || (isset($opt['value']) && $opt['value'] === $val);
+                            $option = array_filter($options, function($opt) use ($val) {
+                                // Handle WP_Term objects
+                                if (is_object($opt) && isset($opt->slug)) {
+                                    return $opt->slug === $val;
+                                }
+                                // Handle array-style options
+                                if (is_array($opt) && isset($opt['value'])) {
+                                    return $opt['value'] === $val;
+                                }
+                                return false;
                             });
                             $option = !empty($option) ? reset($option) : null;
-                            $label = $option ? (isset($option->name) ? $option->name : $option['label']) : $val;
+                            $label = $option ? (is_object($option) && isset($option->name) ? $option->name : (is_array($option) && isset($option['label']) ? $option['label'] : $val)) : $val;
                         ?>
                             <span class="kcpf-chip">
                                 <?php echo esc_html($label); ?>
@@ -114,8 +122,8 @@ class KCPF_Filter_Renderer_Base
             </div>
             <div class="kcpf-multiselect-dropdown-menu">
                 <?php foreach ($options as $option) : 
-                    $value = isset($option->slug) ? $option->slug : $option['value'];
-                    $label = isset($option->name) ? $option->name : $option['label'];
+                    $value = is_object($option) && isset($option->slug) ? $option->slug : (is_array($option) && isset($option['value']) ? $option['value'] : '');
+                    $label = is_object($option) && isset($option->name) ? $option->name : (is_array($option) && isset($option['label']) ? $option['label'] : '');
                     $count = isset($option->count) ? $option->count : 0;
                 ?>
                     <label class="kcpf-multiselect-option">
