@@ -70,13 +70,28 @@
 /* Favourites Loop Container */
 .kcpf-favourites-loop {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
   gap: 1.5rem;
   margin: 1.5rem 0;
 }
 
+/* Sale: one column at 100% width */
+.kcpf-favourites-loop-sale {
+  grid-template-columns: 1fr;
+}
+
+/* Rent: 3 columns on desktop, responsive down */
+.kcpf-favourites-loop-rent {
+  grid-template-columns: repeat(3, 1fr);
+}
+
 .kcpf-favourites-loop .kcpf-property-card {
   position: relative;
+}
+
+/* Ensure white content background within favourites loops only */
+.kcpf-favourites-loop .kcpf-property-content-sale,
+.kcpf-favourites-loop .kcpf-property-content-rent {
+  background: #ffffff;
 }
 
 /* Empty State */
@@ -96,6 +111,12 @@
 }
 
 /* Responsive */
+@media (max-width: 1024px) {
+  .kcpf-favourites-loop-rent {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
 @media (max-width: 768px) {
   .kcpf-favourite-btn {
     width: 36px;
@@ -109,7 +130,7 @@
     height: 18px;
   }
 
-  .kcpf-favourites-loop {
+  .kcpf-favourites-loop-rent {
     grid-template-columns: 1fr;
     gap: 1rem;
   }

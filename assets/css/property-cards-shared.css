@@ -128,6 +128,12 @@
   padding: 1.5rem;
 }
 
+/* Ensure all card contents use white background across all loops */
+.kcpf-property-content-sale,
+.kcpf-property-content-rent {
+  background: #ffffff;
+}
+
 .kcpf-property-title {
   font-size: 20px !important;
   font-family: "Jost", Helvetica, sans-serif !important;
