@@ -255,11 +255,11 @@
 @media (max-width: 768px) {
   .kcpf-map-layout {
     grid-template-columns: 1fr;
-    max-height: none;
+    height: 100vh;
   }
 
   .kcpf-map-sidebar {
-    max-height: 400px;
+    height: 650px !important;
   }
 
   .kcpf-google-map {
