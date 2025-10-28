@@ -89,63 +89,45 @@
      * Remove a specific property from the favourites loop DOM
      * This is more efficient than refetching the entire loop
      */
-     removePropertyFromFavourites: function (propertyId) {
-       console.log(
-         "removePropertyFromFavourites called for property:",
-         propertyId
-       );
+    removePropertyFromFavourites: function (propertyId) {
+      // Find the specific loop that contains this property
+      const $propertyCard = $(
+        `.kcpf-favourites-loop [data-property-id="${propertyId}"]`
+      );
 
-       // Find the specific loop that contains this property
-       const $propertyCard = $(`.kcpf-favourites-loop [data-property-id="${propertyId}"]`);
-       console.log("Found property card:", $propertyCard.length);
+      if ($propertyCard.length === 0) {
+        return;
+      }
 
-       if ($propertyCard.length === 0) {
-         console.log("Property card not found, returning");
-         return;
-       }
+      // Get the parent loop container
+      const $loop = $propertyCard.closest(".kcpf-favourites-loop");
 
-       // Get the parent loop container
-       const $loop = $propertyCard.closest('.kcpf-favourites-loop');
-       console.log("Found parent loop:", $loop.length);
-       console.log("Loop classes:", $loop.attr('class'));
+      if ($loop.length === 0) {
+        return;
+      }
 
-       if ($loop.length === 0) {
-         console.log("No parent loop found, returning");
-         return;
-       }
+      // Remove the property card with a smooth animation
+      $propertyCard.fadeOut(300, function () {
+        $(this).remove();
 
-       // Remove the property card with a smooth animation
-       $propertyCard.fadeOut(300, function () {
-         $(this).remove();
+        // Check if this was the last property in THIS specific loop
+        const remainingCards = $loop.find(".kcpf-property-card").length;
 
-         // Check if this was the last property in THIS specific loop
-         const remainingCards = $loop.find(".kcpf-property-card").length;
-
-         console.log("Property removed, remaining cards in this loop:", remainingCards);
-         console.log("Loop HTML after removal:", $loop.html());
-
-         if (remainingCards === 0) {
-           // Show empty state
-           console.log("Showing empty state for this loop");
-           FavouritesManager.showEmptyState($loop);
-         }
-       });
-     },
+        if (remainingCards === 0) {
+          // Show empty state
+          FavouritesManager.showEmptyState($loop);
+        }
+      });
+    },
 
     /**
      * Show empty state when no favourites remain
      */
     showEmptyState: function ($loop) {
-      console.log("showEmptyState called");
-      console.log("Loop element:", $loop);
-      console.log("Loop classes:", $loop.attr("class"));
-
       // Determine purpose from the loop class
       const purpose = $loop.hasClass("kcpf-favourites-loop-rent")
         ? "rent"
         : "sale";
-
-      console.log("Purpose determined as:", purpose);
 
       // Create empty state HTML
       const emptyStateHtml = `
@@ -155,12 +137,8 @@
          </div>
        `;
 
-      console.log("Empty state HTML:", emptyStateHtml);
-
       // Replace loop content with empty state
       $loop.html(emptyStateHtml);
-
-      console.log("Loop HTML after setting empty state:", $loop.html());
     },
   };
 
