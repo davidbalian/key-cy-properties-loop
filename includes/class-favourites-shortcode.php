@@ -46,7 +46,7 @@ class KCPF_Favourites_Shortcode
         
         // Render cards individually to avoid the kcpf-properties-grid wrapper
         foreach ($ids as $property_id) {
-            $html .= KCPF_Map_Card_Renderer::renderCard($property_id, $purpose, true);
+            $html .= KCPF_Map_Card_Renderer::renderCard($property_id, $purpose, false);
         }
         
         $html .= '</div>';

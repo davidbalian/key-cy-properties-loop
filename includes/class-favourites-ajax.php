@@ -106,16 +106,11 @@ class KCPF_Favourites_Ajax
             $html .= '<p>' . esc_html__('Tap the star on any property to save it here.', 'key-cy-properties-filter') . '</p>';
             $html .= '</div>';
         } else {
-            // Render the favourites loop
-            $modifierClass = $purpose === 'rent' ? ' kcpf-favourites-loop-rent' : ' kcpf-favourites-loop-sale';
-            $html = '<div class="kcpf-favourites-loop' . $modifierClass . '">';
-            
-            // Render cards individually
+            // Render just the cards without the container wrapper
+            $html = '';
             foreach ($ids as $property_id) {
-                $html .= KCPF_Map_Card_Renderer::renderCard($property_id, $purpose, true);
+                $html .= KCPF_Map_Card_Renderer::renderCard($property_id, $purpose, false);
             }
-            
-            $html .= '</div>';
         }
 
         // Return success response
