@@ -66,6 +66,11 @@
           if (response.success) {
             // Update button with new HTML
             $btn.replaceWith(response.data.html);
+
+            // If property was removed from favourites, refresh the favourites loop
+            if (!response.data.favourited) {
+              FavouritesManager.refreshFavouritesLoop();
+            }
           } else {
             console.error("Toggle failed:", response.data.message);
             // Remove loading state
@@ -78,6 +83,18 @@
           $btn.removeClass("is-loading");
         },
       });
+    },
+
+    /**
+     * Refresh the favourites loop by reloading the page
+     * This ensures removed properties disappear from the favourites page
+     */
+    refreshFavouritesLoop: function () {
+      // Check if we're on a favourites page by looking for the favourites loop container
+      if ($(".kcpf-favourites-loop").length > 0) {
+        // Reload the page to refresh the favourites loop
+        window.location.reload();
+      }
     },
   };
 
