@@ -332,23 +332,6 @@
   margin: 0.5rem 0;
 }
 
-.kcpf-single-map-info-window {
-  padding: 1rem;
-  min-width: 200px;
-}
-
-.kcpf-single-map-info-window h3 {
-  margin: 0 0 0.5rem 0;
-  font-size: 1.1rem;
-  color: #000000;
-}
-
-.kcpf-single-map-info-window p {
-  margin: 0.25rem 0;
-  font-size: 0.9rem;
-  color: #6c757d;
-}
-
 /* Single Property Map Responsive */
 @media (max-width: 768px) {
   .kcpf-single-map-container {

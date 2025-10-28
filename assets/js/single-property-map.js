@@ -15,7 +15,6 @@
   const KCPFSinglePropertyMap = {
     map: null,
     circle: null,
-    infoWindow: null,
     propertyId: null,
     propertyData: null,
 
@@ -107,6 +106,7 @@
         streetViewControl: true,
         fullscreenControl: true,
         zoomControl: true,
+        maxZoom: 12,
         styles: [
           {
             featureType: "poi",
@@ -116,14 +116,8 @@
         ],
       });
 
-      // Create info window
-      this.infoWindow = new google.maps.InfoWindow();
-
       // Add property circle
       this.addPropertyCircle();
-
-      // Add property marker (small dot in center)
-      this.addPropertyMarker();
 
       // Show loading complete
       this.hideLoading();
@@ -152,71 +146,6 @@
       });
 
       console.log("[KCPF Single Map] Property circle added");
-    },
-
-    /**
-     * Add property marker (small dot in center)
-     */
-    addPropertyMarker: function () {
-      console.log("[KCPF Single Map] Adding property marker");
-
-      // Create a small marker to show exact property location
-      const marker = new google.maps.Marker({
-        position: {
-          lat: this.propertyData.lat,
-          lng: this.propertyData.lng,
-        },
-        map: this.map,
-        title: "Property Location",
-        icon: {
-          path: google.maps.SymbolPath.CIRCLE,
-          scale: 6,
-          fillColor: "#000000",
-          fillOpacity: 1,
-          strokeColor: "#ffffff",
-          strokeWeight: 2,
-        },
-        clickable: true,
-      });
-
-      // Add click listener to show property info
-      marker.addListener("click", () => {
-        this.showPropertyInfo();
-      });
-
-      console.log("[KCPF Single Map] Property marker added");
-    },
-
-    /**
-     * Show property information in info window
-     */
-    showPropertyInfo: function () {
-      // Get property title
-      const propertyTitle =
-        document
-          .querySelector(".kcpf-single-property-map")
-          .closest("article")
-          ?.querySelector("h1")?.textContent ||
-        document.querySelector("h1")?.textContent ||
-        "Property Location";
-
-      // Create info window content
-      const content = `
-        <div class="kcpf-single-map-info-window">
-          <h3>${propertyTitle}</h3>
-          <p>Property ID: ${this.propertyId}</p>
-          <p>Coordinates: ${this.propertyData.lat.toFixed(
-            6
-          )}, ${this.propertyData.lng.toFixed(6)}</p>
-        </div>
-      `;
-
-      this.infoWindow.setContent(content);
-      this.infoWindow.setPosition({
-        lat: this.propertyData.lat,
-        lng: this.propertyData.lng,
-      });
-      this.infoWindow.open(this.map);
     },
 
     /**
