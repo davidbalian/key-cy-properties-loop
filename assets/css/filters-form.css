@@ -340,7 +340,7 @@
   border: 1px solid var(--kcpf-color-gray-medium) !important;
   border-radius: var(--kcpf-border-radius-full) !important;
   font-size: var(--kcpf-font-size-base) !important;
-  background-color: var(--kcpf-color-white) !important;
+  background-color: var(--e-global-color-ea47fe3) !important;
   transition: border-color var(--kcpf-transition-medium);
 }
 
@@ -931,7 +931,7 @@
 
 .kcpf-input,
 .kcpf-property-id-input {
-  background-color: var(--kcpf-color-white) !important;
+  background-color: var(--e-global-color-ea47fe3) !important;
 }
 
 .kcpf-toggle-label span,
