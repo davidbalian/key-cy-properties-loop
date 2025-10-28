@@ -99,21 +99,24 @@ class KCPF_Favourites_Ajax
         // Get favourites for the purpose
         $ids = KCPF_Favourites_Manager::getFavouritesByPurpose($purpose);
 
-        // Always return just the content (cards or empty state) without the container wrapper
-        // The container wrapper is handled by the shortcode
+        // Return complete container structure to maintain consistency
+        $modifierClass = $purpose === 'rent' ? ' kcpf-favourites-loop-rent' : ' kcpf-favourites-loop-sale';
+        $html = '<div class="kcpf-favourites-loop' . $modifierClass . '">';
+
         if (empty($ids)) {
             // Return empty state
-            $html = '<div class="kcpf-favourites-empty">';
+            $html .= '<div class="kcpf-favourites-empty">';
             $html .= '<h3>' . esc_html__('No favourites yet', 'key-cy-properties-filter') . '</h3>';
             $html .= '<p>' . esc_html__('Tap the star on any property to save it here.', 'key-cy-properties-filter') . '</p>';
             $html .= '</div>';
         } else {
-            // Render just the cards without the container wrapper
-            $html = '';
+            // Render cards
             foreach ($ids as $property_id) {
                 $html .= KCPF_Map_Card_Renderer::renderCard($property_id, $purpose, false);
             }
         }
+
+        $html .= '</div>';
 
         // Return success response
         wp_send_json_success([
