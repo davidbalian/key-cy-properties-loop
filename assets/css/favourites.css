@@ -148,7 +148,7 @@
   transition: all 0.2s ease !important;
   font-weight: 400 !important;
   text-decoration: none !important;
-  padding: 0.75rem 1rem !important;
+  padding: 9px 30px !important;
 }
 
 .kcpf-single-property-favourite-btn:hover {
@@ -156,9 +156,19 @@
   color: #ffffff !important;
 }
 
+.kcpf-single-property-favourite-btn:hover svg {
+  fill: #ffffff !important;
+  stroke: #ffffff !important;
+}
+
 .kcpf-single-property-favourite-btn.is-active {
   background: #ededed !important;
   color: #000000 !important;
+}
+
+.kcpf-single-property-favourite-btn.is-active svg {
+  fill: #000000 !important;
+  stroke: #000000 !important;
 }
 
 .kcpf-single-property-favourite-btn.is-active:hover {
@@ -182,8 +192,8 @@
 .kcpf-single-property-favourite-icon svg {
   width: 20px !important;
   height: 20px !important;
-  fill: currentColor !important;
-  stroke: currentColor !important;
+  fill: #000000 !important;
+  stroke: #000000 !important;
 }
 
 .kcpf-single-property-favourite-text {
