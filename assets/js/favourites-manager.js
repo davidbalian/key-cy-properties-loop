@@ -89,45 +89,48 @@
      * Remove a specific property from the favourites loop DOM
      * This is more efficient than refetching the entire loop
      */
-    removePropertyFromFavourites: function (propertyId) {
-      console.log(
-        "removePropertyFromFavourites called for property:",
-        propertyId
-      );
+     removePropertyFromFavourites: function (propertyId) {
+       console.log(
+         "removePropertyFromFavourites called for property:",
+         propertyId
+       );
 
-      // Check if we're on a favourites page
-      const $loop = $(".kcpf-favourites-loop");
-      console.log("Found loops:", $loop.length);
-      console.log("Loop elements:", $loop);
+       // Find the specific loop that contains this property
+       const $propertyCard = $(`.kcpf-favourites-loop [data-property-id="${propertyId}"]`);
+       console.log("Found property card:", $propertyCard.length);
 
-      if ($loop.length === 0) {
-        console.log("No favourites loop found, returning");
-        return;
-      }
+       if ($propertyCard.length === 0) {
+         console.log("Property card not found, returning");
+         return;
+       }
 
-      // Find the property card by data-property-id
-      const $propertyCard = $loop.find(`[data-property-id="${propertyId}"]`);
-      console.log("Found property card:", $propertyCard.length);
+       // Get the parent loop container
+       const $loop = $propertyCard.closest('.kcpf-favourites-loop');
+       console.log("Found parent loop:", $loop.length);
+       console.log("Loop classes:", $loop.attr('class'));
 
-      if ($propertyCard.length > 0) {
-        // Remove the property card with a smooth animation
-        $propertyCard.fadeOut(300, function () {
-          $(this).remove();
+       if ($loop.length === 0) {
+         console.log("No parent loop found, returning");
+         return;
+       }
 
-          // Check if this was the last property
-          const remainingCards = $loop.find(".kcpf-property-card").length;
+       // Remove the property card with a smooth animation
+       $propertyCard.fadeOut(300, function () {
+         $(this).remove();
 
-          console.log("Property removed, remaining cards:", remainingCards);
-          console.log("Loop HTML after removal:", $loop.html());
+         // Check if this was the last property in THIS specific loop
+         const remainingCards = $loop.find(".kcpf-property-card").length;
 
-          if (remainingCards === 0) {
-            // Show empty state
-            console.log("Showing empty state");
-            FavouritesManager.showEmptyState($loop);
-          }
-        });
-      }
-    },
+         console.log("Property removed, remaining cards in this loop:", remainingCards);
+         console.log("Loop HTML after removal:", $loop.html());
+
+         if (remainingCards === 0) {
+           // Show empty state
+           console.log("Showing empty state for this loop");
+           FavouritesManager.showEmptyState($loop);
+         }
+       });
+     },
 
     /**
      * Show empty state when no favourites remain
