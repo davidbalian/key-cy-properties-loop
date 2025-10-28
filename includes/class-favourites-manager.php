@@ -158,12 +158,12 @@ class KCPF_Favourites_Manager
             $propertyId,
             esc_attr($purpose),
             $active ? 'true' : 'false',
-            $isLoggedIn ? '' : ' disabled title="Login to save favourites"'
+            $isLoggedIn ? '' : ' title="Login to save favourites"'
         );
 
         $icon = $active ? self::getFilledStarIcon() : self::getOutlineStarIcon();
 
-        return '<button ' . $attrs . '>' . $icon . '</button>';
+        return '<span ' . $attrs . '>' . $icon . '</span>';
     }
 
     /**
