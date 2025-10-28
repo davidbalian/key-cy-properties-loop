@@ -61,8 +61,15 @@ class KCPF_Favourites_Ajax
         // Toggle favourite
         $is_favourited = KCPF_Favourites_Manager::toggleFavourite($property_id, $purpose);
 
-        // Generate updated button HTML
-        $updated_html = KCPF_Favourites_Manager::renderIcon($property_id, $purpose);
+        // Check if this is a single property page button
+        $is_single_property = isset($_POST['is_single_property']) && $_POST['is_single_property'] === 'true';
+        
+        // Generate appropriate button HTML
+        if ($is_single_property) {
+            $updated_html = self::renderSinglePropertyButton($property_id, $purpose, $is_favourited);
+        } else {
+            $updated_html = KCPF_Favourites_Manager::renderIcon($property_id, $purpose);
+        }
 
         // Return success response
         wp_send_json_success([
@@ -70,6 +77,44 @@ class KCPF_Favourites_Ajax
             'property_id' => $property_id,
             'html' => $updated_html
         ]);
+    }
+
+    /**
+     * Render single property button HTML
+     *
+     * @param int $property_id
+     * @param string $purpose
+     * @param bool $is_favourited
+     * @return string
+     */
+    private static function renderSinglePropertyButton($property_id, $purpose, $is_favourited)
+    {
+        $text = $is_favourited ? 'Remove from Favourites' : 'Save to Favourites';
+        $icon = $is_favourited ? KCPF_Favourites_Manager::getFilledStarIcon() : KCPF_Favourites_Manager::getOutlineStarIcon();
+
+        $classes = 'kcpf-favourite-btn kcpf-single-property-favourite-btn';
+        if ($is_favourited) {
+            $classes .= ' is-active';
+        }
+
+        $attrs = sprintf(
+            'class="%s" data-property-id="%d" data-purpose="%s" aria-pressed="%s"',
+            esc_attr($classes),
+            $property_id,
+            esc_attr($purpose),
+            $is_favourited ? 'true' : 'false'
+        );
+
+        ob_start();
+        ?>
+        <button type="button" <?php echo $attrs; ?>>
+            <span class="kcpf-favourite-icon kcpf-single-property-favourite-icon" aria-hidden="true">
+                <?php echo $icon; ?>
+            </span>
+            <span class="kcpf-single-property-favourite-text"><?php echo esc_html($text); ?></span>
+        </button>
+        <?php
+        return ob_get_clean();
     }
 
 }

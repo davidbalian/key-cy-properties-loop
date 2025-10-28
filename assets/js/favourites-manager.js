@@ -43,6 +43,7 @@
 
       const propertyId = $btn.data("property-id");
       const purpose = $btn.data("purpose");
+      const isSingleProperty = $btn.hasClass("kcpf-single-property-favourite-btn");
 
       if (!propertyId || !purpose) {
         console.error("Missing property ID or purpose");
@@ -61,6 +62,7 @@
           property_id: propertyId,
           purpose: purpose,
           nonce: kcpfFavouritesData.nonce,
+          is_single_property: isSingleProperty ? 'true' : 'false',
         },
         success: function (response) {
           if (response.success) {
@@ -72,8 +74,6 @@
               FavouritesManager.removePropertyFromFavourites(propertyId);
             }
 
-            // Update single property page button text if it exists
-            FavouritesManager.updateSinglePropertyButton(propertyId, response.data.favourited);
           } else {
             console.error("Toggle failed:", response.data.message);
             // Remove loading state
@@ -144,37 +144,6 @@
       $loop.html(emptyStateHtml);
     },
 
-    /**
-     * Update single property page button text and state
-     */
-    updateSinglePropertyButton: function (propertyId, isFavourited) {
-      const $singleBtn = $(`.kcpf-single-property-favourite-btn[data-property-id="${propertyId}"]`);
-      
-      if ($singleBtn.length === 0) {
-        return;
-      }
-
-      // Update button state
-      if (isFavourited) {
-        $singleBtn.addClass("is-active").attr("aria-pressed", "true");
-        $singleBtn.find(".kcpf-single-property-favourite-text").text("Remove from Favourites");
-      } else {
-        $singleBtn.removeClass("is-active").attr("aria-pressed", "false");
-        $singleBtn.find(".kcpf-single-property-favourite-text").text("Save to Favourites");
-      }
-
-      // Update icon
-      const $icon = $singleBtn.find(".kcpf-favourite-icon");
-      if (isFavourited) {
-        $icon.html(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="20" height="20">
-          <path d="M394 480a16 16 0 01-9.39-3L256 383.76 127.39 477a16 16 0 01-24.55-18.08L153 310.35 23 221.2a16 16 0 019-29.2h160.38l48.4-148.95a16 16 0 0130.44 0l48.4 149H480a16 16 0 019.05 29.2L359 310.35l50.13 148.53A16 16 0 01394 480z" fill="currentColor"></path>
-        </svg>`);
-      } else {
-        $icon.html(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="20" height="20">
-          <path d="M480 208H308L256 48l-52 160H32l140 96-54 160 138-100 138 100-54-160z" fill="none" stroke="currentColor" stroke-linejoin="round" stroke-width="32"></path>
-        </svg>`);
-      }
-    },
   };
 
   /**
