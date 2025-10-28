@@ -274,7 +274,7 @@ class KCPF_Asset_Manager
                 background-color: #f0f0f0 !important;
             }
             .kcpf-chip {
-                background-color: #f0f0f0 !important;
+                background-color: #f8f8f8 !important;
                 color: #000 !important;
             }
             .kcpf-chip-remove {
