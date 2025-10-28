@@ -57,19 +57,12 @@
   justify-content: center;
   width: 18px;
   height: 18px;
-}
-
-.kcpf-favourite-icon svg {
-  width: 18px;
-  height: 18px;
-  fill: #000000;
-  stroke: #000000;
+  font-size: 16px;
   color: #000000;
 }
 
-.kcpf-favourite-btn.is-active .kcpf-favourite-icon svg {
-  fill: #000000;
-  stroke: #000000;
+.kcpf-favourite-btn.is-active .kcpf-favourite-icon {
+  color: #000000;
 }
 
 /* Position favourites button within image area */
@@ -179,6 +172,11 @@
 
 .kcpf-single-property-favourite-text {
   white-space: nowrap !important;
+  line-height: 1 !important;
+}
+
+.kcpf-single-property-favourite-icon .fa-star:before {
+  vertical-align: middle;
 }
 
 /* Font Awesome Icon Color Overrides for Single Property Button */
@@ -227,11 +225,7 @@
   .kcpf-favourite-icon {
     width: 16px;
     height: 16px;
-  }
-
-  .kcpf-favourite-icon svg {
-    width: 16px;
-    height: 16px;
+    font-size: 14px;
   }
 
   .kcpf-favourites-loop-rent {
