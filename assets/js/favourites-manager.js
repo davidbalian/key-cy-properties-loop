@@ -85,17 +85,47 @@
       });
     },
 
-    /**
-     * Refresh the favourites loop by reloading the page
-     * This ensures removed properties disappear from the favourites page
-     */
-    refreshFavouritesLoop: function () {
-      // Check if we're on a favourites page by looking for the favourites loop container
-      if ($(".kcpf-favourites-loop").length > 0) {
-        // Reload the page to refresh the favourites loop
-        window.location.reload();
-      }
-    },
+     /**
+      * Refresh the favourites loop via AJAX
+      * This ensures removed properties disappear from the favourites page
+      */
+     refreshFavouritesLoop: function () {
+       // Check if we're on a favourites page by looking for the favourites loop container
+       const $loop = $(".kcpf-favourites-loop");
+       if ($loop.length > 0) {
+         // Determine purpose from the loop class
+         const purpose = $loop.hasClass("kcpf-favourites-loop-rent") ? "rent" : "sale";
+         
+         // Show loading state
+         $loop.addClass("kcpf-loading");
+         
+         // Fetch updated favourites loop
+         $.ajax({
+           url: kcpfFavouritesData.ajaxUrl,
+           type: "POST",
+           data: {
+             action: "kcpf_refresh_favourites_loop",
+             purpose: purpose,
+             nonce: kcpfFavouritesData.nonce
+           },
+           success: function (response) {
+             if (response.success) {
+               // Replace the loop content
+               $loop.html(response.data.html);
+             } else {
+               console.error("Failed to refresh favourites loop:", response.data.message);
+             }
+           },
+           error: function (xhr, status, error) {
+             console.error("AJAX error refreshing favourites loop:", error);
+           },
+           complete: function () {
+             // Remove loading state
+             $loop.removeClass("kcpf-loading");
+           }
+         });
+       }
+     },
   };
 
   /**
