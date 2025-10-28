@@ -84,17 +84,16 @@
   display: grid;
   gap: 1.5rem;
   margin: 1.5rem 0;
-  grid-template-columns: 1fr; /* Default to single column */
 }
 
 /* Sale: one column at 100% width */
 .kcpf-favourites-loop-sale {
-  grid-template-columns: 1fr;
+  grid-template-columns: 1fr !important;
 }
 
 /* Rent: 3 columns on desktop, responsive down */
 .kcpf-favourites-loop-rent {
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(3, 1fr) !important;
 }
 
 .kcpf-favourites-loop .kcpf-property-card {
