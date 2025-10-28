@@ -134,11 +134,13 @@
 
 /* Single Property Favourites Button */
 .kcpf-single-property-favourite-btn {
+  position: static !important;
   display: flex !important;
   flex-direction: row !important;
   justify-content: center !important;
   align-items: center !important;
   gap: 0.5rem !important;
+  width: 100% !important;
   background: #ededed !important;
   color: #000000 !important;
   border: none !important;
@@ -146,6 +148,8 @@
   transition: all 0.2s ease !important;
   font-weight: 500 !important;
   text-decoration: none !important;
+  padding: 0.75rem 1rem !important;
+  border-radius: 4px !important;
 }
 
 .kcpf-single-property-favourite-btn:hover {
@@ -174,8 +178,8 @@
 .kcpf-single-property-favourite-icon svg {
   width: 20px !important;
   height: 20px !important;
-  fill: #000000 !important;
-  stroke: #000000 !important;
+  fill: currentColor !important;
+  stroke: currentColor !important;
 }
 
 .kcpf-single-property-favourite-text {
@@ -226,17 +230,18 @@
   }
 
   .kcpf-single-property-favourite-btn {
-    padding: 0.625rem 0.875rem;
-    font-size: 13px;
+    padding: 0.625rem 0.875rem !important;
+    font-size: 13px !important;
+    width: 100% !important;
   }
 
   .kcpf-single-property-favourite-icon {
-    width: 18px;
-    height: 18px;
+    width: 18px !important;
+    height: 18px !important;
   }
 
   .kcpf-single-property-favourite-icon svg {
-    width: 18px;
-    height: 18px;
+    width: 18px !important;
+    height: 18px !important;
   }
 }
