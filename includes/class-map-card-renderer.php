@@ -199,6 +199,8 @@ class KCPF_Map_Card_Renderer
                 </div>
             </div>
             </a>
+
+            <?php echo KCPF_Data_Store_Button_Renderer::renderButton($property_id, 'sale'); ?>
         </article>
         <?php
     }
@@ -213,7 +215,8 @@ class KCPF_Map_Card_Renderer
         
         // Call the existing rent card view render method (which outputs HTML directly)
         KCPF_Rent_Card_View::render($property_id, $location, $purpose, $price, $isMultiUnit, $multiUnitCount, $bedrooms, $bathrooms, $purposeSlug, $bedroomsRange, $bathroomsRange, $coveredAreaRange, $plotArea, $isLand);
-        
+
+        echo KCPF_Data_Store_Button_Renderer::renderRentButton($property_id);
         echo '</article>';
     }
     

@@ -141,6 +141,8 @@ class KCPF_Rent_Card_View
                 <?php endif; ?>
             </div>
             </a>
+
+            <?php echo KCPF_Data_Store_Button_Renderer::renderRentButton($property_id); ?>
         </article>
         <?php
     }
