@@ -99,6 +99,8 @@ class KCPF_Favourites_Ajax
         // Get favourites for the purpose
         $ids = KCPF_Favourites_Manager::getFavouritesByPurpose($purpose);
 
+        // Always return just the content (cards or empty state) without the container wrapper
+        // The container wrapper is handled by the shortcode
         if (empty($ids)) {
             // Return empty state
             $html = '<div class="kcpf-favourites-empty">';

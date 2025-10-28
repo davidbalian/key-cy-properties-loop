@@ -30,23 +30,23 @@ class KCPF_Favourites_Shortcode
 
         $purpose = KCPF_Favourites_Manager::normalizePurpose($atts['purpose']);
 
-        if (!is_user_logged_in()) {
-            return self::renderGuestMessage();
-        }
-
-        $ids = KCPF_Favourites_Manager::getFavouritesByPurpose($purpose);
-
-        if (empty($ids)) {
-            return self::renderEmptyState($purpose);
-        }
-
-        // Render using existing card renderer with multi-unit hidden in loops
+        // Always create the same container structure
         $modifierClass = $purpose === 'rent' ? ' kcpf-favourites-loop-rent' : ' kcpf-favourites-loop-sale';
         $html = '<div class="kcpf-favourites-loop' . $modifierClass . '">';
-        
-        // Render cards individually to avoid the kcpf-properties-grid wrapper
-        foreach ($ids as $property_id) {
-            $html .= KCPF_Map_Card_Renderer::renderCard($property_id, $purpose, false);
+
+        if (!is_user_logged_in()) {
+            $html .= self::renderGuestMessage();
+        } else {
+            $ids = KCPF_Favourites_Manager::getFavouritesByPurpose($purpose);
+
+            if (empty($ids)) {
+                $html .= self::renderEmptyState($purpose);
+            } else {
+                // Render cards individually to avoid the kcpf-properties-grid wrapper
+                foreach ($ids as $property_id) {
+                    $html .= KCPF_Map_Card_Renderer::renderCard($property_id, $purpose, false);
+                }
+            }
         }
         
         $html .= '</div>';

@@ -95,6 +95,11 @@
   grid-template-columns: repeat(3, 1fr) !important;
 }
 
+/* Empty state spans full width in both layouts */
+.kcpf-favourites-loop .kcpf-favourites-empty {
+  grid-column: 1 / -1;
+}
+
 .kcpf-favourites-loop .kcpf-property-card {
   position: relative;
 }
@@ -110,14 +115,12 @@
   text-align: center;
   padding: 3rem 1rem;
   color: #666;
-}
-
-/* Empty state - convert grid to flex for centering */
-.kcpf-favourites-loop:has(.kcpf-favourites-empty) {
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   min-height: 300px;
+  width: 100%;
 }
 
 .kcpf-favourites-empty h3 {
