@@ -90,7 +90,7 @@ class KCPF_Favourites_Ajax
     private static function renderSinglePropertyButton($property_id, $purpose, $is_favourited)
     {
         $text = $is_favourited ? 'Remove from Favourites' : 'Save to Favourites';
-        $icon = $is_favourited ? KCPF_Favourites_Manager::getFilledStarIcon() : KCPF_Favourites_Manager::getOutlineStarIcon();
+        $icon_class = $is_favourited ? 'fas fa-star' : 'far fa-star';
 
         $classes = 'kcpf-favourite-btn kcpf-single-property-favourite-btn';
         if ($is_favourited) {
@@ -108,9 +108,7 @@ class KCPF_Favourites_Ajax
         ob_start();
         ?>
         <button type="button" <?php echo $attrs; ?>>
-            <span class="kcpf-favourite-icon kcpf-single-property-favourite-icon" aria-hidden="true">
-                <?php echo $icon; ?>
-            </span>
+            <i class="kcpf-single-property-favourite-icon <?php echo esc_attr($icon_class); ?>" aria-hidden="true"></i>
             <span class="kcpf-single-property-favourite-text"><?php echo esc_html($text); ?></span>
         </button>
         <?php
