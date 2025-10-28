@@ -43,6 +43,7 @@ class KCPF_Plugin_Loader
         require_once KCPF_INCLUDES_DIR . 'class-favourites-manager.php';
         require_once KCPF_INCLUDES_DIR . 'class-favourites-ajax.php';
         require_once KCPF_INCLUDES_DIR . 'class-favourites-shortcode.php';
+        require_once KCPF_INCLUDES_DIR . 'class-single-property-favourites-shortcode.php';
     }
     
     /**

@@ -132,6 +132,71 @@
   margin: 0 0 1.5rem 0;
 }
 
+/* Single Property Favourites Button */
+.kcpf-single-property-favourite-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  background: #ededed;
+  color: #000000;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.kcpf-single-property-favourite-btn:hover {
+  background: #000000;
+  color: #ffffff;
+}
+
+.kcpf-single-property-favourite-btn.is-active {
+  background: #ededed;
+  color: #000000;
+}
+
+.kcpf-single-property-favourite-btn.is-active:hover {
+  background: #000000;
+  color: #ffffff;
+}
+
+.kcpf-single-property-favourite-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+}
+
+.kcpf-single-property-favourite-icon svg {
+  width: 20px;
+  height: 20px;
+  fill: currentColor;
+  stroke: currentColor;
+}
+
+.kcpf-single-property-favourite-text {
+  white-space: nowrap;
+}
+
+.kcpf-single-property-favourite-guest {
+  padding: 1rem;
+  background: #f8f9fa;
+  border: 1px solid #e9ecef;
+  border-radius: 4px;
+  text-align: center;
+  color: #6c757d;
+}
+
+.kcpf-single-property-favourite-guest p {
+  margin: 0;
+  font-size: 14px;
+}
+
 /* Responsive */
 @media (max-width: 1024px) {
   .kcpf-favourites-loop-rent {
@@ -159,5 +224,20 @@
   .kcpf-favourites-loop-rent {
     grid-template-columns: 1fr;
     gap: 1rem;
+  }
+
+  .kcpf-single-property-favourite-btn {
+    padding: 0.625rem 0.875rem;
+    font-size: 13px;
+  }
+
+  .kcpf-single-property-favourite-icon {
+    width: 18px;
+    height: 18px;
+  }
+
+  .kcpf-single-property-favourite-icon svg {
+    width: 18px;
+    height: 18px;
   }
 }
