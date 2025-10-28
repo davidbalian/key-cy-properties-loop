@@ -19,7 +19,6 @@ class KCPF_Asset_Manager
     public static function init()
     {
         add_action('wp_enqueue_scripts', [__CLASS__, 'enqueueAssets']);
-        add_action('wp_head', [__CLASS__, 'addCriticalOverrides'], 100);
     }
     
     /**
