@@ -255,7 +255,7 @@
 @media (max-width: 768px) {
   .kcpf-map-layout {
     grid-template-columns: 1fr;
-    height: 100vh;
+    height: max-content;
   }
 
   .kcpf-map-sidebar {
