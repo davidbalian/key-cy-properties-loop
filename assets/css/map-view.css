@@ -280,3 +280,84 @@
     font-size: 1.1rem;
   }
 }
+
+/* ==========================================================================
+   Single Property Map
+   ========================================================================== */
+
+.kcpf-single-property-map {
+  width: 100%;
+  margin: 1rem 0;
+}
+
+.kcpf-single-map-container {
+  position: relative;
+  background: #e9ecef;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.kcpf-single-google-map {
+  width: 100%;
+  height: 100%;
+}
+
+.kcpf-single-map-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem;
+  text-align: center;
+  background: #f8f9fa;
+  border-radius: 8px;
+}
+
+.kcpf-single-map-error {
+  padding: 2rem;
+  text-align: center;
+  background: #f8f9fa;
+  border: 1px solid #e9ecef;
+  border-radius: 8px;
+  color: #6c757d;
+}
+
+.kcpf-single-map-error h3 {
+  margin: 0 0 1rem 0;
+  color: #495057;
+}
+
+.kcpf-single-map-error p {
+  margin: 0.5rem 0;
+}
+
+.kcpf-single-map-info-window {
+  padding: 1rem;
+  min-width: 200px;
+}
+
+.kcpf-single-map-info-window h3 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.1rem;
+  color: #000000;
+}
+
+.kcpf-single-map-info-window p {
+  margin: 0.25rem 0;
+  font-size: 0.9rem;
+  color: #6c757d;
+}
+
+/* Single Property Map Responsive */
+@media (max-width: 768px) {
+  .kcpf-single-map-container {
+    border-radius: 4px;
+  }
+}
+
+@media (max-width: 480px) {
+  .kcpf-single-map-container {
+    border-radius: 4px;
+  }
+}

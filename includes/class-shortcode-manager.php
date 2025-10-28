@@ -62,6 +62,7 @@ class KCPF_Shortcode_Manager
     private static function registerMapShortcodes()
     {
         add_shortcode('properties_map', [KCPF_Map_Shortcode::class, 'render']);
+        add_shortcode('single_property_map', [KCPF_Single_Property_Map_Shortcode::class, 'render']);
     }
 }
 

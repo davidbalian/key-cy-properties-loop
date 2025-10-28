@@ -223,6 +223,20 @@ class KCPF_Asset_Manager
             true
         );
         
+        // Enqueue Single Property Map JavaScript
+        $single_map_dependencies = ['jquery'];
+        if (KCPF_Settings_Manager::hasApiKey()) {
+            $single_map_dependencies[] = 'google-maps';
+        }
+        
+        wp_enqueue_script(
+            'kcpf-single-property-map',
+            KCPF_ASSETS_URL . 'js/single-property-map.js',
+            $single_map_dependencies,
+            KCPF_VERSION,
+            true
+        );
+        
         // Enqueue Favourites JavaScript
         wp_enqueue_script(
             'kcpf-favourites-manager',

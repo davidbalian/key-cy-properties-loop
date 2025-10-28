@@ -77,6 +77,45 @@ External filters will automatically update the map markers and property cards vi
 
 **See also:** [MAP_VIEW_GUIDE.md](MAP_VIEW_GUIDE.md) for complete documentation
 
+### `[single_property_map]`
+
+Displays a map view for a single property with a radius circle around the property location. Perfect for single property pages.
+
+**Attributes:**
+
+- `property_id` (int) - Property ID to display (default: current post ID if on property page)
+- `height` (string) - Map height (default: `400px`)
+- `zoom` (int) - Map zoom level (default: `15`)
+
+**Examples:**
+
+```
+[single_property_map]
+[single_property_map property_id="123"]
+[single_property_map height="500px" zoom="16"]
+[single_property_map property_id="456" height="300px" zoom="14"]
+```
+
+**Features:**
+
+- Interactive Google Map centered on property location
+- 200m radius circle around property (same styling as archive maps)
+- Small marker showing exact property location
+- Clickable marker with property information
+- Responsive design
+- Same styling as archive map views
+
+**Requirements:**
+
+- Google Maps API key (configure in Settings > Properties Map)
+- Property must have `display_coordinates` meta field (format: "lat,lng")
+- Property must be of type 'properties'
+
+**Usage:**
+
+- On single property pages: `[single_property_map]` (automatically uses current property)
+- On other pages: `[single_property_map property_id="123"]` (specify property ID)
+
 ---
 
 ## Filter Shortcodes
