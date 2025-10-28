@@ -49,11 +49,7 @@
     grid-template-columns: repeat(auto-fill, minmax(150px, 250px));
   }
 
-  .kcpf-properties-grid.kcpf-grid-sale {
-    grid-template-columns: 1fr;
-  }
-
-  .kcpf-properties-grid.kcpf-grid-rent {
+  .kcpf-properties-grid {
     grid-template-columns: 1fr;
   }
 
