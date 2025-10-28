@@ -84,6 +84,7 @@
   display: grid;
   gap: 1.5rem;
   margin: 1.5rem 0;
+  grid-template-columns: 1fr; /* Default to single column */
 }
 
 /* Sale: one column at 100% width */
