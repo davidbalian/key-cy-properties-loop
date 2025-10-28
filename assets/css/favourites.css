@@ -146,10 +146,9 @@
   border: none !important;
   cursor: pointer !important;
   transition: all 0.2s ease !important;
-  font-weight: 500 !important;
+  font-weight: 400 !important;
   text-decoration: none !important;
   padding: 0.75rem 1rem !important;
-  border-radius: 4px !important;
 }
 
 .kcpf-single-property-favourite-btn:hover {
@@ -165,6 +164,11 @@
 .kcpf-single-property-favourite-btn.is-active:hover {
   background: #000000 !important;
   color: #ffffff !important;
+}
+
+.kcpf-single-property-favourite-btn.is-active:hover svg {
+  fill: #ffffff !important;
+  stroke: #ffffff !important;
 }
 
 .kcpf-single-property-favourite-icon {
