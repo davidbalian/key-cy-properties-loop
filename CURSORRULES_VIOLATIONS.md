@@ -458,16 +458,64 @@ $coordinates = KCPF_Card_Data_Helper::getCoordinates($property_id);
    - Follow established naming conventions
    - Maintain existing file locations (`includes/`, `assets/css/`, `assets/js/`)
 
-4. **Document Dependencies**
+4. **🚨 CRITICAL: Register New Classes with Plugin Loader**
+
+   - **CRITICAL REQUIREMENT:** Every new class MUST be registered in `KCPF_Plugin_Loader::loadDependencies()`
+   - **FAILURE SYMPTOM:** Fatal error "Class 'KCPF_Class_Name' not found"
+   - **IMMEDIATE ACTION:** Add `require_once` statement to appropriate loader method:
+     - Core classes → `loadCoreClasses()`
+     - Filter renderers → `loadFilterRenderers()`
+     - Filter classes → `loadFilterClasses()`
+     - Map view classes → `loadMapViewClasses()`
+
+   **Example:**
+
+   ```php
+   // ❌ FORGETTING THIS CAUSES FATAL ERRORS
+   // ✅ ALWAYS DO THIS when creating new classes
+   require_once KCPF_INCLUDES_DIR . 'class-your-new-class.php';
+   ```
+
+   **Prevention Checklist:**
+
+   - [ ] Created new class file in `includes/`
+   - [ ] Added `require_once` to `KCPF_Plugin_Loader`
+   - [ ] Tested class instantiation (no fatal error)
+   - [ ] Verified functionality works
+
+5. **Document Dependencies**
 
    - Update `loadDependencies()` in main plugin file
    - Add clear docblocks to new classes
    - Document in relevant `.md` files
 
-5. **Preserve Reusability**
+6. **Preserve Reusability**
    - Each new class should be focused and reusable
    - Avoid tight coupling between split components
    - Use dependency injection where appropriate
+
+---
+
+## ⚠️ CRITICAL: Common Fatal Error Prevention
+
+### Class Loading Fatal Errors (Happened 2x Already)
+
+**Problem:** Creating new classes without registering them in the plugin loader causes fatal "Class not found" errors.
+
+**Incidents:**
+
+1. First occurrence: Forgot to load a new renderer class → Fatal error on property pages
+2. Second occurrence: Forgot to load `KCPF_Data_Store_Button_Renderer` → Fatal error on property cards
+
+**Prevention:** See **Principle #4** above - **ALWAYS** register new classes in `KCPF_Plugin_Loader::loadDependencies()`.
+
+**Immediate Action Required:**
+
+- ✅ **DONE:** Added `class-data-store-button-renderer.php` to `loadCoreClasses()`
+- ✅ **DONE:** Added reminder to refactoring principles
+- ✅ **DONE:** Created prevention checklist
+
+**Future Prevention:** Before creating ANY new class, immediately add the `require_once` statement to the appropriate loader method.
 
 ---
 

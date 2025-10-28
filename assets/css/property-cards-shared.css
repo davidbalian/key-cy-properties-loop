@@ -85,6 +85,7 @@
 
 /* Property Card */
 .kcpf-property-card {
+  position: relative;
   border: 1px solid #e0e0e0;
   border-radius: 8px;
   overflow: hidden;
@@ -261,7 +262,7 @@
   .elementor-element.elementor-absolute.elementor-widget.elementor-widget-jet-engine-data-store-button {
   position: absolute;
   top: 10px;
-  right: 10px;
+  left: 10px;
   z-index: 10;
   margin: 0;
 }
@@ -319,7 +320,7 @@
   .kcpf-property-card
     .elementor-element.elementor-absolute.elementor-widget.elementor-widget-jet-engine-data-store-button {
     top: 8px;
-    right: 8px;
+    left: 8px;
   }
 
   .kcpf-property-card .jet-data-store-link {

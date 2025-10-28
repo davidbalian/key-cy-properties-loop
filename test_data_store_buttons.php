@@ -42,7 +42,7 @@ echo '<div class="test-info">';
 echo '<h2>Testing Data Store Button Integration</h2>';
 echo '<p>This page tests the integration of JetEngine data store buttons with property cards.</p>';
 echo '<ul>';
-echo '<li>✅ Data store buttons should appear in the top-right corner of each property card</li>';
+echo '<li>✅ Data store buttons should appear in the top-left corner of each property card</li>';
 echo '<li>✅ Unfavorited properties show outline star (add to favorites)</li>';
 echo '<li>✅ Favorited properties show filled star (remove from favorites)</li>';
 echo '<li>✅ Clicking should trigger JetEngine\'s JavaScript functionality</li>';

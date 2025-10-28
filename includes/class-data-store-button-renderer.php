@@ -75,7 +75,7 @@ class KCPF_Data_Store_Button_Renderer
             'added_url' => $action_config['added_url'],
             'added_label' => $action_config['added_label'],
             'added_icon' => $options['icon_remove'],
-            'synch_id' => $action_config['synch_id']
+            'synch_id' => $action_config['synch_id'] . '-' . $property_id
         ];
 
         $data_args_json = wp_json_encode($data_args);
