@@ -134,6 +134,7 @@
 
 /* Single Property Favourites Button */
 .kcpf-single-property-favourite-btn {
+  font-size: 16px !important;
   position: static !important;
   display: flex !important;
   flex-direction: row !important;
@@ -156,29 +157,14 @@
   color: #ffffff !important;
 }
 
-.kcpf-single-property-favourite-btn:hover svg {
-  fill: #ffffff !important;
-  stroke: #ffffff !important;
-}
-
 .kcpf-single-property-favourite-btn.is-active {
   background: #ededed !important;
   color: #000000 !important;
 }
 
-.kcpf-single-property-favourite-btn.is-active svg {
-  fill: #000000 !important;
-  stroke: #000000 !important;
-}
-
 .kcpf-single-property-favourite-btn.is-active:hover {
   background: #000000 !important;
   color: #ffffff !important;
-}
-
-.kcpf-single-property-favourite-btn.is-active:hover svg {
-  fill: #ffffff !important;
-  stroke: #ffffff !important;
 }
 
 .kcpf-single-property-favourite-icon {
@@ -198,6 +184,28 @@
 
 .kcpf-single-property-favourite-text {
   white-space: nowrap !important;
+}
+
+/* SVG Color Overrides for Single Property Button */
+.kcpf-single-property-favourite-btn:hover
+  .kcpf-single-property-favourite-icon
+  svg {
+  fill: #ffffff !important;
+  stroke: #ffffff !important;
+}
+
+.kcpf-single-property-favourite-btn.is-active
+  .kcpf-single-property-favourite-icon
+  svg {
+  fill: #000000 !important;
+  stroke: #000000 !important;
+}
+
+.kcpf-single-property-favourite-btn.is-active:hover
+  .kcpf-single-property-favourite-icon
+  svg {
+  fill: #ffffff !important;
+  stroke: #ffffff !important;
 }
 
 .kcpf-single-property-favourite-guest {
