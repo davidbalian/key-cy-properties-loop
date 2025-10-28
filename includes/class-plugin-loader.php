@@ -40,6 +40,9 @@ class KCPF_Plugin_Loader
         require_once KCPF_INCLUDES_DIR . 'class-loop-renderer.php';
         require_once KCPF_INCLUDES_DIR . 'class-listing-values.php';
         require_once KCPF_INCLUDES_DIR . 'class-debug-viewer.php';
+        require_once KCPF_INCLUDES_DIR . 'class-favourites-manager.php';
+        require_once KCPF_INCLUDES_DIR . 'class-favourites-ajax.php';
+        require_once KCPF_INCLUDES_DIR . 'class-favourites-shortcode.php';
     }
     
     /**

@@ -99,6 +99,14 @@ class KCPF_Asset_Manager
             ['kcpf-responsive'],
             KCPF_VERSION
         );
+        
+        // Enqueue Favourites CSS
+        wp_enqueue_style(
+            'kcpf-favourites',
+            KCPF_ASSETS_URL . 'css/favourites.css',
+            ['kcpf-property-cards-shared'],
+            KCPF_VERSION
+        );
     }
     
     /**
@@ -214,6 +222,15 @@ class KCPF_Asset_Manager
             KCPF_VERSION,
             true
         );
+        
+        // Enqueue Favourites JavaScript
+        wp_enqueue_script(
+            'kcpf-favourites-manager',
+            KCPF_ASSETS_URL . 'js/favourites-manager.js',
+            ['jquery'],
+            KCPF_VERSION,
+            true
+        );
     }
     
     /**
@@ -242,6 +259,13 @@ class KCPF_Asset_Manager
         wp_localize_script('kcpf-ajax-handler', 'kcpfData', [
             'ajaxUrl' => admin_url('admin-ajax.php'),
             'nonce' => wp_create_nonce('kcpf_filter_nonce')
+        ]);
+        
+        // Localize favourites data
+        wp_localize_script('kcpf-favourites-manager', 'kcpfFavouritesData', [
+            'ajaxUrl' => admin_url('admin-ajax.php'),
+            'nonce' => wp_create_nonce('kcpf_favourites'),
+            'isLoggedIn' => is_user_logged_in()
         ]);
     }
     

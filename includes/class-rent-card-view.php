@@ -142,7 +142,7 @@ class KCPF_Rent_Card_View
             </div>
             </a>
 
-            <?php echo KCPF_Data_Store_Button_Renderer::renderRentButton($property_id); ?>
+            <?php echo KCPF_Favourites_Manager::renderIcon($property_id, 'rent'); ?>
         </article>
         <?php
     }

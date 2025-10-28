@@ -1,0 +1,116 @@
+/**
+ * Favourites Styles
+ *
+ * @package Key_CY_Properties_Filter
+ */
+
+/* Favourites Button */
+.kcpf-favourite-btn {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  z-index: 10;
+  padding: 0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.kcpf-favourite-btn:hover:not(.is-disabled) {
+  background: rgba(255, 255, 255, 1);
+  transform: scale(1.05);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.kcpf-favourite-btn.is-active {
+  background: #ffd700;
+  border-color: #ffd700;
+  color: #333;
+}
+
+.kcpf-favourite-btn.is-active:hover:not(.is-disabled) {
+  background: #ffed4e;
+  border-color: #ffed4e;
+}
+
+.kcpf-favourite-btn.is-disabled {
+  cursor: default;
+  opacity: 0.6;
+  background: rgba(255, 255, 255, 0.7);
+}
+
+.kcpf-favourite-btn.is-loading {
+  opacity: 0.7;
+  cursor: wait;
+}
+
+.kcpf-favourite-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+}
+
+.kcpf-favourite-icon svg {
+  width: 100%;
+  height: 100%;
+  fill: currentColor;
+  stroke: currentColor;
+}
+
+/* Favourites Loop Container */
+.kcpf-favourites-loop {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+  margin: 1.5rem 0;
+}
+
+.kcpf-favourites-loop .kcpf-property-card {
+  position: relative;
+}
+
+/* Empty State */
+.kcpf-favourites-empty {
+  text-align: center;
+  padding: 3rem 1rem;
+  color: #666;
+}
+
+.kcpf-favourites-empty h3 {
+  margin: 0 0 1rem 0;
+  color: #333;
+}
+
+.kcpf-favourites-empty p {
+  margin: 0 0 1.5rem 0;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .kcpf-favourite-btn {
+    width: 36px;
+    height: 36px;
+    top: 0.75rem;
+    right: 0.75rem;
+  }
+
+  .kcpf-favourite-icon {
+    width: 18px;
+    height: 18px;
+  }
+
+  .kcpf-favourites-loop {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+}

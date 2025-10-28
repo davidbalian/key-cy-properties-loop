@@ -56,6 +56,7 @@ class KCPF_Ajax_Manager
         self::registerPropertiesLoopHandlers();
         self::registerMapViewHandlers();
         self::registerFilterHandlers();
+        self::registerFavouritesHandlers();
         self::registerTestHandlers();
     }
     
@@ -86,6 +87,14 @@ class KCPF_Ajax_Manager
     private static function registerFilterHandlers()
     {
         KCPF_Filters_Ajax::register();
+    }
+    
+    /**
+     * Register favourites AJAX handlers
+     */
+    private static function registerFavouritesHandlers()
+    {
+        KCPF_Favourites_Ajax::register();
     }
     
     /**

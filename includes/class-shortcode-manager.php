@@ -30,6 +30,7 @@ class KCPF_Shortcode_Manager
     {
         add_shortcode('properties_loop', [KCPF_Loop_Renderer::class, 'render']);
         add_shortcode('homepage_filters', [KCPF_Homepage_Filters::class, 'render']);
+        add_shortcode('kcpf_favourites', [KCPF_Favourites_Shortcode::class, 'render']);
     }
     
     /**
