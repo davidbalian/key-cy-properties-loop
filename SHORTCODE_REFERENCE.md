@@ -10,6 +10,7 @@ Displays the filtered properties grid.
 
 - `purpose` (string) - Default purpose filter: `sale` or `rent` (default: `sale`)
 - `posts_per_page` (int) - Number of properties per page (default: `10`)
+- `isFilterable` (string) - Whether the loop should be affected by filters: `true` or `false` (default: `true`)
 
 **Examples:**
 
@@ -17,7 +18,15 @@ Displays the filtered properties grid.
 [properties_loop]
 [properties_loop purpose="rent" posts_per_page="12"]
 [properties_loop purpose="sale" posts_per_page="6"]
+[properties_loop purpose="sale" isFilterable="false"]
+[properties_loop purpose="rent" posts_per_page="8" isFilterable="false"]
 ```
+
+**Notes:**
+
+- When `isFilterable="false"`, the properties loop will display all properties matching the `purpose` without applying any URL-based filters
+- This is useful for displaying featured properties or specific property sets that should not be affected by user filter selections
+- The `purpose` attribute is still respected even when `isFilterable="false"`
 
 ---
 

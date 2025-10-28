@@ -141,6 +141,7 @@ class KCPF_Ajax_Manager
                 'purpose' => $purpose ?: 'sale',
                 'posts_per_page' => isset($_GET['posts_per_page']) ? intval($_GET['posts_per_page']) : 10,
                 'paged' => isset($_GET['paged']) ? intval($_GET['paged']) : 1,
+                'isFilterable' => isset($_GET['isFilterable']) ? sanitize_text_field($_GET['isFilterable']) : 'true',
             ];
             
             // Note: All other filter parameters are read from $_GET by URL_Manager

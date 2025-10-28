@@ -33,6 +33,21 @@
         return;
       }
 
+      // Get isFilterable from the properties loop data attribute
+      const purpose = params.get("purpose") || "sale";
+      const propertiesLoop = $(
+        '.kcpf-properties-loop[data-purpose="' + purpose + '"]'
+      );
+      const isFilterable =
+        propertiesLoop.length > 0
+          ? propertiesLoop.data("is-filterable")
+          : "true";
+
+      // Add isFilterable to params if not already present
+      if (!params.has("isFilterable")) {
+        params.set("isFilterable", isFilterable);
+      }
+
       const ajaxUrl =
         kcpfData.ajaxUrl + "?action=kcpf_load_properties&" + params.toString();
       const newUrl =

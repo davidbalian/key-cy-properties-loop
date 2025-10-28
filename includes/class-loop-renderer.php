@@ -27,6 +27,7 @@ class KCPF_Loop_Renderer
         $attrs = shortcode_atts([
             'purpose' => 'sale',
             'posts_per_page' => 10,
+            'isFilterable' => 'true',
         ], $attrs, 'properties_loop');
         
         // Build query
@@ -35,9 +36,10 @@ class KCPF_Loop_Renderer
         
         ob_start();
         
-        // Add purpose data attribute for identification
+        // Add purpose and isFilterable data attributes for identification
         $purpose_attr = isset($attrs['purpose']) ? $attrs['purpose'] : 'sale';
-        echo '<div class="kcpf-properties-loop" id="kcpf-properties-loop" data-purpose="' . esc_attr($purpose_attr) . '">';
+        $isFilterable_attr = isset($attrs['isFilterable']) ? $attrs['isFilterable'] : 'true';
+        echo '<div class="kcpf-properties-loop" id="kcpf-properties-loop" data-purpose="' . esc_attr($purpose_attr) . '" data-is-filterable="' . esc_attr($isFilterable_attr) . '">';
         
         if ($query->have_posts()) {
             // Determine grid class based on purpose

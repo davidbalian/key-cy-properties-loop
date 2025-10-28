@@ -21,8 +21,12 @@ class KCPF_Query_Handler
      */
     public static function buildQueryArgs($attrs = [])
     {
-        $filters = KCPF_URL_Manager::getCurrentFilters();
-
+        // Check if filtering is enabled (default to true for backward compatibility)
+        $isFilterable = !isset($attrs['isFilterable']) || $attrs['isFilterable'] === 'true' || $attrs['isFilterable'] === true;
+        
+        // Only get filters if filtering is enabled
+        $filters = $isFilterable ? KCPF_URL_Manager::getCurrentFilters() : [];
+        
         $args = [
             'post_type' => 'properties',
             'post_status' => 'publish',
@@ -31,22 +35,35 @@ class KCPF_Query_Handler
             'paged' => !empty($attrs['paged']) ? intval($attrs['paged']) : (!empty($filters['paged']) ? intval($filters['paged']) : 1),
         ];
         
-        // Property ID search
-        if (!empty($filters['property_id'])) {
+        // Property ID search - only apply if filtering is enabled
+        if ($isFilterable && !empty($filters['property_id'])) {
             $args['post__in'] = [intval($filters['property_id'])];
         }
         
-        // Build tax_query
-        $tax_query = self::buildTaxQuery($filters, $attrs);
-        if (!empty($tax_query)) {
-            $args['tax_query'] = $tax_query;
-        }
-        
-        // Build meta_query
-        $purpose = self::getCurrentPurpose($filters, $attrs);
-        $meta_query = self::buildMetaQuery($filters, $purpose);
-        if (!empty($meta_query)) {
-            $args['meta_query'] = $meta_query;
+        // Build tax_query - only if filtering is enabled
+        if ($isFilterable) {
+            $tax_query = self::buildTaxQuery($filters, $attrs);
+            if (!empty($tax_query)) {
+                $args['tax_query'] = $tax_query;
+            }
+            
+            // Build meta_query
+            $purpose = self::getCurrentPurpose($filters, $attrs);
+            $meta_query = self::buildMetaQuery($filters, $purpose);
+            if (!empty($meta_query)) {
+                $args['meta_query'] = $meta_query;
+            }
+        } else {
+            // When not filterable, still apply purpose from shortcode attributes if specified
+            if (!empty($attrs['purpose'])) {
+                $args['tax_query'] = [
+                    [
+                        'taxonomy' => 'purpose',
+                        'field' => 'slug',
+                        'terms' => $attrs['purpose'],
+                    ]
+                ];
+            }
         }
         
         
