@@ -90,14 +90,24 @@
      * This is more efficient than refetching the entire loop
      */
     removePropertyFromFavourites: function (propertyId) {
+      console.log(
+        "removePropertyFromFavourites called for property:",
+        propertyId
+      );
+
       // Check if we're on a favourites page
       const $loop = $(".kcpf-favourites-loop");
+      console.log("Found loops:", $loop.length);
+      console.log("Loop elements:", $loop);
+
       if ($loop.length === 0) {
+        console.log("No favourites loop found, returning");
         return;
       }
 
       // Find the property card by data-property-id
       const $propertyCard = $loop.find(`[data-property-id="${propertyId}"]`);
+      console.log("Found property card:", $propertyCard.length);
 
       if ($propertyCard.length > 0) {
         // Remove the property card with a smooth animation
@@ -107,8 +117,12 @@
           // Check if this was the last property
           const remainingCards = $loop.find(".kcpf-property-card").length;
 
+          console.log("Property removed, remaining cards:", remainingCards);
+          console.log("Loop HTML after removal:", $loop.html());
+
           if (remainingCards === 0) {
             // Show empty state
+            console.log("Showing empty state");
             FavouritesManager.showEmptyState($loop);
           }
         });
@@ -119,10 +133,16 @@
      * Show empty state when no favourites remain
      */
     showEmptyState: function ($loop) {
+      console.log("showEmptyState called");
+      console.log("Loop element:", $loop);
+      console.log("Loop classes:", $loop.attr("class"));
+
       // Determine purpose from the loop class
       const purpose = $loop.hasClass("kcpf-favourites-loop-rent")
         ? "rent"
         : "sale";
+
+      console.log("Purpose determined as:", purpose);
 
       // Create empty state HTML
       const emptyStateHtml = `
@@ -132,8 +152,12 @@
          </div>
        `;
 
+      console.log("Empty state HTML:", emptyStateHtml);
+
       // Replace loop content with empty state
       $loop.html(emptyStateHtml);
+
+      console.log("Loop HTML after setting empty state:", $loop.html());
     },
   };
 
