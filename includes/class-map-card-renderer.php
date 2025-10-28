@@ -210,14 +210,84 @@ class KCPF_Map_Card_Renderer
      */
     private static function renderRentCard($property_id, $location, $purpose, $price, $isMultiUnit, $multiUnitCount, $bedrooms, $bathrooms, $purposeSlug, $coordinates, $bedroomsRange, $bathroomsRange, $coveredAreaRange, $plotArea, $isLand)
     {
-        // Start the article wrapper with data attributes
-        echo '<article class="kcpf-property-card kcpf-property-card-rent" data-property-id="' . esc_attr($property_id) . '" data-coordinates="' . esc_attr($coordinates) . '">';
+        // Get additional data for rent properties
+        $cityArea = KCPF_Card_Data_Helper::getCityArea($property_id);
+        $propertyType = KCPF_Card_Data_Helper::getPropertyType($property_id);
+        $rentArea = KCPF_Card_Data_Helper::getTotalCoveredArea($property_id, $purposeSlug);
         
-        // Call the existing rent card view render method (which outputs HTML directly)
-        KCPF_Rent_Card_View::render($property_id, $location, $purpose, $price, $isMultiUnit, $multiUnitCount, $bedrooms, $bathrooms, $purposeSlug, $bedroomsRange, $bathroomsRange, $coveredAreaRange, $plotArea, $isLand);
+        ?>
+        <article class="kcpf-property-card kcpf-property-card-rent" data-property-id="<?php echo esc_attr($property_id); ?>" data-coordinates="<?php echo esc_attr($coordinates); ?>">
+            <a href="<?php echo get_permalink($property_id); ?>" class="kcpf-property-card-link">
+                <?php if (has_post_thumbnail($property_id)) : 
+                    $image_url = get_the_post_thumbnail_url($property_id, 'full');
+                ?>
+                    <div class="kcpf-property-image-rent" style="background-image: url('<?php echo esc_url($image_url); ?>');">
+                    </div>
+                <?php endif; ?>
+                
+                <div class="kcpf-property-content-rent">
+                    <h2 class="kcpf-property-title-rent">
+                        <?php echo get_the_title($property_id); ?>
+                    </h2>
+                
+                <div class="kcpf-property-meta-row-rent">
+                    <?php if ($location && !is_wp_error($location)) : ?>
+                        <span class="kcpf-location-rent"><?php echo esc_html($location[0]->name); ?></span>
+                    <?php endif; ?>
+                    
+                    <?php if ($cityArea) : ?>
+                        <span class="kcpf-separator-rent">,</span>
+                        <span class="kcpf-city-area-rent"><?php echo esc_html($cityArea); ?></span>
+                    <?php endif; ?>
+                    
+                    <?php if ($propertyType) : ?>
+                        <span class="kcpf-separator-rent">|</span>
+                        <span class="kcpf-property-type-rent"><?php echo esc_html($propertyType); ?></span>
+                    <?php endif; ?>
+                </div>
+                
+                <?php if ($bedrooms || $bathrooms || $rentArea) : ?>
+                    <div class="kcpf-property-specs-rent">
+                        <?php if ($bedrooms) : ?>
+                            <span class="kcpf-bedrooms-rent">
+                                <span class="kcpf-property-specs-rent-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M3 13h1v7c0 1.103.897 2 2 2h12c1.103 0 2-.897 2-2v-7h1a1 1 0 0 0 1-1V5c0-1.103-.897-2-2-2H4c-1.103 0-2 .897-2 2v7a1 1 0 0 0 1 1zM4 5h16v7H4V5z"></path></svg>
+                                </span>
+                                <?php echo esc_html($bedrooms); ?> Bed
+                            </span>
+                        <?php endif; ?>
 
-        echo KCPF_Favourites_Manager::renderIcon($property_id, 'rent');
-        echo '</article>';
+                        <?php if ($bathrooms) : ?>
+                            <span class="kcpf-bathrooms-rent">
+                                <span class="kcpf-property-specs-rent-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M22.5 11H22V3.00002C22 1.897 21.103 1 20 1C18.8969 1 18 1.89695 18 2.99903L17.999 3.50003C17.9985 3.77641 18.2217 4.00052 18.498 4.00103C18.7744 4.00103 18.9985 3.77791 18.999 3.502L19 3.00006C19 2.44881 19.4487 2.00008 20 2.00008C20.5512 2.00008 21 2.44872 21 3.00002V11H1.5C0.672844 11 0 11.6729 0 12.5C0 13.151 0.41925 13.7008 0.999984 13.9079V15.5C0.999984 17.7951 2.19877 19.8115 3.99998 20.9685V23.5C3.99998 23.7764 4.22363 24 4.5 24H5.49998C5.68945 24 5.86228 23.8931 5.94727 23.7236L6.82683 21.9649C7.04822 21.9878 7.2727 22 7.5 22H16.5C16.7273 22 16.9518 21.9878 17.1732 21.9649L18.0527 23.7236C18.1377 23.8931 18.3105 24 18.5 24H19.5C19.7764 24 20 23.7764 20 23.5V20.9684C21.8012 19.8115 23 17.795 23 15.5V13.9079C23.5807 13.7008 24 13.151 24 12.5C24 11.6729 23.3272 11 22.5 11ZM6 12H11V16.9097L6 16.0767V12ZM0.999984 12.5C0.999984 12.2241 1.22414 12 1.5 12H5.00002V13H1.5C1.22414 13 0.999984 12.7759 0.999984 12.5ZM5.19094 23H5.00002V21.4985C5.26013 21.6073 5.53097 21.6938 5.80683 21.7685L5.19094 23ZM19 23H18.8091L18.1932 21.7685C18.469 21.6939 18.7399 21.6073 19 21.4985V23ZM22 15.5C22 18.5327 19.5327 21 16.5 21H7.5C4.46728 21 2.00002 18.5327 2.00002 15.5V14H5.00002V16.5C5.00002 16.7446 5.17678 16.9531 5.418 16.9932L11.418 17.9932C11.4453 17.9976 11.4727 18 11.5 18C11.6177 18 11.7324 17.9585 11.8233 17.8814C11.9356 17.7866 12 17.647 12 17.5V14H22L22 15.5ZM22.5 13H12V12H22.5C22.7759 12 23 12.2241 23 12.5C23 12.7759 22.7759 13 22.5 13Z"></path></svg>
+                                </span>
+                                <?php echo esc_html($bathrooms); ?> Bath
+                            </span>
+                        <?php endif; ?>
+
+                        <?php if ($rentArea) : ?>
+                            <span class="kcpf-area-rent">
+                                <span class="kcpf-property-specs-rent-icon">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" clip-rule="evenodd" d="M1.5 5.7V1.5H5.7V5.7H1.5ZM0 1C0 0.447715 0.447715 0 1 0H6.2C6.75228 0 7.2 0.447715 7.2 1V6.2C7.2 6.75228 6.75228 7.2 6.2 7.2H4.35V16.8H6.2C6.75228 16.8 7.2 17.2477 7.2 17.8V23C7.2 23.5523 6.75228 24 6.2 24H1C0.447715 24 0 23.5523 0 23/V17.8C0 17.2477 0.447715 16.8 1 16.8H2.85V7.2H1C0.447715 7.2 0 6.75228 0 6.2V1ZM18.3 1.5H22.5V5.7H18.3V1.5ZM16.8 1C16.8 0.447715 17.2477 0 17.8 0H23C23.5523 0 24 0.447715 24 1V6.2C24 6.75228 23.5523 7.2 23 7.2H21.15V16.8H23C23.5523 7.2 24 17.2477 24 17.8/V23C24 23.5523 23.5523 24 23 24H17.8C17.2477 24 16.8 23.5523 16.8 23V21.15H7.2V19.65H16.8V17.8C16.8 17.2477 17.2477 16.8 17.8 16.8H19.65V7.2H17.8C17.2477 7.2 16.8 6.75228 16.8 6.2V4.35L7.2 4.35V2.85L16.8 2.85V1ZM22.5 18.3H18.3V22.5H22.5V18.3ZM1.5 22.5V18.3H5.7V22.5H1.5Z"></path></svg>
+                                </span>
+                                <?php echo esc_html($rentArea); ?> m²
+                            </span>
+                        <?php endif; ?>
+                    <?php endif; ?>
+                </div>
+                
+                <?php if ($price) : ?>
+                    <div class="kcpf-property-price-rent">
+                        €<?php echo esc_html($price); ?>/mo
+                    </div>
+                <?php endif; ?>
+            </div>
+            </a>
+
+            <?php echo KCPF_Favourites_Manager::renderIcon($property_id, 'rent'); ?>
+        </article>
+        <?php
     }
     
     /**
