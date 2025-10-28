@@ -43,7 +43,12 @@ class KCPF_Favourites_Shortcode
         // Render using existing card renderer with multi-unit hidden in loops
         $modifierClass = $purpose === 'rent' ? ' kcpf-favourites-loop-rent' : ' kcpf-favourites-loop-sale';
         $html = '<div class="kcpf-favourites-loop' . $modifierClass . '">';
-        $html .= KCPF_Map_Card_Renderer::renderCards($ids, $purpose, true);
+        
+        // Render cards individually to avoid the kcpf-properties-grid wrapper
+        foreach ($ids as $property_id) {
+            $html .= KCPF_Map_Card_Renderer::renderCard($property_id, $purpose, true);
+        }
+        
         $html .= '</div>';
 
         return $html;
