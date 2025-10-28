@@ -58,6 +58,13 @@
   grid-template-columns: repeat(3, 1fr);
 }
 
+/* Ensure rent grid maintains 3 columns on desktop */
+@media (min-width: 1025px) {
+  .kcpf-properties-grid.kcpf-grid-rent {
+    grid-template-columns: repeat(3, 1fr) !important;
+  }
+}
+
 @media (max-width: 1024px) {
   .kcpf-properties-grid.kcpf-grid-rent {
     grid-template-columns: repeat(2, 1fr);
