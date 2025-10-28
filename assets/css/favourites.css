@@ -112,6 +112,14 @@
   color: #666;
 }
 
+/* Empty state - convert grid to flex for centering */
+.kcpf-favourites-loop:has(.kcpf-favourites-empty) {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 300px;
+}
+
 .kcpf-favourites-empty h3 {
   margin: 0 0 1rem 0;
   color: #333;
