@@ -7,8 +7,8 @@
 /* Favourites Button */
 .kcpf-favourite-btn {
   position: absolute;
-  top: 1rem;
-  right: 1rem;
+  top: 0.75rem;
+  left: 0.75rem;
   background: rgba(255, 255, 255, 0.9);
   border: 1px solid rgba(0, 0, 0, 0.1);
   border-radius: 50%;
@@ -65,6 +65,18 @@
   height: 100%;
   fill: currentColor;
   stroke: currentColor;
+  color: #333;
+}
+
+.kcpf-favourite-btn.is-active .kcpf-favourite-icon svg {
+  fill: #ffd700;
+  stroke: #ffd700;
+}
+
+/* Position favourites button within image area */
+.kcpf-property-image-sale,
+.kcpf-property-image-rent {
+  position: relative;
 }
 
 /* Favourites Loop Container */
@@ -121,8 +133,8 @@
   .kcpf-favourite-btn {
     width: 36px;
     height: 36px;
-    top: 0.75rem;
-    right: 0.75rem;
+    top: 0.5rem;
+    left: 0.5rem;
   }
 
   .kcpf-favourite-icon {
