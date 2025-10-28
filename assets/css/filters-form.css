@@ -212,7 +212,7 @@
   align-items: center;
   gap: var(--kcpf-spacing-sm);
   padding: 0.375rem var(--kcpf-spacing-md) !important;
-  background-color: var(--kcpf-color-gray-lighter) !important;
+  background-color: var(--kcpf-color-gray-lightest) !important;
   color: var(--kcpf-color-primary) !important;
   border-radius: var(--kcpf-border-radius-large) !important;
   font-size: var(--kcpf-font-size-sm) !important;
