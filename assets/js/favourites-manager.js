@@ -66,8 +66,11 @@
         },
         success: function (response) {
           if (response.success) {
-            // Update button with new HTML
-            $btn.replaceWith(response.data.html);
+            // Update ALL matching buttons (list + map info window) with new HTML
+            const selector = `.kcpf-favourite-btn[data-property-id="${propertyId}"][data-purpose="${purpose}"]`;
+            $(selector).each(function () {
+              $(this).replaceWith(response.data.html);
+            });
 
             // If property was removed from favourites, remove it from DOM
             if (!response.data.favourited) {
