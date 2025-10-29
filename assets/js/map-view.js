@@ -81,7 +81,7 @@
           streetViewControl: false,
           fullscreenControl: true,
           zoomControl: true,
-          maxZoom: 12,
+          maxZoom: 14,
           mapId: "2fbf45e46e78d50c9d90cd84",
         }
       );
