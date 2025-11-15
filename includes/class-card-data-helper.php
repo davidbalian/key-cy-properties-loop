@@ -58,16 +58,27 @@ class KCPF_Card_Data_Helper
         
         // Handle array values (with "Save as array" enabled)
         if (is_array($value)) {
-            // Get all keys with true values
-            $selectedValues = [];
-            foreach ($value as $key => $val) {
-                // Check if value is boolean true
-                if ($val === true || $val === 'true' || $val === 1) {
-                    $selectedValues[] = $key;
+            // Check if it's an indexed array (numeric keys starting from 0)
+            // Indexed arrays: values are the selected options (e.g., ['1', '2', '3'])
+            // Associative arrays: keys are selected values, values are boolean (e.g., ['1' => true, '2' => true])
+            $arrayKeys = array_keys($value);
+            $isIndexedArray = !empty($arrayKeys) && $arrayKeys === range(0, count($value) - 1);
+            
+            if ($isIndexedArray) {
+                // Simple indexed array: values are the selected options
+                $selectedValues = array_values($value);
+            } else {
+                // Associative array: keys are selected values, values are boolean
+                $selectedValues = [];
+                foreach ($value as $key => $val) {
+                    // Check if value is boolean true
+                    if ($val === true || $val === 'true' || $val === 1) {
+                        $selectedValues[] = $key;
+                    }
                 }
             }
             
-            // If no true values, return empty
+            // If no selected values, return empty
             if (empty($selectedValues)) {
                 return '';
             }
@@ -84,8 +95,9 @@ class KCPF_Card_Data_Helper
         // Handle serialized strings (when "Save as array" is NOT enabled)
         if (is_string($value) && is_serialized($value)) {
             $value = maybe_unserialize($value);
+            // If unserialized value is an array, recursively process it
             if (is_array($value)) {
-                $value = !empty($value) ? reset($value) : '';
+                return self::formatSimpleValue($value);
             }
         }
         
