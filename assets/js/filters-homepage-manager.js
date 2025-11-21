@@ -39,24 +39,57 @@
         );
       }
 
-      // Ensure 'sale' is selected by default (run immediately and on DOM ready)
+      // Ensure 'sale' is selected by default (run multiple times to catch all scenarios)
       const ensureSaleSelected = function() {
-        const $saleInput = $homepage.find('input[name="purpose"][value="sale"]');
-        const $rentInput = $homepage.find('input[name="purpose"][value="rent"]');
+        const $homepage = $(".kcpf-homepage-filters");
+        if ($homepage.length === 0) {
+          return;
+        }
+        
+        // Find sale radio button using data-standard-slug attribute or class
+        // This works even when the value is localized (e.g., "продажа")
+        const $saleInput = $homepage.find('input[name="purpose"][data-standard-slug="sale"], input[name="purpose"].kcpf-purpose-sale');
+        const $rentInput = $homepage.find('input[name="purpose"][data-standard-slug="rent"], input[name="purpose"].kcpf-purpose-rent');
+        
+        // Also try finding by type and value separately (fallback for older implementations)
+        const $allPurposeInputs = $homepage.find('input[name="purpose"]');
         
         if ($saleInput.length) {
-          $saleInput.prop("checked", true);
+          $saleInput.prop("checked", true).trigger('change');
           if ($rentInput.length) {
             $rentInput.prop("checked", false);
           }
+        } else if ($allPurposeInputs.length) {
+          // Fallback: find by data-standard-slug or class, or by value="sale"
+          $allPurposeInputs.each(function() {
+            const $input = $(this);
+            const standardSlug = $input.data('standard-slug');
+            const hasSaleClass = $input.hasClass('kcpf-purpose-sale');
+            const isSaleValue = $input.val() === 'sale';
+            
+            if (standardSlug === 'sale' || hasSaleClass || isSaleValue) {
+              $input.prop("checked", true).trigger('change');
+            } else {
+              $input.prop("checked", false);
+            }
+          });
         }
       };
       
       // Run immediately
       ensureSaleSelected();
       
-      // Also run after a short delay to ensure it overrides any other scripts
+      // Run multiple times with delays to ensure it works
+      setTimeout(ensureSaleSelected, 50);
       setTimeout(ensureSaleSelected, 100);
+      setTimeout(ensureSaleSelected, 300);
+      setTimeout(ensureSaleSelected, 500);
+      
+      // Also run when DOM is fully ready
+      $(document).ready(function() {
+        setTimeout(ensureSaleSelected, 0);
+        setTimeout(ensureSaleSelected, 100);
+      });
     },
 
     /**

@@ -313,7 +313,18 @@
         "/test-rent-page";
       
       // If URLs are still default and language appears to be Russian, use Russian URLs
-      const isRussian = navigator.language && navigator.language.toLowerCase().startsWith('ru');
+      // Check multiple sources for Russian language detection:
+      // 1. HTML lang attribute (most reliable for current page language)
+      // 2. URL contains /ru/ (indicates Russian page)
+      // 3. navigator.language as fallback
+      const htmlLang = document.documentElement.lang || '';
+      const urlHasRu = window.location.pathname.indexOf('/ru/') !== -1;
+      const browserLang = navigator.language || '';
+      const isRussian = htmlLang.toLowerCase().startsWith('ru') || 
+                        htmlLang.toLowerCase() === 'ru' ||
+                        urlHasRu ||
+                        browserLang.toLowerCase().startsWith('ru');
+      
       if (isRussian && (saleUrl === "/test-sale-archive" || rentUrl === "/test-rent-page")) {
         saleUrl = "https://key-cy.com/ru/%D0%BD%D0%B0%D0%B7%D0%BD%D0%B0%D1%87%D0%B5%D0%BD%D0%B8%D0%B5/%D0%BF%D1%80%D0%BE%D0%B4%D0%B0%D0%B6%D0%B0/";
         rentUrl = "https://key-cy.com/ru/%D0%BD%D0%B0%D0%B7%D0%BD%D0%B0%D1%87%D0%B5%D0%BD%D0%B8%D0%B5/%D0%B0%D1%80%D0%B5%D0%BD%D0%B4%D0%B0/";
