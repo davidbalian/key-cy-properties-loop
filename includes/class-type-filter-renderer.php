@@ -47,8 +47,10 @@ class KCPF_Type_Filter_Renderer extends KCPF_Filter_Renderer_Base
             <?php if ($attrs['type'] === 'select') : ?>
                 <select name="property_type" class="kcpf-filter-select">
                     <option value=""><?php echo esc_html(__('Property Type', 'key-cy-properties-filter')); ?></option>
-                    <?php foreach ($types as $type) : ?>
-                        <option value="<?php echo esc_attr($type->slug); ?>" <?php selected($current_value, $type->slug); ?>>
+                    <?php foreach ($types as $type) : 
+                        $slug = self::getOriginalSlug($type);
+                    ?>
+                        <option value="<?php echo esc_attr($slug); ?>" <?php selected($current_value, $slug); ?>>
                             <?php echo esc_html($type->name); ?>
                         </option>
                     <?php endforeach; ?>

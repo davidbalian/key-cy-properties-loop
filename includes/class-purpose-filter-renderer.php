@@ -217,10 +217,11 @@ class KCPF_Purpose_Filter_Renderer
                 <select name="purpose" class="kcpf-filter-select">
                     <?php foreach ($purposes as $purpose) : 
                         $standard_slug = self::getStandardSlug($purpose);
+                        // Check if currently selected - compare term IDs to handle different language versions
                         $is_selected = ($selected_term && $selected_term->term_id === $purpose->term_id);
                         $purpose_class = 'kcpf-purpose-' . $standard_slug;
                     ?>
-                        <option value="<?php echo esc_attr($purpose->slug); ?>" 
+                        <option value="<?php echo esc_attr($standard_slug); ?>" 
                                 data-standard-slug="<?php echo esc_attr($standard_slug); ?>"
                                 class="<?php echo esc_attr($purpose_class); ?>"
                                 <?php echo $is_selected ? 'selected="selected"' : ''; ?>>
@@ -238,7 +239,7 @@ class KCPF_Purpose_Filter_Renderer
                         <label class="kcpf-toggle-label <?php echo $is_selected ? 'active' : ''; ?>">
                             <input type="radio" 
                                    name="purpose" 
-                                   value="<?php echo esc_attr($purpose->slug); ?>"
+                                   value="<?php echo esc_attr($standard_slug); ?>"
                                    data-standard-slug="<?php echo esc_attr($standard_slug); ?>"
                                    class="<?php echo esc_attr($purpose_class); ?>"
                                    <?php echo $is_selected ? 'checked="checked"' : ''; ?>>
@@ -256,7 +257,7 @@ class KCPF_Purpose_Filter_Renderer
                         <label class="kcpf-radio-label">
                             <input type="radio" 
                                    name="purpose" 
-                                   value="<?php echo esc_attr($purpose->slug); ?>"
+                                   value="<?php echo esc_attr($standard_slug); ?>"
                                    data-standard-slug="<?php echo esc_attr($standard_slug); ?>"
                                    class="<?php echo esc_attr($purpose_class); ?>"
                                    <?php echo $is_selected ? 'checked="checked"' : ''; ?>>

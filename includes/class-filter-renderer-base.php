@@ -75,6 +75,30 @@ class KCPF_Filter_Renderer_Base
     }
     
     /**
+     * Get the original (English) slug for a term
+     *
+     * @param WP_Term $term Term object
+     * @return string Original slug
+     */
+    protected static function getOriginalSlug($term)
+    {
+        // If we have WPML/Polylang
+        if (function_exists('icl_object_id')) {
+            // try to get English ID
+            $original_id = icl_object_id($term->term_id, $term->taxonomy, true, 'en');
+            if ($original_id) {
+                $original_term = get_term($original_id, $term->taxonomy);
+                if ($original_term && !is_wp_error($original_term)) {
+                    return $original_term->slug;
+                }
+            }
+        }
+        
+        // Fallback to current slug
+        return $term->slug;
+    }
+
+    /**
      * Render a multiselect dropdown
      * 
      * @param string $filter_name Filter name (e.g., 'location', 'property_type')
@@ -98,9 +122,9 @@ class KCPF_Filter_Renderer_Base
                     <?php else: ?>
                         <?php foreach ($current_values as $val) : 
                             $option = array_filter($options, function($opt) use ($val) {
-                                // Handle WP_Term objects
+                                // Handle WP_Term objects - compare with original slug
                                 if (is_object($opt) && isset($opt->slug)) {
-                                    return $opt->slug === $val;
+                                    return self::getOriginalSlug($opt) === $val || $opt->slug === $val;
                                 }
                                 // Handle array-style options
                                 if (is_array($opt) && isset($opt['value'])) {
@@ -122,7 +146,8 @@ class KCPF_Filter_Renderer_Base
             </div>
             <div class="kcpf-multiselect-dropdown-menu">
                 <?php foreach ($options as $option) : 
-                    $value = is_object($option) && isset($option->slug) ? $option->slug : (is_array($option) && isset($option['value']) ? $option['value'] : '');
+                    // Use original slug for value if it's a term object
+                    $value = is_object($option) ? self::getOriginalSlug($option) : (is_array($option) && isset($option['value']) ? $option['value'] : '');
                     $label = is_object($option) && isset($option->name) ? $option->name : (is_array($option) && isset($option['label']) ? $option['label'] : '');
                     $count = isset($option->count) ? $option->count : 0;
                 ?>

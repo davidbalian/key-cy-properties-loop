@@ -56,13 +56,17 @@ class KCPF_Query_Handler
         } else {
             // When not filterable, still apply purpose from shortcode attributes if specified
             if (!empty($attrs['purpose'])) {
-                $args['tax_query'] = [
-                    [
-                        'taxonomy' => 'purpose',
-                        'field' => 'slug',
-                        'terms' => $attrs['purpose'],
-                    ]
-                ];
+                // Resolve term ID for robustness
+                $ids = self::resolveTermId($attrs['purpose'], 'purpose');
+                if ($ids) {
+                    $args['tax_query'] = [
+                        [
+                            'taxonomy' => 'purpose',
+                            'field' => 'term_id',
+                            'terms' => $ids,
+                        ]
+                    ];
+                }
             }
         }
         
@@ -83,30 +87,39 @@ class KCPF_Query_Handler
         
         // Location filter
         if (!empty($filters['location'])) {
-            $tax_query[] = [
-                'taxonomy' => 'location',
-                'field' => 'slug',
-                'terms' => $filters['location'],
-            ];
+            $ids = self::resolveTermId($filters['location'], 'location');
+            if ($ids) {
+                $tax_query[] = [
+                    'taxonomy' => 'location',
+                    'field' => 'term_id',
+                    'terms' => $ids,
+                ];
+            }
         }
         
         // Purpose filter (sale/rent) - shortcode purpose overrides URL filters
-        $purpose = !empty($attrs['purpose']) ? $attrs['purpose'] : ($filters['purpose'] ?? 'sale');
-        if ($purpose) {
-            $tax_query[] = [
-                'taxonomy' => 'purpose',
-                'field' => 'slug',
-                'terms' => $purpose,
-            ];
+        $purpose_slug = !empty($attrs['purpose']) ? $attrs['purpose'] : ($filters['purpose'] ?? 'sale');
+        if ($purpose_slug) {
+            $ids = self::resolveTermId($purpose_slug, 'purpose');
+            if ($ids) {
+                $tax_query[] = [
+                    'taxonomy' => 'purpose',
+                    'field' => 'term_id',
+                    'terms' => $ids,
+                ];
+            }
         }
         
         // Property type filter
         if (!empty($filters['property_type'])) {
-            $tax_query[] = [
-                'taxonomy' => 'property-type',
-                'field' => 'slug',
-                'terms' => $filters['property_type'],
-            ];
+            $ids = self::resolveTermId($filters['property_type'], 'property-type');
+            if ($ids) {
+                $tax_query[] = [
+                    'taxonomy' => 'property-type',
+                    'field' => 'term_id',
+                    'terms' => $ids,
+                ];
+            }
         }
         
         // Remove relation if no queries added
@@ -216,5 +229,72 @@ class KCPF_Query_Handler
 
         return 'sale';
     }
-}
 
+    /**
+     * Resolve term ID from slug (handling English/translated slugs)
+     *
+     * @param string|array $slug Term slug(s)
+     * @param string $taxonomy Taxonomy
+     * @return int|array|null Term ID(s) or null if not found
+     */
+    private static function resolveTermId($slug, $taxonomy)
+    {
+        if (empty($slug)) {
+            return null;
+        }
+
+        // Handle array of slugs
+        if (is_array($slug)) {
+            $ids = [];
+            foreach ($slug as $s) {
+                $id = self::resolveSingleTermId($s, $taxonomy);
+                if ($id) {
+                    $ids[] = $id;
+                }
+            }
+            return !empty($ids) ? $ids : null;
+        }
+
+        return self::resolveSingleTermId($slug, $taxonomy);
+    }
+
+    /**
+     * Resolve single term ID
+     *
+     * @param string $slug Term slug
+     * @param string $taxonomy Taxonomy
+     * @return int|null Term ID
+     */
+    private static function resolveSingleTermId($slug, $taxonomy)
+    {
+        // 1. Try normal lookup (works if slug matches current language term)
+        $term = get_term_by('slug', $slug, $taxonomy);
+        if ($term) {
+            // Translate the ID to current language (just to be safe/consistent)
+            if (function_exists('icl_object_id')) {
+                return icl_object_id($term->term_id, $taxonomy, true);
+            }
+            return $term->term_id;
+        }
+
+        // 2. Try looking up by English slug if we are in another language
+        // We use get_terms with suppress_filter to find the term regardless of language
+        $terms = get_terms([
+            'taxonomy' => $taxonomy,
+            'slug' => $slug,
+            'hide_empty' => false,
+            'suppress_filters' => true, // Bypass WPML language filtering
+        ]);
+        
+        if (!empty($terms) && !is_wp_error($terms)) {
+            $term = reset($terms);
+            // Translate the ID to current language
+            if (function_exists('icl_object_id')) {
+                return icl_object_id($term->term_id, $taxonomy, true);
+            }
+            return $term->term_id;
+        }
+        
+        return null;
+    }
+}

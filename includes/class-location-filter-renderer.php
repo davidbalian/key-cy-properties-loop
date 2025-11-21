@@ -56,8 +56,10 @@ class KCPF_Location_Filter_Renderer extends KCPF_Filter_Renderer_Base
             <?php if ($attrs['type'] === 'select') : ?>
                 <select id="kcpf-location" name="location" class="kcpf-filter-select">
                     <option value=""><?php echo esc_html($attrs['placeholder'] ?: __('Location', 'key-cy-properties-filter')); ?></option>
-                    <?php foreach ($locations as $location) : ?>
-                        <option value="<?php echo esc_attr($location->slug); ?>" <?php selected($current_value, $location->slug); ?>>
+                    <?php foreach ($locations as $location) : 
+                        $slug = self::getOriginalSlug($location);
+                    ?>
+                        <option value="<?php echo esc_attr($slug); ?>" <?php selected($current_value, $slug); ?>>
                             <?php echo esc_html($location->name); ?>
                             <?php if ($attrs['show_count']) : ?>
                                 (<?php echo $location->count; ?>)
