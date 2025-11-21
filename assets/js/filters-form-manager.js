@@ -310,27 +310,30 @@
         $button.data("rent-url") ||
         $homepage.data("rent-url");
       
-      // If URLs are not set, detect language and use appropriate defaults
-      if (!saleUrl || !rentUrl) {
-        // Check multiple sources for Russian language detection:
-        // 1. HTML lang attribute (most reliable for current page language)
-        // 2. URL contains /ru/ (indicates Russian page)
-        // 3. navigator.language as fallback
-        const htmlLang = document.documentElement.lang || '';
-        const urlHasRu = window.location.pathname.indexOf('/ru/') !== -1;
-        const browserLang = navigator.language || '';
-        const isRussian = htmlLang.toLowerCase().startsWith('ru') || 
-                          htmlLang.toLowerCase() === 'ru' ||
-                          urlHasRu ||
-                          browserLang.toLowerCase().startsWith('ru');
-        
-        if (isRussian) {
-          saleUrl = saleUrl || "https://key-cy.com/ru/%D0%BD%D0%B0%D0%B7%D0%BD%D0%B0%D1%87%D0%B5%D0%BD%D0%B8%D0%B5/%D0%BF%D1%80%D0%BE%D0%B4%D0%B0%D0%B6%D0%B0/";
-          rentUrl = rentUrl || "https://key-cy.com/ru/%D0%BD%D0%B0%D0%B7%D0%BD%D0%B0%D1%87%D0%B5%D0%BD%D0%B8%D0%B5/%D0%B0%D1%80%D0%B5%D0%BD%D0%B4%D0%B0/";
-        } else {
-          saleUrl = saleUrl || "/purpose/sale";
-          rentUrl = rentUrl || "/purpose/rent";
-        }
+      // Check multiple sources for Russian language detection:
+      // 1. HTML lang attribute (most reliable for current page language)
+      // 2. URL contains /ru/ (indicates Russian page)
+      // 3. navigator.language as fallback
+      const htmlLang = document.documentElement.lang || '';
+      const urlHasRu = window.location.pathname.indexOf('/ru/') !== -1;
+      const browserLang = navigator.language || '';
+      const isRussian = htmlLang.toLowerCase().startsWith('ru') || 
+                        htmlLang.toLowerCase() === 'ru' ||
+                        urlHasRu ||
+                        browserLang.toLowerCase().startsWith('ru');
+      
+      // If we are on a Russian page, FORCE the Russian URLs if the current ones look like English defaults
+      // This handles cases where caching served the English data attributes to a Russian user
+      const isDefaultSale = !saleUrl || saleUrl === "/purpose/sale";
+      const isDefaultRent = !rentUrl || rentUrl === "/purpose/rent";
+      
+      if (isRussian && (isDefaultSale || isDefaultRent)) {
+        saleUrl = "https://key-cy.com/ru/%D0%BD%D0%B0%D0%B7%D0%BD%D0%B0%D1%87%D0%B5%D0%BD%D0%B8%D0%B5/%D0%BF%D1%80%D0%BE%D0%B4%D0%B0%D0%B6%D0%B0/";
+        rentUrl = "https://key-cy.com/ru/%D0%BD%D0%B0%D0%B7%D0%BD%D0%B0%D1%87%D0%B5%D0%BD%D0%B8%D0%B5/%D0%B0%D1%80%D0%B5%D0%BD%D0%B4%D0%B0/";
+      } else if (!isRussian) {
+        // Fallback for English/other if URLs are missing
+        saleUrl = saleUrl || "/purpose/sale";
+        rentUrl = rentUrl || "/purpose/rent";
       }
       
       const target = purpose === "rent" ? rentUrl : saleUrl;
