@@ -89,6 +89,13 @@ class Key_CY_Properties_Filter
 
 // Initialize plugin
 add_action('plugins_loaded', function() {
+    // Load plugin text domain for translations
+    load_plugin_textdomain(
+        'key-cy-properties-filter',
+        false,
+        dirname(plugin_basename(__FILE__)) . '/languages'
+    );
+    
     Key_CY_Properties_Filter::getInstance();
 });
 

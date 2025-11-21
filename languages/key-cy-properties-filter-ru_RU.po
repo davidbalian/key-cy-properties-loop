@@ -1,0 +1,167 @@
+# Translation file for Key CY Properties Filter
+# Copyright (C) 2024 balian.cy
+# This file is distributed under the same license as the Key CY Properties Filter plugin.
+msgid ""
+msgstr ""
+"Project-Id-Version: Key CY Properties Filter 2.4.3\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-01-01 12:00+0000\n"
+"PO-Revision-Date: 2024-01-01 12:00+0000\n"
+"Last-Translator: \n"
+"Language-Team: Russian\n"
+"Language: ru_RU\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+
+# Filter labels
+msgid "Location"
+msgstr "Местоположение"
+
+msgid "Bedrooms"
+msgstr "Спальни"
+
+msgid "Bathrooms"
+msgstr "Ванные комнаты"
+
+msgid "Price"
+msgstr "Цена"
+
+msgid "Property Type"
+msgstr "Тип недвижимости"
+
+msgid "Property ID"
+msgstr "ID недвижимости"
+
+# Buttons
+msgid "Apply Filters"
+msgstr "Применить фильтры"
+
+msgid "Reset Filters"
+msgstr "Сбросить фильтры"
+
+msgid "Load More"
+msgstr "Загрузить еще"
+
+msgid "Filter results"
+msgstr "Фильтровать результаты"
+
+msgid "Reset"
+msgstr "Сбросить"
+
+msgid "Clear all filters"
+msgstr "Очистить все фильтры"
+
+# Messages
+msgid "No properties found matching your criteria."
+msgstr "Не найдено объектов, соответствующих вашим критериям."
+
+msgid "No properties found matching your filters."
+msgstr "Не найдено объектов, соответствующих вашим фильтрам."
+
+msgid "Try adjusting your search criteria."
+msgstr "Попробуйте изменить критерии поиска."
+
+msgid "No favourites yet"
+msgstr "Пока нет избранного"
+
+msgid "Tap the star on any property to save it here."
+msgstr "Нажмите на звездочку у любого объекта, чтобы сохранить его здесь."
+
+msgid "Sign in to view favourites"
+msgstr "Войдите, чтобы просмотреть избранное"
+
+msgid "You need to be logged in to save and view favourites."
+msgstr "Вам необходимо войти в систему, чтобы сохранять и просматривать избранное."
+
+# Plural forms
+msgid "%d property found"
+msgid_plural "%d properties found"
+msgstr[0] "Найден %d объект"
+msgstr[1] "Найдено %d объекта"
+msgstr[2] "Найдено %d объектов"
+
+# Property specs
+msgid "Bed"
+msgstr "Спальня"
+
+msgid "Bath"
+msgstr "Ванная"
+
+msgid "m²"
+msgstr "м²"
+
+msgid "Units:"
+msgstr "Единицы:"
+
+msgid "More units available."
+msgstr "Доступно больше единиц."
+
+# Multi-unit table headers
+msgid "ID"
+msgstr "ID"
+
+msgid "Title"
+msgstr "Название"
+
+msgid "Land Area"
+msgstr "Площадь участка"
+
+msgid "Covered Area"
+msgstr "Покрытая площадь"
+
+# Filters
+msgid "Filters"
+msgstr "Фильтры"
+
+msgid "Search by Property ID"
+msgstr "Поиск по ID недвижимости"
+
+# Error messages
+msgid "Map failed to load. Please refresh the page."
+msgstr "Не удалось загрузить карту. Пожалуйста, обновите страницу."
+
+msgid "Request timed out. Please try again."
+msgstr "Время запроса истекло. Пожалуйста, попробуйте снова."
+
+msgid "Network error. Please check your connection and try again."
+msgstr "Ошибка сети. Пожалуйста, проверьте подключение и попробуйте снова."
+
+msgid "An error occurred while loading properties"
+msgstr "Произошла ошибка при загрузке объектов"
+
+msgid "An error occurred"
+msgstr "Произошла ошибка"
+
+msgid "Loading properties..."
+msgstr "Загрузка объектов..."
+
+# Map view
+msgid "Map view is not configured. Please contact the site administrator."
+msgstr "Карта не настроена. Пожалуйста, свяжитесь с администратором сайта."
+
+# Settings
+msgid "Settings saved successfully."
+msgstr "Настройки успешно сохранены."
+
+msgid "Save Settings"
+msgstr "Сохранить настройки"
+
+# Debug
+msgid "Clear Debug Log"
+msgstr "Очистить журнал отладки"
+
+msgid "Refresh"
+msgstr "Обновить"
+
+msgid "Are you sure you want to clear the debug log?"
+msgstr "Вы уверены, что хотите очистить журнал отладки?"
+
+# Purpose
+msgid "Sale"
+msgstr "Продажа"
+
+msgid "Rent"
+msgstr "Аренда"
+

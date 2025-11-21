@@ -80,7 +80,7 @@ class KCPF_Loop_Renderer
             if ($current_page < $max_pages) {
                 echo '<div class="kcpf-load-more-container">';
                 echo '<button type="button" class="kcpf-load-more-btn" data-current-page="' . esc_attr($current_page) . '" data-max-pages="' . esc_attr($max_pages) . '" data-purpose="' . esc_attr($purpose_attr) . '">';
-                echo '<span class="kcpf-load-more-text">Load More</span>';
+                echo '<span class="kcpf-load-more-text">' . esc_html__('Load More', 'key-cy-properties-filter') . '</span>';
                 echo '</button>';
                 echo '</div>';
             }

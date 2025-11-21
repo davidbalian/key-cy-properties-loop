@@ -82,8 +82,8 @@ class KCPF_Mega_Filters
         try {
             $attrs = shortcode_atts([
                 'purpose' => '', // Explicit purpose override
-                'apply_text' => 'Apply Filters',
-                'reset_text' => 'Reset Filters',
+                'apply_text' => __('Apply Filters', 'key-cy-properties-filter'),
+                'reset_text' => __('Reset Filters', 'key-cy-properties-filter'),
                 'show_apply' => true,
                 'show_reset' => true,
             ], $attrs);

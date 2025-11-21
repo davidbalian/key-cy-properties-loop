@@ -170,7 +170,10 @@
      */
     resetButton: function ($button) {
       $button.removeClass("loading");
-      $button.find(".kcpf-load-more-text").text("Load More");
+      const loadMoreText = (kcpfData && kcpfData.translations && kcpfData.translations.loadMore) 
+        ? kcpfData.translations.loadMore 
+        : "Load More";
+      $button.find(".kcpf-load-more-text").text(loadMoreText);
     },
   };
 })(jQuery);

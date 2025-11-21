@@ -29,6 +29,10 @@ class KCPF_Plugin_Loader
      */
     private static function loadCoreClasses()
     {
+        // Load language detector first (needs to run early)
+        require_once KCPF_INCLUDES_DIR . 'class-language-detector.php';
+        KCPF_Language_Detector::init();
+        
         require_once KCPF_INCLUDES_DIR . 'class-field-config.php';
         require_once KCPF_INCLUDES_DIR . 'class-glossary-handler.php';
         require_once KCPF_INCLUDES_DIR . 'class-url-manager.php';
@@ -44,6 +48,7 @@ class KCPF_Plugin_Loader
         require_once KCPF_INCLUDES_DIR . 'class-favourites-ajax.php';
         require_once KCPF_INCLUDES_DIR . 'class-favourites-shortcode.php';
         require_once KCPF_INCLUDES_DIR . 'class-single-property-favourites-shortcode.php';
+        require_once KCPF_INCLUDES_DIR . 'class-js-translations.php';
     }
     
     /**

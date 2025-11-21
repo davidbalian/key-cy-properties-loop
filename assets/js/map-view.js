@@ -350,11 +350,15 @@
             $("#kcpf-map-cards").html(response.data.cards_html);
 
             // Update results count
+            const propertyFound = (kcpfData && kcpfData.translations && kcpfData.translations.propertyFound) 
+              ? kcpfData.translations.propertyFound 
+              : " property found";
+            const propertiesFound = (kcpfData && kcpfData.translations && kcpfData.translations.propertiesFound) 
+              ? kcpfData.translations.propertiesFound 
+              : " properties found";
             $(".kcpf-map-results-count").text(
               response.data.count +
-                (response.data.count === 1
-                  ? " property found"
-                  : " properties found")
+                (response.data.count === 1 ? propertyFound : propertiesFound)
             );
 
             // Update properties data

@@ -216,11 +216,15 @@
             $("#kcpf-map-cards").hide().show(0);
 
             // Update results count
+            const propertyFound = (kcpfData && kcpfData.translations && kcpfData.translations.propertyFound) 
+              ? kcpfData.translations.propertyFound 
+              : " property found";
+            const propertiesFound = (kcpfData && kcpfData.translations && kcpfData.translations.propertiesFound) 
+              ? kcpfData.translations.propertiesFound 
+              : " properties found";
             $(".kcpf-map-results-count").text(
               response.data.count +
-                (response.data.count === 1
-                  ? " property found"
-                  : " properties found")
+                (response.data.count === 1 ? propertyFound : propertiesFound)
             );
 
             // Update map markers if KCPFMapView is available
@@ -252,18 +256,24 @@
      * Handle AJAX error
      */
     handleError: function (xhr, status, error) {
+      // Get translations
+      const translations = (kcpfData && kcpfData.translations) ? kcpfData.translations : {};
+      const requestTimedOut = translations.requestTimedOut || "Request timed out. Please try again.";
+      const networkError = translations.networkError || "Network error. Please check your connection and try again.";
+      const errorLoadingProperties = translations.errorLoadingProperties || "An error occurred while loading properties";
+      
       // Show error message to user
       if (status === "timeout") {
         $(".kcpf-properties-loop").html(
-          '<div class="kcpf-error"><p>Request timed out. Please try again.</p></div>'
+          '<div class="kcpf-error"><p>' + requestTimedOut + '</p></div>'
         );
       } else if (status === "error" && xhr.status === 0) {
         $(".kcpf-properties-loop").html(
-          '<div class="kcpf-error"><p>Network error. Please check your connection and try again.</p></div>'
+          '<div class="kcpf-error"><p>' + networkError + '</p></div>'
         );
       } else {
         $(".kcpf-properties-loop").html(
-          '<div class="kcpf-error"><p>An error occurred while loading properties (HTTP ' +
+          '<div class="kcpf-error"><p>' + errorLoadingProperties + ' (HTTP ' +
             xhr.status +
             "). Please try again.</p></div>"
         );

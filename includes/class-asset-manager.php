@@ -126,6 +126,15 @@ class KCPF_Asset_Manager
             true
         );
         
+        // Enqueue Language Detector (runs early to detect browser language)
+        wp_enqueue_script(
+            'kcpf-language-detector',
+            KCPF_ASSETS_URL . 'js/language-detector.js',
+            ['jquery'],
+            KCPF_VERSION,
+            true
+        );
+        
         // Enqueue Filter Manager Modules (in dependency order)
         
         // 1. AJAX Handler (foundation - no dependencies on other modules)
@@ -269,10 +278,14 @@ class KCPF_Asset_Manager
      */
     private static function localizeScripts()
     {
+        // Get JavaScript translations
+        $translations = KCPF_JS_Translations::getTranslations();
+        
         // Attach to AJAX handler since that's what uses kcpfData
         wp_localize_script('kcpf-ajax-handler', 'kcpfData', [
             'ajaxUrl' => admin_url('admin-ajax.php'),
-            'nonce' => wp_create_nonce('kcpf_filter_nonce')
+            'nonce' => wp_create_nonce('kcpf_filter_nonce'),
+            'translations' => $translations
         ]);
         
         // Localize favourites data
@@ -280,6 +293,12 @@ class KCPF_Asset_Manager
             'ajaxUrl' => admin_url('admin-ajax.php'),
             'nonce' => wp_create_nonce('kcpf_favourites'),
             'isLoggedIn' => is_user_logged_in()
+        ]);
+        
+        // Localize language detector script
+        wp_localize_script('kcpf-language-detector', 'kcpfLanguageData', [
+            'ajaxUrl' => admin_url('admin-ajax.php'),
+            'nonce' => wp_create_nonce('kcpf_language_nonce')
         ]);
     }
     

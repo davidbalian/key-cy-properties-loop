@@ -26,7 +26,7 @@ class KCPF_Misc_Filter_Renderer
     public static function renderApplyButton($attrs)
     {
         $attrs = shortcode_atts([
-            'text' => 'Apply Filters',
+            'text' => __('Apply Filters', 'key-cy-properties-filter'),
             'type' => 'reload',
         ], $attrs);
         
@@ -53,7 +53,7 @@ class KCPF_Misc_Filter_Renderer
     public static function renderResetButton($attrs)
     {
         $attrs = shortcode_atts([
-            'text' => 'Reset Filters',
+            'text' => __('Reset Filters', 'key-cy-properties-filter'),
         ], $attrs);
         
         ob_start();
@@ -79,7 +79,7 @@ class KCPF_Misc_Filter_Renderer
     public static function renderPropertyId($attrs)
     {
         $attrs = shortcode_atts([
-            'placeholder' => 'Search by Property ID',
+            'placeholder' => __('Search by Property ID', 'key-cy-properties-filter'),
         ], $attrs);
         
         $property_id = KCPF_URL_Manager::getFilterValue('property_id');

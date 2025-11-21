@@ -75,11 +75,11 @@ class KCPF_Debug_Viewer
                 <form method="post" style="margin-bottom: 20px;">
                     <?php wp_nonce_field('kcpf_clear_log'); ?>
                     <button type="submit" name="kcpf_clear_log" class="button button-secondary" 
-                            onclick="return confirm('Are you sure you want to clear the debug log?');">
-                        Clear Debug Log
+                            onclick="return confirm('<?php echo esc_js(__('Are you sure you want to clear the debug log?', 'key-cy-properties-filter')); ?>');">
+                        <?php echo esc_html__('Clear Debug Log', 'key-cy-properties-filter'); ?>
                     </button>
                     <a href="<?php echo admin_url('tools.php?page=kcpf-debug-logs'); ?>" class="button button-secondary">
-                        Refresh
+                        <?php echo esc_html__('Refresh', 'key-cy-properties-filter'); ?>
                     </a>
                 </form>
                 

@@ -73,7 +73,13 @@
           setTimeout(checkGoogleMaps, 100);
         } else {
           console.error("[KCPF Single Map] Google Maps failed to load");
-          self.showError("Map failed to load. Please refresh the page.");
+          const mapFailedToLoad =
+            kcpfData &&
+            kcpfData.translations &&
+            kcpfData.translations.mapFailedToLoad
+              ? kcpfData.translations.mapFailedToLoad
+              : "Map failed to load. Please refresh the page.";
+          self.showError(mapFailedToLoad);
         }
       };
 

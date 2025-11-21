@@ -24,7 +24,7 @@ class KCPF_Homepage_Filters
         $attrs = shortcode_atts([
             'rent_url' => '/test-rent-page',
             'sale_url' => '/test-sale-archive',
-            'apply_text' => 'Filter results',
+            'apply_text' => __('Filter results', 'key-cy-properties-filter'),
         ], $attrs);
 
         // Build inner filters using existing renderers
