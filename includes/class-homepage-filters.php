@@ -63,6 +63,10 @@ class KCPF_Homepage_Filters
             if (in_array(trim($attrs['apply_text']), $english_variants)) {
                 $attrs['apply_text'] = 'Фильтровать результаты';
             }
+            
+            // HARDCODE Russian URLs to ensure they are always correct regardless of caching or shortcode attributes
+            $attrs['sale_url'] = 'https://key-cy.com/ru/%D0%BD%D0%B0%D0%B7%D0%BD%D0%B0%D1%87%D0%B5%D0%BD%D0%B8%D0%B5/%D0%BF%D1%80%D0%BE%D0%B4%D0%B0%D0%B6%D0%B0/';
+            $attrs['rent_url'] = 'https://key-cy.com/ru/%D0%BD%D0%B0%D0%B7%D0%BD%D0%B0%D1%87%D0%B5%D0%BD%D0%B8%D0%B5/%D0%B0%D1%80%D0%B5%D0%BD%D0%B4%D0%B0/';
         }
 
         // Build inner filters using existing renderers
