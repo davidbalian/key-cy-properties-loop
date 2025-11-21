@@ -24,6 +24,20 @@ class KCPF_Homepage_Filters
         // Detect if Russian language is active using the language detector
         $is_russian = KCPF_Language_Detector::isRussian();
         
+        // Ensure text domain is loaded (in case it wasn't loaded yet)
+        if (!is_textdomain_loaded('key-cy-properties-filter')) {
+            // Use the same path pattern as the main plugin file
+            $plugin_file = defined('KCPF_PLUGIN_DIR') 
+                ? KCPF_PLUGIN_DIR . 'key-cy-properties-filter.php'
+                : dirname(dirname(__FILE__)) . '/key-cy-properties-filter.php';
+            
+            load_plugin_textdomain(
+                'key-cy-properties-filter',
+                false,
+                dirname(plugin_basename($plugin_file)) . '/languages'
+            );
+        }
+        
         // Set default URLs based on language
         $default_rent_url = $is_russian 
             ? 'https://key-cy.com/ru/%D0%BD%D0%B0%D0%B7%D0%BD%D0%B0%D1%87%D0%B5%D0%BD%D0%B8%D0%B5/%D0%B0%D1%80%D0%B5%D0%BD%D0%B4%D0%B0/'
@@ -32,10 +46,18 @@ class KCPF_Homepage_Filters
             ? 'https://key-cy.com/ru/%D0%BD%D0%B0%D0%B7%D0%BD%D0%B0%D1%87%D0%B5%D0%BD%D0%B8%D0%B5/%D0%BF%D1%80%D0%BE%D0%B4%D0%B0%D0%B6%D0%B0/'
             : '/test-sale-archive';
         
+        // Get translated button text
+        $apply_text = __('Filter results', 'key-cy-properties-filter');
+        
+        // Fallback: if translation didn't work and we're in Russian, use Russian text directly
+        if ($is_russian && $apply_text === 'Filter results') {
+            $apply_text = 'Фильтровать результаты';
+        }
+        
         $attrs = shortcode_atts([
             'rent_url' => $default_rent_url,
             'sale_url' => $default_sale_url,
-            'apply_text' => __('Filter results', 'key-cy-properties-filter'),
+            'apply_text' => $apply_text,
         ], $attrs);
 
         // Build inner filters using existing renderers
