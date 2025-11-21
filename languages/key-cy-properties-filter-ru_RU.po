@@ -111,6 +111,18 @@ msgstr "Площадь участка"
 msgid "Covered Area"
 msgstr "Покрытая площадь"
 
+msgid "Price Range"
+msgstr "Диапазон цен"
+
+msgid "Covered Area, m²"
+msgstr "Покрытая площадь, м²"
+
+msgid "Land Area, m²"
+msgstr "Площадь участка, м²"
+
+msgid "Amenities"
+msgstr "Удобства"
+
 # Filters
 msgid "Filters"
 msgstr "Фильтры"

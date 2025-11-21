@@ -21,9 +21,20 @@ class KCPF_Homepage_Filters
      */
     public static function render($attrs)
     {
+        // Detect if Russian language is active
+        $is_russian = (get_locale() === 'ru_RU' || apply_filters('locale', get_locale()) === 'ru_RU');
+        
+        // Set default URLs based on language
+        $default_rent_url = $is_russian 
+            ? 'https://key-cy.com/ru/%D0%BD%D0%B0%D0%B7%D0%BD%D0%B0%D1%87%D0%B5%D0%BD%D0%B8%D0%B5/%D0%B0%D1%80%D0%B5%D0%BD%D0%B4%D0%B0'
+            : '/test-rent-page';
+        $default_sale_url = $is_russian
+            ? 'https://key-cy.com/ru/%D0%BD%D0%B0%D0%B7%D0%BD%D0%B0%D1%87%D0%B5%D0%BD%D0%B8%D0%B5/%d0%bf%d1%80%d0%be%d0%b4%d0%b0%d0%b6%d0%b0/'
+            : '/test-sale-archive';
+        
         $attrs = shortcode_atts([
-            'rent_url' => '/test-rent-page',
-            'sale_url' => '/test-sale-archive',
+            'rent_url' => $default_rent_url,
+            'sale_url' => $default_sale_url,
             'apply_text' => __('Filter results', 'key-cy-properties-filter'),
         ], $attrs);
 
