@@ -39,10 +39,24 @@
         );
       }
 
-      // Ensure 'sale' is selected
-      $homepage
-        .find('input[name="purpose"][value="sale"]')
-        .prop("checked", true);
+      // Ensure 'sale' is selected by default (run immediately and on DOM ready)
+      const ensureSaleSelected = function() {
+        const $saleInput = $homepage.find('input[name="purpose"][value="sale"]');
+        const $rentInput = $homepage.find('input[name="purpose"][value="rent"]');
+        
+        if ($saleInput.length) {
+          $saleInput.prop("checked", true);
+          if ($rentInput.length) {
+            $rentInput.prop("checked", false);
+          }
+        }
+      };
+      
+      // Run immediately
+      ensureSaleSelected();
+      
+      // Also run after a short delay to ensure it overrides any other scripts
+      setTimeout(ensureSaleSelected, 100);
     },
 
     /**

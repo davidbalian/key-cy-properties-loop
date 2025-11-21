@@ -21,15 +21,15 @@ class KCPF_Homepage_Filters
      */
     public static function render($attrs)
     {
-        // Detect if Russian language is active
-        $is_russian = (get_locale() === 'ru_RU' || apply_filters('locale', get_locale()) === 'ru_RU');
+        // Detect if Russian language is active using the language detector
+        $is_russian = KCPF_Language_Detector::isRussian();
         
         // Set default URLs based on language
         $default_rent_url = $is_russian 
-            ? 'https://key-cy.com/ru/%D0%BD%D0%B0%D0%B7%D0%BD%D0%B0%D1%87%D0%B5%D0%BD%D0%B8%D0%B5/%D0%B0%D1%80%D0%B5%D0%BD%D0%B4%D0%B0'
+            ? 'https://key-cy.com/ru/%D0%BD%D0%B0%D0%B7%D0%BD%D0%B0%D1%87%D0%B5%D0%BD%D0%B8%D0%B5/%D0%B0%D1%80%D0%B5%D0%BD%D0%B4%D0%B0/'
             : '/test-rent-page';
         $default_sale_url = $is_russian
-            ? 'https://key-cy.com/ru/%D0%BD%D0%B0%D0%B7%D0%BD%D0%B0%D1%87%D0%B5%D0%BD%D0%B8%D0%B5/%d0%bf%d1%80%d0%be%d0%b4%d0%b0%d0%b6%d0%b0/'
+            ? 'https://key-cy.com/ru/%D0%BD%D0%B0%D0%B7%D0%BD%D0%B0%D1%87%D0%B5%D0%BD%D0%B8%D0%B5/%D0%BF%D1%80%D0%BE%D0%B4%D0%B0%D0%B6%D0%B0/'
             : '/test-sale-archive';
         
         $attrs = shortcode_atts([
@@ -41,6 +41,9 @@ class KCPF_Homepage_Filters
         // Build inner filters using existing renderers
         // Always default to 'sale' on homepage, ignoring URL parameters
         $currentPurpose = 'sale';
+        
+        // Force purpose to 'sale' using context override (ignores URL parameters)
+        KCPF_URL_Manager::setContextPurpose('sale');
         
         // Clear URL parameters for homepage filters
         $_GET['purpose'] = 'sale';
