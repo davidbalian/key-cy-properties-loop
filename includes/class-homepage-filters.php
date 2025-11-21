@@ -49,16 +49,21 @@ class KCPF_Homepage_Filters
         // Get translated button text
         $apply_text = __('Filter results', 'key-cy-properties-filter');
         
-        // Fallback: if translation didn't work and we're in Russian, use Russian text directly
-        if ($is_russian && $apply_text === 'Filter results') {
-            $apply_text = 'Фильтровать результаты';
-        }
-        
         $attrs = shortcode_atts([
             'rent_url' => $default_rent_url,
             'sale_url' => $default_sale_url,
             'apply_text' => $apply_text,
         ], $attrs);
+        
+        // Robust Fallback: if translation didn't work or user passed English text and we're in Russian
+        if ($is_russian) {
+            $english_variants = ['Filter results', 'Filter Results', 'FILTER RESULTS'];
+            // Check if the current text (trimmed) is one of the English variants
+            // This fixes cases where translation fails OR user override was "Filter Results"
+            if (in_array(trim($attrs['apply_text']), $english_variants)) {
+                $attrs['apply_text'] = 'Фильтровать результаты';
+            }
+        }
 
         // Build inner filters using existing renderers
         // Always default to 'sale' on homepage, ignoring URL parameters
