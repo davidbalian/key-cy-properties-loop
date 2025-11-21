@@ -14,33 +14,78 @@ if (!defined('ABSPATH')) {
 class KCPF_Purpose_Filter_Renderer
 {
     /**
+     * Get the original term ID for a WPML-translated term
+     * 
+     * @param WP_Term $term Term object
+     * @return int|null Original term ID or null
+     */
+    private static function getWpmlOriginalTermId($term)
+    {
+        global $sitepress;
+        
+        if (!$sitepress || !method_exists($sitepress, 'get_element_trid')) {
+            return null;
+        }
+        
+        // Get translation ID (trid) that links all translations
+        $trid = $sitepress->get_element_trid($term->term_id, 'tax_' . $term->taxonomy);
+        if (!$trid) {
+            return null;
+        }
+        
+        // Get all translations for this term
+        $translations = $sitepress->get_element_translations($trid, 'tax_' . $term->taxonomy);
+        if (!$translations) {
+            return null;
+        }
+        
+        // Find the source language (usually 'en' for English)
+        $source_lang = null;
+        foreach ($translations as $lang_code => $translation) {
+            if (isset($translation->source_language_code) && $translation->source_language_code === null) {
+                // This is the original term (source language code is null)
+                return $translation->element_id;
+            }
+        }
+        
+        // Fallback: try to get English version
+        if (isset($translations['en'])) {
+            return $translations['en']->element_id;
+        }
+        
+        return null;
+    }
+    
+    /**
      * Check if a term represents "Sale" purpose
      * 
-     * Checks for English slug ('sale'), Russian variants ('продажа'), and Polylang original terms
+     * Checks for English slug ('sale'), Russian variants ('продажа'), and WPML original terms
      * 
      * @param WP_Term $term Purpose term
      * @return bool True if term is Sale
      */
     private static function isSaleTerm($term)
     {
-        $slug = strtolower($term->slug);
+        $slug = trim(strtolower($term->slug));
         
         // Check English slug
         if ($slug === 'sale') {
             return true;
         }
         
-        // Check Russian variants
-        if ($slug === 'продажа' || strpos($slug, 'продажа') !== false) {
+        // Check Russian variants - use mb_string functions for proper UTF-8 handling
+        $russian_sale = 'продажа';
+        if ($slug === $russian_sale || mb_strpos($slug, $russian_sale, 0, 'UTF-8') !== false) {
             return true;
         }
         
-        // Check Polylang original term if available
-        if (function_exists('pll_get_term_language')) {
-            $original_id = get_term_meta($term->term_id, '_pll_origin', true);
-            if ($original_id) {
-                $original_term = get_term($original_id, 'purpose');
-                if ($original_term && !is_wp_error($original_term) && strtolower($original_term->slug) === 'sale') {
+        // Check WPML original term if available
+        $original_id = self::getWpmlOriginalTermId($term);
+        if ($original_id && $original_id != $term->term_id) {
+            $original_term = get_term($original_id, 'purpose');
+            if ($original_term && !is_wp_error($original_term)) {
+                $original_slug = trim(strtolower($original_term->slug));
+                if ($original_slug === 'sale') {
                     return true;
                 }
             }
@@ -52,31 +97,33 @@ class KCPF_Purpose_Filter_Renderer
     /**
      * Check if a term represents "Rent" purpose
      * 
-     * Checks for English slug ('rent'), Russian variants ('аренда'), and Polylang original terms
+     * Checks for English slug ('rent'), Russian variants ('аренда'), and WPML original terms
      * 
      * @param WP_Term $term Purpose term
      * @return bool True if term is Rent
      */
     private static function isRentTerm($term)
     {
-        $slug = strtolower($term->slug);
+        $slug = trim(strtolower($term->slug));
         
         // Check English slug
         if ($slug === 'rent') {
             return true;
         }
         
-        // Check Russian variants
-        if ($slug === 'аренда' || strpos($slug, 'аренда') !== false) {
+        // Check Russian variants - use mb_string functions for proper UTF-8 handling
+        $russian_rent = 'аренда';
+        if ($slug === $russian_rent || mb_strpos($slug, $russian_rent, 0, 'UTF-8') !== false) {
             return true;
         }
         
-        // Check Polylang original term if available
-        if (function_exists('pll_get_term_language')) {
-            $original_id = get_term_meta($term->term_id, '_pll_origin', true);
-            if ($original_id) {
-                $original_term = get_term($original_id, 'purpose');
-                if ($original_term && !is_wp_error($original_term) && strtolower($original_term->slug) === 'rent') {
+        // Check WPML original term if available
+        $original_id = self::getWpmlOriginalTermId($term);
+        if ($original_id && $original_id != $term->term_id) {
+            $original_term = get_term($original_id, 'purpose');
+            if ($original_term && !is_wp_error($original_term)) {
+                $original_slug = trim(strtolower($original_term->slug));
+                if ($original_slug === 'rent') {
                     return true;
                 }
             }
